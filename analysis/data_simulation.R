@@ -27,6 +27,7 @@ BiocManager::install("zellkonverter") # on MacOS, use gcc compiler
 # nano ~/.R/Makevars
 # CC = /usr/local/bin/gcc-10
 # CXX = /usr/local/bin/g++-10
+install.packages("readr")
 
 ##========================
 ## Imports
