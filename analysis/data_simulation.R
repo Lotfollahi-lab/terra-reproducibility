@@ -140,8 +140,8 @@ srtsim_cci_ref = function(
         nearest_celltypeB = c_simu[nearid]
         for(fc in unique(cci_in$fold_change)){
           tmp_GP = cci_in[which(cci_in$celltypeA == celltype_A &
-                                cci_in$fold_change == fc &
-                                cci_in$celltypeB %in% nearest_celltypeB),]
+                                  cci_in$fold_change == fc &
+                                  cci_in$celltypeB %in% nearest_celltypeB),]
           source_gene_ind=na.omit(match(c(unlist(tmp_GP$sources)),rownames(simu_count)))
           target_gene_ind=na.omit(match(c(unlist(tmp_GP$targets)),rownames(simu_count)))
           if(length(source_gene_ind)>0)
@@ -180,15 +180,63 @@ sim_folder_path = "./" # "../datasets/cci_data/simulations"
 isid = 1
 set.seed(isid)
 
-region_celltype_df <- matrix(0.1,4,4)
-diag(region_celltype_df) <- 0.7
-rownames(region_celltype_df) <- paste0("Region",1:4)
-colnames(region_celltype_df) <- paste0("Celltype",1:4)
-
+r = 8
+c = 8
 nGene = 1354
-nLoc = 5000
+nLoc = 10000
 p = 0.2
 fc = 3
+
+region_celltype_df <- matrix(0.1,r,c)
+diag(region_celltype_df) <- 0.7
+rownames(region_celltype_df) <- paste0("Region",1:8)
+colnames(region_celltype_df) <- paste0("Celltype",1:8)
+region_celltype_df[1, 5] <- 0.
+region_celltype_df[1, 6] <- 0.
+region_celltype_df[1, 7] <- 0.
+region_celltype_df[1, 8] <- 0.
+region_celltype_df[2, 5] <- 0.
+region_celltype_df[2, 6] <- 0.
+region_celltype_df[2, 7] <- 0.
+region_celltype_df[2, 8] <- 0.
+region_celltype_df[3, 3] <- 0.5
+region_celltype_df[3, 7] <- 0.
+region_celltype_df[3, 8] <- 0.
+region_celltype_df[4, 4] <- 0.5
+region_celltype_df[4, 7] <- 0.
+region_celltype_df[4, 8] <- 0.
+region_celltype_df[5, 1] <- 0.
+region_celltype_df[5, 2] <- 0.
+region_celltype_df[5, 3] <- 0.
+region_celltype_df[5, 4] <- 0.
+region_celltype_df[5, 5] <- 1
+region_celltype_df[5, 6] <- 0.
+region_celltype_df[5, 7] <- 0.
+region_celltype_df[5, 8] <- 0.
+region_celltype_df[6, 1] <- 0.
+region_celltype_df[6, 2] <- 0.
+region_celltype_df[6, 3] <- 0.
+region_celltype_df[6, 4] <- 0.
+region_celltype_df[6, 5] <- 0.
+region_celltype_df[6, 6] <- 1
+region_celltype_df[6, 7] <- 0.
+region_celltype_df[6, 8] <- 0.
+region_celltype_df[7, 1] <- 0.125
+region_celltype_df[7, 2] <- 0.125
+region_celltype_df[7, 3] <- 0.125
+region_celltype_df[7, 4] <- 0.125
+region_celltype_df[7, 5] <- 0.125
+region_celltype_df[7, 6] <- 0.125
+region_celltype_df[7, 7] <- 0.125
+region_celltype_df[7, 8] <- 0.125
+region_celltype_df[8, 1] <- 0.
+region_celltype_df[8, 2] <- 0.
+region_celltype_df[8, 3] <- 0.
+region_celltype_df[8, 4] <- 0.
+region_celltype_df[8, 5] <- 0.25
+region_celltype_df[8, 6] <- 0.25
+region_celltype_df[8, 7] <- 0.25
+region_celltype_df[8, 8] <- 0.25
 
 ##========================
 ## Load reference data
@@ -204,16 +252,20 @@ simLoc <- simNewLocs(newN= nLoc,lay_out="random",preLoc = info2)
 
 ## assign the region labels
 simLoc %<>% mutate(region_label = case_when(
-  x <= 0.5*median(x) ~ "Region1",
-  x > 0.5*median(x) & x <= median(x)~ "Region2",
-  x > median(x) & x <= 1.5*median(x)~ "Region3",
-  TRUE ~ "Region4"
+  x <= 0.5*median(x) & y <= median(y) ~ "Region1",
+  x <= 0.5*median(x) & y > median(y) ~ "Region2",
+  x > 0.5*median(x) & x <= median(x) & y <= median(y) ~ "Region3",
+  x > 0.5*median(x) & x <= median(x) & y > median(y) ~ "Region4",
+  x > median(x) & x <= 1.5*median(x) & y <= median(y) ~ "Region5",
+  x > median(x) & x <= 1.5*median(x) & y > median(y) ~ "Region6",
+  x > 1.5*median(x) & y <= median(y) ~ "Region7",
+  TRUE ~ "Region8"
 )) %>% as.data.frame()
 
 ##========================
 ## Load CCI data
 ##========================
-cci_file_path <- paste(sim_folder_path, "simulated_cci_p", p*100, "_fc", fc, ".csv", sep = "")
+cci_file_path <- paste(sim_folder_path, "simulated_cci_", p*100, "p_", fc, "fc.csv", sep = "")
 cci_df <- read_csv(cci_file_path)
 
 cci_df$sources <- lapply(cci_df$sources, function(x) unlist(strsplit(x, ",")))
@@ -250,5 +302,5 @@ sce_ref <- SingleCellExperiment(
 
 rownames(sce_ref) <- example_CCI_ref@simCounts@Dimnames[[1]]
 colnames(sce_ref) <- example_CCI_ref@simCounts@Dimnames[[2]]
-save_path <- paste(st_data_bronze_folder_path, "simulation_", nGene, "fts_", nLoc, "locs_p", p*100, "_fc", fc, "/simulation_", nGene, "fts_", nLoc, "locs_p", p*100, "_fc", fc, ".h5ad", sep = "")
+save_path <- paste(st_data_bronze_folder_path, "sim_", nGene, "fts_", nLoc, "locs_", r, "r_", c, "c_", p*100, "p_", fc, "fc", "/sim_", nGene, "fts_", nLoc, "locs_", r, "r_", c, "c_", p*100, "p_", fc, "fc", ".h5ad", sep = "")
 writeH5AD(sce_ref, file = save_path)
