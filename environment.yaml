@@ -6,5 +6,6 @@ dependencies:
   - pip
   - pip:
     - cellphonedb
+    - nichecompass
     - pyensembl
     - scgpt
