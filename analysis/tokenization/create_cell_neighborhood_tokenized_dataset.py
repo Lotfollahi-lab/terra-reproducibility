@@ -1,3 +1,16 @@
+"""
+Adapted from cell_neighborhood_rank_tokenizer.ipynb.
+
+Usage
+----------
+.. terminal
+    >>> python create_cell_neighborhood_tokenized_dataset.py config/cell-neighborhood-tokenization_sim1_shifted-log.yaml
+
+Description
+----------
+This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary.
+"""
+
 import os
 import sys
 import yaml
