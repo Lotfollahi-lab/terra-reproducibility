@@ -1,6 +1,8 @@
 import os
 import sys
 import yaml
+import time
+import wandb
 import pickle
 import numpy as np
 import scanpy as sc
@@ -280,6 +282,17 @@ def main():
     with open(config_fname, "r") as f:
         config = yaml.safe_load(f)
     
+    # Initialize wandb run
+    run = wandb.init(project=config["wandb"]["project"],
+                        job_type=config["wandb"]["job_type"],
+                        tags=config["wandb"]["tags"],
+                        config=config)
+
+    # Create wandb artifact
+    artifact = wandb.Artifact(name=f"{config['experiment']['dataset_name']}-tokenized",
+                            type=f"{config['experiment']['tokenizer']}",
+                            metadata=config)
+        
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
     dataset_name = config["experiment"]["dataset_name"]
@@ -386,6 +399,8 @@ def main():
     model_input_size = n_gene_tokens * 2
     output_file_prefix = f"{dataset_name}_{norm_factor}_{norm_method}_{model_input_size}"
     
+    start = time.time()
+    
     # Tokenize data
     tk = tokenizers.CellNeighborhoodRankTokenizer(
             model_input_size=model_input_size,
@@ -404,6 +419,18 @@ def main():
     tk.tokenize_data(input_directory=input_directory,
                         output_directory=output_directory,
                         output_file_prefix=output_file_prefix)
+    end = time.time()
+    
+    wandb.log({"tokenization_time": end - start})
+
+    # save artifact
+    if config["wandb"]["save_artifact"]:
+        artifact.add_file(local_path=nichejepa_token_dictionary_file, name="NicheJEPA Token Dictionary")
+        artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
+        artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
+        artifact.save()
+        
+    wandb.finish()
     
     
 if __name__ == "__main__":
