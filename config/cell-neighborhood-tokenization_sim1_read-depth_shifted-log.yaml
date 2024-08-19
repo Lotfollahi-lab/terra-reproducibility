@@ -8,7 +8,7 @@ experiment:
 wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
-  save_dataset: False
+  save_artifact: False
   tags: ["test", "cell-neighborhood-tokenization", "sim1", "read-depth", "shifted-log"]
 
 paths:
