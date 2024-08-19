@@ -25,6 +25,7 @@ from typing import Dict, Union, Literal
 
 from nichejepa import tokenizers
 from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
+from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
 
@@ -201,12 +202,10 @@ def normalize_gene_counts(adata: sc.AnnData,
         # Normalize gene counts by norm_factor
         if norm_factor == "read_depth":
             # Normalize gene counts within each cell (row)
-            adata.X = adata.X / adata.X.sum(1).reshape(-1, 1) * 10000
+            adata.X = normalize_by_read_depth(adata.X, target_size=10000)
         
             # Normalize gene counts within each neighborhood (row)
-            adata.layers["X_neighborhood"] = (
-                adata.layers["X_neighborhood"] /
-                adata.layers["X_neighborhood"].sum(1).reshape(-1, 1) * 10000)
+            adata.layers["X_neighborhood"] = normalize_by_read_depth(adata.layers["X_neighborhood"], target_size=10000)            
         else:
             raise NotImplementedError(f"Normalization factor {norm_factor} not implemented.")
     else:
