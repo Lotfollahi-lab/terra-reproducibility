@@ -287,11 +287,6 @@ def main():
                         job_type=config["wandb"]["job_type"],
                         tags=config["wandb"]["tags"],
                         config=config)
-
-    # Create wandb artifact
-    artifact = wandb.Artifact(name=f"{config['experiment']['dataset_name']}-tokenized",
-                            type=f"{config['experiment']['tokenizer']}",
-                            metadata=config)
         
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
@@ -423,11 +418,17 @@ def main():
     
     wandb.log({"tokenization_time": end - start})
 
-    # save artifact
     if config["wandb"]["save_artifact"]:
+        # Create wandb artifact
+        artifact = wandb.Artifact(name=f"{config['experiment']['dataset_name']}-tokenized",
+                                type=f"{config['experiment']['tokenizer']}",
+                                metadata=config)
+        # add files to artifact
         artifact.add_file(local_path=nichejepa_token_dictionary_file, name="NicheJEPA Token Dictionary")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
+        
+        # save artifact
         artifact.save()
         
     wandb.finish()
