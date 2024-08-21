@@ -1,8 +1,10 @@
 experiment:
   tokenizer: "cell-neighborhood-tokenizer"
   dataset_name: "sim1_1105fts_10000locs"
-  n_batches: 1
   species: "sim"
+  n_batches: 1
+  nproc: 1
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/profiler/": 
   # model_input_size: 2210 # uncomment to manually set the model input size
 
 wandb:
@@ -10,6 +12,7 @@ wandb:
   job_type: "create-tokenized-dataset"
   save_artifact: False
   tags: ["test", "cell-neighborhood-tokenization", "sim1", "read-depth", "shifted-log"]
+  mode: "disabled"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"

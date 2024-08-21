@@ -17,6 +17,7 @@ import yaml
 import time
 import wandb
 import pickle
+import cProfile
 import numpy as np
 import scanpy as sc
 from pathlib import Path
@@ -295,16 +296,19 @@ def main():
         config = yaml.safe_load(f)
     
     # Initialize wandb run
-    run = wandb.init(project=config["wandb"]["project"],
+    wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
                         tags=config["wandb"]["tags"],
+                        mode=config["wandb"]["mode"],
                         config=config)
         
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
     dataset_name = config["experiment"]["dataset_name"]
-    n_batches = config["experiment"]["n_batches"]
     species = config["experiment"]["species"]
+    n_batches = config["experiment"]["n_batches"]
+    nproc = config["experiment"]["nproc"]
+    profiler_path = config["paths"]["profiler_path"]
     print(f"Tokenizer: {tokenizer}")
     print(f"Dataset: {dataset_name}")
     
@@ -408,24 +412,32 @@ def main():
     
     start = time.time()
     
-    # Tokenize data
-    tk = tokenizers.CellNeighborhoodRankTokenizer(
-            model_input_size=model_input_size,
-            norm_method=norm_method,
-            norm_factor=norm_factor,
-            use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
-            cell_gene_means_file=cell_gene_means_dictionary_file,
-            cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
-            cell_gene_logmeans_file=cell_gene_logmeans_dictionary_file,
-            neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
-            neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
-            neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
-            token_dictionary_file=nichejepa_token_dictionary_file,
-            custom_attr_name_dict=custom_attr_name_dict)
+    with cProfile.Profile() as pr:
+        # Instantiate tokenizer
+        tk = tokenizers.CellNeighborhoodRankTokenizer(
+                model_input_size=model_input_size,
+                norm_method=norm_method,
+                norm_factor=norm_factor,
+                nproc=nproc,
+                use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
+                cell_gene_means_file=cell_gene_means_dictionary_file,
+                cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
+                cell_gene_logmeans_file=cell_gene_logmeans_dictionary_file,
+                neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
+                neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
+                neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
+                token_dictionary_file=nichejepa_token_dictionary_file,
+                custom_attr_name_dict=custom_attr_name_dict)
+
+        # Tokenize data 
+        tk.tokenize_data(input_directory=input_directory,
+                            output_directory=output_directory,
+                            output_file_prefix=output_file_prefix)
+    
+        # Save time profiling stats to disk
+        os.makedirs(f"{profiler_path}/{tokenizer}", exist_ok=True)
+        pr.dump_stats(f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}.prof")
         
-    tk.tokenize_data(input_directory=input_directory,
-                        output_directory=output_directory,
-                        output_file_prefix=output_file_prefix)
     end = time.time()
     
     wandb.log({"tokenization_time": end - start})
@@ -437,6 +449,7 @@ def main():
                                 metadata=config)
         # add files to artifact
         artifact.add_file(local_path=nichejepa_token_dictionary_file, name="NicheJEPA Token Dictionary")
+        artifact.add_file(local_path=f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}.prof", name="cProfile Stats")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
         
