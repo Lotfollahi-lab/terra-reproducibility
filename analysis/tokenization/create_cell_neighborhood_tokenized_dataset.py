@@ -32,7 +32,7 @@ from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_dept
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
 
-def load_data(st_data_silver_folder_path: Union[Path, str], 
+def load_anndata(st_data_silver_folder_path: Union[Path, str], 
                             dataset_name: str, 
                             species: str,
                             n_batches: int) -> sc.AnnData:
@@ -387,7 +387,7 @@ def main():
     neighborhood_gene_logmeans_dictionary_file = f"{tokenizer_folder_path}/neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
         
     # Load data
-    adata = load_data(st_data_silver_folder_path, dataset_name, species, n_batches)
+    adata = load_anndata(st_data_silver_folder_path, dataset_name, species, n_batches)
 
     # Create token dictionary
     base_token_dict = create_base_token_dictionary(tokenizer_directory_path, token_dictionary_file, adata, species, overwrite)
