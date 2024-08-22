@@ -24,6 +24,7 @@ tokenization:
   use_separate_cell_and_neighborhood_tokens: False
   norm_method: "shifted_log"
   norm_factor: "read_depth"
+  prenormalize: False
   custom_attr_name_dict: {"cell_type": "cell_types",
                           "tissue": "niche_types",
                           "donor_id": "donor_id",

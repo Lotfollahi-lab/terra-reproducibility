@@ -362,6 +362,7 @@ def main():
     use_separate_cell_and_neighborhood_tokens = config["tokenization"]["use_separate_cell_and_neighborhood_tokens"]
     norm_method = config["tokenization"]["norm_method"]
     norm_factor = config["tokenization"]["norm_factor"]
+    prenormalize = config["tokenization"]["prenormalize"]
     custom_attr_name_dict = config["tokenization"]["custom_attr_name_dict"]
     label_cats = config["tokenization"]["label_cats"]
 
@@ -395,56 +396,57 @@ def main():
     # Create nichejepa token dictionary
     _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, use_separate_cell_and_neighborhood_tokens, overwrite)
 
-    # Normalize gene counts
-    adata = normalize_gene_counts(adata, n_batches, norm_factor)
+    if prenormalize:
+        # Normalize gene counts
+        adata = normalize_gene_counts(adata, n_batches, norm_factor)
 
-    # Compute means, non-zero means, and log-means
-    cell_gene_means, neighborhood_gene_means = compute_cell_and_neighborhood_gene_means(adata)
-    cell_gene_nzmeans, neighborhood_gene_nzmeans = compute_cell_and_neighborhood_gene_nzmeans(adata)
-    cell_gene_logmeans, neighborhood_gene_logmeans = compute_cell_and_neighborhood_gene_logmeans(adata)
-            
-    # Create norm factor dictionaries for tokenizer and store on disk
-    cell_gene_means_dict = {}
-    cell_gene_nzmeans_dict = {}
-    cell_gene_logmeans_dict = {}
-    neighborhood_gene_means_dict = {}
-    neighborhood_gene_nzmeans_dict = {}
-    neighborhood_gene_logmeans_dict = {}
-    
-    for (gene,
-         cell_gene_mean,
-         cell_gene_nzmedian,
-         cell_gene_logmean,
-         neighborhood_gene_mean,
-         neighborhood_gene_nzmedian,
-         neighborhood_gene_logmean) in zip(
-            adata.var["ensembl_id"].values,
-            cell_gene_means,
-            cell_gene_nzmeans,
-            cell_gene_logmeans,
-            neighborhood_gene_means,
-            neighborhood_gene_nzmeans,
-            neighborhood_gene_logmeans):
-        cell_gene_means_dict[gene] = cell_gene_mean
-        cell_gene_nzmeans_dict[gene] = cell_gene_nzmedian
-        cell_gene_logmeans_dict[gene] = cell_gene_logmean
-        neighborhood_gene_means_dict[gene] = neighborhood_gene_mean
-        neighborhood_gene_nzmeans_dict[gene] = neighborhood_gene_nzmedian
-        neighborhood_gene_logmeans_dict[gene] = neighborhood_gene_logmean
+        # Compute means, non-zero means, and log-means
+        cell_gene_means, neighborhood_gene_means = compute_cell_and_neighborhood_gene_means(adata)
+        cell_gene_nzmeans, neighborhood_gene_nzmeans = compute_cell_and_neighborhood_gene_nzmeans(adata)
+        cell_gene_logmeans, neighborhood_gene_logmeans = compute_cell_and_neighborhood_gene_logmeans(adata)
+                
+        # Create norm factor dictionaries for tokenizer and store on disk
+        cell_gene_means_dict = {}
+        cell_gene_nzmeans_dict = {}
+        cell_gene_logmeans_dict = {}
+        neighborhood_gene_means_dict = {}
+        neighborhood_gene_nzmeans_dict = {}
+        neighborhood_gene_logmeans_dict = {}
         
-    # Save norm_factor dictionaries to disk
-    with open(cell_gene_means_dictionary_file, "wb") as file:
-        pickle.dump(cell_gene_means_dict, file)
-    with open(cell_gene_nzmeans_dictionary_file, "wb") as file:
-        pickle.dump(cell_gene_nzmeans_dict, file)
-    with open(cell_gene_logmeans_dictionary_file, "wb") as file:
-        pickle.dump(cell_gene_logmeans_dict, file)
-    with open(neighborhood_gene_means_dictionary_file, "wb") as file:
-        pickle.dump(neighborhood_gene_means_dict, file)
-    with open(neighborhood_gene_nzmeans_dictionary_file, "wb") as file:
-        pickle.dump(neighborhood_gene_nzmeans_dict, file)
-    with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
-        pickle.dump(neighborhood_gene_logmeans_dict, file)    
+        for (gene,
+            cell_gene_mean,
+            cell_gene_nzmedian,
+            cell_gene_logmean,
+            neighborhood_gene_mean,
+            neighborhood_gene_nzmedian,
+            neighborhood_gene_logmean) in zip(
+                adata.var["ensembl_id"].values,
+                cell_gene_means,
+                cell_gene_nzmeans,
+                cell_gene_logmeans,
+                neighborhood_gene_means,
+                neighborhood_gene_nzmeans,
+                neighborhood_gene_logmeans):
+            cell_gene_means_dict[gene] = cell_gene_mean
+            cell_gene_nzmeans_dict[gene] = cell_gene_nzmedian
+            cell_gene_logmeans_dict[gene] = cell_gene_logmean
+            neighborhood_gene_means_dict[gene] = neighborhood_gene_mean
+            neighborhood_gene_nzmeans_dict[gene] = neighborhood_gene_nzmedian
+            neighborhood_gene_logmeans_dict[gene] = neighborhood_gene_logmean
+            
+        # Save norm_factor dictionaries to disk
+        with open(cell_gene_means_dictionary_file, "wb") as file:
+            pickle.dump(cell_gene_means_dict, file)
+        with open(cell_gene_nzmeans_dictionary_file, "wb") as file:
+            pickle.dump(cell_gene_nzmeans_dict, file)
+        with open(cell_gene_logmeans_dictionary_file, "wb") as file:
+            pickle.dump(cell_gene_logmeans_dict, file)
+        with open(neighborhood_gene_means_dictionary_file, "wb") as file:
+            pickle.dump(neighborhood_gene_means_dict, file)
+        with open(neighborhood_gene_nzmeans_dictionary_file, "wb") as file:
+            pickle.dump(neighborhood_gene_nzmeans_dict, file)
+        with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
+            pickle.dump(neighborhood_gene_logmeans_dict, file)    
 
     # Set output file prefix    
     model_input_size = n_gene_tokens * 2
