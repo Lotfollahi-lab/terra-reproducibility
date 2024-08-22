@@ -24,6 +24,8 @@ from pathlib import Path
 import scipy.sparse as sp
 from typing import Dict, Union, Literal
 
+from pyensembl import EnsemblRelease
+
 from nichejepa import tokenizers
 from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
 from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
@@ -57,10 +59,14 @@ def load_data(st_data_silver_folder_path: Union[Path, str],
         # Load data
         if n_batches == 1:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}.h5ad")
-            if type(adata.X) == sp._csr.csr_matrix:
-                adata.X = adata.X.toarray()
         else:
-            raise NotImplementedError("Simulated data with multiple batches not implemented.")
+            raise ValueError("Simulated data with multiple batches not implemented.")
+    elif species == 'mus_musculus':
+        # Load the first batch of data.
+        if n_batches == 1:
+            raise ValueError("Mouse data with one batch not implemented.")
+        else:
+            adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
     else:
         raise NotImplementedError(f"Species {species} not implemented.")
 
@@ -70,7 +76,8 @@ def load_data(st_data_silver_folder_path: Union[Path, str],
 def create_base_token_dictionary(tokenizer_directory_path: str,
                             token_dictionary_file: str, 
                             adata: Dict,
-                            species: str) -> Dict:
+                            species: str,
+                            overwrite: Literal[True, False] = True) -> Dict:
     """
     Create a base token dictionary for gene IDs and save it to a file.
 
@@ -80,6 +87,7 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
     - token_dictionary_file (str): The file path to save the token dictionary.
     - adata (Dict): The dictionary containing the gene IDs.
     - species (str): The species of the dataset.
+    - overwrite (bool): Whether to overwrite the base token dictionary file.
     
     Returns:
     ----------
@@ -87,17 +95,39 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
     
     Raises:
     ----------
-    - NotImplementedError: If species other than 'sim' is not implemented.
+    - NotImplementedError: If species other than 'sim' or 'mus_musculus' is not implemented.
     """
-    if species == 'sim':
-        gene_ids = adata.var["ensembl_id"]
-        base_token_dict = {'<pad>': 0, '<mask>': 1}
-        base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
-    else:
-        raise NotImplementedError(f"Species {species} not implemented.")
+    # Load base token dictionary if it exists, else create it
+    if not overwrite:
+        with open(token_dictionary_file, "rb") as f:
+            base_token_dict = pickle.load(f)
+    else:        
+        if species == 'sim':
+            # Extract Ensembl IDs of genes
+            gene_ids = adata.var["ensembl_id"]
+            
+            # Create token dictionary for simulated data
+            base_token_dict = {'<pad>': 0, '<mask>': 1}
+            base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
+        elif species == 'mus_musculus':
+            # Extract Ensembl IDs of protein coding and miRNA mouse genes
+            ensembl = EnsemblRelease(111, species=species)
+            ensembl.download()
+            ensembl.index()
+            all_genes = ensembl.genes()
+            protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
+            mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
+            all_relevant_genes = protein_coding_genes + mirna_genes
+            gene_ids = [gene.gene_id for gene in all_relevant_genes]
+            
+            # Create token dictionary for mouse
+            base_token_dict = {'<pad>': 0, '<mask>': 1}
+            base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
+        else:
+            raise NotImplementedError(f"Species {species} not implemented.")
 
-    with open(token_dictionary_file, "wb") as f:
-        pickle.dump(base_token_dict, f)
+        with open(token_dictionary_file, "wb") as f:
+            pickle.dump(base_token_dict, f)
         
     return base_token_dict
 
@@ -105,8 +135,9 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
 def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
                                       adata: sc.AnnData, 
                                       token_dict: Dict, 
-                                      add_cls_tokens: Literal[True, False],
-                                      use_separate_cell_and_neighborhood_tokens: Literal[True, False]) -> Dict:
+                                      add_cls_tokens: Literal[True, False] = False,
+                                      use_separate_cell_and_neighborhood_tokens: Literal[True, False] = False,
+                                      overwrite: Literal[True, False] = False) -> Dict:
     """
     Create a NicheJEPA token dictionary.
 
@@ -117,55 +148,61 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
     - token_dict (Dict): The initial token dictionary.
     - add_cls_tokens (bool): Whether to add cls tokens.
     - use_separate_cell_and_neighborhood_tokens (bool): Whether to separate cell and neighborhood tokens.
+    - overwrite (bool): Whether to overwrite the NicheJEPA token dictionary file.
 
     Returns:
     ----------
     - Dict: The updated NicheJEPA token dictionary.
     - Int: The number of gene tokens.
     """
-
-    # Add cls token
-    if add_cls_tokens:
-        def insert_at_index(d, index, key, value):
-            items = list(d.items())
-            items.insert(index, (key, value))
-            new_d = dict(items)
-            return new_d
-        token_dict = insert_at_index(token_dict, 2, "<cls_cell>", 2)
-        if use_separate_cell_and_neighborhood_tokens:
-            token_dict = insert_at_index(token_dict, 3, "<cls_neighborhood>", 3)
-
-    # Remove genes not in dataset
-    gene_list = adata.var["ensembl_id"].tolist()
-    token_dict_copy = token_dict.copy()
-    for token in token_dict_copy.keys():
-        if "ENS" in token and token not in gene_list:
-            del(token_dict[token])
-    del(token_dict_copy)
-
-    # Separate gene tokens into cell and neighborhood tokens
-    if use_separate_cell_and_neighborhood_tokens:
-        nichejepa_token_dict = {
-            (key + "_cell" if "ENS" in key else key): value
-            for value, key in enumerate(token_dict.keys())}
-        nichejepa_token_dict_copy = nichejepa_token_dict.copy()
-        i = 0
-        for key in nichejepa_token_dict_copy.keys():
-            if "ENS" in key:
-                nichejepa_token_dict[key.replace("cell", "neighborhood")] = len(nichejepa_token_dict_copy) + i
-                i += 1
-        del(nichejepa_token_dict_copy)
+    # Load NichJEPA token dictionary if it exists, else create it
+    if not overwrite:
+        with open(nichejepa_token_dictionary_file, "rb") as f:
+            nichejepa_token_dict = pickle.load(f)
     else:
-        nichejepa_token_dict = {
-            key: value
-            for value, key in enumerate(token_dict.keys())}
+        # Add cls token
+        if add_cls_tokens:
+            def insert_at_index(d, index, key, value):
+                items = list(d.items())
+                items.insert(index, (key, value))
+                new_d = dict(items)
+                return new_d
+            token_dict = insert_at_index(token_dict, 2, "<cls_cell>", 2)
+            if use_separate_cell_and_neighborhood_tokens:
+                token_dict = insert_at_index(token_dict, 3, "<cls_neighborhood>", 3)
 
+        # Remove genes not in dataset
+        gene_list = adata.var["ensembl_id"].tolist()
+        token_dict_copy = token_dict.copy()
+        for token in token_dict_copy.keys():
+            if "ENS" in token and token not in gene_list:
+                del(token_dict[token])
+        del(token_dict_copy)
+
+        # Use separate tokens for each gene for cell and neighborhood
+        if use_separate_cell_and_neighborhood_tokens:
+            nichejepa_token_dict = {
+                (key + "_cell" if "ENS" in key else key): value
+                for value, key in enumerate(token_dict.keys())}
+            nichejepa_token_dict_copy = nichejepa_token_dict.copy()
+            i = 0
+            for key in nichejepa_token_dict_copy.keys():
+                if "ENS" in key:
+                    nichejepa_token_dict[key.replace("cell", "neighborhood")] = len(nichejepa_token_dict_copy) + i
+                    i += 1
+            del(nichejepa_token_dict_copy)
+        else:
+            nichejepa_token_dict = {
+                key: value
+                for value, key in enumerate(token_dict.keys())}
+
+        # Write to disk
+        with open(nichejepa_token_dictionary_file, "wb") as file:
+            pickle.dump(nichejepa_token_dict, file)
+
+    # Count number of gene tokens 
     n_gene_tokens = len([token for token in nichejepa_token_dict.keys() if "ENS" in token])
 
-    # Write to disk
-    with open(nichejepa_token_dictionary_file, "wb") as file:
-        pickle.dump(nichejepa_token_dict, file)
-    
     return nichejepa_token_dict, n_gene_tokens
 
 
@@ -308,7 +345,7 @@ def main():
     species = config["experiment"]["species"]
     n_batches = config["experiment"]["n_batches"]
     nproc = config["experiment"]["nproc"]
-    profiler_path = config["paths"]["profiler_path"]
+    overwrite = config["experiment"]["overwrite"]
     print(f"Tokenizer: {tokenizer}")
     print(f"Dataset: {dataset_name}")
     
@@ -316,6 +353,9 @@ def main():
     data_directory_path = config["paths"]["data_directory_path"]
     st_data_silver_folder_path = f"{data_directory_path}/silver"
     st_data_gold_folder_path = f"{data_directory_path}/gold"
+    
+    # Configure profiler path
+    profiler_path = config["paths"]["profiler_path"]
 
     # Configure tokenization parameters
     add_cls_tokens = config["tokenization"]["add_cls_tokens"]
@@ -350,10 +390,10 @@ def main():
     adata = load_data(st_data_silver_folder_path, dataset_name, species, n_batches)
 
     # Create token dictionary
-    base_token_dict = create_base_token_dictionary(tokenizer_directory_path, token_dictionary_file, adata, species)
+    base_token_dict = create_base_token_dictionary(tokenizer_directory_path, token_dictionary_file, adata, species, overwrite)
     
     # Create nichejepa token dictionary
-    _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, use_separate_cell_and_neighborhood_tokens)
+    _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, use_separate_cell_and_neighborhood_tokens, overwrite)
 
     # Normalize gene counts
     adata = normalize_gene_counts(adata, n_batches, norm_factor)

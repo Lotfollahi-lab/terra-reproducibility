@@ -4,7 +4,7 @@ experiment:
   species: "sim"
   n_batches: 1
   nproc: 1
-  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/profiler/": 
+  overwrite: False
   # model_input_size: 2210 # uncomment to manually set the model input size
 
 wandb:
@@ -17,6 +17,7 @@ wandb:
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
   tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/tokenizer/"
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/profiler/" 
 
 tokenization:
   add_cls_tokens: False
