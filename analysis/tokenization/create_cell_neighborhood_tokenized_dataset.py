@@ -17,12 +17,13 @@ import yaml
 import time
 import wandb
 import pickle
+import pstats
 import cProfile
 import numpy as np
 import scanpy as sc
 from pathlib import Path
 import scipy.sparse as sp
-from typing import Dict, Union, Literal
+from typing import List, Dict, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
 
@@ -323,6 +324,35 @@ def compute_cell_and_neighborhood_gene_logmeans(adata: sc.AnnData) -> np.ndarray
     return cell_gene_logmeans, neighborhood_gene_logmeans
 
 
+def obtain_cumulative_times(profiler_stats_fname: str,
+                            func_list_to_profile: Optional[List[str]] = ['tokenize_data', 'tokenize_files', 'tokenize_adata', 'create_dataset']) -> Dict:
+    """
+    Obtain cumulative times from the cProfile stats file for a specified list of functions.
+
+    Parameters:
+    ----------
+    - profiler_stats_fname (str): The file path to the cProfile stats file.
+    - func_list_to_profile (Optional[List[str]]): The list of functions to profile.
+
+    Returns:
+    ----------
+    - Dict: A dictionary containing the cumulative times for each specified function.
+    """
+    # Create stats object
+    stats = pstats.Stats(profiler_stats_fname)
+    stats.strip_dirs().sort_stats('cumulative')
+
+    cumulative_times = {}
+    for func, stat in stats.stats.items():
+        file_name, line_num, func_name = func
+        if func_name in func_list_to_profile:
+            cc, nc, tt, ct, callers = stat
+            print(f"Function: {func_name} | Cumulative Time: {ct}")
+            cumulative_times[func_name] = ct
+
+    return cumulative_times
+
+
 def main():
     
     # Get the config file name from command line argument
@@ -363,6 +393,7 @@ def main():
     norm_method = config["tokenization"]["norm_method"]
     norm_factor = config["tokenization"]["norm_factor"]
     prenormalize = config["tokenization"]["prenormalize"]
+    processing_mode = config["tokenization"]["processing_mode"]
     custom_attr_name_dict = config["tokenization"]["custom_attr_name_dict"]
     label_cats = config["tokenization"]["label_cats"]
 
@@ -452,15 +483,17 @@ def main():
     model_input_size = n_gene_tokens * 2
     output_file_prefix = f"{dataset_name}_{norm_factor}_{norm_method}_{model_input_size}"
     
-    start = time.time()
-    
+    # Tokenize data
     with cProfile.Profile() as pr:
+        start = time.time()
+        
         # Instantiate tokenizer
         tk = tokenizers.CellNeighborhoodRankTokenizer(
                 model_input_size=model_input_size,
                 norm_method=norm_method,
                 norm_factor=norm_factor,
                 nproc=nproc,
+                processing_mode=processing_mode,
                 use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
                 cell_gene_means_file=cell_gene_means_dictionary_file,
                 cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
@@ -476,13 +509,22 @@ def main():
                             output_directory=output_directory,
                             output_file_prefix=output_file_prefix)
     
+        end = time.time()
+    
         # Save time profiling stats to disk
         os.makedirs(f"{profiler_path}/{tokenizer}", exist_ok=True)
-        pr.dump_stats(f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}.prof")
-        
-    end = time.time()
+        profiler_stats_fname = f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}_{processing_mode}.prof"
+        pr.dump_stats(profiler_stats_fname)
+        print(f"Profiling stats saved to: {profiler_stats_fname}")
+                    
+        # Extract cumulative times from profiler stats
+        cumulative_times = obtain_cumulative_times(profiler_stats_fname)
+
     
+    # Log tokenization and profiling times to wandb
     wandb.log({"tokenization_time": end - start})
+    for func_name, ct in cumulative_times.items():
+        wandb.log({f"cumulative_time_{func_name}": ct})
 
     if config["wandb"]["save_artifact"]:
         # Create wandb artifact

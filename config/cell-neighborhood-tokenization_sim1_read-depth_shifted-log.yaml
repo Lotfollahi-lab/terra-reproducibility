@@ -11,8 +11,8 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["test", "cell-neighborhood-tokenization", "sim1", "read-depth", "shifted-log"]
-  mode: "disabled"
+  tags: ["parallelize", "cell-neighborhood-tokenization", "sim1", "read-depth", "shifted-log"]
+  mode: "offline"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
@@ -25,6 +25,7 @@ tokenization:
   norm_method: "shifted_log"
   norm_factor: "read_depth"
   prenormalize: False
+  processing_mode: "sequential"
   custom_attr_name_dict: {"cell_types": "cell_types",
                           "niche_types": "niche_types"}
   label_cats: ["cell_types", "niche_types"]
