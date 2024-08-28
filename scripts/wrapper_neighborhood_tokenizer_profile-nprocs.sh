@@ -1,0 +1,45 @@
+#!/bin/bash
+
+GROUP="team361"
+SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
+
+DATASET_NAME=$1
+CORES=$2
+
+case $DATASET_NAME in
+    sim1)
+        QUEUE="normal"
+        RAM="2G"
+        TIME="0:05"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_sim1_read-depth_shifted-log.yaml"
+        ;;
+    merfish_mouse_brain)
+        QUEUE="normal"
+        RAM="25G"
+        TIME="0:10"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_merfish_mouse_brain_read-depth_shifted-log.yaml"
+        ;;
+    *)
+        echo "Invalid dataset name"
+        exit 1
+        ;;
+esac
+
+CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
+mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
+
+OUTPUT_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_neighborhood_tokenization_${CORES}_%J.out"
+ERROR_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_neighborhood_tokenization_${CORES}_%J.err"
+JOB_NAME="${DATASET_NAME}_cell_neighborhood_tokenization_${CORES}"
+
+echo "Tokenizing ${DATASET_NAME} with Cell Neighborhood Rank using ${CORES} cores..."
+
+bsub \
+    -G "${GROUP}" -q "${QUEUE}" -n "${CORES}" \
+    -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
+    -W "${TIME}" \
+    -cwd "${CWD}" \
+    -o "${OUTPUT_FILE}" \
+    -e "${ERROR_FILE}" \
+    -J "${JOB_NAME}" \
+    "${SCRIPT}" "${DATASET_NAME}" "${CONFIG_FILE}" "${CORES}"
