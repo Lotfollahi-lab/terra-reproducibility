@@ -4,7 +4,7 @@ Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 Usage
 ----------
 .. terminal
-    >>> python create_cell_neighborhood_tokenized_dataset.py config/cell-neighborhood-tokenization_sim1_shifted-log.yaml
+    >>> python create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_shifted-log.yaml
 
 Description
 ----------
@@ -12,17 +12,16 @@ This script tokenizes the gene expression data from the preprocessed AnnData (si
 """
 
 import os
-import sys
 import yaml
 import time
 import wandb
 import pickle
 import pstats
 import cProfile
+import argparse
 import numpy as np
 import scanpy as sc
 from pathlib import Path
-import scipy.sparse as sp
 from typing import List, Dict, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
@@ -325,7 +324,7 @@ def compute_cell_and_neighborhood_gene_logmeans(adata: sc.AnnData) -> np.ndarray
 
 
 def obtain_cumulative_times(profiler_stats_fname: str,
-                            func_list_to_profile: Optional[List[str]] = ['tokenize_data', 'tokenize_files', 'tokenize_adata', 'create_dataset']) -> Dict:
+                            func_list_to_profile: Optional[List[str]] = ['tokenize_data', 'tokenize_files', 'create_dataset']) -> Dict:
     """
     Obtain cumulative times from the cProfile stats file for a specified list of functions.
 
@@ -353,15 +352,71 @@ def obtain_cumulative_times(profiler_stats_fname: str,
     return cumulative_times
 
 
-def main():
+def parse_arguments() -> argparse.Namespace:
+    """
+    Parse command line arguments.
     
-    # Get the config file name from command line argument
-    config_fname = sys.argv[1]
+    Returns:
+    ----------
+    - argparse.Namespace: The command line arguments.
+    
+    Usage:
+    ----------
+    .. terminal
+        >>> python create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_shifted-log.yaml --override nproc=1
+    """
+    parser = argparse.ArgumentParser(description='Process command line arguments.')
+    
+    parser.add_argument('--config_file', 
+                        type=str, 
+                        help='Path to the config file')
+    parser.add_argument('--override', 
+                        nargs='+', 
+                        help='Override parameters in the config file')
+    
+    return parser.parse_args()
 
-    # Read arguments from config file
+
+def collect_configs(args: argparse.Namespace) -> Dict:
+    """
+    Collect configurations from the config file and command line arguments.
+    
+    Parameters:
+    ----------
+    - args (argparse.Namespace): The command line arguments.
+    
+    Returns:
+    ----------
+    - Dict: The configuration dictionary.
+    """
+    # Get the config file name from command line argument
+    config_fname = args.config_file
+
+    # Read parameters from config file
     with open(config_fname, "r") as f:
         config = yaml.safe_load(f)
     
+    # Override parameters from command line
+    if args.override:
+        for arg in args.override:
+            key, value = arg.split("=")
+            if key == 'nproc':
+                config['experiment'][key] = int(value)
+                config['tokenization']['processing_mode'] = "sequential" if int(value) == 1 else "parallel"
+
+    # Set wandb tags
+    config['wandb']['tags'] += [config['tokenization']['processing_mode']]
+            
+    return config
+
+
+def main():
+    # Parse command line arguments
+    args = parse_arguments()
+
+    # Collect configs 
+    config = collect_configs(args)
+            
     # Initialize wandb run
     wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
@@ -522,6 +577,7 @@ def main():
 
     
     # Log tokenization and profiling times to wandb
+    wandb.log({"nproc": nproc})
     wandb.log({"tokenization_time": end - start})
     for func_name, ct in cumulative_times.items():
         wandb.log({f"cumulative_time_{func_name}": ct})

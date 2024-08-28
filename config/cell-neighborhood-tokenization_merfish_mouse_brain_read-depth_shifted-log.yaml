@@ -2,8 +2,8 @@ experiment:
   tokenizer: "cell-neighborhood-tokenizer"
   dataset_name: "merfish_mouse_brain"
   species: "mus_musculus"
-  n_batches: 239
-  nproc: 4
+  n_batches: 8
+  nproc: 2
   overwrite: False
   # model_input_size: 2244 # uncomment to manually set the model input size
 
@@ -11,7 +11,7 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["parallelize", "cell-neighborhood-tokenization", "merfish-mouse-brain", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:

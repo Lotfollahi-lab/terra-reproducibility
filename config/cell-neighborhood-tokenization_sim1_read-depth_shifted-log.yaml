@@ -11,7 +11,7 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["parallelize", "cell-neighborhood-tokenization", "sim1", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "sim1_1105fts_10000locs", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
