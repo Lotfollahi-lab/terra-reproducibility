@@ -7,17 +7,17 @@ DATASET_NAME=$1
 CORES=$2
 
 case $DATASET_NAME in
-    sim1)
+    sim1_1105fts_10000locs)
         QUEUE="normal"
         RAM="2G"
         TIME="0:05"
-        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_sim1_read-depth_shifted-log.yaml"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml"
         ;;
-    merfish_mouse_brain)
+    merfish_mouse_brain_8-batch)
         QUEUE="normal"
         RAM="25G"
         TIME="0:10"
-        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_merfish_mouse_brain_read-depth_shifted-log.yaml"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_merfish_mouse_brain_8-batch_read-depth_shifted-log.yaml"
         ;;
     *)
         echo "Invalid dataset name"

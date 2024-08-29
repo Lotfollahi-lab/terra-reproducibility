@@ -440,7 +440,7 @@ def main():
     st_data_gold_folder_path = f"{data_directory_path}/gold"
     
     # Configure profiler path
-    profiler_path = config["paths"]["profiler_path"]
+    profiler_path = f"{config["paths"]["profiler_path"]}/{dataset_name}/profiler"
 
     # Configure tokenization parameters
     add_cls_tokens = config["tokenization"]["add_cls_tokens"]

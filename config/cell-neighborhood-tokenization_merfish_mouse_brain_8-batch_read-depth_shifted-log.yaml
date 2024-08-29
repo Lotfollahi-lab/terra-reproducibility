@@ -1,6 +1,6 @@
 experiment:
   tokenizer: "cell-neighborhood-tokenizer"
-  dataset_name: "merfish_mouse_brain"
+  dataset_name: "merfish_mouse_brain_8-batch"
   species: "mus_musculus"
   n_batches: 8
   nproc: 2
@@ -11,13 +11,13 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-8batch", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
   tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/tokenizer/"
-  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/profiler/"
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/"
 
 tokenization:
   add_cls_tokens: False
