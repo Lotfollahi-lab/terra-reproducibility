@@ -13,6 +13,12 @@ case $DATASET_NAME in
         TIME="0:05"
         CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml"
         ;;
+    sim1sim1_2000genes_50000locs_strongincrements)
+        QUEUE="parallel"
+        RAM="10G"
+        TIME="0:10"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_sim1sim1_2000genes_50000locs_strongincrements_read-depth_shifted-log.yaml"
+        ;;    
     merfish_mouse_brain_8-batch)
         QUEUE="normal"
         RAM="25G"
