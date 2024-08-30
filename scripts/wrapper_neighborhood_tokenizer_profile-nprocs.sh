@@ -19,6 +19,12 @@ case $DATASET_NAME in
         TIME="0:10"
         CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_merfish_mouse_brain_8-batch_read-depth_shifted-log.yaml"
         ;;
+    merfish_mouse_brain_16-batch)
+        QUEUE="normal"
+        RAM="45G"
+        TIME="0:20"
+        CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization_merfish_mouse_brain_16-batch_read-depth_shifted-log.yaml"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
