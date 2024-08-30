@@ -98,7 +98,7 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
     - NotImplementedError: If species other than 'sim' or 'mus_musculus' is not implemented.
     """
     # Load base token dictionary if it exists, else create it
-    if not overwrite:
+    if os.path.exists(token_dictionary_file) and not overwrite:
         with open(token_dictionary_file, "rb") as f:
             base_token_dict = pickle.load(f)
     else:        
@@ -156,7 +156,7 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
     - Int: The number of gene tokens.
     """
     # Load NichJEPA token dictionary if it exists, else create it
-    if not overwrite:
+    if os.path.exists(nichejepa_token_dictionary_file) and not overwrite:
         with open(nichejepa_token_dictionary_file, "rb") as f:
             nichejepa_token_dict = pickle.load(f)
     else:
@@ -435,13 +435,14 @@ def main():
     print(f"Dataset: {dataset_name}")
     
     # Configure data paths
-    data_directory_path = config["paths"]["data_directory_path"]
-    st_data_silver_folder_path = f"{data_directory_path}/silver"
-    st_data_gold_folder_path = f"{data_directory_path}/gold"
+    data_directory_path = Path(config["paths"]["data_directory_path"])
+    st_data_silver_folder_path = data_directory_path / "silver"
+    st_data_gold_folder_path = data_directory_path / "gold"
     
     # Configure profiler path
-    profiler_path = f"{config["paths"]["profiler_path"]}/{dataset_name}/profiler"
-
+    profiler_path = Path(config["paths"]["profiler_path"]) / dataset_name / "profiler" / tokenizer
+    os.makedirs(profiler_path, exist_ok=True)
+    
     # Configure tokenization parameters
     add_cls_tokens = config["tokenization"]["add_cls_tokens"]
     use_separate_cell_and_neighborhood_tokens = config["tokenization"]["use_separate_cell_and_neighborhood_tokens"]
@@ -453,26 +454,24 @@ def main():
     label_cats = config["tokenization"]["label_cats"]
 
     # Configure tokenizer paths
-    tokenizer_directory_path = config["paths"]["tokenizer_directory_path"]
-    tokenizer_folder_path = f"{tokenizer_directory_path}/{tokenizer}/{dataset_name}"
-    token_dictionary_file = f"{tokenizer_folder_path}/token_dictionary.pkl"
-    nichejepa_token_dictionary_file = f"{tokenizer_folder_path}/token_dictionary" \
-                                    f"{'_cls' if add_cls_tokens else '_no_cls'}" \
-                                    f"{'_sep' if use_separate_cell_and_neighborhood_tokens else '_no_sep'}.pkl"
-    os.makedirs(f"{tokenizer_folder_path}/{dataset_name}", exist_ok=True)
+    tokenizer_directory_path = Path(config["paths"]["tokenizer_directory_path"])
+    tokenizer_folder_path = tokenizer_directory_path / tokenizer / dataset_name
+    token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
+    nichejepa_token_dictionary_file = tokenizer_folder_path / f"token_dictionary{'_cls' if add_cls_tokens else '_no_cls'}{'_sep' if use_separate_cell_and_neighborhood_tokens else '_no_sep'}.pkl"
+    os.makedirs(tokenizer_folder_path, exist_ok=True)
 
     # Set input and output directories
-    input_directory = f"{st_data_silver_folder_path}/{dataset_name}"
-    output_directory = f"{st_data_gold_folder_path}/{tokenizer}/{dataset_name}"
+    input_directory = st_data_silver_folder_path / dataset_name
+    output_directory = st_data_gold_folder_path / tokenizer / dataset_name
 
     # Configure tokenized dictionary specific paths
-    cell_gene_means_dictionary_file = f"{tokenizer_folder_path}/cell_gene_{norm_factor}_means_dictionary.pkl"
-    cell_gene_nzmeans_dictionary_file = f"{tokenizer_folder_path}/cell_gene_{norm_factor}_nzmeans_dictionary.pkl"
-    cell_gene_logmeans_dictionary_file = f"{tokenizer_folder_path}/cell_gene_{norm_factor}_logmeans_dictionary.pkl"
-    neighborhood_gene_means_dictionary_file = f"{tokenizer_folder_path}/neighborhood_gene_{norm_factor}_means_dictionary.pkl"
-    neighborhood_gene_nzmeans_dictionary_file = f"{tokenizer_folder_path}/neighborhood_gene_{norm_factor}_nzmeans_dictionary.pkl"
-    neighborhood_gene_logmeans_dictionary_file = f"{tokenizer_folder_path}/neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
-        
+    cell_gene_means_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_means_dictionary.pkl"
+    cell_gene_nzmeans_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_nzmeans_dictionary.pkl"
+    cell_gene_logmeans_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_logmeans_dictionary.pkl"
+    neighborhood_gene_means_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_means_dictionary.pkl"
+    neighborhood_gene_nzmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_nzmeans_dictionary.pkl"
+    neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
+    
     # Load data
     adata = load_anndata(st_data_silver_folder_path, dataset_name, species, n_batches)
 
@@ -567,8 +566,7 @@ def main():
         end = time.time()
     
         # Save time profiling stats to disk
-        os.makedirs(f"{profiler_path}/{tokenizer}", exist_ok=True)
-        profiler_stats_fname = f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}_{processing_mode}.prof"
+        profiler_stats_fname = str(profiler_path / f"{output_file_prefix}_{nproc}_{processing_mode}.prof")
         pr.dump_stats(profiler_stats_fname)
         print(f"Profiling stats saved to: {profiler_stats_fname}")
                     
@@ -589,7 +587,7 @@ def main():
                                 metadata=config)
         # add files to artifact
         artifact.add_file(local_path=nichejepa_token_dictionary_file, name="NicheJEPA Token Dictionary")
-        artifact.add_file(local_path=f"{profiler_path}/{tokenizer}/{output_file_prefix}_{nproc}.prof", name="cProfile Stats")
+        artifact.add_file(local_path=profiler_stats_fname, name="cProfile Stats")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
         
