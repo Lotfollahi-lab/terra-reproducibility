@@ -1,25 +1,20 @@
 # nichejepa-reproducibility
 
-## Datasets:
+## Tokenization
 
-### `sim1`:
+### CellNeighborhoodRankTokenizer:
 
-Execute the following to create a Hugging Face tokenized data object from a preprocessed `anndata` object:
+Execute the following to create a Hugging Face dataset created using the Cell Neighborhood Rank Tokenization from a preprocessed `anndata` object:
 ```
-python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_shifted-log.yaml
+python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
 ```
-
-### `MERFISH Mouse Brain (8 batches)`:
-
-Execute the following to create a Hugging Face tokenized data object from 8 preprocessed `anndata` objects stored in 8 `.h5ad` files:
-```
-python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_shifted-log.yaml
-```
+Sample config file is available at `config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml`. The override flag allows you to override any number of config parameters from the file while keeping the others. For example, `--override nproc=8`.
 
 ## Scripts:
-This wrapper script will run the neighborhood tokenization on farm by loading all relevant packages, environments, paths, etc.
-Dataset-specific config files can be edited for customised runs and number of cores can be overridden directly from commandline.
+
+To use the resources on `farm22`, use the following wrapper script to load all relevant packages, environments, paths, etc. Sample usage is as follows
 ```
-./scripts/wrapper_neighborhood_tokenizer_profile-nprocs.sh [DATASET-NAME] [CORES]
+./scripts/wrapper_neighborhood_tokenizer_profile-nprocs.sh [DATASET-NAME] [TOKENIZATION] [CORES]
 ```
-Supports `sim1` or `merfish_mouse_brain` datasets.
+Datasets currently supported include: `sim1_1105fts_10000locs`, `sim1_1105genes_100klocs_strongincrements`, `merfish_mouse_brain_8-batch`, `merfish_mouse_brain_16-batch`, `merfish_mouse_brain_64-batch`. 
+Choose between `neighborhood` and `graph` options for `[TOKENIZATION]`.
