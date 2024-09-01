@@ -443,7 +443,15 @@ def main():
     profiler_path = Path(config["paths"]["profiler_path"]) / dataset_name / "profiler" / tokenizer
     os.makedirs(profiler_path, exist_ok=True)
     
+    # Configure cache path
+    try:
+        cache_directory_path = Path(config["paths"]["cache_directory_path"])
+    except:
+        cache_directory_path = data_directory_path / "cache"
+    os.makedirs(cache_directory_path, exist_ok=True)    
+    
     # Configure tokenization parameters
+    use_generator = config["tokenization"]["use_generator"]
     add_cls_tokens = config["tokenization"]["add_cls_tokens"]
     use_separate_cell_and_neighborhood_tokens = config["tokenization"]["use_separate_cell_and_neighborhood_tokens"]
     norm_method = config["tokenization"]["norm_method"]
@@ -561,7 +569,9 @@ def main():
         # Tokenize data 
         tk.tokenize_data(input_directory=input_directory,
                             output_directory=output_directory,
-                            output_file_prefix=output_file_prefix)
+                            output_file_prefix=output_file_prefix,
+                            use_generator=use_generator,
+                            cache_directory_path=cache_directory_path)
     
         end = time.time()
     
