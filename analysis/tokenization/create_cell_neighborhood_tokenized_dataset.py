@@ -459,6 +459,8 @@ def main():
     prenormalize = config["tokenization"]["prenormalize"]
     processing_mode = config["tokenization"]["processing_mode"]
     custom_attr_name_dict = config["tokenization"]["custom_attr_name_dict"]
+    num_shards = config["tokenization"]["num_shards"]
+    keep_in_memory = config["tokenization"]["keep_in_memory"]
     label_cats = config["tokenization"]["label_cats"]
 
     # Configure tokenizer paths
@@ -543,7 +545,7 @@ def main():
 
     # Set output file prefix    
     model_input_size = n_gene_tokens * 2
-    output_file_prefix = f"{dataset_name}_{norm_factor}_{norm_method}_{model_input_size}"
+    output_file_prefix = f"{dataset_name}_{num_shards}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
     
     # Tokenize data
     with cProfile.Profile() as pr:
@@ -571,7 +573,8 @@ def main():
                             output_directory=output_directory,
                             output_file_prefix=output_file_prefix,
                             use_generator=use_generator,
-                            cache_directory_path=cache_directory_path)
+                            cache_directory_path=cache_directory_path,
+                            num_shards=num_shards)
     
         end = time.time()
     
