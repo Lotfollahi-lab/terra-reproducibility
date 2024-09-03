@@ -3,7 +3,7 @@ experiment:
   dataset_name: "sim1_1105genes_100klocs_strongincrements"
   species: "sim"
   n_batches: 1
-  nproc: 16
+  nproc: 8
   overwrite: False
   # model_input_size: 2210 # uncomment to manually set the model input size
 
@@ -29,4 +29,6 @@ tokenization:
   processing_mode: "sequential"
   custom_attr_name_dict: {"cell_types": "cell_types",
                           "niche_types": "niche_types"}
+  num_shards: 8
+  keep_in_memory: True
   label_cats: ["cell_types", "niche_types"]

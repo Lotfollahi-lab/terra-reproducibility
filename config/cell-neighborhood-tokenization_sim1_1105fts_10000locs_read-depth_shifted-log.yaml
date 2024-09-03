@@ -29,4 +29,6 @@ tokenization:
   processing_mode: "sequential"
   custom_attr_name_dict: {"cell_types": "cell_types",
                           "niche_types": "niche_types"}
+  num_shards: 4
+  keep_in_memory: True
   label_cats: ["cell_types", "niche_types"]
