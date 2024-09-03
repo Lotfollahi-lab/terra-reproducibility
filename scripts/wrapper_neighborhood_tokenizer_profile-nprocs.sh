@@ -9,34 +9,28 @@ CORES=$3
 
 case $DATASET_NAME in
     sim1_1105fts_10000locs)
-        QUEUE="normal"
         RAM="2G"
         TIME="0:05"
-        CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml"
         ;;
     sim1_1105genes_100klocs_strongincrements)
-        QUEUE="normal"
         RAM="25G"
         TIME="0:10"
-        CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_sim1_1105genes_100klocs_strongincrements_read-depth_shifted-log.yaml"
         ;;    
     merfish_mouse_brain_8-batch)
-        QUEUE="normal"
         RAM="25G"
-        TIME="0:10"
-        CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_merfish_mouse_brain_8-batch_read-depth_shifted-log.yaml"
+        TIME="0:30"
         ;;
     merfish_mouse_brain_16-batch)
-        QUEUE="normal"
         RAM="45G"
         TIME="0:20"
-        CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_merfish_mouse_brain_16-batch_read-depth_shifted-log.yaml"
         ;;
     merfish_mouse_brain_64-batch)
-        QUEUE="normal"
         RAM="60G"
         TIME="0:30"
-        CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_merfish_mouse_brain_64-batch_read-depth_shifted-log.yaml"
+        ;;
+    merfish_mouse_brain_239-batch)
+        RAM="120G"
+        TIME="12:00"
         ;;
     *)
         echo "Invalid dataset name"
@@ -44,9 +38,13 @@ case $DATASET_NAME in
         ;;
 esac
 
+# If not provided, use the default value
+QUEUE="${4:-parallel}"
+
 CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
 mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
 
+CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_${DATASET_NAME}_read-depth_shifted-log.yaml"
 OUTPUT_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.out"
 ERROR_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.err"
 JOB_NAME="${DATASET_NAME}_cell_${TOKENIZER_NAME}_tokenization_${CORES}"
