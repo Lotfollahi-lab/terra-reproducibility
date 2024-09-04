@@ -498,7 +498,7 @@ def main():
 
     # Set input and output directories
     input_directory = st_data_silver_folder_path / dataset_name
-    output_directory = st_data_gold_folder_path / tokenizer / dataset_name
+    output_directory = st_data_gold_folder_path / tokenizer / dataset_name / f"{num_shards}-shards"
 
     # Configure tokenized dictionary specific paths
     gene_means_dictionary_file = tokenizer_folder_path / f"gene_{norm_factor}_means_dictionary.pkl"
@@ -548,13 +548,16 @@ def main():
         with open(gene_logmeans_dictionary_file, "wb") as file:
             pickle.dump(cell_gene_logmeans_dict, file)
 
+    # Set model input size
+    try:
+        model_input_size = config["experiment"]["model_input_size"]
+    except:
+        tokens_per_cell = n_gene_tokens
+        max_neighbors = compute_max_neighbors(adata) 
+        model_input_size = n_gene_tokens * min(16, max_neighbors) + 1
+
     # Set output file prefix
-    tokens_per_cell = n_gene_tokens
-    max_neighbors = compute_max_neighbors(adata) 
-    model_input_size = n_gene_tokens * min(16, max_neighbors) + 1
-    output_file_prefix = f"{dataset_name}_{norm_factor}_{norm_method}_{model_input_size}"
     output_file_prefix = f"{dataset_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
-    
     
     # Tokenize data
     with cProfile.Profile() as pr:
