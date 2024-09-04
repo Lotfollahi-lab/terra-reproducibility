@@ -271,8 +271,6 @@ def normalize_gene_counts(adata: sc.AnnData,
             # Normalize gene counts within each cell (row)
             adata.X = normalize_by_read_depth(adata.X, target_size=10000)
         
-            # Normalize gene counts within each neighborhood (row)
-            # adata.layers["X_neighborhood"] = normalize_by_read_depth(adata.layers["X_neighborhood"], target_size=10000)            
         else:
             raise NotImplementedError(f"Normalization factor {norm_factor} not implemented.")
     else:
@@ -482,7 +480,6 @@ def main():
     # Configure tokenization parameters
     use_generator = config["tokenization"]["use_generator"]
     add_cls_tokens = config["tokenization"]["add_cls_tokens"]
-    # use_separate_cell_and_neighborhood_tokens = config["tokenization"]["use_separate_cell_and_neighborhood_tokens"]
     norm_method = config["tokenization"]["norm_method"]
     norm_factor = config["tokenization"]["norm_factor"]
     prenormalize = config["tokenization"]["prenormalize"]
@@ -497,7 +494,6 @@ def main():
     tokenizer_folder_path = tokenizer_directory_path / tokenizer / dataset_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     nichejepa_token_dictionary_file = tokenizer_folder_path / f"token_dictionary{'_cls' if add_cls_tokens else '_no_cls'}.pkl"
-    # nichejepa_token_dictionary_file = tokenizer_folder_path / f"token_dictionary{'_cls' if add_cls_tokens else '_no_cls'}{'_sep' if use_separate_cell_and_neighborhood_tokens else '_no_sep'}.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
 
     # Set input and output directories
@@ -508,9 +504,6 @@ def main():
     gene_means_dictionary_file = tokenizer_folder_path / f"gene_{norm_factor}_means_dictionary.pkl"
     gene_nzmeans_dictionary_file = tokenizer_folder_path / f"gene_{norm_factor}_nzmeans_dictionary.pkl"
     gene_logmeans_dictionary_file = tokenizer_folder_path / f"gene_{norm_factor}_logmeans_dictionary.pkl"
-    # neighborhood_gene_means_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_means_dictionary.pkl"
-    # neighborhood_gene_nzmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_nzmeans_dictionary.pkl"
-    # neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
     
     # Load data
     adata = load_anndata(st_data_silver_folder_path, dataset_name, species, n_batches)
@@ -520,7 +513,6 @@ def main():
     
     # Create nichejepa token dictionary
     _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, overwrite)
-    # _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, use_separate_cell_and_neighborhood_tokens, overwrite)
 
     if prenormalize:
         # Normalize gene counts
@@ -535,30 +527,18 @@ def main():
         cell_gene_means_dict = {}
         cell_gene_nzmeans_dict = {}
         cell_gene_logmeans_dict = {}
-        # neighborhood_gene_means_dict = {}
-        # neighborhood_gene_nzmeans_dict = {}
-        # neighborhood_gene_logmeans_dict = {}
         
         for (gene,
             cell_gene_mean,
             cell_gene_nzmedian,
             cell_gene_logmean) in zip(
-            # neighborhood_gene_mean,
-            # neighborhood_gene_nzmedian,
-            # neighborhood_gene_logmean) in zip(
                 adata.var["ensembl_id"].values,
                 cell_gene_means,
                 cell_gene_nzmeans,
                 cell_gene_logmeans):
-                # neighborhood_gene_means,
-                # neighborhood_gene_nzmeans,
-                # neighborhood_gene_logmeans):
             cell_gene_means_dict[gene] = cell_gene_mean
             cell_gene_nzmeans_dict[gene] = cell_gene_nzmedian
             cell_gene_logmeans_dict[gene] = cell_gene_logmean
-            # neighborhood_gene_means_dict[gene] = neighborhood_gene_mean
-            # neighborhood_gene_nzmeans_dict[gene] = neighborhood_gene_nzmedian
-            # neighborhood_gene_logmeans_dict[gene] = neighborhood_gene_logmean
             
         # Save norm_factor dictionaries to disk
         with open(gene_means_dictionary_file, "wb") as file:
@@ -567,12 +547,6 @@ def main():
             pickle.dump(cell_gene_nzmeans_dict, file)
         with open(gene_logmeans_dictionary_file, "wb") as file:
             pickle.dump(cell_gene_logmeans_dict, file)
-        # with open(neighborhood_gene_means_dictionary_file, "wb") as file:
-        #     pickle.dump(neighborhood_gene_means_dict, file)
-        # with open(neighborhood_gene_nzmeans_dictionary_file, "wb") as file:
-        #     pickle.dump(neighborhood_gene_nzmeans_dict, file)
-        # with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
-        #     pickle.dump(neighborhood_gene_logmeans_dict, file)    
 
     # Set output file prefix
     tokens_per_cell = n_gene_tokens
@@ -594,13 +568,9 @@ def main():
                 norm_factor=norm_factor,
                 nproc=nproc,
                 processing_mode=processing_mode,
-                # use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
                 gene_means_file=gene_means_dictionary_file,
                 gene_nzmeans_file=gene_nzmeans_dictionary_file,
                 gene_logmeans_file=gene_logmeans_dictionary_file,
-                # neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
-                # neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
-                # neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
                 token_dictionary_file=nichejepa_token_dictionary_file,
                 custom_attr_name_dict=custom_attr_name_dict,
                 special_tokens = (None if not add_cls_tokens else ["<cls>"]),
