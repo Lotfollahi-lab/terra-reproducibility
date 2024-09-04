@@ -137,7 +137,6 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
                                       adata: sc.AnnData, 
                                       token_dict: Dict, 
                                       add_cls_tokens: Literal[True, False] = False,
-                                    #   use_separate_cell_and_neighborhood_tokens: Literal[True, False] = False,
                                       overwrite: Literal[True, False] = False) -> Dict:
     """
     Create a NicheJEPA token dictionary.
@@ -169,8 +168,6 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
                 new_d = dict(items)
                 return new_d
             token_dict = insert_at_index(token_dict, 2, "<cls_cell>", 2)
-            # if use_separate_cell_and_neighborhood_tokens:
-                # token_dict = insert_at_index(token_dict, 3, "<cls_neighborhood>", 3)
 
         # Remove genes not in dataset
         gene_list = adata.var["ensembl_id"].tolist()
@@ -184,23 +181,6 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
         nichejepa_token_dict = {
             (key if "ENS" in key else key): value
             for value, key in enumerate(token_dict.keys())}
-
-        # # Use separate tokens for each gene for cell and neighborhood
-        # if use_separate_cell_and_neighborhood_tokens:
-        #     nichejepa_token_dict = {
-        #         (key + "_cell" if "ENS" in key else key): value
-        #         for value, key in enumerate(token_dict.keys())}
-        #     nichejepa_token_dict_copy = nichejepa_token_dict.copy()
-        #     i = 0
-        #     for key in nichejepa_token_dict_copy.keys():
-        #         if "ENS" in key:
-        #             nichejepa_token_dict[key.replace("cell", "neighborhood")] = len(nichejepa_token_dict_copy) + i
-        #             i += 1
-        #     del(nichejepa_token_dict_copy)
-        # else:
-        #     nichejepa_token_dict = {
-        #         key: value
-        #         for value, key in enumerate(token_dict.keys())}
 
         # Write to disk
         with open(nichejepa_token_dictionary_file, "wb") as file:
