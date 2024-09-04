@@ -574,6 +574,7 @@ def main():
                             output_file_prefix=output_file_prefix,
                             use_generator=use_generator,
                             cache_directory_path=cache_directory_path,
+                            keep_in_memory=keep_in_memory,
                             num_shards=num_shards)
     
         end = time.time()
