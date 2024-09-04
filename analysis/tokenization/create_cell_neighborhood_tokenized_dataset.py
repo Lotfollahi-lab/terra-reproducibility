@@ -472,7 +472,7 @@ def main():
 
     # Set input and output directories
     input_directory = st_data_silver_folder_path / dataset_name
-    output_directory = st_data_gold_folder_path / tokenizer / dataset_name
+    output_directory = st_data_gold_folder_path / tokenizer / dataset_name / f"{num_shards}-shards"
 
     # Configure tokenized dictionary specific paths
     cell_gene_means_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_means_dictionary.pkl"
@@ -550,7 +550,7 @@ def main():
         model_input_size = n_gene_tokens * 2
     
     # Set output file prefix
-    output_file_prefix = f"{dataset_name}_{num_shards}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
+    output_file_prefix = f"{dataset_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
     
     # Tokenize data
     with cProfile.Profile() as pr:
