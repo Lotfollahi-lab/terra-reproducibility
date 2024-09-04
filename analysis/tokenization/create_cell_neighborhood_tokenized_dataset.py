@@ -543,8 +543,13 @@ def main():
         with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
             pickle.dump(neighborhood_gene_logmeans_dict, file)    
 
-    # Set output file prefix    
-    model_input_size = n_gene_tokens * 2
+    # Set model input size
+    try:
+        model_input_size = config["experiment"]["model_input_size"]
+    except:
+        model_input_size = n_gene_tokens * 2
+    
+    # Set output file prefix
     output_file_prefix = f"{dataset_name}_{num_shards}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
     
     # Tokenize data
