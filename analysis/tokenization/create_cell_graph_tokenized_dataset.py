@@ -488,6 +488,7 @@ def main():
     prenormalize = config["tokenization"]["prenormalize"]
     processing_mode = config["tokenization"]["processing_mode"]
     custom_attr_name_dict = config["tokenization"]["custom_attr_name_dict"]
+    num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]    
     label_cats = config["tokenization"]["label_cats"]
 
@@ -612,7 +613,8 @@ def main():
                             output_file_prefix=output_file_prefix,
                             use_generator=use_generator,
                             cache_directory_path=cache_directory_path,
-                            keep_in_memory=keep_in_memory)
+                            keep_in_memory=keep_in_memory,
+                            num_shards=num_shards)
     
         end = time.time()
     
