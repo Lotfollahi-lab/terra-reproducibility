@@ -1,0 +1,20 @@
+experiment:
+  dataset_name: "sim1_1105genes_100klocs_strongincrements"
+  species: "sim"
+  n_batches: 1
+  nproc: 1
+
+wandb:
+  project: "NicheJEPA"
+  job_type: "compute_anndata_statistics"
+  save_artifact: False
+  tags: ["compute_anndata_statistics", "sim1_1105genes_100klocs_strongincrements"]
+  mode: "disabled"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
+
+analysis:
+  processing_mode: "sequential"
+  custom_attr_name_dict: {"cell_types": "cell_types",
+                          "niche_types": "niche_types"}
