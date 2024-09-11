@@ -53,20 +53,21 @@ def load_anndata(st_data_silver_folder_path: Union[Path, str],
     Raises:
     ----------
     - NotImplementedError: If simulated data with multiple batches is not implemented.
-    - NotImplementedError: If species other than 'sim' is not implemented.
+    - NotImplementedError: If species other than 'sim' and 'mus_musculus' is not implemented.
     """
+    # Load data
     if species == 'sim':
-        # Load data
         if n_batches == 1:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}.h5ad")
         else:
             raise ValueError("Simulated data with multiple batches not implemented.")
     elif species == 'mus_musculus':
-        # Load the first batch of data.
-        if n_batches == 1:
-            raise ValueError("Mouse data with one batch not implemented.")
-        else:
+        # Load one batch of data.
+        try:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
+        except:
+            file_name = os.listdir(Path(st_data_silver_folder_path) / dataset_name)[0]
+            adata = sc.read_h5ad(Path(st_data_silver_folder_path) / dataset_name / file_name)
     else:
         raise NotImplementedError(f"Species {species} not implemented.")
 
@@ -363,7 +364,7 @@ def parse_arguments() -> argparse.Namespace:
     Usage:
     ----------
     .. terminal
-        >>> python create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_shifted-log.yaml --override nproc=1
+        >>> python create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml --override nproc=1
     """
     parser = argparse.ArgumentParser(description='Process command line arguments.')
     
