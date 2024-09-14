@@ -1,0 +1,36 @@
+experiment:
+  tokenizer: "cell-graph-tokenizer"
+  dataset_name: "merfish_mouse_brain_64-batch"
+  species: "mus_musculus"
+  n_batches: 64
+  nproc: 8
+  overwrite: False
+  # model_input_size: 2244 # uncomment to manually set the model input size
+
+wandb:
+  project: "NicheJEPA"
+  job_type: "create-tokenized-dataset"
+  save_artifact: False
+  tags: ["cell-graph-tokenization", "merfish-mouse-brain-16batch", "read-depth", "shifted-log"]
+  mode: "offline"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
+  tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/tokenizer/"
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/"
+
+tokenization:
+  use_generator: True
+  add_cls_tokens: False
+  norm_method: "shifted_log"
+  norm_factor: "read_depth"
+  prenormalize: False
+  processing_mode: "parallel"
+  custom_attr_name_dict: {"cell_type": "cell_types",
+                          "tissue": "niche_types",
+                          "donor_id": "donor_id",
+                          "brain_section_label": "sample_id",
+                          "batch": "batch_id"}
+  num_shards: 64
+  keep_in_memory: False
+  label_cats: ["cell_types", "niche_types"]
