@@ -1,3 +1,6 @@
 datasets
 archive
 scgpt
+
+.ipynb_checkpoints
+analysis/data_analysis/logs
