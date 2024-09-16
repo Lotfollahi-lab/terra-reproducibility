@@ -63,11 +63,12 @@ def load_anndata(st_data_silver_folder_path: Union[Path, str],
         else:
             raise ValueError("Simulated data with multiple batches not implemented.")
     elif species == 'mus_musculus':
-        # Load the first batch of data.
-        if n_batches == 1:
-            raise ValueError("Mouse data with one batch not implemented.")
-        else:
+        # Load one batch of data.
+        try:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
+        except:
+            file_name = os.listdir(Path(st_data_silver_folder_path) / dataset_name)[0]
+            adata = sc.read_h5ad(Path(st_data_silver_folder_path) / dataset_name / file_name)
     else:
         raise NotImplementedError(f"Species {species} not implemented.")
 
