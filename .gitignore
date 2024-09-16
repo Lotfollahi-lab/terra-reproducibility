@@ -2,3 +2,4 @@ datasets
 archive
 scgpt
 wandb
+*__pycache__*
