@@ -34,6 +34,14 @@ case $DATASET_NAME in
         RAM="120G"
         TIME="12:00"
         ;;
+    merfish_mouse_brain_100k)
+        RAM="30G"
+        TIME="0:15"
+        ;;
+    merfish_mouse_brain_300k)
+        RAM="30G"
+        TIME="0:30"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
