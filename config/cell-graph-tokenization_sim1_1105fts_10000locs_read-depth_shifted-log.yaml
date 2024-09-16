@@ -20,9 +20,9 @@ paths:
   profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/profiler/" 
 
 tokenization:
-  use_generator: False
+  tokens_per_cell: 64
+  use_generator: True
   add_cls_tokens: False
-  # use_separate_cell_and_neighborhood_tokens: False
   norm_method: "shifted_log"
   norm_factor: "read_depth"
   prenormalize: False
@@ -30,5 +30,5 @@ tokenization:
   custom_attr_name_dict: {"cell_types": "cell_types",
                           "niche_types": "niche_types"}
   num_shards: 4
-  keep_in_memory: True
+  keep_in_memory: False
   label_cats: ["cell_types", "niche_types"]
