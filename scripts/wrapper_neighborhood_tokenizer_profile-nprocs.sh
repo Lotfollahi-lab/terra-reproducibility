@@ -16,6 +16,10 @@ case $DATASET_NAME in
         RAM="25G"
         TIME="0:10"
         ;;    
+    merfish_mouse_brain_2-batch)
+        RAM="5G"
+        TIME="0:05"
+        ;;
     merfish_mouse_brain_8-batch)
         RAM="25G"
         TIME="0:30"
@@ -25,8 +29,8 @@ case $DATASET_NAME in
         TIME="0:20"
         ;;
     merfish_mouse_brain_64-batch)
-        RAM="60G"
-        TIME="0:30"
+        RAM="30G"
+        TIME="1:00"
         ;;
     merfish_mouse_brain_239-batch)
         RAM="120G"
