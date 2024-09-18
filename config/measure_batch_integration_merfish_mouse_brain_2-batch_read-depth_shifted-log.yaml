@@ -1,5 +1,5 @@
 experiment:
-  tokenizer: "measure_batch_integration"
+  tokenizer: "cell-neighborhood-tokenizer"
   dataset_name: "merfish_mouse_brain_2-batch"
   species: "mus_musculus"
   n_batches: 2

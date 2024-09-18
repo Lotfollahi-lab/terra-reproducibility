@@ -2,24 +2,19 @@
 Usage:
     python reproducibility/analysis/testing/measure_batch_integration.py --config_file reproducibility/config/measure_batch_integration_merfish_mouse_brain_2-batch_read-depth_shifted-log.yaml
 """
-
-import argparse
-import yaml
-from typing import Dict
-from pathlib import Path
-from datasets import load_from_disk
-import scanpy as sc
 import os
-from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
-from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
-from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
-import anndata as ad
+import yaml
+import argparse
 import numpy as np
 import pandas as pd
-from sklearn.neighbors import NearestNeighbors
-from typing import Iterable
+import scanpy as sc
+import anndata as ad
+from pathlib import Path
 import matplotlib.pyplot as plt
-import seaborn as sns
+from typing import Tuple, Dict, Iterable
+
+from datasets import load_from_disk
+from sklearn.neighbors import NearestNeighbors
 
 
 def compute_lisi(X: np.array,
@@ -140,25 +135,12 @@ def parse_arguments() -> argparse.Namespace:
     Returns:
     ----------
     - argparse.Namespace: The command line arguments.
-    
-    Usage:
-    ----------
-    .. terminal
-        >>> python create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml --override nproc=1
     """
     parser = argparse.ArgumentParser(description='Process command line arguments.')
     
     parser.add_argument('--config_file', 
                         type=str, 
                         help='Path to the config file')
-    # parser.add_argument('--data_type',
-    #                     type=str,
-    #                     default='anndata',
-    #                     help='Type of data to process')
-    # parser.add_argument('--overwrite',
-    #                     type=str,
-    #                     default=False,
-    #                     help='Overwrite existing files')
     parser.add_argument('--override', 
                         nargs='+', 
                         help='Override parameters in the config file')
@@ -202,22 +184,50 @@ def collect_configs(args: argparse.Namespace) -> Dict:
     return config
 
 
-def load_concat_batches(data_directory: Path):
-    adata_batch_list = []
-    for file_path in data_directory.glob(f"*.h5ad"):
-        print(f"Loading {file_path}")
-        adata_batch = sc.read_h5ad(file_path)
-        print("Filtering cells.")
-        adata_batch = filter_poor_quality_cells(adata_batch)
-        adata_batch_list.append(adata_batch)
-    if len(adata_batch_list) == 1:
-        adata = adata_batch_list[0]
-    else:
-        print("Concatenating batches.")
-        adata = ad.concat(adata_batch_list, join="inner", axis=0)
+def plot_umap(adata: ad.AnnData, 
+              umap_plot_path: str, 
+              dataset_name: str, 
+              tokenizer: str,
+              avg_blisi: float,
+              stddev_blisi: float, 
+              data_file_format: str) -> None:
+    '''
+    Plot UMAP for the AnnData object.
     
-    print(adata)
+    Parameters:
+    ----------
+    - adata (ad.AnnData): The AnnData object containing the UMAP coordinates.
+    - umap_plot_path (str): The path to save the UMAP plot.
+    - dataset_name (str): The name of the dataset.
+    - tokenizer (str): The name of the tokenizer.
+    - avg_blisi (float): The average bLISI value.
+    - stddev_blisi (float): The standard deviation of bLISI values.
+    - data_file_format (str): The format of the data file.
     
+    Returns:
+    ----------
+    - None: The UMAP plot is saved to the specified path.
+    '''
+    fig, ax = plt.subplots(figsize=(5,5))
+    sc.pl.umap(adata, color=["batch"], ax=ax)
+    ax.set_title(f"UMAP: {dataset_name} | {tokenizer} | {data_file_format} \n mean bLISI: {avg_blisi:.2f} ± {stddev_blisi:.2f}")
+    plt.tight_layout()
+    plt.savefig(umap_plot_path, bbox_inches="tight")
+    plt.close()
+
+
+def compute_umap(adata: ad.AnnData) -> ad.AnnData:
+    '''
+    Compute UMAP for the AnnData object.
+    
+    Parameters:
+    ----------
+    - adata (ad.AnnData): The AnnData object containing cell-gene count matrix if `data_file_format` is AnnData and the token sequence for all cells if the `data_file_format` is Hugging Face tokenized dataset.
+    
+    Returns:
+    ----------
+    - ad.AnnData: The AnnData object containing the UMAP coordinates.
+    '''
     print("Normalizing by read depth.")
     sc.pp.normalize_total(adata, target_sum=1e4)
     print("Log-transforming.")
@@ -229,107 +239,171 @@ def load_concat_batches(data_directory: Path):
     print("Computing UMAP.")
     sc.tl.umap(adata)        
 
-    print(adata)
-    
     return adata
         
 
-def compute_umap_from_anndata(umap_path: Path,
-                              st_data_silver_folder_path: Path, 
-                              species: str, 
-                              dataset_name: str, 
-                              n_batches: int,
-                              overwrite: bool):
-    umap_file_path = umap_path / f"{dataset_name}_umap.h5ad"
-    print(f"UMAP file path: {umap_file_path}")
-    print(f"Umap File Exists: {umap_file_path.exists()} | Overwrite: {overwrite}")
-    if umap_file_path.exists() and not overwrite:
-        print(f"Loading UMAP from {umap_file_path}")
-        adata = sc.read(umap_file_path)
+def build_anndata_from_batches_of_anndata(data_directory: Path) -> ad.AnnData:
+    '''
+    Build a concatenated AnnData object from batches of AnnData objects.
+    
+    Parameters:
+    ----------
+    - data_directory (Path): The path to the directory containing the batches of AnnData objects.
+    
+    Returns:
+    ----------
+    - ad.AnnData: The AnnData object containing the concatenated batches.
+    '''
+    adata_batch_list = []
+    for file_path in data_directory.glob(f"*.h5ad"):
+        print(f"Loading {file_path}")
+        adata_batch = sc.read_h5ad(file_path)
+        adata_batch_list.append(adata_batch)
+    if len(adata_batch_list) == 1:
+        adata = adata_batch_list[0]
     else:
-        print(f"Computing UMAP for {dataset_name}.")
-        exit()
-        adata = load_concat_batches(st_data_silver_folder_path / dataset_name)
-        sc.write(umap_file_path, adata)
-        
+        print("Concatenating batches.")
+        adata = ad.concat(adata_batch_list, join="inner", axis=0)
     return adata
 
 
-def plot_umap(adata, 
-              umap_path, 
-              dataset_name, 
-              tokenizer):
-    umap_plot_path = str(umap_path / f"{dataset_name}_{tokenizer}_anndata_umap_plot.pdf")
-    print(f"Saving UMAP plot to {umap_plot_path}")
-    fig, ax = plt.subplots(figsize=(10, 10))
-    sc.pl.umap(adata, color=["batch"], ax=ax)
-    ax.set_title(f"{dataset_name}_{tokenizer} UMAP")
-    plt.tight_layout()
-    plt.savefig(umap_plot_path, bbox_inches="tight")
+def build_anndata_from_hugging_face_data(data_directory: Path) -> ad.AnnData:
+    '''
+    Build an AnnData object from the Hugging Face tokenized dataset.
     
+    Parameters:
+    ----------
+    - data_directory (Path): The path to the directory containing the Hugging Face tokenized dataset.
+    
+    Returns:
+    ----------
+    - ad.AnnData: The AnnData object containing the token sequence for all cells.
+    '''
+    file_found = 0
+    for file_path in data_directory.glob(f"*.dataset"):
+        file_found = 1
+        print(f"Loading {file_path}")
+        dataset = load_from_disk(str(file_path))
+        print("Collecting token sequence for all cells...")
+        token_sequence_per_cell = np.array(dataset['input_ids']) # this is be time-consuming
+        batches = np.array(dataset['batch_id'])
+        obs = pd.DataFrame(data={"batch": batches}, index=np.arange(batches.shape[0]))
+        print("Creating AnnData object.")
+        adata = ad.AnnData(X=token_sequence_per_cell, obs=obs)
+        if file_found:
+            break
+    if not file_found:
+        raise ValueError(f"No dataset found in {data_directory}")
+    return adata
+   
+
+def compute_batch_lisi(adata: ad.AnnData, 
+                        blisi_npy_path: Path, 
+                        overwrite: bool) -> Tuple[float, float]:
+    '''
+    Compute batch Local Inverse Simpson Index (bLISI) for each cell in the dataset.
+    
+    Parameters:
+    ----------
+    - adata (ad.AnnData): The AnnData object containing the UMAP coordinates.
+    - blisi_npy_path (Path): The path to save the bLISI numpy file.
+    - overwrite (bool): Whether to overwrite the bLISI file if it already exists.
+    
+    Returns:
+    ----------
+    - float: The average bLISI value.
+    - float: The standard deviation of bLISI values.
+    '''
+    # If bLISI file exists and overwrite is set to False, load it. Otherwise, compute bLISI.
+    if blisi_npy_path.exists() and not overwrite:
+        print(f"Loading bLISI from {blisi_npy_path}")
+        blisi_df = np.load(blisi_npy_path)
+    else:
+        print("Computing bLISI.")
+        blisi_df = compute_lisi(X=adata.obsm["X_umap"], 
+                                metadata=adata.obs,
+                                label_colnames=["batch"])
+        
+        print(f"Saving bLISI to {blisi_npy_path}")
+        np.save(blisi_npy_path, blisi_df)
+
+    # Print the average and standard deviation of bLISI
+    avg_blisi = np.mean(blisi_df)
+    stddev_blisi = np.std(blisi_df)
+    return avg_blisi, stddev_blisi
+     
 
 def main(config):
 
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
     dataset_name = config["experiment"]["dataset_name"]
-    species = config["experiment"]["species"]
-    n_batches = config["experiment"]["n_batches"]
     overwrite = config["experiment"]["overwrite"]
     data_file_format = config["batch_integration"]["data_file_format"]
+    num_shards = config['tokenization']['num_shards']
     print(f"Overwrite: {overwrite}")
     print(f"Tokenizer: {tokenizer}")
     print(f"Dataset: {dataset_name}")
     print(f"Data file format: {data_file_format}")
     
-    # Configure data paths
+    # Configure data directory paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
+    umap_path = data_directory_path / "umap" / dataset_name / tokenizer / data_file_format
+    os.makedirs(umap_path, exist_ok=True)
+    print(f"UMAP folder: {umap_path}")
     
-    if data_file_format == "anndata":
-        st_data_silver_folder_path = data_directory_path / "silver"
-        print(f"Silver data folder: {st_data_silver_folder_path}")
-        umap_path = data_directory_path / "umap" / dataset_name / "anndata"
-        os.makedirs(umap_path, exist_ok=True)
-        print(f"UMAP folder: {umap_path}")
-        
-        adata = compute_umap_from_anndata(umap_path,
-                                         st_data_silver_folder_path, 
-                                         species, 
-                                         dataset_name, 
-                                         n_batches,
-                                         overwrite)
-        
-        if config['batch_integration']['plot_umap']:
-            print("Plotting UMAP.")            
-            plot_umap(adata, umap_path, dataset_name, tokenizer)
-            
-        if config['batch_integration']['compute_blisi']:
-            print("Computing LISI.")
-            blisi_df = compute_lisi(adata.obsm["X_umap"], adata.obs, ["batch"])
-            blisi_npy_path = umap_path / f"{dataset_name}_{tokenizer}_anndata_blisi.npy"
-            print(f"Saving LISI to {blisi_npy_path}")
-            np.save(blisi_npy_path, blisi_df)
-            avg_blisi = np.mean(blisi_df)
-            stddev_blisi = np.std(blisi_df)
-            print(f"Average bLISI: {avg_blisi} | Standard Deviation: {stddev_blisi}")
-        
-    elif data_file_format == "hugging_face":
-        st_data_gold_folder_path = data_directory_path / "gold"
-        print(f"Gold data folder: {st_data_gold_folder_path}")
-        umap_path = data_directory_path / "umap" / dataset_name / "hugging_face"
-        os.makedirs(umap_path, exist_ok=True)
-        print(f"UMAP folder: {umap_path}")
+    # Configure file path for Anndata with integrated UMAP
+    umap_file_path = umap_path / f"{dataset_name}_{tokenizer}_{data_file_format}_umap.h5ad"
+    print(f"UMAP file path: {umap_file_path}")
+    print(f"Umap File Exists: {umap_file_path.exists()} | Overwrite: {overwrite}")
     
-    elif data_file_format == "pytorch":
-        st_data_gold_folder_path = data_directory_path / "gold"
-        print(f"Gold data folder: {st_data_gold_folder_path}")
-        umap_path = data_directory_path / "umap" / dataset_name / "pytorch"
-        os.makedirs(umap_path, exist_ok=True)
-        print(f"UMAP folder: {umap_path}")
-        
+    # If UMAP file exists and overwrite is set to False, load it. Otherwise, compute UMAP.
+    if umap_file_path.exists() and not overwrite:
+        print(f"Loading UMAP from {umap_file_path}")
+        adata = sc.read(umap_file_path)
     else:
-        raise ValueError("Invalid data type. Choose either 'anndata' or 'hugging_face' or 'pytorch'.")
+        if data_file_format == "anndata":
+            st_data_silver_folder_path = data_directory_path / "silver"
+            batched_data_directory = st_data_silver_folder_path / dataset_name
+            print(f"Data Directory containing AnnData Batches: {batched_data_directory}")
             
+            adata = build_anndata_from_batches_of_anndata(batched_data_directory)
+            
+        elif data_file_format == "hugging_face":
+            st_data_gold_folder_path = data_directory_path / "gold"
+            hf_data_directory = st_data_gold_folder_path / tokenizer / dataset_name / f"{num_shards}-shards"
+            print(f"Data Directory containing Hugging Face Dataset: {hf_data_directory}")
+                
+            adata = build_anndata_from_hugging_face_data(hf_data_directory)
+                                                            
+        elif data_file_format == "pytorch":
+            raise NotImplementedError("PyTorch data format is not implemented yet.")
+            # st_data_gold_folder_path = data_directory_path / "gold"
+            # print(f"Gold data folder: {st_data_gold_folder_path}")
+            
+        else:
+            raise ValueError("Invalid data type. Choose either 'anndata' or 'hugging_face' or 'pytorch'.")
+        
+        # Compute UMAP
+        print("Computing UMAP.")
+        adata = compute_umap(adata)
+        
+        # Save Anndata with integrated UMAP to disk
+        print(f"Saving UMAP to {umap_file_path}")
+        sc.write(umap_file_path, adata)
+
+    # Compute bLISI
+    blisi_npy_path = umap_path / f"{dataset_name}_{tokenizer}_{data_file_format}_blisi.npy"
+    avg_blisi, stddev_blisi = compute_batch_lisi(adata, blisi_npy_path, overwrite)
+    print(f"Average bLISI: {avg_blisi} | Standard Deviation: {stddev_blisi}")
+        
+    # Plot UMAP if specified in the config file
+    if config['batch_integration']['plot_umap']:
+        print("Plotting UMAP.")
+        umap_plot_path = str(umap_path / f"{dataset_name}_{tokenizer}_{data_file_format}_umap_plot.pdf")
+        plot_umap(adata, umap_plot_path, dataset_name, tokenizer, avg_blisi, stddev_blisi, data_file_format)
+        print(f"Saved UMAP plot to {umap_plot_path}")
+        
 
 if __name__ == '__main__':
     # Parse the arguments
