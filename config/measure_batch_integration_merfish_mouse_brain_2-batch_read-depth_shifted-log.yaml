@@ -36,6 +36,14 @@ tokenization:
   keep_in_memory: False
   label_cats: ["cell_types", "niche_types"]
 
+pytorch:
+  vocab_size: 1087
+  seq_len_cell: 411
+  seq_len_neighborhood: 809
+  has_cls: True
+  sampling_strategy: "normalized_count_rank_sampling"
+  sampling_seed: 42
+
 batch_integration:
   data_file_format: "anndata"
   plot_umap: True
