@@ -15,6 +15,7 @@ from typing import Tuple, Dict, Iterable
 
 from datasets import load_from_disk
 from sklearn.neighbors import NearestNeighbors
+from nichejepa.datasets.cell_neighborhood_dataset import CellNeighborhoodDataset
 
 
 def compute_lisi(X: np.array,
@@ -180,6 +181,8 @@ def collect_configs(args: argparse.Namespace) -> Dict:
                     config['experiment'][key] = False
                 else:
                     raise ValueError(f"Invalid value for 'overwrite': {value}")
+            if key == 'tokenizer':
+                config['experiment'][key] = str(value)
             
     return config
 
@@ -295,6 +298,80 @@ def build_anndata_from_hugging_face_data(data_directory: Path) -> ad.AnnData:
     if not file_found:
         raise ValueError(f"No dataset found in {data_directory}")
     return adata
+
+
+def build_anndata_from_sampled_pytorch_data(hf_data_directory: Path,
+                                            tokenizer: str = 'cell-neighborhood-tokenizer',
+                                            vocab_size: int = 1087,
+                                            seq_len_cell: int = 411,
+                                            seq_len_neighborhood: int = 809,
+                                            has_cls: bool = True,
+                                            sampling_strategy: str = 'normalized_count_rank_sampling',
+                                            sampling_seed: int = 42) -> ad.AnnData:
+    '''
+    Build an AnnData object from the sampled Pytorch dataset.
+    
+    Parameters:
+    ----------
+    - data_directory (Path): The path to the directory containing the sampled Pytorch dataset.
+    - tokenizer (str): The name of the tokenizer used to tokenize the dataset.
+    - vocab_size (int): The size of the vocabulary.
+    - seq_len_cell (int): The maximum sequence length for a cell.
+    - seq_len_neighborhood (int): The maximum sequence length for a neighborhood.
+    - has_cls (bool): Whether the token sequence has a CLS token.
+    - sampling_strategy (str): The name of the sampling strategy used to sample the dataset.
+    - sampling_seed (int): The seed used for sampling the dataset.
+    
+    Returns:
+    ----------
+    - ad.AnnData: The AnnData object containing the token sequence for all cells.
+    '''
+    if tokenizer == 'cell-neighborhood-tokenizer':
+        file_found = 0
+        for file_path in hf_data_directory.glob(f"*.dataset"):
+            file_found = 1
+            # Load Hugging Face tokenized dataset
+            print(f"Loading {file_path}")
+            hf_dataset = load_from_disk(str(file_path))
+            
+            # Create a Pytorch dataset from the Hugging Face dataset
+            pt_dataset = CellNeighborhoodDataset(hf_dataset,
+                                                vocab_size=vocab_size,
+                                                seq_len_cell=seq_len_cell,
+                                                seq_len_neighborhood=seq_len_neighborhood,
+                                                has_cls=has_cls,
+                                                sampling_strategy=sampling_strategy,
+                                                sampling_seed=sampling_seed)
+            # Sample the Pytorch dataset
+            print("Collecting token sequence for all cells...")
+            batches = []
+            token_sequence_per_cell = []
+            for i in range(len(hf_dataset)): # this is be time-consuming
+                # Get token for cell i
+                batch_i = hf_dataset[i]['batch_id']
+                batches.append(batch_i)
+
+                # Get sampled token sequence for cell i
+                tokens_i, *_ = pt_dataset[i]
+                token_sequence_per_cell.append(tokens_i)
+            
+            # Convert to numpy arrays
+            token_sequence_per_cell = np.array(token_sequence_per_cell)
+            batches = np.array(batches)
+            
+            # Build AnnData object
+            obs = pd.DataFrame(data={"batch": batches}, index=np.arange(batches.shape[0]))
+            print("Creating AnnData object.")
+            adata = ad.AnnData(X=token_sequence_per_cell, obs=obs)
+            if file_found:
+                break
+        if not file_found:
+            raise ValueError(f"No dataset found in {hf_data_directory}")
+        return adata
+    elif tokenizer == 'cell-graph-tokenizer':
+        raise NotImplementedError("Cell Graph Tokenizer is not implemented yet.")
+    else:
+        raise ValueError(f"Invalid tokenizer: {tokenizer}. Choose either 'cell-neighborhood-tokenizer' or 'cell-graph-tokenizer'.")
    
 
 def compute_batch_lisi(adata: ad.AnnData, 
@@ -346,6 +423,14 @@ def main(config):
     print(f"Dataset: {dataset_name}")
     print(f"Data file format: {data_file_format}")
     
+    # Configure pytorch dataset parameters
+    vocab_size = config['pytorch']['vocab_size']
+    seq_len_cell = config['pytorch']['seq_len_cell']
+    seq_len_neighborhood = config['pytorch']['seq_len_neighborhood']
+    has_cls = config['pytorch']['has_cls']
+    sampling_strategy = config['pytorch']['sampling_strategy']
+    sampling_seed = config['pytorch']['sampling_seed']
+    
     # Configure data directory paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
     umap_path = data_directory_path / "umap" / dataset_name / tokenizer / data_file_format
@@ -377,9 +462,18 @@ def main(config):
             adata = build_anndata_from_hugging_face_data(hf_data_directory)
                                                             
         elif data_file_format == "pytorch":
-            raise NotImplementedError("PyTorch data format is not implemented yet.")
-            # st_data_gold_folder_path = data_directory_path / "gold"
-            # print(f"Gold data folder: {st_data_gold_folder_path}")
+            st_data_gold_folder_path = data_directory_path / "gold"
+            hf_data_directory = st_data_gold_folder_path / tokenizer / dataset_name / f"{num_shards}-shards"
+            print(f"Data Directory containing Hugging Face Dataset: {hf_data_directory}")
+            
+            adata = build_anndata_from_sampled_pytorch_data(hf_data_directory=hf_data_directory, 
+                                                            tokenizer=tokenizer,
+                                                            vocab_size=vocab_size,
+                                                            seq_len_cell=seq_len_cell,
+                                                            seq_len_neighborhood=seq_len_neighborhood,
+                                                            has_cls=has_cls,
+                                                            sampling_strategy=sampling_strategy,
+                                                            sampling_seed=sampling_seed)
             
         else:
             raise ValueError("Invalid data type. Choose either 'anndata' or 'hugging_face' or 'pytorch'.")
