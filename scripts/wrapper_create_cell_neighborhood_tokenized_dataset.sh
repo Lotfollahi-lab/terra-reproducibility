@@ -3,38 +3,63 @@
 GROUP="team361"
 SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
 
-DATASET_NAME=$1
-TOKENIZER_NAME=$2 # choose between "neighborhood" and "graph"
-CORES=$3
+DATASET_NAME="${1:-sim1_1105fts_10000locs}"
+TOKENIZER_NAME="neighborhood"
 
 case $DATASET_NAME in
     sim1_1105fts_10000locs)
         RAM="2G"
         TIME="0:05"
+        CORES=1
+        QUEUE="normal"
         ;;
     sim1_1105genes_100klocs_strongincrements)
         RAM="25G"
         TIME="0:10"
-        ;;    
+        CORES=4
+        QUEUE="normal"
+        ;;
     merfish_mouse_brain_2-batch)
         RAM="5G"
         TIME="0:05"
+        CORES=2
+        QUEUE="normal"
         ;;
     merfish_mouse_brain_8-batch)
         RAM="25G"
-        TIME="0:30"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
         ;;
     merfish_mouse_brain_16-batch)
-        RAM="45G"
-        TIME="0:20"
+        RAM="30G"
+        TIME="0:30"
+        CORES=4
+        QUEUE="parallel"
         ;;
     merfish_mouse_brain_64-batch)
-        RAM="30G"
+        RAM="60G"
         TIME="1:00"
+        CORES=8
+        QUEUE="parallel"
         ;;
     merfish_mouse_brain_239-batch)
         RAM="120G"
         TIME="12:00"
+        CORES=16
+        QUEUE="long"
+        ;;
+    merfish_mouse_brain_100k)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    merfish_mouse_brain_300k)
+        RAM="45G"
+        TIME="0:45"
+        CORES=4
+        QUEUE="parallel"
         ;;
     *)
         echo "Invalid dataset name"
@@ -43,7 +68,8 @@ case $DATASET_NAME in
 esac
 
 # If not provided, use the default value
-QUEUE="${4:-parallel}"
+CORES="${2:-$CORES}"
+QUEUE="${3:-$QUEUE}"
 
 CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
 mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
