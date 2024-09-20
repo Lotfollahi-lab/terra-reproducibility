@@ -33,17 +33,20 @@ from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_qualit
 
 
 def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, str], 
+                                        tokenizer_folder_path: Union[Path, str],
                                         dataset_name: str, 
-                                        n_gene_panels: int = 1) -> Tuple[List[sc.AnnData], Dict, Dict, Dict, List]:
+                                        n_gene_panels: int = 1,
+                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], Dict, Dict, Dict, List]:
     """
     Map batches of AnnData objects to unique gene panels.
 
     Parameters
     ----------
     - st_data_silver_folder_path (Union[Path, str]): The path to the ST data silver folder.
+    - tokenizer_folder_path (Union[Path, str]): The path to the tokenizer folder.
     - dataset_name (str): The name of the dataset.
-    - species (str): The species of the dataset.
     - n_gene_panels (int): The number of unique gene panels in the dataset.
+    - overwrite (Literal[True,False]): Whether to overwrite the gene panel mappings.
 
     Returns:
     ----------
@@ -56,14 +59,15 @@ def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, s
     data_dir = Path(st_data_silver_folder_path) / dataset_name
     file_paths = list(data_dir.glob(f"**/*.h5ad"))
     if len(file_paths) == 0:
-        raise FileNotFoundError(f"No .h5ad files found in {data_dir.to_string()}")
+        raise FileNotFoundError(f"No .h5ad files found in {data_dir}")
 
-    adata_batch_list = []        
+    adata_batch_list = []
+    gene_panel_to_gene_panel_ID_dict = {}
 
     # Map gene panels to gene panel IDs and file paths
     if n_gene_panels == 1:
         # Load first batch of data
-        print(f"Loading data from {file_paths[0].to_string()}")
+        print(f"Loading data from {file_paths[0]}")
         adata = sc.read_h5ad(file_paths[0])
         adata_batch_list.append(adata)
         
@@ -73,11 +77,11 @@ def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, s
         
         # Map gene panel to gene panel ID
         unique_gene_panels_list = [gene_panel]
-        gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
-        gene_panel_to_gene_panel_ID_dict = {gene_panel: 0}
+        # gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
+        # gene_panel_to_gene_panel_ID_dict = {list(gene_panel): 0}
         
         # Map gene panel ID to file path
-        gene_panel_ID_to_file_path_dict = {0: file_paths}        
+        # gene_panel_ID_to_file_path_dict = {0: file_paths}
         
     elif n_gene_panels > 1:
         # Initialize gene panel ID and mappings
@@ -90,7 +94,7 @@ def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, s
         # Iterate over each batch of data
         for file_path in file_paths:
             # Load each batch of data
-            print(f"Loading data from {file_path.to_string()}")
+            print(f"Loading data from {file_path}")
             adata = sc.read_h5ad(file_path)
             adata_batch_list.append(adata)
             
@@ -103,21 +107,36 @@ def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, s
             # Set gene panel ID to file path mapping
             if gene_panel not in unique_gene_panels_list:
                 unique_gene_panels_list.append(gene_panel)
-                gene_panel_ID_to_gene_panel_dict[unique_gene_panel_count] = gene_panel
-                gene_panel_to_gene_panel_ID_dict[gene_panel] = unique_gene_panel_count
-                gene_panel_ID_to_file_path_dict[unique_gene_panel_count] = [file_path]
+                # gene_panel_ID_to_gene_panel_dict[unique_gene_panel_count] = gene_panel
+                # gene_panel_to_gene_panel_ID_dict[gene_panel] = unique_gene_panel_count
+                # gene_panel_ID_to_file_path_dict[unique_gene_panel_count] = [file_path]
                 unique_gene_panel_count += 1
             # If gene panel is not unique, assign the same ID to it
             # Append gene panel to gene panel ID mapping
             # Append file path to gene panel ID mapping
             else:
-                gene_panel_ID = gene_panel_to_gene_panel_ID_dict[gene_panel]
-                gene_panel_ID_to_file_path_dict[gene_panel_ID].append(file_path)
+                continue
+                # gene_panel_ID = gene_panel_to_gene_panel_ID_dict[gene_panel]
+                # gene_panel_ID_to_file_path_dict[gene_panel_ID].append(file_path)
         
     else:
         raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
 
-    gene_list = List(set().union(*unique_gene_panels_list))
+    gene_list = list(set().union(*unique_gene_panels_list))
+    
+    gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
+    gene_panel_to_gene_panel_ID_dict_file = tokenizer_folder_path / "gene_panel_to_gene_panel_ID_dict.pkl"
+    gene_panel_ID_to_file_path_dict_file = tokenizer_folder_path / "gene_panel_ID_to_file_path_dict.pkl"
+    gene_list_file = tokenizer_folder_path / "gene_list.pkl"
+    
+    # with open(gene_panel_ID_to_gene_panel_dict_file, "wb") as file:
+    #     pickle.dump(gene_panel_ID_to_gene_panel_dict, file)
+    # with open(gene_panel_to_gene_panel_ID_dict_file, "wb") as file:
+    #     pickle.dump(gene_panel_to_gene_panel_ID_dict, file)
+    # with open(gene_panel_ID_to_file_path_dict_file, "wb") as file:
+    #     pickle.dump(gene_panel_ID_to_file_path_dict, file)
+    # with open(gene_list_file, "wb") as file:
+    #     pickle.dump(gene_list, file)
     
     return adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list
 
@@ -539,9 +558,10 @@ def main():
     # Load data
     adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list \
         = map_anndata_batches_to_gene_panels(st_data_silver_folder_path, 
+                                                tokenizer_folder_path,
                                                 dataset_name, 
-                                                n_batches,
-                                                n_gene_panels)
+                                                n_gene_panels,
+                                                overwrite)
 
     # Create token dictionary
     base_token_dict = create_base_token_dictionary(token_dictionary_file, 
