@@ -55,14 +55,20 @@ def load_anndata(st_data_silver_folder_path: Union[Path, str],
     - NotImplementedError: If simulated data with multiple batches is not implemented.
     - NotImplementedError: If species other than 'sim' and 'mus_musculus' is not implemented.
     """
-    # Load data
+    # Load one batch of data
     if species == 'sim':
         if n_batches == 1:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}.h5ad")
         else:
             raise ValueError("Simulated data with multiple batches not implemented.")
+    elif species == 'homo_sapiens':
+        data_directory = Path(f"{st_data_silver_folder_path}/{dataset_name}/")
+        for file_path in data_directory.glob(f"q**/*.h5ad"):
+            file_found = 1
+            adata = sc.read_h5ad(file_path)
+            if file_found:
+                break
     elif species == 'mus_musculus':
-        # Load one batch of data.
         try:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
         except:
@@ -74,17 +80,15 @@ def load_anndata(st_data_silver_folder_path: Union[Path, str],
     return adata
 
 
-def create_base_token_dictionary(tokenizer_directory_path: str,
-                            token_dictionary_file: str, 
-                            adata: Dict,
-                            species: str,
-                            overwrite: Literal[True, False] = True) -> Dict:
+def create_base_token_dictionary(token_dictionary_file: str, 
+                                    adata: Dict,
+                                    species: str,
+                                    overwrite: Literal[True, False] = True) -> Dict:
     """
     Create a base token dictionary for gene IDs and save it to a file.
 
     Parameters:
     ----------
-    - tokenizer_directory_path (str): The path to the tokenizer directory. (Used for loading geneformer token dictionary)
     - token_dictionary_file (str): The file path to save the token dictionary.
     - adata (Dict): The dictionary containing the gene IDs.
     - species (str): The species of the dataset.
@@ -103,13 +107,15 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
         with open(token_dictionary_file, "rb") as f:
             base_token_dict = pickle.load(f)
     else:        
+        print(f"Species: {species}")
         if species == 'sim':
             # Extract Ensembl IDs of genes
             gene_ids = adata.var["ensembl_id"]
             
-            # Create token dictionary for simulated data
-            base_token_dict = {'<pad>': 0, '<mask>': 1}
-            base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
+        elif species == 'homo_sapiens':
+            # Extract Ensembl IDs of genes
+            gene_ids = adata.var["ensembl_id"]
+
         elif species == 'mus_musculus':
             # Extract Ensembl IDs of protein coding and miRNA mouse genes
             ensembl = EnsemblRelease(111, species=species)
@@ -121,12 +127,14 @@ def create_base_token_dictionary(tokenizer_directory_path: str,
             all_relevant_genes = protein_coding_genes + mirna_genes
             gene_ids = [gene.gene_id for gene in all_relevant_genes]
             
-            # Create token dictionary for mouse
-            base_token_dict = {'<pad>': 0, '<mask>': 1}
-            base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
         else:
             raise NotImplementedError(f"Species {species} not implemented.")
 
+        # Create token dictionary for gene IDs
+        base_token_dict = {'<pad>': 0, '<mask>': 1}
+        base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
+            
+        # Write to disk
         with open(token_dictionary_file, "wb") as f:
             pickle.dump(base_token_dict, f)
         
@@ -462,7 +470,6 @@ def main():
     custom_attr_name_dict = config["tokenization"]["custom_attr_name_dict"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
-    label_cats = config["tokenization"]["label_cats"]
 
     # Configure tokenizer paths
     tokenizer_directory_path = Path(config["paths"]["tokenizer_directory_path"])
@@ -484,13 +491,24 @@ def main():
     neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
     
     # Load data
-    adata = load_anndata(st_data_silver_folder_path, dataset_name, species, n_batches)
+    adata = load_anndata(st_data_silver_folder_path, 
+                         dataset_name, 
+                         species, 
+                         n_batches)
 
     # Create token dictionary
-    base_token_dict = create_base_token_dictionary(tokenizer_directory_path, token_dictionary_file, adata, species, overwrite)
+    base_token_dict = create_base_token_dictionary(token_dictionary_file, 
+                                                   adata, 
+                                                   species, 
+                                                   overwrite)
     
     # Create nichejepa token dictionary
-    _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, adata, base_token_dict, add_cls_tokens, use_separate_cell_and_neighborhood_tokens, overwrite)
+    _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, 
+                                                         adata, 
+                                                         base_token_dict, 
+                                                         add_cls_tokens, 
+                                                         use_separate_cell_and_neighborhood_tokens, 
+                                                         overwrite)
 
     if prenormalize:
         # Normalize gene counts
@@ -549,6 +567,7 @@ def main():
         model_input_size = config["experiment"]["model_input_size"]
     except:
         model_input_size = n_gene_tokens * 2
+    print(f"Model Input Size: {model_input_size}")
     
     # Set output file prefix
     output_file_prefix = f"{dataset_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
