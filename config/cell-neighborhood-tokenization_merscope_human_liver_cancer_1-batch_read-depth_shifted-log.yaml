@@ -1,8 +1,8 @@
 experiment:
   tokenizer: "cell-neighborhood-tokenizer"
-  dataset_name: "merscope_human_liver_2-batch"
+  dataset_name: "merscope_human_liver_cancer_1-batch"
   species: "homo_sapiens"
-  n_batches: 2
+  n_batches: 1
   nproc: 2
   overwrite: False
   # model_input_size: 2244 # uncomment to manually set the model input size
@@ -11,7 +11,7 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["cell-neighborhood-tokenization", "merscope_human_liver_2-batch", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "merscope_human_liver_cancer_1-batch", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:

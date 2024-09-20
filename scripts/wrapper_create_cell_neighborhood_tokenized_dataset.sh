@@ -61,6 +61,12 @@ case $DATASET_NAME in
         CORES=4
         QUEUE="parallel"
         ;;
+    merscope_human_liver_cancer_1-batch)
+        RAM="25G"
+        TIME="0:45"
+        CORES=2
+        QUEUE="parallel"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
@@ -82,7 +88,9 @@ JOB_NAME="${DATASET_NAME}_cell_${TOKENIZER_NAME}_tokenization_${CORES}"
 echo "Tokenizing ${DATASET_NAME} with Cell ${TOKENIZER_NAME} Rank using ${CORES} cores..."
 
 bsub \
-    -G "${GROUP}" -q "${QUEUE}" -n "${CORES}" \
+    -G "${GROUP}" \
+    -n "${CORES}" \
+    -q "${QUEUE}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
     -W "${TIME}" \
     -cwd "${CWD}" \
