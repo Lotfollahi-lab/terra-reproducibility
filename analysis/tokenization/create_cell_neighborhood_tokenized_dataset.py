@@ -22,7 +22,7 @@ import argparse
 import numpy as np
 import scanpy as sc
 from pathlib import Path
-from typing import List, Dict, Union, Literal, Optional
+from typing import Tuple, List, Dict, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
 
@@ -32,56 +32,98 @@ from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_dept
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
 
-def load_anndata(st_data_silver_folder_path: Union[Path, str], 
-                            dataset_name: str, 
-                            species: str,
-                            n_batches: int) -> sc.AnnData:
+def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, str], 
+                                        dataset_name: str, 
+                                        n_gene_panels: int = 1) -> Tuple[List[sc.AnnData], Dict, Dict, Dict, List]:
     """
-    Load preprocessed data stored in an AnnData object.
+    Map batches of AnnData objects to unique gene panels.
 
     Parameters
     ----------
     - st_data_silver_folder_path (Union[Path, str]): The path to the ST data silver folder.
     - dataset_name (str): The name of the dataset.
     - species (str): The species of the dataset.
-    - n_batches (int): The number of batches.
+    - n_gene_panels (int): The number of unique gene panels in the dataset.
 
     Returns:
     ----------
-    - sc.AnnData: The AnnData object.
-
-    Raises:
-    ----------
-    - NotImplementedError: If simulated data with multiple batches is not implemented.
-    - NotImplementedError: If species other than 'sim' and 'mus_musculus' is not implemented.
+    - List[sc.AnnData]: A list of AnnData objects.
+    - Dict: A dictionary mapping gene panel IDs to gene panels.
+    - Dict: A dictionary mapping gene panels to gene panel IDs.
+    - Dict: A dictionary mapping gene panel IDs to file paths.
+    - List: A list of all unique gene IDs across batches.
     """
-    # Load one batch of data
-    if species == 'sim':
-        if n_batches == 1:
-            adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}.h5ad")
-        else:
-            raise ValueError("Simulated data with multiple batches not implemented.")
-    elif species == 'homo_sapiens':
-        data_directory = Path(f"{st_data_silver_folder_path}/{dataset_name}/")
-        for file_path in data_directory.glob(f"q**/*.h5ad"):
-            file_found = 1
+    data_dir = Path(st_data_silver_folder_path) / dataset_name
+    file_paths = list(data_dir.glob(f"**/*.h5ad"))
+    if len(file_paths) == 0:
+        raise FileNotFoundError(f"No .h5ad files found in {data_dir.to_string()}")
+
+    adata_batch_list = []        
+
+    # Map gene panels to gene panel IDs and file paths
+    if n_gene_panels == 1:
+        # Load first batch of data
+        print(f"Loading data from {file_paths[0].to_string()}")
+        adata = sc.read_h5ad(file_paths[0])
+        adata_batch_list.append(adata)
+        
+        # Create a set of gene IDs
+        gene_ids = adata.var["ensembl_id"]
+        gene_panel = set(gene_ids.values.tolist())
+        
+        # Map gene panel to gene panel ID
+        unique_gene_panels_list = [gene_panel]
+        gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
+        gene_panel_to_gene_panel_ID_dict = {gene_panel: 0}
+        
+        # Map gene panel ID to file path
+        gene_panel_ID_to_file_path_dict = {0: file_paths}        
+        
+    elif n_gene_panels > 1:
+        # Initialize gene panel ID and mappings
+        unique_gene_panel_count = 0
+        gene_panel_ID_to_gene_panel_dict = {}
+        gene_panel_to_gene_panel_ID_dict = {}
+        gene_panel_ID_to_file_path_dict = {}
+        unique_gene_panels_list = []
+
+        # Iterate over each batch of data
+        for file_path in file_paths:
+            # Load each batch of data
+            print(f"Loading data from {file_path.to_string()}")
             adata = sc.read_h5ad(file_path)
-            if file_found:
-                break
-    elif species == 'mus_musculus':
-        try:
-            adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
-        except:
-            file_name = os.listdir(Path(st_data_silver_folder_path) / dataset_name)[0]
-            adata = sc.read_h5ad(Path(st_data_silver_folder_path) / dataset_name / file_name)
+            adata_batch_list.append(adata)
+            
+            # Create a set of gene IDs for each batch
+            gene_ids = adata.var["ensembl_id"]
+            gene_panel = set(gene_ids.values.tolist())
+            
+            # If gene panel is unique, assign a unique ID to it
+            # Set gene panel ID to gene panel mapping
+            # Set gene panel ID to file path mapping
+            if gene_panel not in unique_gene_panels_list:
+                unique_gene_panels_list.append(gene_panel)
+                gene_panel_ID_to_gene_panel_dict[unique_gene_panel_count] = gene_panel
+                gene_panel_to_gene_panel_ID_dict[gene_panel] = unique_gene_panel_count
+                gene_panel_ID_to_file_path_dict[unique_gene_panel_count] = [file_path]
+                unique_gene_panel_count += 1
+            # If gene panel is not unique, assign the same ID to it
+            # Append gene panel to gene panel ID mapping
+            # Append file path to gene panel ID mapping
+            else:
+                gene_panel_ID = gene_panel_to_gene_panel_ID_dict[gene_panel]
+                gene_panel_ID_to_file_path_dict[gene_panel_ID].append(file_path)
+        
     else:
-        raise NotImplementedError(f"Species {species} not implemented.")
+        raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
 
-    return adata
+    gene_list = List(set().union(*unique_gene_panels_list))
+    
+    return adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list
 
 
-def create_base_token_dictionary(token_dictionary_file: str, 
-                                    adata: Dict,
+def create_base_token_dictionary(token_dictionary_file: str,
+                                    gene_list: List[str],
                                     species: str,
                                     overwrite: Literal[True, False] = True) -> Dict:
     """
@@ -90,7 +132,7 @@ def create_base_token_dictionary(token_dictionary_file: str,
     Parameters:
     ----------
     - token_dictionary_file (str): The file path to save the token dictionary.
-    - adata (Dict): The dictionary containing the gene IDs.
+    - gene_list (List[str]): The list of gene IDs.
     - species (str): The species of the dataset.
     - overwrite (bool): Whether to overwrite the base token dictionary file.
     
@@ -100,7 +142,7 @@ def create_base_token_dictionary(token_dictionary_file: str,
     
     Raises:
     ----------
-    - NotImplementedError: If species other than 'sim' or 'mus_musculus' is not implemented.
+    - NotImplementedError: If species other than 'sim', 'homo_sapiens', or 'mus_musculus' is not implemented.
     """
     # Load base token dictionary if it exists, else create it
     if os.path.exists(token_dictionary_file) and not overwrite:
@@ -110,11 +152,11 @@ def create_base_token_dictionary(token_dictionary_file: str,
         print(f"Species: {species}")
         if species == 'sim':
             # Extract Ensembl IDs of genes
-            gene_ids = adata.var["ensembl_id"]
+            gene_list = gene_list
             
         elif species == 'homo_sapiens':
             # Extract Ensembl IDs of genes
-            gene_ids = adata.var["ensembl_id"]
+            gene_list = gene_list
 
         elif species == 'mus_musculus':
             # Extract Ensembl IDs of protein coding and miRNA mouse genes
@@ -125,14 +167,14 @@ def create_base_token_dictionary(token_dictionary_file: str,
             protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
             mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
             all_relevant_genes = protein_coding_genes + mirna_genes
-            gene_ids = [gene.gene_id for gene in all_relevant_genes]
+            gene_list = [gene.gene_id for gene in all_relevant_genes]
             
         else:
             raise NotImplementedError(f"Species {species} not implemented.")
 
         # Create token dictionary for gene IDs
         base_token_dict = {'<pad>': 0, '<mask>': 1}
-        base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_ids)})
+        base_token_dict.update({gene_id: idx + 2 for idx, gene_id in enumerate(gene_list)})
             
         # Write to disk
         with open(token_dictionary_file, "wb") as f:
@@ -142,7 +184,7 @@ def create_base_token_dictionary(token_dictionary_file: str,
 
 
 def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
-                                      adata: sc.AnnData, 
+                                      gene_list: List[str], 
                                       token_dict: Dict, 
                                       add_cls_tokens: Literal[True, False] = False,
                                       use_separate_cell_and_neighborhood_tokens: Literal[True, False] = False,
@@ -153,7 +195,7 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
     Parameters:
     ----------
     - nichejepa_token_dictionary_file (str): The file path to save the token dictionary.
-    - adata (sc.AnnData): The AnnData object containing the dataset.
+    - gene_list (List[str]): The list of gene IDs.
     - token_dict (Dict): The initial token dictionary.
     - add_cls_tokens (bool): Whether to add cls tokens.
     - use_separate_cell_and_neighborhood_tokens (bool): Whether to separate cell and neighborhood tokens.
@@ -181,7 +223,6 @@ def create_nichejepa_token_dictionary(nichejepa_token_dictionary_file: str,
                 token_dict = insert_at_index(token_dict, 3, "<cls_neighborhood>", 3)
 
         # Remove genes not in dataset
-        gene_list = adata.var["ensembl_id"].tolist()
         token_dict_copy = token_dict.copy()
         for token in token_dict_copy.keys():
             if "ENS" in token and token not in gene_list:
@@ -443,6 +484,11 @@ def main():
     print(f"Tokenizer: {tokenizer}")
     print(f"Dataset: {dataset_name}")
     
+    try:
+        n_gene_panels = config["experiment"]["n_gene_panels"]
+    except:
+        n_gene_panels = 1
+    
     # Configure data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
     st_data_silver_folder_path = data_directory_path / "silver"
@@ -491,20 +537,21 @@ def main():
     neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
     
     # Load data
-    adata = load_anndata(st_data_silver_folder_path, 
-                         dataset_name, 
-                         species, 
-                         n_batches)
+    adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list \
+        = map_anndata_batches_to_gene_panels(st_data_silver_folder_path, 
+                                                dataset_name, 
+                                                n_batches,
+                                                n_gene_panels)
 
     # Create token dictionary
     base_token_dict = create_base_token_dictionary(token_dictionary_file, 
-                                                   adata, 
+                                                   gene_list, 
                                                    species, 
                                                    overwrite)
     
     # Create nichejepa token dictionary
     _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, 
-                                                         adata, 
+                                                         gene_list, 
                                                          base_token_dict, 
                                                          add_cls_tokens, 
                                                          use_separate_cell_and_neighborhood_tokens, 
