@@ -2,8 +2,8 @@ experiment:
   tokenizer: "cell-neighborhood-tokenizer"
   dataset_name: "merfish_mouse_brain_8-batch_2-gene-panels"
   species: "mus_musculus"
-  n_batches: 8
-  nproc: 2
+  n_batches: 16
+  nproc: 4
   n_gene_panels: 2
   overwrite: False
   # model_input_size: 2244 # uncomment to manually set the model input size

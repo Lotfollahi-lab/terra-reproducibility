@@ -9,31 +9,26 @@ import anndata as ad
 
 def create_dataset_with_multiple_gene_panels(input_directory, 
                                                 output_directory,
-                                                n_gene_panels,
-                                                gene_panel_list,
-                                                seed=42):
+                                                gene_panel_list):
     file_paths = list(input_directory.glob(f"**/*.h5ad"))
-    gene_panel_idx = np.random.randint(0, n_gene_panels, size=len(file_paths))
     
-    for file_path, panel_idx in zip(file_paths, gene_panel_idx):
+    for file_path in file_paths:
         print(f"Loading data from {file_path}")
         adata = sc.read_h5ad(file_path)
         print(f"Old adata shape: {adata.shape}")
         
         # Subset the adata object to include only the genes in the gene_panel
-        gene_panel = gene_panel_list[panel_idx]
-        new_adata = adata[:, adata.var['ensembl_id'].isin(gene_panel)].copy()
-        print(f"New adata shape: {new_adata.shape}")
+        for panel_idx, gene_panel in enumerate(gene_panel_list):
+            new_adata = adata[:, adata.var['ensembl_id'].isin(gene_panel)].copy()
+            print(f"Panel ID: {panel_idx} | New adata shape: {new_adata.shape}")
          
-        # Write new_adata to output_directory with same file name
-        output_file_path = output_directory / file_path.name
-        new_adata.write(output_file_path)
-        print(f"Writing to {output_file_path}")
+            # Write new_adata to output_directory with same file name
+            new_file_name = f"{file_path.stem}_panel_{panel_idx}{file_path.suffix}"
+            output_file_path = output_directory / new_file_name
+            new_adata.write(output_file_path)
+            print(f"Writing to {output_file_path}")
         print()
     
-    print(adata.var_names[:20])
-    print(gene_panel[:20])
-
 
 def create_gene_panels(gene_list, 
                        n_gene_panels=2,
@@ -83,8 +78,8 @@ def create_gene_panels(gene_list,
 
 
 def get_gene_list(data_dir):
+    print("Getting gene list from the first file in the directory")
     file_paths = list(data_dir.glob(f"**/*.h5ad"))
-    print(f"Loading data from {file_paths[0]}")
     adata = sc.read_h5ad(file_paths[0])    
     gene_list = adata.var["ensembl_id"].values.tolist()
     return gene_list
@@ -115,9 +110,7 @@ def main():
 
     create_dataset_with_multiple_gene_panels(input_directory, 
                                                 output_directory,
-                                                n_gene_panels,
-                                                gene_panel_list,
-                                                seed)
+                                                gene_panel_list)
 
 if __name__ == '__main__':
     
