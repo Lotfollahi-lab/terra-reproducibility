@@ -21,6 +21,7 @@ import cProfile
 import argparse
 import numpy as np
 import scanpy as sc
+import anndata as ad
 from pathlib import Path
 from typing import Tuple, List, Dict, Union, Literal, Optional
 
@@ -32,113 +33,127 @@ from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_dept
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
 
-def map_anndata_batches_to_gene_panels(st_data_silver_folder_path: Union[Path, str], 
-                                        tokenizer_folder_path: Union[Path, str],
-                                        dataset_name: str, 
+def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str], 
+                                        gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
+                                        file_path_to_gene_panel_ID_dict_file: Union[Path, str],
+                                        gene_list_file: Union[Path, str],
                                         n_gene_panels: int = 1,
-                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], Dict, Dict, Dict, List]:
+                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], List, Dict, Dict]:
     """
-    Map batches of AnnData objects to unique gene panels.
+    Create gene panel mappings for each batch of data and load the data into AnnData objects.
 
     Parameters
     ----------
-    - st_data_silver_folder_path (Union[Path, str]): The path to the ST data silver folder.
-    - tokenizer_folder_path (Union[Path, str]): The path to the tokenizer folder.
-    - dataset_name (str): The name of the dataset.
+    - input_directory (Union[Path, str]): The path to the input directory.
+    - gene_panel_ID_to_gene_panel_dict_file (Union[Path, str]): The file path to save the gene panel ID to gene panel dictionary.
+    - file_path_to_gene_panel_ID_dict_file (Union[Path, str]): The file path to save the file path to gene panel ID dictionary.
+    - gene_list_file (Union[Path, str]): The file path to save the gene list.
     - n_gene_panels (int): The number of unique gene panels in the dataset.
     - overwrite (Literal[True,False]): Whether to overwrite the gene panel mappings.
 
     Returns:
     ----------
     - List[sc.AnnData]: A list of AnnData objects.
-    - Dict: A dictionary mapping gene panel IDs to gene panels.
-    - Dict: A dictionary mapping gene panels to gene panel IDs.
-    - Dict: A dictionary mapping gene panel IDs to file paths.
     - List: A list of all unique gene IDs across batches.
+    - Dict: A dictionary mapping gene panel IDs to gene panels.
+    - Dict: A dictionary mapping file paths to gene panel IDs.
     """
-    data_dir = Path(st_data_silver_folder_path) / dataset_name
-    file_paths = list(data_dir.glob(f"**/*.h5ad"))
+    file_paths = list(input_directory.glob(f"**/*.h5ad"))
     if len(file_paths) == 0:
-        raise FileNotFoundError(f"No .h5ad files found in {data_dir}")
-
+        raise FileNotFoundError(f"No .h5ad files found in {input_directory}")
+    
     adata_batch_list = []
-    gene_panel_to_gene_panel_ID_dict = {}
 
-    # Map gene panels to gene panel IDs and file paths
-    if n_gene_panels == 1:
-        # Load first batch of data
-        print(f"Loading data from {file_paths[0]}")
-        adata = sc.read_h5ad(file_paths[0])
-        adata_batch_list.append(adata)
-        
-        # Create a set of gene IDs
-        gene_ids = adata.var["ensembl_id"]
-        gene_panel = set(gene_ids.values.tolist())
-        
-        # Map gene panel to gene panel ID
-        unique_gene_panels_list = [gene_panel]
-        # gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
-        # gene_panel_to_gene_panel_ID_dict = {list(gene_panel): 0}
-        
-        # Map gene panel ID to file path
-        # gene_panel_ID_to_file_path_dict = {0: file_paths}
-        
-    elif n_gene_panels > 1:
-        # Initialize gene panel ID and mappings
-        unique_gene_panel_count = 0
-        gene_panel_ID_to_gene_panel_dict = {}
-        gene_panel_to_gene_panel_ID_dict = {}
-        gene_panel_ID_to_file_path_dict = {}
-        unique_gene_panels_list = []
+    # If gene panel ID mappings exist and overwrite is False, load them from disk
+    if os.path.exists(gene_list_file) and \
+            os.path.exists(gene_panel_ID_to_gene_panel_dict_file) and \
+            os.path.exists(file_path_to_gene_panel_ID_dict_file) \
+            and not overwrite:
+        with open(gene_list_file, "rb") as file:
+            gene_list = pickle.load(file)
+        with open(gene_panel_ID_to_gene_panel_dict_file, "rb") as file:
+            gene_panel_ID_to_gene_panel_dict = pickle.load(file)
+        with open(file_path_to_gene_panel_ID_dict_file, "rb") as file:
+            file_path_to_gene_panel_ID_dict = pickle.load(file)
 
-        # Iterate over each batch of data
         for file_path in file_paths:
-            # Load each batch of data
             print(f"Loading data from {file_path}")
             adata = sc.read_h5ad(file_path)
             adata_batch_list.append(adata)
-            
-            # Create a set of gene IDs for each batch
-            gene_ids = adata.var["ensembl_id"]
-            gene_panel = set(gene_ids.values.tolist())
-            
-            # If gene panel is unique, assign a unique ID to it
-            # Set gene panel ID to gene panel mapping
-            # Set gene panel ID to file path mapping
-            if gene_panel not in unique_gene_panels_list:
-                unique_gene_panels_list.append(gene_panel)
-                # gene_panel_ID_to_gene_panel_dict[unique_gene_panel_count] = gene_panel
-                # gene_panel_to_gene_panel_ID_dict[gene_panel] = unique_gene_panel_count
-                # gene_panel_ID_to_file_path_dict[unique_gene_panel_count] = [file_path]
-                unique_gene_panel_count += 1
-            # If gene panel is not unique, assign the same ID to it
-            # Append gene panel to gene panel ID mapping
-            # Append file path to gene panel ID mapping
-            else:
-                continue
-                # gene_panel_ID = gene_panel_to_gene_panel_ID_dict[gene_panel]
-                # gene_panel_ID_to_file_path_dict[gene_panel_ID].append(file_path)
         
-    else:
-        raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
+    # If gene panel ID mappings do not exist or overwrite is True, create them
+    else:   
+        # Map gene panels to gene panel IDs and file paths
+        if n_gene_panels == 1:
+            # Load first batch of data
+            print(f"Loading data from {file_paths[0]}")
+            adata = sc.read_h5ad(file_paths[0])
+            adata_batch_list.append(adata)
+            
+            # Extract gene ensembl IDs and create a gene panel
+            gene_ids = adata.var["ensembl_id"]
+            gene_list = gene_ids.values.tolist()
+            gene_panel = set(gene_list)
+            
+            # Map gene panel ID to gene panel and file paths
+            gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
+            file_path_to_gene_panel_ID_dict = {str(file_paths[0]): 0}
+            
+            # Load remaining batches of data
+            for file_path in file_paths[1:]:
+                print(f"Loading data from {file_path}")
+                adata = sc.read_h5ad(file_path)
+                adata_batch_list.append(adata)
+                file_path_to_gene_panel_ID_dict[str(file_path)] = 0
+            
+        elif n_gene_panels > 1:
+            # Initialize gene panel ID and mappings
+            unique_gene_panels_count = 0
+            unique_gene_panels_list = []
+            gene_panel_ID_to_gene_panel_dict = {}
+            file_path_to_gene_panel_ID_dict = {}
 
-    gene_list = list(set().union(*unique_gene_panels_list))
+            # Iterate over each batch of data
+            for file_path in file_paths:
+                # Load each batch of data
+                print(f"Loading data from {file_path}")
+                adata = sc.read_h5ad(file_path)
+                adata_batch_list.append(adata)
+                
+                # Extract gene ensembl IDs and create a gene panel
+                gene_ids = adata.var["ensembl_id"]
+                gene_panel = set(gene_ids.values.tolist())
+                
+                # If gene panel is unique, assign a unique ID to it
+                if gene_panel not in unique_gene_panels_list:
+                    unique_gene_panels_list.append(gene_panel)
+                    gene_panel_ID_to_gene_panel_dict[unique_gene_panels_count] = gene_panel
+                    file_path_to_gene_panel_ID_dict[str(file_path)] = unique_gene_panels_count
+                    unique_gene_panels_count += 1
+                # If gene panel is not unique, assign find its ID and append file path
+                else:
+                    gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
+                    file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
+
+            gene_list = list(set().union(*unique_gene_panels_list))
+
+            if n_gene_panels != unique_gene_panels_count:
+                raise ValueError(f"Number of gene panels {n_gene_panels} does not match the number of unique gene panels {unique_gene_panels_count}.")
+
+        else:
+            raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
+        
+        with open(gene_list_file, "wb") as file:
+            print(f"Saving gene list to {gene_list_file}")
+            pickle.dump(gene_list, file)
+        with open(gene_panel_ID_to_gene_panel_dict_file, "wb") as file:
+            print(f"Saving gene panel ID to gene panel dictionary to {gene_panel_ID_to_gene_panel_dict_file}")
+            pickle.dump(gene_panel_ID_to_gene_panel_dict, file)
+        with open(file_path_to_gene_panel_ID_dict_file, "wb") as file:
+            print(f"Saving file path to gene panel ID dictionary to {file_path_to_gene_panel_ID_dict_file}")
+            pickle.dump(file_path_to_gene_panel_ID_dict, file)
     
-    gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
-    gene_panel_to_gene_panel_ID_dict_file = tokenizer_folder_path / "gene_panel_to_gene_panel_ID_dict.pkl"
-    gene_panel_ID_to_file_path_dict_file = tokenizer_folder_path / "gene_panel_ID_to_file_path_dict.pkl"
-    gene_list_file = tokenizer_folder_path / "gene_list.pkl"
-    
-    # with open(gene_panel_ID_to_gene_panel_dict_file, "wb") as file:
-    #     pickle.dump(gene_panel_ID_to_gene_panel_dict, file)
-    # with open(gene_panel_to_gene_panel_ID_dict_file, "wb") as file:
-    #     pickle.dump(gene_panel_to_gene_panel_ID_dict, file)
-    # with open(gene_panel_ID_to_file_path_dict_file, "wb") as file:
-    #     pickle.dump(gene_panel_ID_to_file_path_dict, file)
-    # with open(gene_list_file, "wb") as file:
-    #     pickle.dump(gene_list, file)
-    
-    return adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list
+    return adata_batch_list, gene_list, gene_panel_ID_to_gene_panel_dict, file_path_to_gene_panel_ID_dict
 
 
 def create_base_token_dictionary(token_dictionary_file: str,
@@ -555,11 +570,17 @@ def main():
     neighborhood_gene_nzmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_nzmeans_dictionary.pkl"
     neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
     
+    # Set file paths for gene panel mappings
+    gene_list_file = tokenizer_folder_path / "gene_list.pkl"
+    gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
+    file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
+        
     # Load data
-    adata_batch_list, gene_panel_ID_to_gene_panel_dict, gene_panel_to_gene_panel_ID_dict, gene_panel_ID_to_file_path_dict, gene_list \
-        = map_anndata_batches_to_gene_panels(st_data_silver_folder_path, 
-                                                tokenizer_folder_path,
-                                                dataset_name, 
+    adata_batch_list, gene_list, *_ \
+        = map_anndata_batches_to_gene_panels(input_directory,
+                                                gene_panel_ID_to_gene_panel_dict_file,
+                                                file_path_to_gene_panel_ID_dict_file,
+                                                gene_list_file, 
                                                 n_gene_panels,
                                                 overwrite)
 
@@ -578,6 +599,9 @@ def main():
                                                          overwrite)
 
     if prenormalize:
+        # Concatenate AnnData objects
+        adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
+        
         # Normalize gene counts
         adata = normalize_gene_counts(adata, n_batches, norm_factor)
 
@@ -627,8 +651,11 @@ def main():
         with open(neighborhood_gene_nzmeans_dictionary_file, "wb") as file:
             pickle.dump(neighborhood_gene_nzmeans_dict, file)
         with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
-            pickle.dump(neighborhood_gene_logmeans_dict, file)    
-
+            pickle.dump(neighborhood_gene_logmeans_dict, file)
+        del adata
+            
+    del adata_batch_list
+    
     # Set model input size
     try:
         model_input_size = config["experiment"]["model_input_size"]
@@ -651,6 +678,8 @@ def main():
                 nproc=nproc,
                 processing_mode=processing_mode,
                 use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
+                gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
+                file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
                 cell_gene_means_file=cell_gene_means_dictionary_file,
                 cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
                 cell_gene_logmeans_file=cell_gene_logmeans_dictionary_file,
