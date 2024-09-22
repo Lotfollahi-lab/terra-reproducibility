@@ -2,7 +2,7 @@ datasets
 archive
 scgpt
 
-*/.ipynb_checkpoints
+.ipynb_checkpoints
 analysis/data_analysis/logs
 wandb
 
