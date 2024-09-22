@@ -1,5 +1,11 @@
 datasets
 archive
 scgpt
+
 wandb
 *__pycache__*
+.ipynb_checkpoints
+analysis/data_analysis/logs
+wandb
+artifacts
+
