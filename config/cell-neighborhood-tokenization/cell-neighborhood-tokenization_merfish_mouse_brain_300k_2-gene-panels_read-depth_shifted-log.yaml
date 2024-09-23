@@ -1,0 +1,39 @@
+experiment:
+  tokenizer: "cell-neighborhood-tokenizer"
+  dataset_name: "merfish_mouse_brain_300k_2-gene-panels"
+  species: "mus_musculus"
+  n_batches: 2
+  n_gene_panels: 2
+  nproc: 4
+  overwrite: False
+  # model_input_size: 2244 # uncomment to manually set the model input size
+
+wandb:
+  project: "NicheJEPA"
+  job_type: "create-tokenized-dataset"
+  save_artifact: False
+  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-300k-2-gene-panels", "read-depth", "shifted-log"]
+  mode: "offline"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
+  tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/tokenizer/"
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/"
+
+tokenization:
+  use_generator: True
+  add_cls_tokens: False
+  use_separate_cell_and_neighborhood_tokens: False
+  norm_method: "shifted_log"
+  norm_factor: "read_depth"
+  prenormalize: False
+  processing_mode: "sequential"
+  custom_attr_name_dict: {"cell_type": "cell_types",
+                          "brain_section_label": "brain_section_label",
+                          "major_brain_region": "major_brain_region",
+                          "ccf_region_name": "ccf_region_name",
+                          "donor_id": "donor_id",
+                          "batch": "batch_id"}
+  num_shards: 16
+  keep_in_memory: False
+  label_cats: ["cell_types", "niche_types"]
