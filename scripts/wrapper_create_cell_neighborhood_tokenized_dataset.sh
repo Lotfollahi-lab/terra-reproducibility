@@ -61,6 +61,12 @@ case $DATASET_NAME in
         CORES=4
         QUEUE="parallel"
         ;;
+    merfish_mouse_brain_300k_2-gene-panels)
+        RAM="45G"
+        TIME="0:45"
+        CORES=4
+        QUEUE="parallel"
+        ;;
     merscope_human_liver_cancer_1-batch)
         RAM="25G"
         TIME="0:45"
@@ -80,7 +86,7 @@ QUEUE="${3:-$QUEUE}"
 CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
 mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
 
-CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_${DATASET_NAME}_read-depth_shifted-log.yaml"
+CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization/cell-${TOKENIZER_NAME}-tokenization_${DATASET_NAME}_read-depth_shifted-log.yaml"
 OUTPUT_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.out"
 ERROR_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.err"
 JOB_NAME="${DATASET_NAME}_cell_${TOKENIZER_NAME}_tokenization_${CORES}"
