@@ -23,7 +23,7 @@ import numpy as np
 import scanpy as sc
 import anndata as ad
 from pathlib import Path
-from typing import Tuple, List, Dict, Union, Literal, Optional
+from typing import Set, List, Dict, Tuple, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
 
@@ -33,7 +33,59 @@ from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_dept
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
 
-def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str], 
+def get_gene_set_from_ensembl_release(species: str, 
+                                        release: int = 111) -> Set[str]:
+    """
+    Get a list of gene IDs from the Ensembl release.
+    
+    Parameters:
+    ----------
+    - species (str): The species of the dataset.
+    
+    Returns:
+    ----------
+    - Set[str]: A set of gene IDs.
+    """
+    if species == 'mus_musculus':
+        # Extract Ensembl IDs of protein coding and miRNA mouse genes
+        ensembl = EnsemblRelease(release=release, species=species)
+        ensembl.download()
+        ensembl.index()
+        all_genes = ensembl.genes()
+        protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
+        mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
+        all_relevant_genes = protein_coding_genes + mirna_genes
+        gene_set = set([gene.gene_id for gene in all_relevant_genes])
+    else:
+        gene_set = None
+    return gene_set
+
+
+def build_gene_panel(ensembl_gene_set: Set[str],
+                                        adata: sc.AnnData) -> Set[str]:
+    """
+    Build a gene panel from the intersection of Ensembl gene IDs in the AnnData object and the Ensembl gene set from Ensembl Release (if applicable).
+    
+    Parameters:
+    ----------
+    - ensembl_gene_set (Set[str]): A set of Ensembl gene IDs.
+    - adata (sc.AnnData): Annotated data matrix with gene expression information.
+    
+    Returns:
+    ----------
+    - Set[str]: A set of gene IDs.
+    """
+    # Extract gene ensembl IDs and create a gene panel
+    gene_panel = set(adata.var["ensembl_id"].values.tolist())
+    if ensembl_gene_set is not None:
+        # gene panel = genes in adata intersected with ensembl gene set
+        gene_panel = gene_panel.intersection(ensembl_gene_set)
+    
+    return gene_panel
+
+
+def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
+                                        species: str,
                                         gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
                                         file_path_to_gene_panel_ID_dict_file: Union[Path, str],
                                         gene_list_file: Union[Path, str],
@@ -82,18 +134,25 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             adata_batch_list.append(adata)
         
     # If gene panel ID mappings do not exist or overwrite is True, create them
-    else:   
+    else:
+        ensembl_gene_set = get_gene_set_from_ensembl_release(species=species)
+        
         # Map gene panels to gene panel IDs and file paths
         if n_gene_panels == 1:
             # Load first batch of data
             print(f"Loading data from {file_paths[0]}")
             adata = sc.read_h5ad(file_paths[0])
-            adata_batch_list.append(adata)
             
             # Extract gene ensembl IDs and create a gene panel
-            gene_ids = adata.var["ensembl_id"]
-            gene_list = gene_ids.values.tolist()
-            gene_panel = set(gene_list)
+            gene_panel = build_gene_panel(ensembl_gene_set, adata)
+            gene_list = list(gene_panel)
+            
+            # Filter adata to include only genes in gene panel
+            subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
+            adata = adata[:, subset_genes]
+            
+            # Append adata to list
+            adata_batch_list.append(adata)
             
             # Map gene panel ID to gene panel and file paths
             gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
@@ -103,6 +162,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             for file_path in file_paths[1:]:
                 print(f"Loading data from {file_path}")
                 adata = sc.read_h5ad(file_path)
+                adata = adata[:, subset_genes]
                 adata_batch_list.append(adata)
                 file_path_to_gene_panel_ID_dict[str(file_path)] = 0
             
@@ -118,11 +178,15 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 # Load each batch of data
                 print(f"Loading data from {file_path}")
                 adata = sc.read_h5ad(file_path)
-                adata_batch_list.append(adata)
                 
                 # Extract gene ensembl IDs and create a gene panel
-                gene_ids = adata.var["ensembl_id"]
-                gene_panel = set(gene_ids.values.tolist())
+                gene_panel = build_gene_panel(ensembl_gene_set, adata)
+                
+                # Filter adata to include only genes in gene panel
+                subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
+                adata = adata[:, subset_genes]
+
+                adata_batch_list.append(adata)
                 
                 # If gene panel is unique, assign a unique ID to it
                 if gene_panel not in unique_gene_panels_list:
@@ -184,26 +248,7 @@ def create_base_token_dictionary(token_dictionary_file: str,
             base_token_dict = pickle.load(f)
     else:        
         print(f"Species: {species}")
-        if species == 'sim':
-            # Extract Ensembl IDs of genes
-            gene_list = gene_list
-            
-        elif species == 'homo_sapiens':
-            # Extract Ensembl IDs of genes
-            gene_list = gene_list
-
-        elif species == 'mus_musculus':
-            # Extract Ensembl IDs of protein coding and miRNA mouse genes
-            ensembl = EnsemblRelease(111, species=species)
-            ensembl.download()
-            ensembl.index()
-            all_genes = ensembl.genes()
-            protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
-            mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
-            all_relevant_genes = protein_coding_genes + mirna_genes
-            gene_list = [gene.gene_id for gene in all_relevant_genes]
-            
-        else:
+        if species not in ['sim', 'homo_sapiens', 'mus_musculus']:
             raise NotImplementedError(f"Species {species} not implemented.")
 
         # Create token dictionary for gene IDs
@@ -486,8 +531,12 @@ def collect_configs(args: argparse.Namespace) -> Dict:
             key, value = arg.split("=")
             if key == 'nproc':
                 config['experiment'][key] = int(value)
-                config['tokenization']['processing_mode'] = "sequential" if int(value) == 1 else "parallel"
-
+            elif key == 'overwrite':
+                if value == 'True':
+                    config['experiment'][key] = True
+                elif value == 'False':
+                    config['experiment'][key] = False
+                    
     # Set wandb tags
     config['wandb']['tags'] += [config['tokenization']['processing_mode']]
             
@@ -578,6 +627,7 @@ def main():
     # Load data
     adata_batch_list, gene_list, *_ \
         = map_anndata_batches_to_gene_panels(input_directory,
+                                                species,
                                                 gene_panel_ID_to_gene_panel_dict_file,
                                                 file_path_to_gene_panel_ID_dict_file,
                                                 gene_list_file, 
