@@ -32,7 +32,6 @@ tokenization:
                           "major_brain_region": "major_brain_region",
                           "ccf_region_name": "ccf_region_name",
                           "donor_id": "donor_id",
-                          "brain_section_label": "sample_id",
                           "batch": "batch_id"}
   num_shards: 8
   keep_in_memory: False
