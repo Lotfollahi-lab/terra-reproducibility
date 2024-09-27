@@ -1,11 +1,16 @@
 experiment:
   tokenizer: "cell-neighborhood-tokenizer"
-  dataset_name: "merfish_mouse_brain_2-batch"
-  species: "mus_musculus"
-  n_batches: 2
   nproc: 2
   overwrite: False
-  # model_input_size: 2244 # uncomment to manually set the model input size
+
+dataset:
+  dataset_name: "merfish_mouse_brain_2-batch"
+  dataset_id: "0"
+  assay: "merfish"
+  animal: "mouse"
+  tissue: "brain"
+  species: "mus_musculus"
+  n_batches: 2
 
 wandb:
   project: "NicheJEPA"

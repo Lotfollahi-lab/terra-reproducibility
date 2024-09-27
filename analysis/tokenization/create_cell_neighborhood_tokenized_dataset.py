@@ -549,12 +549,18 @@ def main(config: Dict):
         
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
-    dataset_name = config["experiment"]["dataset_name"]
-    species = config["experiment"]["species"]
-    n_batches = config["experiment"]["n_batches"]
     nproc = config["experiment"]["nproc"]
     overwrite = config["experiment"]["overwrite"]
     print(f"Tokenizer: {tokenizer}")
+
+    # Configure dataset arguments
+    dataset_name = config["dataset"]["dataset_name"]
+    dataset_id = config["dataset"]["dataset_id"]
+    assay = config["dataset"]["assay"]
+    animal = config["dataset"]["animal"]
+    tissue = config["dataset"]["tissue"]
+    species = config["dataset"]["species"]
+    n_batches = config["dataset"]["n_batches"]   
     print(f"Dataset: {dataset_name}")
     
     try:
