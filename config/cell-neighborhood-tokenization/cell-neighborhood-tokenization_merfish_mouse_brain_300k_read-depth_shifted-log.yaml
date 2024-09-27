@@ -11,7 +11,7 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-100k", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-300k", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
@@ -26,7 +26,7 @@ tokenization:
   norm_method: "shifted_log"
   norm_factor: "read_depth"
   prenormalize: False
-  processing_mode: "sequential"
+  processing_mode: "parallel"
   custom_attr_name_dict: {"cell_type": "cell_types",
                           "brain_section_label": "brain_section_label",
                           "major_brain_region": "major_brain_region",
