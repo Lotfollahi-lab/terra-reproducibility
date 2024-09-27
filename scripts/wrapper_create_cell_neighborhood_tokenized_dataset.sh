@@ -73,6 +73,12 @@ case $DATASET_NAME in
         CORES=2
         QUEUE="parallel"
         ;;
+    starmap_merfish_mouse_brain_1_gene_panel)
+        RAM="25G"
+        TIME="0:30"
+        CORES=4
+        QUEUE="parallel"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
