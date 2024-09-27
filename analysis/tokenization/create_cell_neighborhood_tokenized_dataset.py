@@ -536,6 +536,8 @@ def collect_configs(args: argparse.Namespace) -> Dict:
                     config['experiment'][key] = True
                 elif value == 'False':
                     config['experiment'][key] = False
+            else:
+                config['experiment'][key] = value
                     
     # Set wandb tags
     config['wandb']['tags'] += [config['tokenization']['processing_mode']]
@@ -543,19 +545,7 @@ def collect_configs(args: argparse.Namespace) -> Dict:
     return config
 
 
-def main():
-    # Parse command line arguments
-    args = parse_arguments()
-
-    # Collect configs 
-    config = collect_configs(args)
-            
-    # Initialize wandb run
-    wandb.init(project=config["wandb"]["project"],
-                        job_type=config["wandb"]["job_type"],
-                        tags=config["wandb"]["tags"],
-                        mode=config["wandb"]["mode"],
-                        config=config)
+def main(config: Dict):
         
     # Configure experiment arguments
     tokenizer = config["experiment"]["tokenizer"]
@@ -623,6 +613,14 @@ def main():
     gene_list_file = tokenizer_folder_path / "gene_list.pkl"
     gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
+
+    # Initialize wandb run
+    wandb_tags = [dataset_name, tokenizer, species, norm_method, norm_factor]
+    wandb.init(project=config["wandb"]["project"],
+                        job_type=config["wandb"]["job_type"],
+                        tags=wandb_tags,
+                        mode=config["wandb"]["mode"],
+                        config=config)
         
     # Load data
     adata_batch_list, gene_list, *_ \
@@ -783,4 +781,10 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    # Parse command line arguments
+    args = parse_arguments()
+
+    # Collect configs 
+    config = collect_configs(args)
+        
+    main(config)

@@ -11,7 +11,6 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-2batch", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
