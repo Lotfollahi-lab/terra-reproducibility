@@ -220,7 +220,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             adata = sc.read_h5ad(file_path)
             
             # Configure dataset ID and batch ID
-            dataset_id = dataset_id
+            dataset_id = 0 if "merfish" in str(file_path) else 1
             batch_id = f"{dataset_id}_{adata.obs['batch']}"
             batch_count += 1
             print(f"Dataset ID: {dataset_id} | Batch ID: {batch_id}")
