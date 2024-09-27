@@ -86,29 +86,29 @@ def build_gene_panel(ensembl_gene_set: Set[str],
 
 def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                                         species: str,
+                                        dataset_id: str,
                                         gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
                                         file_path_to_gene_panel_ID_dict_file: Union[Path, str],
                                         gene_list_file: Union[Path, str],
-                                        n_gene_panels: int = 1,
-                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], List, Dict, Dict]:
+                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], int, List]:
     """
     Create gene panel mappings for each batch of data and load the data into AnnData objects.
 
     Parameters
     ----------
     - input_directory (Union[Path, str]): The path to the input directory.
+    - species (str): The species of the dataset.
+    - dataset_id (str): The ID of the dataset.
     - gene_panel_ID_to_gene_panel_dict_file (Union[Path, str]): The file path to save the gene panel ID to gene panel dictionary.
     - file_path_to_gene_panel_ID_dict_file (Union[Path, str]): The file path to save the file path to gene panel ID dictionary.
     - gene_list_file (Union[Path, str]): The file path to save the gene list.
-    - n_gene_panels (int): The number of unique gene panels in the dataset.
     - overwrite (Literal[True,False]): Whether to overwrite the gene panel mappings.
 
     Returns:
     ----------
-    - List[sc.AnnData]: A list of AnnData objects.
+    - List[sc.AnnData]: A list of AnnData objects, one per batch.
+    - Int: The number of batches in the data.
     - List: A list of all unique gene IDs across batches.
-    - Dict: A dictionary mapping gene panel IDs to gene panels.
-    - Dict: A dictionary mapping file paths to gene panel IDs.
     """
     file_paths = list(input_directory.glob(f"**/*.h5ad"))
     if len(file_paths) == 0:
@@ -135,78 +135,118 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
         
     # If gene panel ID mappings do not exist or overwrite is True, create them
     else:
+        # Obtain gene set from Ensembl release
         ensembl_gene_set = get_gene_set_from_ensembl_release(species=species)
         
-        # Map gene panels to gene panel IDs and file paths
-        if n_gene_panels == 1:
-            # Load first batch of data
-            print(f"Loading data from {file_paths[0]}")
-            adata = sc.read_h5ad(file_paths[0])
+        # # Map gene panels to gene panel IDs and file paths
+        # if n_gene_panels == 1:
+        #     # Load first batch of data
+        #     print(f"Loading data from {file_paths[0]}")
+        #     adata = sc.read_h5ad(file_paths[0])
             
+        #     # Extract gene ensembl IDs and create a gene panel
+        #     gene_panel = build_gene_panel(ensembl_gene_set, adata)
+        #     gene_list = list(gene_panel)
+            
+        #     # Filter adata to include only genes in gene panel
+        #     subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
+        #     adata = adata[:, subset_genes]
+            
+        #     # Append adata to list
+        #     adata_batch_list.append(adata)
+            
+        #     # Map gene panel ID to gene panel and file paths
+        #     gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
+        #     file_path_to_gene_panel_ID_dict = {str(file_paths[0]): 0}
+            
+        #     # Load remaining batches of data
+        #     for file_path in file_paths[1:]:
+        #         print(f"Loading data from {file_path}")
+        #         adata = sc.read_h5ad(file_path)
+        #         adata = adata[:, subset_genes]
+        #         adata_batch_list.append(adata)
+        #         file_path_to_gene_panel_ID_dict[str(file_path)] = 0
+            
+        # elif n_gene_panels > 1:
+        #     # Initialize gene panel ID and mappings
+        #     unique_gene_panels_count = 0
+        #     unique_gene_panels_list = []
+        #     gene_panel_ID_to_gene_panel_dict = {}
+        #     file_path_to_gene_panel_ID_dict = {}
+
+        #     # Iterate over each batch of data
+        #     for file_path in file_paths:
+        #         # Load each batch of data
+        #         print(f"Loading data from {file_path}")
+        #         adata = sc.read_h5ad(file_path)
+                
+        #         # Extract gene ensembl IDs and create a gene panel
+        #         gene_panel = build_gene_panel(ensembl_gene_set, adata)
+                
+        #         # Filter adata to include only genes in gene panel
+        #         subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
+        #         adata = adata[:, subset_genes]
+
+        #         adata_batch_list.append(adata)
+                
+        #         # If gene panel is unique, assign a unique ID to it
+        #         if gene_panel not in unique_gene_panels_list:
+        #             unique_gene_panels_list.append(gene_panel)
+        #             gene_panel_ID_to_gene_panel_dict[unique_gene_panels_count] = gene_panel
+        #             file_path_to_gene_panel_ID_dict[str(file_path)] = unique_gene_panels_count
+        #             unique_gene_panels_count += 1
+        #         # If gene panel is not unique, assign find its ID and append file path
+        #         else:
+        #             gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
+        #             file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
+
+        #     gene_list = list(set().union(*unique_gene_panels_list))
+
+        #     if n_gene_panels != unique_gene_panels_count:
+        #         raise ValueError(f"Number of gene panels {n_gene_panels} does not match the number of unique gene panels {unique_gene_panels_count}.")
+
+        # else:
+        #     raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
+        
+        # Initialize
+        batch_count = 0
+        # unique_gene_panels_count = 0
+        unique_gene_panels_list = []
+        gene_panel_ID_to_gene_panel_dict = {}
+        file_path_to_gene_panel_ID_dict = {}
+                    
+        for file_path in file_paths:
+            print(f"Loading data from {file_path}")
+            adata = sc.read_h5ad(file_path)
+            
+            # Configure dataset ID and batch ID
+            dataset_id = dataset_id
+            batch_id = f"{dataset_id}_{adata.obs['batch']}"
+            batch_count += 1
+            print(f"Dataset ID: {dataset_id} | Batch ID: {batch_id}")
+
             # Extract gene ensembl IDs and create a gene panel
             gene_panel = build_gene_panel(ensembl_gene_set, adata)
-            gene_list = list(gene_panel)
             
             # Filter adata to include only genes in gene panel
             subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
             adata = adata[:, subset_genes]
-            
-            # Append adata to list
+
             adata_batch_list.append(adata)
             
-            # Map gene panel ID to gene panel and file paths
-            gene_panel_ID_to_gene_panel_dict = {0: gene_panel}
-            file_path_to_gene_panel_ID_dict = {str(file_paths[0]): 0}
+            # If gene panel is unique, assign a unique ID to it
+            if gene_panel not in unique_gene_panels_list:
+                unique_gene_panels_list.append(gene_panel)
+                gene_panel_ID_to_gene_panel_dict[batch_id] = gene_panel
+                file_path_to_gene_panel_ID_dict[str(file_path)] = batch_id
+                batch_id += 1
+            # If gene panel is not unique, assign find its ID and append file path
+            else:
+                gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
+                file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
+
+        gene_list = list(set().union(*unique_gene_panels_list))
             
-            # Load remaining batches of data
-            for file_path in file_paths[1:]:
-                print(f"Loading data from {file_path}")
-                adata = sc.read_h5ad(file_path)
-                adata = adata[:, subset_genes]
-                adata_batch_list.append(adata)
-                file_path_to_gene_panel_ID_dict[str(file_path)] = 0
-            
-        elif n_gene_panels > 1:
-            # Initialize gene panel ID and mappings
-            unique_gene_panels_count = 0
-            unique_gene_panels_list = []
-            gene_panel_ID_to_gene_panel_dict = {}
-            file_path_to_gene_panel_ID_dict = {}
-
-            # Iterate over each batch of data
-            for file_path in file_paths:
-                # Load each batch of data
-                print(f"Loading data from {file_path}")
-                adata = sc.read_h5ad(file_path)
-                
-                # Extract gene ensembl IDs and create a gene panel
-                gene_panel = build_gene_panel(ensembl_gene_set, adata)
-                
-                # Filter adata to include only genes in gene panel
-                subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
-                adata = adata[:, subset_genes]
-
-                adata_batch_list.append(adata)
-                
-                # If gene panel is unique, assign a unique ID to it
-                if gene_panel not in unique_gene_panels_list:
-                    unique_gene_panels_list.append(gene_panel)
-                    gene_panel_ID_to_gene_panel_dict[unique_gene_panels_count] = gene_panel
-                    file_path_to_gene_panel_ID_dict[str(file_path)] = unique_gene_panels_count
-                    unique_gene_panels_count += 1
-                # If gene panel is not unique, assign find its ID and append file path
-                else:
-                    gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
-                    file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
-
-            gene_list = list(set().union(*unique_gene_panels_list))
-
-            if n_gene_panels != unique_gene_panels_count:
-                raise ValueError(f"Number of gene panels {n_gene_panels} does not match the number of unique gene panels {unique_gene_panels_count}.")
-
-        else:
-            raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
-        
         with open(gene_list_file, "wb") as file:
             print(f"Saving gene list to {gene_list_file}")
             pickle.dump(gene_list, file)
@@ -217,7 +257,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             print(f"Saving file path to gene panel ID dictionary to {file_path_to_gene_panel_ID_dict_file}")
             pickle.dump(file_path_to_gene_panel_ID_dict, file)
     
-    return adata_batch_list, gene_list, gene_panel_ID_to_gene_panel_dict, file_path_to_gene_panel_ID_dict
+    return adata_batch_list, batch_count, gene_list
 
 
 def create_base_token_dictionary(token_dictionary_file: str,
@@ -629,13 +669,13 @@ def main(config: Dict):
                         config=config)
         
     # Load data
-    adata_batch_list, gene_list, *_ \
+    adata_batch_list, batch_count, gene_list \
         = map_anndata_batches_to_gene_panels(input_directory,
                                                 species,
+                                                dataset_id,
                                                 gene_panel_ID_to_gene_panel_dict_file,
                                                 file_path_to_gene_panel_ID_dict_file,
                                                 gene_list_file, 
-                                                n_gene_panels,
                                                 overwrite)
 
     # Create token dictionary
