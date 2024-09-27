@@ -1,16 +1,16 @@
 experiment:
+  experiment_name: "merfish_mouse_brain_2-batch"
   tokenizer: "cell-neighborhood-tokenizer"
   nproc: 2
   overwrite: False
 
 dataset:
-  dataset_name: "merfish_mouse_brain_2-batch"
-  dataset_id: "0"
-  assay: "merfish"
-  animal: "mouse"
-  tissue: "brain"
-  species: "mus_musculus"
-  n_batches: 2
+  dataset_ids: ["0"]
+  assays: ["merfish"]
+  animals: ["mouse"]
+  tissues: ["brain"]
+  species: ["mus_musculus"]
+  n_batches: 2 # to be removed
 
 wandb:
   project: "NicheJEPA"

@@ -90,7 +90,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                                         gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
                                         file_path_to_gene_panel_ID_dict_file: Union[Path, str],
                                         gene_list_file: Union[Path, str],
-                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], int, List]:
+                                        overwrite: Literal[True,False] = False) -> Tuple[List[sc.AnnData], List[str], List[str], List]:
     """
     Create gene panel mappings for each batch of data and load the data into AnnData objects.
 
@@ -107,7 +107,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
     Returns:
     ----------
     - List[sc.AnnData]: A list of AnnData objects, one per batch.
-    - Int: The number of batches in the data.
+    - List[str]: A list of batch IDs, one per batch.
+    - List[str]: A list of gene panel IDs.
     - List: A list of all unique gene IDs across batches.
     """
     file_paths = list(input_directory.glob(f"**/*.h5ad"))
@@ -209,8 +210,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
         #     raise ValueError(f"Incorrect value for number of gene panels {n_gene_panels}")
         
         # Initialize
-        batch_count = 0
-        # unique_gene_panels_count = 0
+        batch_id_key_list = []
+        unique_gene_panels_count = 0
         unique_gene_panels_list = []
         gene_panel_ID_to_gene_panel_dict = {}
         file_path_to_gene_panel_ID_dict = {}
@@ -221,9 +222,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             
             # Configure dataset ID and batch ID
             dataset_id = 0 if "merfish" in str(file_path) else 1
-            batch_id = f"{dataset_id}_{adata.obs['batch']}"
-            batch_count += 1
-            print(f"Dataset ID: {dataset_id} | Batch ID: {batch_id}")
+            batch_id_key = f"{dataset_id}_{adata.obs['batch']}"
+            print(f"Dataset ID: {dataset_id} | Batch ID Key: {batch_id_key}")
 
             # Extract gene ensembl IDs and create a gene panel
             gene_panel = build_gene_panel(ensembl_gene_set, adata)
@@ -233,18 +233,21 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             adata = adata[:, subset_genes]
 
             adata_batch_list.append(adata)
+            batch_id_key_list.append(batch_id_key)
             
             # If gene panel is unique, assign a unique ID to it
             if gene_panel not in unique_gene_panels_list:
                 unique_gene_panels_list.append(gene_panel)
-                gene_panel_ID_to_gene_panel_dict[batch_id] = gene_panel
-                file_path_to_gene_panel_ID_dict[str(file_path)] = batch_id
-                batch_id += 1
+                gene_panel_ID = f"gene_panel{unique_gene_panels_count}"
+                gene_panel_ID_to_gene_panel_dict[gene_panel_ID] = gene_panel
+                file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
+                unique_gene_panels_count += 1
             # If gene panel is not unique, assign find its ID and append file path
             else:
                 gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
                 file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
 
+        gene_panel_id_list = list(gene_panel_ID_to_gene_panel_dict.keys())
         gene_list = list(set().union(*unique_gene_panels_list))
             
         with open(gene_list_file, "wb") as file:
@@ -257,8 +260,72 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             print(f"Saving file path to gene panel ID dictionary to {file_path_to_gene_panel_ID_dict_file}")
             pickle.dump(file_path_to_gene_panel_ID_dict, file)
     
-    return adata_batch_list, batch_count, gene_list
+    return adata_batch_list, batch_id_key_list, gene_panel_id_list, gene_list
 
+
+def build_nichejepa_vocabulary(vocab_dictionary_file: str,
+                                gene_list: List[str],
+                                batch_id_list: List[str],
+                                gene_panel_id_list: List[str],
+                                assays: List[str],
+                                species: List[str],
+                                tissues: List[str],
+                                overwrite: Literal[True,False]=True) -> Dict:
+    """
+    Build vocabulary (mapping of items to tokens) for NicheJEPA.
+    
+    Parameters:
+    ----------
+    - vocab_dictionary_file (str): The file path to save the vocabulary dictionary.
+    - gene_list (List[str]): The list of gene IDs.
+    - batch_id_list (List[str]): The list of batch IDs.
+    - gene_panel_id_list (List[str]): The list of gene panel IDs.
+    - assays (List[str]): The list of assays.
+    - species (List[str]): The list of species.
+    - tissues (List[str]): The list of tissues.
+    - overwrite (Literal[True,False]): Whether to overwrite the vocabulary dictionary.
+    
+    Returns:
+    ----------
+    - Dict: The vocabulary dictionary.
+    """
+    # Load vocabulary dictionary if it exists and not overwrite, else create it
+    if os.path.exists(vocab_dictionary_file) and not overwrite:
+        with open(vocab_dictionary_file, "rb") as file:
+            vocab = pickle.load(file)
+    else:
+        # Initialize with mandatory tokens
+        vocab = {'<pad>': 0, '<mask>': 1, '<cls_cell>': 2, '<cls_neighborhood>': 3}
+        
+        # Add gene tokens
+        curr_vocab_size = len(vocab)
+        vocab.update({gene_id: idx + 4 for idx, gene_id in enumerate(gene_list)})
+        
+        # Add 1 token per batch_id in batch_id_list
+        curr_vocab_size = len(vocab)
+        vocab.update({batch_id: idx + curr_vocab_size for idx, batch_id in enumerate(batch_id_list)})
+        
+        # Add 1 token per gene_panel_id in gene_panel_id_list
+        curr_vocab_size = len(vocab)
+        vocab.update({gene_panel_id: idx + curr_vocab_size for idx, gene_panel_id in enumerate(gene_panel_id_list)})
+        
+        # Add 1 token per assay in assays
+        curr_vocab_size = len(vocab)
+        vocab.update({assay: idx + curr_vocab_size for idx, assay in enumerate(assays)})
+        
+        # Add 1 token per species in species
+        curr_vocab_size = len(vocab)
+        vocab.update({species: idx + curr_vocab_size for idx, species in enumerate(species)})
+        
+        # Add 1 token per tissue in tissues
+        curr_vocab_size = len(vocab)
+        vocab.update({tissue: idx + curr_vocab_size for idx, tissue in enumerate(tissues)})
+
+        with open(vocab_dictionary_file, "wb") as file:
+            pickle.dump(vocab, file)
+                    
+        return vocab
+    
 
 def create_base_token_dictionary(token_dictionary_file: str,
                                     gene_list: List[str],
@@ -588,25 +655,25 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 def main(config: Dict):
         
     # Configure experiment arguments
+    experiment_name = config["experiment"]["experiment_name"]
     tokenizer = config["experiment"]["tokenizer"]
     nproc = config["experiment"]["nproc"]
     overwrite = config["experiment"]["overwrite"]
+    print(f"Experiment Name: {experiment_name}")
     print(f"Tokenizer: {tokenizer}")
 
     # Configure dataset arguments
-    dataset_name = config["dataset"]["dataset_name"]
-    dataset_id = config["dataset"]["dataset_id"]
-    assay = config["dataset"]["assay"]
-    animal = config["dataset"]["animal"]
-    tissue = config["dataset"]["tissue"]
+    dataset_ids = config["datasets"]["dataset_ids"]
+    assays = config["dataset"]["assays"]
+    animals = config["dataset"]["animals"]
+    tissues = config["dataset"]["tissues"]
     species = config["dataset"]["species"]
     n_batches = config["dataset"]["n_batches"]   
-    print(f"Dataset: {dataset_name}")
     
-    try:
-        n_gene_panels = config["experiment"]["n_gene_panels"]
-    except:
-        n_gene_panels = 1
+    # try:
+    #     n_gene_panels = config["experiment"]["n_gene_panels"]
+    # except:
+    #     n_gene_panels = 1
     
     # Configure data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
@@ -614,7 +681,7 @@ def main(config: Dict):
     st_data_gold_folder_path = data_directory_path / "gold"
     
     # Configure profiler path
-    profiler_path = Path(config["paths"]["profiler_path"]) / dataset_name / "profiler" / tokenizer
+    profiler_path = Path(config["paths"]["profiler_path"]) / experiment_name / "profiler" / tokenizer
     os.makedirs(profiler_path, exist_ok=True)
     
     # Configure cache path
@@ -638,14 +705,15 @@ def main(config: Dict):
 
     # Configure tokenizer paths
     tokenizer_directory_path = Path(config["paths"]["tokenizer_directory_path"])
-    tokenizer_folder_path = tokenizer_directory_path / tokenizer / dataset_name
+    tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
+    vocab_dictionary_file = tokenizer_folder_path / "vocab_dictionary.pkl"
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     nichejepa_token_dictionary_file = tokenizer_folder_path / f"token_dictionary{'_cls' if add_cls_tokens else '_no_cls'}{'_sep' if use_separate_cell_and_neighborhood_tokens else '_no_sep'}.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
 
     # Set input and output directories
-    input_directory = st_data_silver_folder_path / dataset_name
-    output_directory = st_data_gold_folder_path / tokenizer / dataset_name / f"{num_shards}-shards"
+    input_directory = st_data_silver_folder_path / experiment_name
+    output_directory = st_data_gold_folder_path / tokenizer / experiment_name / f"{num_shards}-shards"
 
     # Configure tokenized dictionary specific paths
     cell_gene_means_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_means_dictionary.pkl"
@@ -661,36 +729,48 @@ def main(config: Dict):
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
     # Initialize wandb run
-    wandb_tags = [dataset_name, tokenizer, species, norm_method, norm_factor]
+    wandb_tags = [experiment_name, tokenizer, species, norm_method, norm_factor]
     wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
                         tags=wandb_tags,
                         mode=config["wandb"]["mode"],
                         config=config)
         
-    # Load data
-    adata_batch_list, batch_count, gene_list \
+    # Load data and create gene panel mappings
+    adata_batch_list, batch_id_list, gene_panel_id_list, gene_list \
         = map_anndata_batches_to_gene_panels(input_directory,
                                                 species,
-                                                dataset_id,
+                                                dataset_ids,
                                                 gene_panel_ID_to_gene_panel_dict_file,
                                                 file_path_to_gene_panel_ID_dict_file,
                                                 gene_list_file, 
                                                 overwrite)
 
-    # Create token dictionary
-    base_token_dict = create_base_token_dictionary(token_dictionary_file, 
-                                                   gene_list, 
-                                                   species, 
-                                                   overwrite)
+    # Build vocabulary
+    print("Building vocabulary for NicheJEPA.")
+    vocab = build_nichejepa_vocabulary(vocab_dictionary_file,
+                                        gene_list,
+                                        batch_id_list,
+                                        gene_panel_id_list,
+                                        assays,
+                                        species,
+                                        tissues,
+                                        overwrite)
+    print(f"Build vocabulary for NicheJEPA: {len(vocab)} tokens.")
     
-    # Create nichejepa token dictionary
-    _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, 
-                                                         gene_list, 
-                                                         base_token_dict, 
-                                                         add_cls_tokens, 
-                                                         use_separate_cell_and_neighborhood_tokens, 
-                                                         overwrite)
+    # # Create token dictionary    
+    # base_token_dict = create_base_token_dictionary(token_dictionary_file, 
+    #                                                gene_list, 
+    #                                                species, 
+    #                                                overwrite)
+    
+    # # Create nichejepa token dictionary
+    # _, n_gene_tokens = create_nichejepa_token_dictionary(nichejepa_token_dictionary_file, 
+    #                                                      gene_list, 
+    #                                                      base_token_dict, 
+    #                                                      add_cls_tokens, 
+    #                                                      use_separate_cell_and_neighborhood_tokens, 
+    #                                                      overwrite)
 
     if prenormalize:
         # Concatenate AnnData objects
@@ -754,11 +834,11 @@ def main(config: Dict):
     try:
         model_input_size = config["experiment"]["model_input_size"]
     except:
-        model_input_size = n_gene_tokens * 2
+        model_input_size = len(gene_list) * 2
     print(f"Model Input Size: {model_input_size}")
     
     # Set output file prefix
-    output_file_prefix = f"{dataset_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
+    output_file_prefix = f"{experiment_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
     
     # Tokenize data
     with cProfile.Profile() as pr:
@@ -771,7 +851,7 @@ def main(config: Dict):
                 norm_factor=norm_factor,
                 nproc=nproc,
                 processing_mode=processing_mode,
-                use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
+                # use_separate_cell_and_neighborhood_tokens=use_separate_cell_and_neighborhood_tokens,
                 gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
                 file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
                 cell_gene_means_file=cell_gene_means_dictionary_file,
@@ -780,7 +860,8 @@ def main(config: Dict):
                 neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
                 neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
                 neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
-                token_dictionary_file=nichejepa_token_dictionary_file,
+                vocab_dictionary_file=vocab_dictionary_file,
+                # token_dictionary_file=nichejepa_token_dictionary_file,
                 custom_attr_name_dict=custom_attr_name_dict)
 
         # Tokenize data 
