@@ -8,7 +8,16 @@ Execute the following to create a Hugging Face dataset created using the Cell Ne
 ```
 python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
 ```
-Sample config file is available at `config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml`. The override flag allows you to override any number of config parameters from the file while keeping the others. For example, `--override nproc=8`.
+Sample config file is available at `config/cell-neighborhood-tokenization_sim1_1105fts_10000locs_read-depth_shifted-log.yaml`. The override flag allows you to override the number of processes parameter from the config file by using the `--override nproc=[NPROC]`. Other parameters from the config file remain unaffected.
+
+## Analysis
+
+### Compute Dataset Statistics:
+Execute the following to compute batchwise statistics of a collection of `anndata` objects:
+```
+python analysis/statistics/compute_anndata_statistics.py --config_file [CONFIG-FILE] --override [OPTIONS]
+```
+Sample config file is available at `config/anndata_statistics_sim1_1105fts_10000locs.yaml`. The override flag allows you to override the number of processes parameter from the config file by using the `--override mode=[sequential | parallel] nproc=[NPROC]`. Other parameters from the config file remain unaffected.
 
 ## Scripts:
 

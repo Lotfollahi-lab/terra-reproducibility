@@ -4,17 +4,19 @@ GROUP="team361"
 SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
 
 DATASET_NAME=$1
-TOKENIZER_NAME=$2 # choose between "neighborhood" and "graph"
-CORES=$3
+CORES="${2:-4}" # If not provided, use the default value, i.e. 4 cores
+QUEUE="${3:-normal}" # If not provided, use the default value, i.e. normal queue
+
+TOKENIZER_NAME="graph"
 
 case $DATASET_NAME in
     sim1_1105fts_10000locs)
-        RAM="2G"
+        RAM="5G"
         TIME="0:05"
         ;;
     sim1_1105genes_100klocs_strongincrements)
-        RAM="25G"
-        TIME="0:10"
+        RAM="30G"
+        TIME="0:20"
         ;;    
     merfish_mouse_brain_8-batch)
         RAM="25G"
@@ -32,14 +34,19 @@ case $DATASET_NAME in
         RAM="120G"
         TIME="12:00"
         ;;
+    merfish_mouse_brain_100k)
+        RAM="30G"
+        TIME="0:15"
+        ;;
+    merfish_mouse_brain_300k)
+        RAM="30G"
+        TIME="0:30"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
         ;;
 esac
-
-# If not provided, use the default value
-QUEUE="${4:-parallel}"
 
 CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
 mkdir -p "logs/${DATASET_NAME}/profile-nprocs"

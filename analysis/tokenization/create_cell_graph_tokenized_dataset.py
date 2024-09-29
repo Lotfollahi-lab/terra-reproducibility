@@ -63,11 +63,12 @@ def load_anndata(st_data_silver_folder_path: Union[Path, str],
         else:
             raise ValueError("Simulated data with multiple batches not implemented.")
     elif species == 'mus_musculus':
-        # Load the first batch of data.
-        if n_batches == 1:
-            raise ValueError("Mouse data with one batch not implemented.")
-        else:
+        # Load one batch of data.
+        try:
             adata = sc.read_h5ad(f"{st_data_silver_folder_path}/{dataset_name}/{dataset_name}_batch1.h5ad")
+        except:
+            file_name = os.listdir(Path(st_data_silver_folder_path) / dataset_name)[0]
+            adata = sc.read_h5ad(Path(st_data_silver_folder_path) / dataset_name / file_name)
     else:
         raise NotImplementedError(f"Species {species} not implemented.")
 
@@ -409,7 +410,6 @@ def collect_configs(args: argparse.Namespace) -> Dict:
             key, value = arg.split("=")
             if key == 'nproc':
                 config['experiment'][key] = int(value)
-                config['tokenization']['processing_mode'] = "sequential" if int(value) == 1 else "parallel"
 
     # Set wandb tags
     config['wandb']['tags'] += [config['tokenization']['processing_mode']]
@@ -528,13 +528,17 @@ def main():
         with open(gene_logmeans_dictionary_file, "wb") as file:
             pickle.dump(cell_gene_logmeans_dict, file)
 
+    try:
+        tokens_per_cell = config["tokenization"]["tokens_per_cell"]
+    except:
+        raise ValueError("Please specify the number of tokens per cell.")
+        
     # Set model input size
     try:
         model_input_size = config["experiment"]["model_input_size"]
     except:
-        tokens_per_cell = n_gene_tokens
         max_neighbors = compute_max_neighbors(adata) 
-        model_input_size = n_gene_tokens * min(16, max_neighbors) + 1
+        model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
 
     # Set output file prefix
     output_file_prefix = f"{dataset_name}_{nproc}_{keep_in_memory}_{norm_factor}_{norm_method}_{model_input_size}"
@@ -581,6 +585,9 @@ def main():
 
     
     # Log tokenization and profiling times to wandb
+    wandb.log({"model_input_size": model_input_size})
+    wandb.log({"use_generator": use_generator})
+    wandb.log({"keep_in_memory": keep_in_memory})
     wandb.log({"nproc": nproc})
     wandb.log({"tokenization_time": end - start})
     for func_name, ct in cumulative_times.items():
