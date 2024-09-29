@@ -12,3 +12,5 @@ dependencies:
     - squidpy
     - cellcharter
     - lamindb
+    - jax[cuda12]
+    - chex==0.1.86

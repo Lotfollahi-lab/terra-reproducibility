@@ -1,0 +1,333 @@
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from configs/merfish_300k_2_gene_panels.yaml and wandb.
+INFO:root:Running... (rank: 0/1)
+INFO:root:Initialized (rank/world-size) 0/1.
+INFO:root:GeneTransformerEncoder(
+  (gene_embed): Embedding(1090, 768, padding_idx=0)
+  (seg_embed): Embedding(3, 768, padding_idx=0)
+  (blocks): ModuleList(
+    (0-2): 3 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:Data loader created.
+INFO:root:Data loader created.
+INFO:root:Initializing optimizer: AdamW.
+INFO:root:Initializing learning rate scheduler: WarmupCosineSchedule.
+INFO:root:Initializing weight decay scheduler: CosineWDSchedule.
+INFO:root:Initializing automatic mixed precision training scaler: GradScaler.
+INFO:root:Epoch 1
+INFO:root:[1,     0] loss: 0.528 masks: 163.0 17.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (5859.4 ms)
+INFO:root:[1,     0] grad_stats: [1.15e-02 1.13e-02] (1.15e-04, 1.86e-02)
+INFO:root:[1,    10] loss: 0.485 masks: 144.0 15.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (614.4 ms)
+INFO:root:[1,    10] grad_stats: [4.14e-03 4.32e-03] (4.32e-05, 6.23e-03)
+INFO:root:[1,    20] loss: 0.451 masks: 140.5 15.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (367.5 ms)
+INFO:root:[1,    20] grad_stats: [2.91e-03 3.29e-03] (3.20e-05, 4.42e-03)
+INFO:root:[1,    30] loss: 0.415 masks: 136.1 15.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (275.4 ms)
+INFO:root:[1,    30] grad_stats: [1.68e-03 1.98e-03] (2.01e-05, 2.72e-03)
+INFO:root:[1,    40] loss: 0.377 masks: 133.0 14.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (228.5 ms)
+INFO:root:[1,    40] grad_stats: [8.69e-04 1.10e-03] (1.12e-05, 1.61e-03)
+INFO:root:[1,    50] loss: 0.340 masks: 131.9 14.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (200.4 ms)
+INFO:root:[1,    50] grad_stats: [4.35e-04 6.17e-04] (5.36e-06, 9.59e-04)
+INFO:root:[1,    60] loss: 0.306 masks: 130.5 14.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (180.3 ms)
+INFO:root:[1,    60] grad_stats: [2.35e-04 3.71e-04] (2.92e-06, 6.09e-04)
+INFO:root:[1,    70] loss: 0.278 masks: 129.2 14.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (166.4 ms)
+INFO:root:[1,    70] grad_stats: [1.37e-04 2.31e-04] (1.70e-06, 4.02e-04)
+INFO:root:[1,    80] loss: 0.255 masks: 127.6 14.2 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (155.7 ms)
+INFO:root:[1,    80] grad_stats: [8.15e-05 1.54e-04] (1.10e-06, 2.64e-04)
+INFO:root:[1,    90] loss: 0.236 masks: 127.0 14.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (147.9 ms)
+INFO:root:[1,    90] grad_stats: [5.81e-05 1.16e-04] (7.85e-07, 2.03e-04)
+INFO:root:[1,   100] loss: 0.221 masks: 126.0 14.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (141.3 ms)
+INFO:root:[1,   100] grad_stats: [4.71e-05 9.82e-05] (6.45e-07, 1.76e-04)
+INFO:root:[1,   110] loss: 0.208 masks: 125.3 13.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (135.9 ms)
+INFO:root:[1,   110] grad_stats: [3.79e-05 7.57e-05] (5.38e-07, 1.35e-04)
+INFO:root:[1,   120] loss: 0.196 masks: 124.7 13.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (131.0 ms)
+INFO:root:[1,   120] grad_stats: [3.13e-05 5.69e-05] (4.80e-07, 1.10e-04)
+INFO:root:[1,   130] loss: 0.187 masks: 124.2 13.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (127.3 ms)
+INFO:root:[1,   130] grad_stats: [2.86e-05 5.66e-05] (4.48e-07, 1.06e-04)
+INFO:root:[1,   140] loss: 0.179 masks: 123.7 13.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (124.1 ms)
+INFO:root:[1,   140] grad_stats: [2.33e-05 4.64e-05] (4.12e-07, 8.42e-05)
+INFO:root:[1,   150] loss: 0.172 masks: 123.2 13.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (120.9 ms)
+INFO:root:[1,   150] grad_stats: [1.92e-05 3.67e-05] (3.67e-07, 6.86e-05)
+INFO:root:[1,   160] loss: 0.165 masks: 122.8 13.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (118.4 ms)
+INFO:root:[1,   160] grad_stats: [1.95e-05 3.77e-05] (3.69e-07, 7.08e-05)
+INFO:root:[1,   170] loss: 0.160 masks: 122.4 13.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (116.4 ms)
+INFO:root:[1,   170] grad_stats: [1.91e-05 4.07e-05] (3.29e-07, 7.59e-05)
+INFO:root:[1,   180] loss: 0.154 masks: 122.0 13.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (114.3 ms)
+INFO:root:[1,   180] grad_stats: [1.58e-05 3.25e-05] (3.40e-07, 6.20e-05)
+INFO:root:[1,   190] loss: 0.150 masks: 121.6 13.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (112.5 ms)
+INFO:root:[1,   190] grad_stats: [1.39e-05 3.07e-05] (3.17e-07, 5.85e-05)
+INFO:root:[1,   200] loss: 0.146 masks: 121.3 13.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (110.6 ms)
+INFO:root:[1,   200] grad_stats: [1.72e-05 3.88e-05] (3.13e-07, 7.37e-05)
+INFO:root:[1,   210] loss: 0.142 masks: 121.0 13.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (109.0 ms)
+INFO:root:[1,   210] grad_stats: [1.50e-05 3.40e-05] (3.27e-07, 6.33e-05)
+INFO:root:[1,   220] loss: 0.138 masks: 120.7 13.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (107.8 ms)
+INFO:root:[1,   220] grad_stats: [1.36e-05 3.19e-05] (2.97e-07, 5.87e-05)
+INFO:root:[1,   230] loss: 0.135 masks: 120.5 13.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (107.0 ms)
+INFO:root:[1,   230] grad_stats: [1.57e-05 3.55e-05] (3.22e-07, 6.67e-05)
+INFO:root:[1,   240] loss: 0.132 masks: 120.2 13.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (105.9 ms)
+INFO:root:[1,   240] grad_stats: [2.57e-05 6.02e-05] (3.48e-07, 1.14e-04)
+INFO:root:[1,   250] loss: 0.130 masks: 119.9 13.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (104.8 ms)
+INFO:root:[1,   250] grad_stats: [3.14e-05 7.39e-05] (3.93e-07, 1.40e-04)
+INFO:root:[1,   260] loss: 0.127 masks: 119.7 13.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (103.7 ms)
+INFO:root:[1,   260] grad_stats: [1.69e-05 3.74e-05] (3.18e-07, 6.88e-05)
+INFO:root:[1,   270] loss: 0.125 masks: 119.5 13.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (102.8 ms)
+INFO:root:[1,   270] grad_stats: [1.23e-05 2.79e-05] (3.00e-07, 5.14e-05)
+INFO:root:[1,   280] loss: 0.123 masks: 119.2 13.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (102.1 ms)
+INFO:root:[1,   280] grad_stats: [1.24e-05 2.66e-05] (3.01e-07, 4.76e-05)
+INFO:root:[1,   290] loss: 0.121 masks: 119.0 13.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (101.3 ms)
+INFO:root:[1,   290] grad_stats: [1.52e-05 3.24e-05] (2.95e-07, 6.07e-05)
+INFO:root:[1,   300] loss: 0.119 masks: 118.8 13.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (100.6 ms)
+INFO:root:[1,   300] grad_stats: [1.44e-05 2.97e-05] (2.94e-07, 5.55e-05)
+INFO:root:[1,   310] loss: 0.117 masks: 118.6 13.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (99.9 ms)
+INFO:root:[1,   310] grad_stats: [1.62e-05 3.39e-05] (3.22e-07, 6.13e-05)
+INFO:root:[1,   320] loss: 0.116 masks: 118.5 13.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (99.3 ms)
+INFO:root:[1,   320] grad_stats: [3.12e-05 6.96e-05] (4.03e-07, 1.29e-04)
+INFO:root:[1,   330] loss: 0.114 masks: 118.3 13.2 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (98.7 ms)
+INFO:root:[1,   330] grad_stats: [2.60e-05 5.70e-05] (3.89e-07, 1.04e-04)
+INFO:root:[1,   340] loss: 0.113 masks: 118.1 13.2 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (98.1 ms)
+INFO:root:[1,   340] grad_stats: [2.16e-05 4.60e-05] (3.76e-07, 8.38e-05)
+INFO:root:[1,   350] loss: 0.111 masks: 118.0 13.2 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (97.6 ms)
+INFO:root:[1,   350] grad_stats: [2.31e-05 4.93e-05] (3.87e-07, 8.76e-05)
+INFO:root:[1,   360] loss: 0.110 masks: 117.8 13.2 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (97.1 ms)
+INFO:root:[1,   360] grad_stats: [2.06e-05 4.36e-05] (4.12e-07, 7.75e-05)
+INFO:root:[1,   370] loss: 0.109 masks: 117.6 13.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (96.7 ms)
+INFO:root:[1,   370] grad_stats: [2.99e-05 6.66e-05] (5.19e-07, 1.20e-04)
+INFO:root:[1,   380] loss: 0.108 masks: 117.5 13.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (96.2 ms)
+INFO:root:[1,   380] grad_stats: [3.05e-05 6.62e-05] (4.90e-07, 1.22e-04)
+INFO:root:[1,   390] loss: 0.107 masks: 117.3 13.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (95.7 ms)
+INFO:root:[1,   390] grad_stats: [2.25e-05 4.74e-05] (4.64e-07, 8.35e-05)
+INFO:root:[1,   400] loss: 0.106 masks: 117.1 13.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (95.2 ms)
+INFO:root:[1,   400] grad_stats: [2.67e-05 5.46e-05] (5.39e-07, 9.69e-05)
+INFO:root:[1,   410] loss: 0.105 masks: 117.0 13.1 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (94.8 ms)
+INFO:root:[1,   410] grad_stats: [2.91e-05 6.11e-05] (5.61e-07, 1.08e-04)
+INFO:root:[1,   420] loss: 0.104 masks: 116.9 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (94.4 ms)
+INFO:root:[1,   420] grad_stats: [4.42e-05 9.91e-05] (6.37e-07, 1.78e-04)
+INFO:root:[1,   430] loss: 0.103 masks: 116.8 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (94.1 ms)
+INFO:root:[1,   430] grad_stats: [2.26e-05 4.75e-05] (5.54e-07, 8.53e-05)
+INFO:root:[1,   440] loss: 0.102 masks: 116.6 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (93.8 ms)
+INFO:root:[1,   440] grad_stats: [2.37e-05 4.92e-05] (5.53e-07, 8.50e-05)
+INFO:root:[1,   450] loss: 0.101 masks: 116.5 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (93.5 ms)
+INFO:root:[1,   450] grad_stats: [4.48e-05 1.00e-04] (6.49e-07, 1.87e-04)
+INFO:root:[1,   460] loss: 0.101 masks: 116.3 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (93.2 ms)
+INFO:root:[1,   460] grad_stats: [5.25e-05 1.20e-04] (7.40e-07, 2.21e-04)
+INFO:root:[1,   470] loss: 0.100 masks: 116.2 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (92.8 ms)
+INFO:root:[1,   470] grad_stats: [3.36e-05 7.53e-05] (6.58e-07, 1.38e-04)
+INFO:root:[1,   480] loss: 0.099 masks: 116.1 13.0 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (92.5 ms)
+INFO:root:[1,   480] grad_stats: [3.62e-05 8.23e-05] (6.67e-07, 1.50e-04)
+INFO:root:[1,   490] loss: 0.099 masks: 115.9 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (92.2 ms)
+INFO:root:[1,   490] grad_stats: [3.13e-05 6.79e-05] (7.07e-07, 1.25e-04)
+INFO:root:[1,   500] loss: 0.098 masks: 115.8 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (91.8 ms)
+INFO:root:[1,   500] grad_stats: [2.61e-05 5.58e-05] (7.28e-07, 1.03e-04)
+INFO:root:[1,   510] loss: 0.098 masks: 115.7 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (91.6 ms)
+INFO:root:[1,   510] grad_stats: [2.96e-05 6.30e-05] (7.51e-07, 1.13e-04)
+INFO:root:[1,   520] loss: 0.097 masks: 115.5 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (91.3 ms)
+INFO:root:[1,   520] grad_stats: [4.85e-05 1.00e-04] (8.73e-07, 1.77e-04)
+INFO:root:[1,   530] loss: 0.097 masks: 115.5 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (90.9 ms)
+INFO:root:[1,   530] grad_stats: [2.08e-05 4.05e-05] (7.21e-07, 6.94e-05)
+INFO:root:[1,   540] loss: 0.096 masks: 115.3 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (90.6 ms)
+INFO:root:[1,   540] grad_stats: [2.39e-05 4.82e-05] (8.17e-07, 8.20e-05)
+INFO:root:[1,   550] loss: 0.096 masks: 115.2 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (90.4 ms)
+INFO:root:[1,   550] grad_stats: [2.04e-05 3.90e-05] (7.89e-07, 6.49e-05)
+INFO:root:[1,   560] loss: 0.095 masks: 115.1 12.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (90.2 ms)
+INFO:root:[1,   560] grad_stats: [2.89e-05 5.43e-05] (9.01e-07, 8.88e-05)
+INFO:root:[1,   570] loss: 0.095 masks: 115.0 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (90.0 ms)
+INFO:root:[1,   570] grad_stats: [2.33e-05 4.50e-05] (8.23e-07, 8.61e-05)
+INFO:root:[1,   580] loss: 0.094 masks: 114.9 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (89.8 ms)
+INFO:root:[1,   580] grad_stats: [5.76e-05 1.19e-04] (1.04e-06, 2.22e-04)
+INFO:root:[1,   590] loss: 0.094 masks: 114.8 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (89.6 ms)
+INFO:root:[1,   590] grad_stats: [3.25e-05 6.82e-05] (9.92e-07, 1.23e-04)
+INFO:root:[1,   600] loss: 0.093 masks: 114.7 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (89.5 ms)
+INFO:root:[1,   600] grad_stats: [3.09e-05 5.63e-05] (1.21e-06, 9.90e-05)
+INFO:root:[1,   610] loss: 0.093 masks: 114.6 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (89.3 ms)
+INFO:root:[1,   610] grad_stats: [2.65e-05 4.61e-05] (1.24e-06, 8.61e-05)
+INFO:root:[1,   620] loss: 0.092 masks: 114.5 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (89.1 ms)
+INFO:root:[1,   620] grad_stats: [2.37e-05 3.36e-05] (1.27e-06, 5.95e-05)
+INFO:root:[1,   630] loss: 0.092 masks: 114.4 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.9 ms)
+INFO:root:[1,   630] grad_stats: [6.94e-05 1.17e-04] (1.55e-06, 1.95e-04)
+INFO:root:[1,   640] loss: 0.092 masks: 114.3 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.6 ms)
+INFO:root:[1,   640] grad_stats: [4.30e-05 7.47e-05] (1.50e-06, 1.33e-04)
+INFO:root:[1,   650] loss: 0.091 masks: 114.3 12.8 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.5 ms)
+INFO:root:[1,   650] grad_stats: [7.73e-05 1.22e-04] (2.10e-06, 2.19e-04)
+INFO:root:[1,   660] loss: 0.091 masks: 114.2 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.4 ms)
+INFO:root:[1,   660] grad_stats: [5.95e-05 9.54e-05] (3.50e-06, 1.51e-04)
+INFO:root:[1,   670] loss: 0.091 masks: 114.1 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.3 ms)
+INFO:root:[1,   670] grad_stats: [1.84e-04 2.90e-04] (6.73e-06, 4.66e-04)
+INFO:root:[1,   680] loss: 0.090 masks: 114.0 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.1 ms)
+INFO:root:[1,   680] grad_stats: [2.31e-04 3.36e-04] (6.92e-06, 5.35e-04)
+INFO:root:[1,   690] loss: 0.090 masks: 113.9 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (88.0 ms)
+INFO:root:[1,   690] grad_stats: [3.32e-04 4.68e-04] (1.88e-05, 9.57e-04)
+INFO:root:[1,   700] loss: 0.090 masks: 113.8 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.9 ms)
+INFO:root:[1,   700] grad_stats: [7.36e-04 8.67e-04] (4.28e-05, 2.21e-03)
+INFO:root:[1,   710] loss: 0.091 masks: 113.7 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.9 ms)
+INFO:root:[1,   710] grad_stats: [4.43e-03 4.49e-03] (2.28e-04, 1.18e-02)
+INFO:root:[1,   720] loss: 0.091 masks: 113.7 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.8 ms)
+INFO:root:[1,   720] grad_stats: [5.32e-03 6.11e-03] (1.79e-04, 1.29e-02)
+INFO:root:[1,   730] loss: 0.093 masks: 113.6 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.7 ms)
+INFO:root:[1,   730] grad_stats: [3.14e-03 3.39e-03] (6.54e-05, 7.05e-03)
+INFO:root:[1,   740] loss: 0.093 masks: 113.5 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.6 ms)
+INFO:root:[1,   740] grad_stats: [7.55e-04 8.99e-04] (1.65e-05, 1.94e-03)
+INFO:root:[1,   750] loss: 0.093 masks: 113.4 12.7 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.4 ms)
+INFO:root:[1,   750] grad_stats: [4.17e-04 5.53e-04] (1.06e-05, 1.09e-03)
+INFO:root:[1,   760] loss: 0.093 masks: 113.3 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.3 ms)
+INFO:root:[1,   760] grad_stats: [1.78e-04 2.79e-04] (4.57e-06, 5.43e-04)
+INFO:root:[1,   770] loss: 0.092 masks: 113.3 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.1 ms)
+INFO:root:[1,   770] grad_stats: [7.16e-05 1.20e-04] (1.86e-06, 2.70e-04)
+INFO:root:[1,   780] loss: 0.091 masks: 113.2 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (87.0 ms)
+INFO:root:[1,   780] grad_stats: [1.76e-04 2.83e-04] (4.89e-06, 5.20e-04)
+INFO:root:[1,   790] loss: 0.091 masks: 113.1 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.8 ms)
+INFO:root:[1,   790] grad_stats: [8.23e-05 1.15e-04] (2.06e-06, 2.20e-04)
+INFO:root:[1,   800] loss: 0.090 masks: 113.1 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.7 ms)
+INFO:root:[1,   800] grad_stats: [5.20e-05 7.43e-05] (1.36e-06, 1.52e-04)
+INFO:root:[1,   810] loss: 0.090 masks: 113.0 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.6 ms)
+INFO:root:[1,   810] grad_stats: [5.92e-05 7.62e-05] (1.53e-06, 1.48e-04)
+INFO:root:[1,   820] loss: 0.089 masks: 112.9 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.5 ms)
+INFO:root:[1,   820] grad_stats: [1.89e-04 3.03e-04] (5.31e-06, 5.61e-04)
+INFO:root:[1,   830] loss: 0.089 masks: 112.9 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.4 ms)
+INFO:root:[1,   830] grad_stats: [6.38e-05 9.39e-05] (1.69e-06, 1.77e-04)
+INFO:root:[1,   840] loss: 0.088 masks: 112.8 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.3 ms)
+INFO:root:[1,   840] grad_stats: [2.70e-05 4.77e-05] (6.90e-07, 1.03e-04)
+INFO:root:[1,   850] loss: 0.088 masks: 112.8 12.6 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.2 ms)
+INFO:root:[1,   850] grad_stats: [4.53e-05 6.74e-05] (1.19e-06, 1.29e-04)
+INFO:root:[1,   860] loss: 0.087 masks: 112.7 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (86.1 ms)
+INFO:root:[1,   860] grad_stats: [3.78e-05 6.61e-05] (1.12e-06, 1.16e-04)
+INFO:root:[1,   870] loss: 0.087 masks: 112.6 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.9 ms)
+INFO:root:[1,   870] grad_stats: [5.38e-05 1.05e-04] (1.51e-06, 2.04e-04)
+INFO:root:[1,   880] loss: 0.086 masks: 112.5 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.8 ms)
+INFO:root:[1,   880] grad_stats: [5.83e-05 1.16e-04] (1.64e-06, 2.22e-04)
+INFO:root:[1,   890] loss: 0.086 masks: 112.5 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.6 ms)
+INFO:root:[1,   890] grad_stats: [1.18e-04 2.03e-04] (3.42e-06, 3.71e-04)
+INFO:root:[1,   900] loss: 0.085 masks: 112.4 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.5 ms)
+INFO:root:[1,   900] grad_stats: [1.06e-04 1.76e-04] (3.04e-06, 3.15e-04)
+INFO:root:[1,   910] loss: 0.085 masks: 112.3 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.4 ms)
+INFO:root:[1,   910] grad_stats: [5.90e-05 9.63e-05] (1.70e-06, 1.75e-04)
+INFO:root:[1,   920] loss: 0.084 masks: 112.2 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.2 ms)
+INFO:root:[1,   920] grad_stats: [4.61e-05 7.94e-05] (1.35e-06, 1.47e-04)
+INFO:root:[1,   930] loss: 0.084 masks: 112.1 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (85.1 ms)
+INFO:root:[1,   930] grad_stats: [3.36e-05 6.27e-05] (9.97e-07, 1.19e-04)
+INFO:root:[1,   940] loss: 0.083 masks: 111.9 12.5 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (84.9 ms)
+INFO:root:[1,   940] grad_stats: [6.86e-05 1.17e-04] (1.92e-06, 2.06e-04)
+INFO:root:[1,   950] loss: 0.083 masks: 111.6 12.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (84.8 ms)
+INFO:root:[1,   950] grad_stats: [2.61e-05 5.21e-05] (7.27e-07, 1.07e-04)
+INFO:root:[1,   960] loss: 0.082 masks: 111.4 12.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (84.6 ms)
+INFO:root:[1,   960] grad_stats: [1.02e-04 1.73e-04] (2.91e-06, 3.08e-04)
+INFO:root:[1,   970] loss: 0.082 masks: 111.0 12.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (84.4 ms)
+INFO:root:[1,   970] grad_stats: [4.97e-05 8.42e-05] (1.49e-06, 1.54e-04)
+INFO:root:[1,   980] loss: 0.081 masks: 110.7 12.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (84.2 ms)
+INFO:root:[1,   980] grad_stats: [1.55e-04 2.83e-04] (4.83e-06, 4.99e-04)
+INFO:root:[1,   990] loss: 0.081 masks: 110.2 12.3 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 6.57e+03] (83.9 ms)
+INFO:root:[1,   990] grad_stats: [2.90e-04 5.57e-04] (9.77e-06, 9.94e-04)
+INFO:root:Running... (rank: 0/1)
+INFO:root:GeneTransformerEncoder(
+  (gene_embed): Embedding(1090, 768, padding_idx=0)
+  (seg_embed): Embedding(3, 768, padding_idx=0)
+  (blocks): ModuleList(
+    (0-2): 3 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:Data loader created.
+INFO:root:Encountered exception when loading checkpoint: [Errno 2] No such file or directory: '../nichejepa-reproducibility/artifacts/merfish_300k_2_gene_panels/24092024_193113_572/jepa-latest.pth.tar'.
+[1;34mwandb[0m:
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /lustre/scratch126/cellgen/team361/sb75/nichejepa/wandb/offline-run-20240924_193112-u3tlvj3b[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20240924_193112-u3tlvj3b/logs[0m
+Finished script.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@dgx-b11>
+Subject: Job 666025: <#!/bin/bash;#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi;#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu;#BSUB -G team361 # groupname for billing;#BSUB -o ../logs/%J.out # output file;#BSUB -e ../logs/%J.err # error file;#BSUB -R "span[ptile=6]";#BSUB -M 128000  # RAM memory part 2. Default: 100MB;#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB;#BSUB -n 6 # number of cores; # Load modules;. /usr/share/modules/init/bash;module load cuda-12.1.1;module load cellgen/conda; conda activate nichejepa_new;cd /lustre/scratch126/cellgen/team361/sb75/nichejepa; # Run main script;python main.py --fname configs/merfish_300k_2_gene_panels.yaml --devices cuda:0; echo "Finished script." > in cluster <farm22> Done
+
+Job <#!/bin/bash;#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi;#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu;#BSUB -G team361 # groupname for billing;#BSUB -o ../logs/%J.out # output file;#BSUB -e ../logs/%J.err # error file;#BSUB -R "span[ptile=6]";#BSUB -M 128000  # RAM memory part 2. Default: 100MB;#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB;#BSUB -n 6 # number of cores; # Load modules;. /usr/share/modules/init/bash;module load cuda-12.1.1;module load cellgen/conda; conda activate nichejepa_new;cd /lustre/scratch126/cellgen/team361/sb75/nichejepa; # Run main script;python main.py --fname configs/merfish_300k_2_gene_panels.yaml --devices cuda:0; echo "Finished script." > was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Tue Sep 24 19:28:19 2024
+Job was executed on host(s) <6*dgx-b11>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Tue Sep 24 19:28:25 2024
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/jobs> was used as the working directory.
+Started at Tue Sep 24 19:28:25 2024
+Terminated at Tue Sep 24 19:49:05 2024
+Results reported at Tue Sep 24 19:49:05 2024
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi
+#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu
+#BSUB -G team361 # groupname for billing
+#BSUB -o ../logs/%J.out # output file
+#BSUB -e ../logs/%J.err # error file
+#BSUB -R "span[ptile=6]"
+#BSUB -M 128000  # RAM memory part 2. Default: 100MB
+#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB
+#BSUB -n 6 # number of cores
+
+# Load modules
+. /usr/share/modules/init/bash
+module load cuda-12.1.1
+module load cellgen/conda
+
+conda activate nichejepa_new
+cd /lustre/scratch126/cellgen/team361/sb75/nichejepa
+
+# Run main script
+python main.py --fname configs/merfish_300k_2_gene_panels.yaml --devices cuda:0
+
+echo "Finished script." 
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   5793.00 sec.
+    Max Memory :                                 1846 MB
+    Average Memory :                             1607.64 MB
+    Total Requested Memory :                     128000.00 MB
+    Delta Memory :                               126154.00 MB
+    Max Swap :                                   -
+    Max Processes :                              13
+    Max Threads :                                71
+    Run time :                                   1239 sec.
+    Turnaround time :                            1246 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../logs/666025.err> for stderr output of this job.
+

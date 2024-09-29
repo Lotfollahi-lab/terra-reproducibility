@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team205/sb75/nichejepa/run_inference.py", line 14, in <module>
+    args = parse_arguments()
+  File "/lustre/scratch126/cellgen/team205/sb75/nichejepa/run_inference.py", line 7, in parse_arguments
+    parser = argparse.ArgumentParser(description='Run NicheJEPA inference.')
+NameError: name 'argparse' is not defined

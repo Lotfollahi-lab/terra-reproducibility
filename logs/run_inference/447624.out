@@ -1,0 +1,134 @@
+INFO:root:Running... (rank: 0/1)
+INFO:root:Loaded parameters from YAML file.
+INFO:root:GeneTransformerEncoder(
+  (gene_embed): Embedding(1087, 768, padding_idx=0)
+  (seg_embed): Embedding(3, 768, padding_idx=0)
+  (blocks): ModuleList(
+    (0-2): 3 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:Data loader created.
+INFO:root:Loaded pretrained encoder from epoch 20 with msg: <All keys matched successfully>.
+INFO:root:Loaded pretrained predictor from epoch 20 with msg: <All keys matched successfully>.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+INFO:root:Loaded pretrained target encoder from epoch 20 with msg: <All keys matched successfully>.
+INFO:root:Finished loading checkpoint with read path: ../nichejepa-reproducibility/artifacts/merfish_gp/22092024_202630_532/jepa-latest.pth.tar.
+(199025, 768)
+(199025, 768)
+(199025, 768)
+INFO:root:GeneTransformerEncoder(
+  (gene_embed): Embedding(1087, 768, padding_idx=0)
+  (seg_embed): Embedding(3, 768, padding_idx=0)
+  (blocks): ModuleList(
+    (0-2): 3 x Block(
+      (norm1): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=768, out_features=2304, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=768, out_features=768, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (drop_path): Identity()
+      (norm2): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=768, out_features=3072, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=3072, out_features=768, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+)
+INFO:root:Data loader created.
+INFO:root:Loaded pretrained encoder from epoch 20 with msg: <All keys matched successfully>.
+INFO:root:Loaded pretrained predictor from epoch 20 with msg: <All keys matched successfully>.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+INFO:root:Loaded pretrained target encoder from epoch 20 with msg: <All keys matched successfully>.
+INFO:root:Finished loading checkpoint with read path: ../nichejepa-reproducibility/artifacts/merfish_gp/22092024_202630_532/jepa-latest.pth.tar.
+(49757, 768)
+(49757, 768)
+(49757, 768)
+Finished script.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@dgx-b11>
+Subject: Job 447624: <#!/bin/bash;#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi;#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu;#BSUB -G team361 # groupname for billing;#BSUB -o ../logs/run_inference/%J.out # output file;#BSUB -e ../logs/run_inference/%J.err # error file;#BSUB -R "span[ptile=6]";#BSUB -M 128000  # RAM memory part 2. Default: 100MB;#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB;#BSUB -n 6 # number of cores; # Load modules;. /usr/share/modules/init/bash;module load cuda-12.1.1;module load cellgen/conda; conda activate nichejepa_new;cd /lustre/scratch126/cellgen/team205/sb75/nichejepa; python run_inference.py --fname configs/merfish_2_gene_panels_new.yaml; echo "Finished script." > in cluster <farm22> Done
+
+Job <#!/bin/bash;#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi;#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu;#BSUB -G team361 # groupname for billing;#BSUB -o ../logs/run_inference/%J.out # output file;#BSUB -e ../logs/run_inference/%J.err # error file;#BSUB -R "span[ptile=6]";#BSUB -M 128000  # RAM memory part 2. Default: 100MB;#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB;#BSUB -n 6 # number of cores; # Load modules;. /usr/share/modules/init/bash;module load cuda-12.1.1;module load cellgen/conda; conda activate nichejepa_new;cd /lustre/scratch126/cellgen/team205/sb75/nichejepa; python run_inference.py --fname configs/merfish_2_gene_panels_new.yaml; echo "Finished script." > was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Sep 23 08:56:58 2024
+Job was executed on host(s) <6*dgx-b11>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Mon Sep 23 08:57:02 2024
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team205/sb75/nichejepa-reproducibility/jobs> was used as the working directory.
+Started at Mon Sep 23 08:57:02 2024
+Terminated at Mon Sep 23 09:31:19 2024
+Results reported at Mon Sep 23 09:31:19 2024
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpu-lotfollahi # name of the partition to run job on (options: gpu-normal, gpu-huge, ) gpu-lotfollahi
+#BSUB -gpu 'mode=exclusive_process:num=1:block=yes' # request for exclusive access to gpu
+#BSUB -G team361 # groupname for billing
+#BSUB -o ../logs/run_inference/%J.out # output file
+#BSUB -e ../logs/run_inference/%J.err # error file
+#BSUB -R "span[ptile=6]"
+#BSUB -M 128000  # RAM memory part 2. Default: 100MB
+#BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB
+#BSUB -n 6 # number of cores
+
+# Load modules
+. /usr/share/modules/init/bash
+module load cuda-12.1.1
+module load cellgen/conda
+
+conda activate nichejepa_new
+cd /lustre/scratch126/cellgen/team205/sb75/nichejepa
+
+python run_inference.py --fname configs/merfish_2_gene_panels_new.yaml
+
+echo "Finished script." 
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   11786.00 sec.
+    Max Memory :                                 10573 MB
+    Average Memory :                             3023.55 MB
+    Total Requested Memory :                     128000.00 MB
+    Delta Memory :                               117427.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                50
+    Run time :                                   2045 sec.
+    Turnaround time :                            2061 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../logs/run_inference/447624.err> for stderr output of this job.
+
