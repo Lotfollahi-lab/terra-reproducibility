@@ -1,44 +1,39 @@
 data:
-  batch_size: 32 # 64
-  data_path: '/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/gold/cell-neighborhood-tokenizer/starmap_merfish_mouse_brain_harmonized_1-gene-panels/16-shards/starmap_merfish_mouse_brain_harmonized_1-gene-panels_4_False_read_depth_shifted_log_864.dataset'
-  split: 0.2
-  stratify: False
-  data_set_name: 'starmap_merfish_mouse_brain_1_gene_panel'
-  num_workers: 6
-  pin_mem: true
-  vocab_size: 434
-  seq_len_cell: 151
-  seq_len_neighborhood: 248
-  has_cls: True
+  dataset_name: 'starmap_merfish_mouse_brain_1_gene_panel'
+  raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_1p'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-neighborhood-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_2_read_depth_shifted_log_864.dataset'
+  tokenizer_type: 'cell_neighborhood' # 'cell_neighborhood', 'cell_graph'
   random_state: 0
   sample_subset: False
-  sampling_strategy: null # null, 'random_sampling', 'normalized_count_rank_sampling'
-logging:
-  write_tag: jepa
-mask:
-  context_mask_size: 1220 # This doesn't have meaning in segment_masking.
-  target_mask_size: 10 # This doesn't have meaning in segment_masking.
-  n_contexts: 1
-  n_targets: 5 # This is equivalent to n_segment in segment_masking.
-  per_segment_mask_ratio: 0.5
-  segment_masking: True
+  split: 0.2
+  stratify: False
+  vocab_size: 1671 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-neighborhood-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl')
+  seq_len_cell: 176 # max number of non-zero cell tokens per cell
+  seq_len_neighborhood: 309 # max number of non-zero neighborhood tokens per cell
+  n_segments: 2 # number of unique segment tokens
+  sampling_strategy: 'norm_count_rank_sampling' # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
+  batch_size: 64
+  num_workers: 6
+  pin_memory: True
 meta:
-  enc_depth: 3 # 3
-  load_checkpoint: false
-  load_timestamp: ''
-  pred_depth: 1 # 1
-  pred_emb_dim: 768
+  enc_depth: 3
   enc_emb_dim: 768
-  enc_pred_depth: 31
-  top_k: 127
-  read_checkpoint: null # 'jepa-ep5.pth.tar'
-  use_bfloat16: True
+  pred_depth: 1
+  pred_emb_dim: 768
+  special_tokens: ['cls_cell', 'cls_neighborhood']
   pos_learnable: False
   seg_learnable: False
-  gene_panel_size: 2
+  use_bfloat16: True
+mask:
+  n_contexts: 1
+  n_targets: 5 # this is the number of segments in segment masking
+  segment_masking: True # this doesn't have meaning in block masking.
+  context_mask_size: 1220 # this doesn't have meaning in segment masking.
+  target_mask_size: 10 # this doesn't have meaning in segment masking.
+  per_segment_mask_ratio: 0.5
 optimization:
-  epochs: 20
   warmup: 3
+  epochs: 20
   ema:
   - 0.9764319982153814
   - 1.0
@@ -48,3 +43,10 @@ optimization:
   weight_decay: 0.04
   final_weight_decay: 0.4
   ipe_scale: 1.0
+state:
+  log_freq: 20
+  checkpoint_freq: 5
+  write_tag: nichejepa
+  read_timestamp: ''
+  load_checkpoint: False # true, false
+  read_checkpoint: null # 'jepa-ep5.pth.tar'
