@@ -168,6 +168,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                     dataset_id = 0
                 elif "starmap" in str(file_path):
                     dataset_id = 1
+                elif "sim" in str(file_path):
+                    dataset_id = 2
                 else:
                     print(f"This data is currently not supported.")
             # If batch not present in adata.obs.keys(), hardcodes default batch_id_key
@@ -190,6 +192,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                     assay_key = "merfish"
                 elif "starmap" in str(file_path):
                     assay_key = "starmap"
+                elif "sim" in str(file_path):
+                    assay_key = "sim"
                 else:
                     print(f"This assay is currently not supported.")
             if assay_key not in assay_key_list:
@@ -203,6 +207,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             except:
                 if "mouse" in str(file_path):
                     species_key = "mus_musculus"
+                elif "sim" in str(file_path):
+                    species_key = "sim"
                 else:
                     print(f"This species is currently not supported.")
             if species_key not in species_key_list:
@@ -218,6 +224,8 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             except:
                 if "brain" or "cns" in str(file_path):
                     tissue_key = "brain"
+                elif "sim" in str(file_path):
+                    tissue_key = "sim"
                 else:
                     print(f"This tissue is currently not supported.")
             if tissue_key not in tissue_key_list:

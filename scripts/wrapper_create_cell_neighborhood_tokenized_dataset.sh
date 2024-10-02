@@ -3,11 +3,11 @@
 GROUP="team361"
 SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
 
-DATASET_NAME="${1:-sim1_1105fts_10000locs}"
+DATASET_NAME="${1:-sss2-1b_1p}"
 TOKENIZER_NAME="neighborhood"
 
 case $DATASET_NAME in
-    sim1_1105fts_10000locs)
+    sss2-1b_1p)
         RAM="2G"
         TIME="0:05"
         CORES=1
