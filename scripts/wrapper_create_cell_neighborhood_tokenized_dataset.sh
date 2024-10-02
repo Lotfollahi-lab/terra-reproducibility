@@ -73,9 +73,9 @@ case $DATASET_NAME in
         CORES=2
         QUEUE="parallel"
         ;;
-    starmap_merfish_mouse_brain_1_gene_panel)
+    mmb0-1b_smb1-1b_1p)
         RAM="25G"
-        TIME="0:30"
+        TIME="0:10"
         CORES=4
         QUEUE="parallel"
         ;;
