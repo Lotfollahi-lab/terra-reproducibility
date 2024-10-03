@@ -10,7 +10,7 @@ import concurrent
 import pandas as pd
 import scanpy as sc
 from pathlib import Path
-from typing import Dict, Union, Literal
+from typing import List, Dict, Union, Literal
 
 from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
 
@@ -104,8 +104,7 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 
 def collect_batch_stats(file_path: Union[Path, str],
                         file_format: Literal["h5ad"] = "h5ad",
-                        cell_types_key: str = "cell_types",
-                        niche_types_key: str = "niche_types") -> Dict:
+                        relevant_keys: List[str] = ["cell_types"]) -> Dict:
     """
     Collect statistics of a single batch of data.
     
@@ -113,8 +112,7 @@ def collect_batch_stats(file_path: Union[Path, str],
     ----------
     - file_path (Union[Path, str]): The path to the batch file.
     - file_format (Literal["h5ad"]): The format of the file.
-    - cell_types_key (str): The key for cell types in the AnnData object.
-    - niche_types_key (str): The key for niche types in the AnnData object.
+    - relevant_keys (List[str]): The relevant keys to extract from the batch.
     
     Returns:
     ----------
@@ -137,25 +135,27 @@ def collect_batch_stats(file_path: Union[Path, str],
     # get number of cells and number of genes
     n_cells, n_genes = adata.shape
 
-    # get cell and niche type counts
-    # append 'cell_' and 'niche_' to the keys to identify them in the results
-    cell_type_counts = {f"cell_{key}": value for key, value in adata.obs[cell_types_key].value_counts().to_dict().items()}
-    niche_type_counts = {f"niche_{key}": value for key, value in adata.obs[niche_types_key].value_counts().to_dict().items()}
+    # get counts for each unique value of each relevant key
+    # append the keys to identify them in the results
+    relevant_key_counts = {}
+    for relevant_key in relevant_keys:
+        for key, value in adata.obs[relevant_key].value_counts(dropna=False).to_dict().items():
+            relevant_key_counts[f"{relevant_key}_{key}"] = value
     
     # Create a dictionary for the row data corresponding to each batch
     batch_stats = {"batch_id": batch_id,
                 "n_cells": n_cells,
                 "n_genes": n_genes,
-                **cell_type_counts,
-                **niche_type_counts}
+                **relevant_key_counts}
     
     # Create a single row DataFrame for the batch
     batch_df = pd.DataFrame(batch_stats, index=[0])
     
-    return batch_id, batch_df, cell_type_counts, niche_type_counts
+    return batch_id, batch_df, relevant_key_counts
             
 
 def collect_dataset_stats(input_directory: Union[Path, str],
+                            species: str,
                             nproc: int = 1,
                             file_format: Literal["h5ad"] = "h5ad",
                             processing_mode: Literal['sequential', 'parallel'] = 'sequential',
@@ -166,6 +166,7 @@ def collect_dataset_stats(input_directory: Union[Path, str],
     Parameters:
     ----------
     - input_directory (Union[Path, str]): The path to the directory containing batch files.
+    - species (str): The species of the dataset.
     - nproc (int): The number of processes to use.
     - file_format (Literal["h5ad"]): The format of the file.
     - processing_mode (Literal['sequential', 'parallel']): The processing mode.
@@ -176,8 +177,17 @@ def collect_dataset_stats(input_directory: Union[Path, str],
     - pd.DataFrame: The statistics of the dataset.
     """    
     reverse_custom_attr_name_dict = {value: key for key, value in custom_attr_name_dict.items()}
-    cell_types_key = reverse_custom_attr_name_dict['cell_types']
-    niche_types_key = reverse_custom_attr_name_dict['niche_types']
+    
+    relevant_keys = []
+    if species == 'sim':
+        relevant_keys.append(reverse_custom_attr_name_dict['cell_types'])
+        relevant_keys.append(reverse_custom_attr_name_dict['niche_types'])
+    elif species == 'mus_musculus':
+        relevant_keys.append(reverse_custom_attr_name_dict['cell_types'])
+        relevant_keys.append(reverse_custom_attr_name_dict['major_brain_region'])
+        relevant_keys.append(reverse_custom_attr_name_dict['ccf_region_name'])
+    else:
+        raise NotImplementedError(f"Species {species} not implemented.")
     
     results = pd.DataFrame(columns=["batch_id", "n_cells", "n_genes"])
     
@@ -187,16 +197,12 @@ def collect_dataset_stats(input_directory: Union[Path, str],
             print(f"Reading {file_path}...")
 
             # Collect statistics of a single batch of data
-            batch_id, batch_df, cell_type_counts, niche_type_counts = collect_batch_stats(file_path,
-                                                                                            file_format,
-                                                                                            cell_types_key,
-                                                                                            niche_types_key)
+            batch_id, batch_df, relevant_key_counts = collect_batch_stats(file_path,
+                                                                            file_format,
+                                                                            relevant_keys)
             
-            # Ensure all keys in cell_type_counts and niche_type_counts are present in the results
-            for key in cell_type_counts.keys():
-                if key not in results.columns:
-                    results[key] = 0
-            for key in niche_type_counts.keys():
+            # Ensure all keys in relevant keys are present in the results
+            for key in relevant_key_counts.keys():
                 if key not in results.columns:
                     results[key] = 0
             
@@ -209,17 +215,17 @@ def collect_dataset_stats(input_directory: Union[Path, str],
             futures = []
             for file_path in input_directory.glob(f"*.{file_format}"):
                 print(f"Reading {file_path}...")
-                future = executor.submit(collect_batch_stats, file_path, file_format, cell_types_key, niche_types_key)
+                future = executor.submit(collect_batch_stats, 
+                                         file_path, 
+                                         file_format, 
+                                         relevant_keys)
                 futures.append(future)
             for future in concurrent.futures.as_completed(futures):
                 # Collect statistics of a single batch of data
-                batch_id, batch_df, cell_type_counts, niche_type_counts = future.result()
+                batch_id, batch_df, relevant_key_counts = future.result()
 
-                # Ensure all keys in cell_type_counts and niche_type_counts are present in the results
-                for key in cell_type_counts.keys():
-                    if key not in results.columns:
-                        results[key] = 0
-                for key in niche_type_counts.keys():
+                # Ensure all keys in relevant keys are present in the results
+                for key in relevant_key_counts.keys():
                     if key not in results.columns:
                         results[key] = 0
                 
@@ -233,6 +239,7 @@ def collect_dataset_stats(input_directory: Union[Path, str],
 def main(config: Dict) -> None:
     # Configure parameters
     dataset_name = config['experiment']['dataset_name']
+    species = config['experiment']['species']
     nproc = config['experiment']['nproc']
     processing_mode = config['analysis']['processing_mode']
     data_directory_path = Path(config['paths']['data_directory_path'])
@@ -245,11 +252,13 @@ def main(config: Dict) -> None:
 
     # Set path to directory containing AnnData batch files
     input_directory = data_directory_path / "silver" / dataset_name
-    output_directory = data_directory_path / "silver_statistics" / dataset_name
+    results_directory = data_directory_path.parent.parent.parent / "results"
+    output_directory = results_directory / "silver_statistics" / dataset_name  
     os.makedirs(output_directory, exist_ok=True)
     
     print(f"Collecting statistics for {dataset_name}...")
     results = collect_dataset_stats(input_directory=input_directory,
+                                    species=species,
                                     nproc=nproc,
                                     file_format=file_format,
                                     processing_mode=processing_mode,
