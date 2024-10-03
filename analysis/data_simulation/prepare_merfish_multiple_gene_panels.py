@@ -1,15 +1,35 @@
+"""
+Usage: 
+
+>>> python prepare_merfish_multiple_gene_panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_merfish_mouse_brain_8-batch_2-gene-panels.yaml
+
+"""
+
 import os
-import pandas as pd
+import yaml
+import argparse
 import numpy as np
-import pickle
-from pathlib import Path
 import scanpy as sc
-import anndata as ad
+from pathlib import Path
+from typing import Dict, List
 
 
-def create_dataset_with_multiple_gene_panels(input_directory, 
-                                                output_directory,
-                                                gene_panel_list):
+def create_dataset_with_multiple_gene_panels(input_directory: Path, 
+                                                output_directory: Path,
+                                                gene_panel_list: List[List[str]]):
+    """
+    Create a new dataset with multiple gene panels from the input_directory.
+    
+    Parameters:
+    ----------
+    - input_directory (Path): The directory containing the input datasets.
+    - output_directory (Path): The directory to write the output datasets.
+    - gene_panel_list (List[List[str]]): A list of gene panels.
+    
+    Returns:
+    ----------
+    - None
+    """
     file_paths = list(input_directory.glob(f"**/*.h5ad"))
     
     for file_path in file_paths:
@@ -30,11 +50,26 @@ def create_dataset_with_multiple_gene_panels(input_directory,
         print()
     
 
-def create_gene_panels(gene_list, 
-                       n_gene_panels=2,
-                       shared_genes_ratio=0.4,
-                       subset_ratios=[0.4, 0.2],
-                       seed=42):
+def create_gene_panels(gene_list: List[str], 
+                       n_gene_panels: int = 2,
+                       shared_genes_ratio: float = 0.4,
+                       subset_ratios: List[float] = [0.4, 0.2],
+                       seed: int = 42):
+    """
+    Create gene panels from the gene_list.
+    
+    Parameters:
+    ----------
+    - gene_list (List[str]): The list of genes.
+    - n_gene_panels (int): The number of gene panels to create.
+    - shared_genes_ratio (float): The ratio of shared genes between gene panels.
+    - subset_ratios (List[float]): The ratio of genes in each gene panel.
+    - seed (int): The random seed.
+    
+    Returns:
+    ----------
+    - List[List[str]]: A list of gene panels.
+    """
     if subset_ratios is None or len(subset_ratios) != n_gene_panels:
         raise ValueError("subset_ratios must be a list of size equal to n_gene_panels")
     
@@ -77,28 +112,86 @@ def create_gene_panels(gene_list,
     return gene_panel_list
 
 
-def get_gene_list(data_dir):
+def get_gene_list(data_dir: Path) -> List[str]:
+    """
+    Get the gene list from the first file in the directory.
+    
+    Parameters:
+    ----------
+    - data_dir (Path): The directory containing the data files.
+    
+    Returns:
+    ----------
+    - List[str]: The list of genes.
+    """
     print("Getting gene list from the first file in the directory")
     file_paths = list(data_dir.glob(f"**/*.h5ad"))
     adata = sc.read_h5ad(file_paths[0])    
     gene_list = adata.var["ensembl_id"].values.tolist()
     return gene_list
     
-
-def main():
-   # Configure data paths
-    data_directory_path = Path('/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/')
-    st_data_silver_folder_path = data_directory_path / "silver"
-    dataset_name = 'merfish_mouse_brain_8-batch'
     
-    n_gene_panels = 2
+def parse_arguments() -> argparse.Namespace:
+    """
+    Parse command line arguments.
+    
+    Returns:
+    ----------
+    - argparse.Namespace: The command line arguments.
+    """
+    parser = argparse.ArgumentParser(description='Process command line arguments.')
+    
+    parser.add_argument('--config_file', 
+                        type=str, 
+                        help='Path to the config file')
+    parser.add_argument('--override', 
+                        nargs='+', 
+                        help='Override parameters in the config file')
+    
+    return parser.parse_args()
+
+    
+def collect_configs(args: argparse.Namespace) -> Dict:
+    """
+    Collect configurations from the config file and command line arguments.
+    
+    Parameters:
+    ----------
+    - args (argparse.Namespace): The command line arguments.
+    
+    Returns:
+    ----------
+    - Dict: The configuration dictionary.
+    """
+    # Get the config file name from command line argument
+    config_fname = args.config_file
+
+    # Read parameters from config file
+    with open(config_fname, "r") as f:
+        config = yaml.safe_load(f)
+    
+    return config
+
+
+def main(config: Dict):
+    
+   # Configure experiment parameters
+    dataset_name = config['experiment']['dataset_name']
+    n_gene_panels = config['experiment']['n_gene_panels']
+    
+    # Set input data directory
+    data_directory_path = Path(config['paths']['data_directory_path'])
+    st_data_silver_folder_path = data_directory_path / "silver"
     input_directory = st_data_silver_folder_path / dataset_name
+    
+    # Set output data directory
     output_directory = st_data_silver_folder_path / f"{dataset_name}_{n_gene_panels}-gene-panels"
     os.makedirs(output_directory, exist_ok=True)
 
-    shared_genes_ratio = 0.4
-    subset_ratios = [0.4, 0.2]
-    seed = 42
+    # Set gene panel parameters
+    shared_genes_ratio = config['gene_panel']['shared_genes_ratio']
+    subset_ratios = config['gene_panel']['subset_ratios']
+    seed = config['gene_panel']['seed']
     
     gene_list = get_gene_list(input_directory)
     
@@ -113,5 +206,10 @@ def main():
                                                 gene_panel_list)
 
 if __name__ == '__main__':
+    # Parse command line arguments
+    args = parse_arguments()
+
+    # Collect configs 
+    config = collect_configs(args)
     
-    main()
+    main(config=config)

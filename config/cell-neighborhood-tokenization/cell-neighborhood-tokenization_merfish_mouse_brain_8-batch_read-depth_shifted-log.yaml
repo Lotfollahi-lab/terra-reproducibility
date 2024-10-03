@@ -1,8 +1,8 @@
 experiment:
   tokenizer: "cell-neighborhood-tokenizer"
-  dataset_name: "merfish_mouse_brain_2-batch"
+  dataset_name: "merfish_mouse_brain_8-batch"
   species: "mus_musculus"
-  n_batches: 2
+  n_batches: 8
   nproc: 2
   overwrite: False
   # model_input_size: 2244 # uncomment to manually set the model input size
@@ -11,7 +11,7 @@ wandb:
   project: "NicheJEPA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
-  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-2batch", "read-depth", "shifted-log"]
+  tags: ["cell-neighborhood-tokenization", "merfish-mouse-brain-8batch", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
@@ -32,8 +32,7 @@ tokenization:
                           "major_brain_region": "major_brain_region",
                           "ccf_region_name": "ccf_region_name",
                           "donor_id": "donor_id",
-                          "brain_section_label": "sample_id",
                           "batch": "batch_id"}
-  num_shards: 2
+  num_shards: 8
   keep_in_memory: False
   label_cats: ["cell_types", "niche_types"]
