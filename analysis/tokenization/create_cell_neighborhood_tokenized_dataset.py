@@ -27,10 +27,10 @@ from typing import Set, List, Dict, Tuple, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
 
-from nichejepa import tokenizers
-from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
-from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
-from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
+from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodRankTokenizer
+from nichejepa.preprocessors.aggregators import aggregate_neighbors
+from nichejepa.preprocessors.normalizers import normalize_by_read_depth
+from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
 
 def get_gene_set_from_ensembl_release(species: str, 
@@ -77,6 +77,7 @@ def build_gene_panel(ensembl_gene_set: Set[str],
     """
     # Extract gene ensembl IDs and create a gene panel
     gene_panel = set(adata.var["ensembl_id"].values.tolist())
+    # TODO: Remove this block after dataset harmonization is complete
     if ensembl_gene_set is not None:
         # gene panel = genes in adata intersected with ensembl gene set
         gene_panel = gene_panel.intersection(ensembl_gene_set)
@@ -158,9 +159,10 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             adata = sc.read_h5ad(file_path)
 
             # ------------------------------------------------------------------------------------
-            # Capture batch_id_key for the current batch of AnnData
-            # Hardcoding dataset ID for now (required for unique name for batch_id_key)
-            # TODO: Capture dataset ID from adata.uns['dataset_id']
+            # Capture dataset_id for the current batch of AnnData
+            # e.g. dataset_id = 0 or 1 or 2 or 3...
+            # Hardcodes dataset_id if unavailable in adata.uns (required for unique name for batch in the vocab token dictionary)
+            # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 dataset_id = adata.uns['dataset_id']
             except:
@@ -168,23 +170,30 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                     dataset_id = 0
                 elif "starmap" in str(file_path):
                     dataset_id = 1
-                elif "sim" in str(file_path):
+                elif "sim1_1105fts" in str(file_path):
                     dataset_id = 2
+                elif "sim1_1105genes" in str(file_path):
+                    dataset_id = 3
                 else:
                     print(f"This data is currently not supported.")
-            # If batch not present in adata.obs.keys(), hardcodes default batch_id_key
-            if "batch" not in adata.obs.keys():
-                batch_id_key = f"{dataset_id}_batch1"
-            # If present, this assumes file_path contains cells belonging to the same batch
+            print(f"Dataset ID: {dataset_id}")
+            # ------------------------------------------------------------------------------------
+            # Capture batch_id_key for the current batch of AnnData
             # e.g. batch_id_key = "0_batch1" or "1_batch1" or "0_batch2"...
-            else:
-                batch_id_key = f"{dataset_id}_{adata.obs['batch'].tolist()[0]}"
-            print(f"Dataset ID: {dataset_id} | Batch ID Key: {batch_id_key}")
+            # Hardcodes batch_id_key if unavailable in adata.uns
+            # TODO: Remove exception handling after dataset harmonization is complete
+            try:
+                batch_id = adata.uns['batch']
+            except:
+                batch_id = "batch1"
+            batch_id_key = f"{dataset_id}_{batch_id}"    
+            print(f"Batch ID Key: {batch_id_key}")
             batch_id_key_list.append(batch_id_key)
             # ------------------------------------------------------------------------------------ 
             # Capture assay keys for the current batch of AnnData
-            # Hardcoding assay for now (required for unique name for assay_key)
-            # TODO: Capture assay from adata.uns['assay']
+            # e.g. assay_key = "merfish" or "starmap" or "sim"...
+            # Hardcodes assay_key if unavailable in adata.uns (required for unique name for assay in the vocab token dictionary)
+            # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 assay_key = adata.uns['assay']
             except:
@@ -200,8 +209,9 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 assay_key_list.append(assay_key)
             # ------------------------------------------------------------------------------------ 
             # Capture species keys for the current batch of AnnData
-            # Hardcoding species for now (required for unique name for species_key)
-            # TODO: Capture species from adata.uns['species']
+            # e.g. species_key = "mus_musculus" or "homo_sapiens" or "sim"...
+            # Hardcodes species_key if unavailable in adata.uns (required for unique name for species in the vocab token dictionary)
+            # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 species_key = adata.uns['species']
             except:
@@ -212,13 +222,14 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 else:
                     print(f"This species is currently not supported.")
             if species_key not in species_key_list:
+                species_key_list.append(species_key)          
                 # Obtain gene set from Ensembl release
                 ensembl_gene_sets[species_key] = get_gene_set_from_ensembl_release(species=species_key)
-                species_key_list.append(species_key)            
             # ------------------------------------------------------------------------------------ 
             # Capture tissue keys for the current batch of AnnData
-            # Hardcoding tissue for now (required for unique name for tissue_key)
-            # TODO: Capture tissue from adata.uns['tissue']
+            # e.g. tissue_key = "brain" or "sim"...
+            # Hardcodes tissue_key if unavailable in adata.uns (required for unique name for tissue in the vocab token dictionary)
+            # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 tissue_key = adata.uns['tissue']
             except:
@@ -232,16 +243,9 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 tissue_key_list.append(tissue_key)            
             # ------------------------------------------------------------------------------------
             # Capture gene panel id key and gene panel mappings for the current batch of AnnData
-            # Extract gene ensembl IDs and create a gene panel
-            # TODO: Remove this (gene subsetting) from here and move to the bronze -> silver data preprocessing step
+            # Creates gene panel as an intersection of Ensembl gene set and genes in adata
             # TODO: Save the correct gene panel to gene panel ID and adata that is on the disk
             gene_panel = build_gene_panel(ensembl_gene_sets[species_key], adata)
-            # Filter adata to include only genes in gene panel
-            subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
-            # Subset adata to include only genes in gene panel
-            adata = adata[:, subset_genes]
-            # Append processed and loaded adata to adata_batch_list
-            adata_batch_list.append(adata)
             
             # If gene panel is unique, assign a unique ID to it
             if gene_panel not in unique_gene_panels_list:
@@ -260,7 +264,15 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
                 file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
             # ------------------------------------------------------------------------------------
-        
+            # TODO: Remove this (gene subsetting) from here and move to the bronze -> silver data preprocessing step
+            # Filter adata to include only genes in gene panel
+            subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
+            # Subset adata to include only genes in gene panel
+            adata = adata[:, subset_genes]
+            # ------------------------------------------------------------------------------------
+            # Append processed and loaded adata to adata_batch_list
+            adata_batch_list.append(adata)
+
         # Build a complete list of genes in the dataset across all batches of anndata
         # e.g. gene_list = ['ENSMUSG00000020734','ENSMUSG00000021099', 'ENSMUSG00000019787']
         gene_list = list(set().union(*unique_gene_panels_list))
@@ -562,10 +574,12 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 def main(config: Dict):
         
     # Configure experiment arguments
+    experiment_id = config["experiment"]["experiment_id"]
     experiment_name = config["experiment"]["experiment_name"]
     tokenizer = config["experiment"]["tokenizer"]
     nproc = config["experiment"]["nproc"]
     overwrite = config["experiment"]["overwrite"]
+    print(f"Experiment ID: {experiment_id}")
     print(f"Experiment Name: {experiment_name}")
     print(f"Tokenizer: {tokenizer}")
     
@@ -610,8 +624,7 @@ def main(config: Dict):
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
     # Initialize wandb run
-    # TODO: fix tags
-    wandb_tags = [experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
+    wandb_tags = [experiment_id, experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
     wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
                         tags=wandb_tags,
@@ -728,7 +741,7 @@ def main(config: Dict):
         start = time.time()
         
         # Instantiate tokenizer
-        tk = tokenizers.CellNeighborhoodRankTokenizer(
+        tk = CellNeighborhoodRankTokenizer(
                 model_input_size=model_input_size,
                 norm_method=norm_method,
                 norm_factor=norm_factor,
@@ -776,7 +789,7 @@ def main(config: Dict):
                                     type=f"{config['experiment']['tokenizer']}",
                                     metadata=config)
         # add files to artifact
-        artifact.add_file(local_path=token_dictionary_file, name="NicheJEPA Token Dictionary")
+        artifact.add_file(local_path=token_dictionary_file, name="NicheJEPA Neighborhood Token Dictionary")
         artifact.add_file(local_path=profiler_stats_fname, name="cProfile Stats")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
