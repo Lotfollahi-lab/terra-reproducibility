@@ -1,24 +1,23 @@
 #!/bin/bash
 
-DATASET_NAME=$1    # dataset name
+EXPERIMENT_NAME=$1    # dataset name
 TOKENIZER_NAME=$2  # tokenizer name
 CONFIG_FILE=$3  # path to the config file
 CORES=$4    # number of cores
 
+# Modify to match your python environment activation command(s)
 module load cellgen/conda
 conda activate nichejepa-reproducibility
 
-echo "Creating ${TOKENIZER_NAME} tokenized data for ${DATASET_NAME} dataset with ${CORES} cores"
-
 case $TOKENIZER_NAME in
-    neighborhood)
-        python reproducibility/analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py \
+    cell-neighborhood-rank-tokenizer)
+        python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py \
             --config_file ${CONFIG_FILE} \
             --override \
             nproc=${CORES}
         ;;
     graph)
-        python reproducibility/analysis/tokenization/create_cell_graph_tokenized_dataset.py \
+        python analysis/tokenization/create_cell_graph_tokenized_dataset.py \
             --config_file ${CONFIG_FILE} \
             --override \
             nproc=${CORES}

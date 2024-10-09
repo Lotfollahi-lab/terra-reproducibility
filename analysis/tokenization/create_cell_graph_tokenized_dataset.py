@@ -27,10 +27,10 @@ from typing import List, Dict, Union, Literal, Optional
 
 from pyensembl import EnsemblRelease
 
-from nichejepa import tokenizers
-from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
-from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
-from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
+from nichejepa.tokenizers.cell_tokenizers import CellGraphRankTokenizer
+from nichejepa.preprocessors.aggregators import aggregate_neighbors
+from nichejepa.preprocessors.normalizers import normalize_by_read_depth
+from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
 
 def load_anndata(st_data_silver_folder_path: Union[Path, str], 
@@ -548,7 +548,7 @@ def main():
         start = time.time()
         
         # Instantiate tokenizer
-        tk = tokenizers.CellGraphRankTokenizer(
+        tk = CellGraphRankTokenizer(
                 model_input_size=model_input_size,
                 tokens_per_cell=tokens_per_cell,
                 norm_method=norm_method,

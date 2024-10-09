@@ -4,11 +4,11 @@ Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 Usage
 ----------
 .. terminal
-    >>> python create_cell_neighborhood_tokenized_dataset.py --config_file cell-neighborhood-tokenization_mmb0-1b_smb1-1b_1p_read-depth_shifted-log.yaml --override nproc=1    
+    >>> python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1
 
 Description
 ----------
-This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary.
+This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides values from the config file and is optional to use.
 """
 
 import os
@@ -573,14 +573,16 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 
 def main(config: Dict):
         
+    # ------------------------------------------------------------
+
     # Configure experiment arguments
-    experiment_id = config["experiment"]["experiment_id"]
     experiment_name = config["experiment"]["experiment_name"]
+    experiment_description = config["experiment"]["experiment_description"]
     tokenizer = config["experiment"]["tokenizer"]
     nproc = config["experiment"]["nproc"]
     overwrite = config["experiment"]["overwrite"]
-    print(f"Experiment ID: {experiment_id}")
     print(f"Experiment Name: {experiment_name}")
+    print(f"Experiment Description: {experiment_description}")
     print(f"Tokenizer: {tokenizer}")
     
     # Configure tokenization parameters
@@ -591,25 +593,20 @@ def main(config: Dict):
     processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
+
+    # ------------------------------------------------------------
         
     # Configure data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
     st_data_silver_folder_path = data_directory_path / "silver"
     st_data_gold_folder_path = data_directory_path / "gold"
-    
-    # Configure profiler path
-    profiler_path = Path(config["paths"]["profiler_path"]) / experiment_name / "profiler" / tokenizer
-    os.makedirs(profiler_path, exist_ok=True)
-    
+        
     # Configure cache path
-    try:
-        cache_directory_path = Path(config["paths"]["cache_directory_path"])
-    except:
-        cache_directory_path = data_directory_path / "cache"
-    os.makedirs(cache_directory_path, exist_ok=True)    
+    cache_directory_path = data_directory_path / "cache"
+    os.makedirs(cache_directory_path, exist_ok=True)
 
     # Configure tokenizer paths
-    tokenizer_directory_path = Path(config["paths"]["tokenizer_directory_path"])
+    tokenizer_directory_path = data_directory_path / "tokenizer"
     tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
@@ -623,14 +620,28 @@ def main(config: Dict):
     gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
+    # ------------------------------------------------------------
+    log_directory_path = Path("./logs") / experiment_name
+        
+    # Set profiler path
+    profiler_path = log_directory_path / "cProfiler" / tokenizer
+    os.makedirs(profiler_path, exist_ok=True)
+
+    # Set wandb directory
+    wandb_path = log_directory_path / "wandb" / tokenizer
+    os.makedirs(profiler_path, exist_ok=True)
+    os.environ["WANDB_DIR"] = str(wandb_path)
+
     # Initialize wandb run
-    wandb_tags = [experiment_id, experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
+    wandb_tags = [experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
     wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
                         tags=wandb_tags,
                         mode=config["wandb"]["mode"],
                         config=config)
         
+    # ------------------------------------------------------------
+
     # Load data and create gene panel mappings
     adata_batch_list, \
     batch_id_key_list, \
@@ -665,7 +676,6 @@ def main(config: Dict):
     
     # Set output file prefix
     output_file_prefix = f"{experiment_name}_{num_shards}_{norm_factor}_{norm_method}_{model_input_size}"
-
 
     # ------------------------------------------------------------
     # TODO: Fix the following code block to handle multiple batches of data
