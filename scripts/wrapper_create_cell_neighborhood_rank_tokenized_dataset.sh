@@ -12,7 +12,7 @@ SCRIPT="scripts/create_tokenized_data.sh"
 case $EXPERIMENT_NAME in
     sss2-1b_1p)
         RAM="2G"
-        TIME="0:15"
+        TIME="0:10"
         CORES=1
         QUEUE="parallel"
         ;;
@@ -22,28 +22,10 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="parallel"
         ;;
-    merfish_mouse_brain_2-batch)
-        RAM="5G"
-        TIME="0:05"
-        CORES=2
-        QUEUE="normal"
-        ;;
-    merfish_mouse_brain_8-batch)
+    mmb0-8b_1p)
         RAM="25G"
         TIME="0:20"
         CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_16-batch)
-        RAM="30G"
-        TIME="0:30"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_64-batch)
-        RAM="60G"
-        TIME="1:00"
-        CORES=8
         QUEUE="parallel"
         ;;
     merfish_mouse_brain_239-batch)
