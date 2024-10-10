@@ -14,13 +14,15 @@ case $TOKENIZER_NAME in
         python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py \
             --config_file ${CONFIG_FILE} \
             --override \
-            nproc=${CORES}
+            nproc=${CORES} \
+            overwrite=True
         ;;
     graph)
         python analysis/tokenization/create_cell_graph_tokenized_dataset.py \
             --config_file ${CONFIG_FILE} \
             --override \
-            nproc=${CORES}
+            nproc=${CORES} \
+            overwrite=True
         ;;
     *)
         echo "Invalid tokenizer name"
