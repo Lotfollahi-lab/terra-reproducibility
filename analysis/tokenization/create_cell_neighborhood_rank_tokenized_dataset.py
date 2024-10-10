@@ -4,7 +4,7 @@ Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 Usage
 ----------
 .. terminal
-    >>> python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1
+    >>> python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1 overwrite=True
 
 Description
 ----------
@@ -135,7 +135,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             print(f"Loading data from {file_path}")
             adata = sc.read_h5ad(file_path)
             adata_batch_list.append(adata)
-        
+              
     # If gene panel ID mappings do not exist or overwrite is True, create them
     else:
         print("Creating gene panel mappings.")
@@ -165,6 +165,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 dataset_id = adata.uns['dataset_id']
+                print("Dataset ID found in adata.uns.")
             except:
                 if "merfish" in str(file_path):
                     dataset_id = 0
@@ -184,6 +185,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 batch_id = adata.uns['batch']
+                print("Batch ID found in adata.uns.")
             except:
                 batch_id = "batch1"
             batch_id_key = f"{dataset_id}_{batch_id}"    
@@ -196,6 +198,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 assay_key = adata.uns['assay']
+                print("Assay ID found in adata.uns.")
             except:
                 if "merfish" in str(file_path):
                     assay_key = "merfish"
@@ -214,6 +217,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 species_key = adata.uns['species']
+                print("Species ID found in adata.uns")
             except:
                 if "mouse" in str(file_path):
                     species_key = "mus_musculus"
@@ -232,6 +236,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # TODO: Remove exception handling after dataset harmonization is complete
             try:
                 tissue_key = adata.uns['tissue']
+                print("Tissue ID found in adata.uns.")
             except:
                 if "brain" or "cns" in str(file_path):
                     tissue_key = "brain"
@@ -626,11 +631,6 @@ def main(config: Dict):
     # Set profiler path
     profiler_path = log_directory_path / "cProfiler" / tokenizer
     os.makedirs(profiler_path, exist_ok=True)
-
-    # Set wandb directory
-    wandb_path = log_directory_path / "wandb" / tokenizer
-    os.makedirs(profiler_path, exist_ok=True)
-    os.environ["WANDB_DIR"] = str(wandb_path)
 
     # Initialize wandb run
     wandb_tags = [experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
