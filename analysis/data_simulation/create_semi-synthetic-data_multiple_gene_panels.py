@@ -1,7 +1,11 @@
 """
-Usage: 
+For each batch of AnnData in the input directory, this script creates `n_gene_panels` new batches of AnnData, one per new gene panel. The new gene panels are created by randomly selecting genes from the original gene list according to the following procedure:
+1. A fixed number of genes are shared between all gene panels.
+2. The remaining genes are divided into `n_gene_panels` subsets according to the `subset_ratios` parameter.
+3. The shared genes and the genes in each subset are concatenated to form the gene panels.
 
->>> python prepare_merfish_multiple_gene_panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_merfish_mouse_brain_8-batch_2-gene-panels.yaml
+Usage:
+>>> python create_semi-synthetic-data_multiple_gene_panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_mmb0-300k-2b_1p_mmb0-300k-2b_2p.yaml
 
 """
 
@@ -176,16 +180,17 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 def main(config: Dict):
     
    # Configure experiment parameters
-    dataset_name = config['experiment']['dataset_name']
+    input_experiment_name = config['experiment']['input_experiment_name']
     n_gene_panels = config['experiment']['n_gene_panels']
+    output_experiment_name = config['experiment']['output_experiment_name']
     
     # Set input data directory
     data_directory_path = Path(config['paths']['data_directory_path'])
     st_data_silver_folder_path = data_directory_path / "silver"
-    input_directory = st_data_silver_folder_path / dataset_name
+    input_directory = st_data_silver_folder_path / input_experiment_name
     
     # Set output data directory
-    output_directory = st_data_silver_folder_path / f"{dataset_name}_{n_gene_panels}-gene-panels"
+    output_directory = st_data_silver_folder_path / output_experiment_name
     os.makedirs(output_directory, exist_ok=True)
 
     # Set gene panel parameters
