@@ -1,6 +1,6 @@
 experiment:
   experiment_name: "mmb0-8b_1p"
-  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 1-batch | 1-panel"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 8-batch | 1-panel"
   tokenizer: "cell-neighborhood-rank-tokenizer"
   nproc: 2
   overwrite: False
