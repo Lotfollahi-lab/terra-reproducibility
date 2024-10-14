@@ -10,6 +10,54 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 SCRIPT="scripts/create_tokenized_data.sh"
 
 case $EXPERIMENT_NAME in
+    mmb0-8b_1p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-100k-1b_1p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-300k-2b_1p)
+        RAM="45G"
+        TIME="0:45"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-300k-2b_2p)
+        RAM="45G"
+        TIME="0:45"
+        CORES=8
+        QUEUE="parallel"
+        ;;
+    mmb0-239b_1p)
+        RAM="120G"
+        TIME="18:00"
+        CORES=8
+        QUEUE="long"
+        ;;
+    mmb0-1b_smb1-1b_2p)
+        RAM="60G"
+        TIME="0:20"
+        CORES=2
+        QUEUE="parallel"
+        ;;
+    mmb0-1b_smb1-1b_1p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    smb1-20b_1p)
+        RAM="50G"
+        TIME="2:00"
+        CORES=4
+        QUEUE="parallel"
+        ;;    
     sss2-1b_1p)
         RAM="2G"
         TIME="0:10"
@@ -18,52 +66,22 @@ case $EXPERIMENT_NAME in
         ;;
     sss3-1b_1p)
         RAM="25G"
-        TIME="0:10"
-        CORES=4
+        TIME="0:15"
+        CORES=8
         QUEUE="parallel"
         ;;
-    mmb0-8b_1p)
+    smb13-2b_1p)
         RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_239-batch)
-        RAM="120G"
-        TIME="12:00"
-        CORES=16
-        QUEUE="long"
-        ;;
-    merfish_mouse_brain_100k)
-        RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_300k)
-        RAM="45G"
-        TIME="0:45"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_300k_2-gene-panels)
-        RAM="45G"
-        TIME="0:45"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merscope_human_liver_cancer_1-batch)
-        RAM="25G"
-        TIME="0:45"
+        TIME="1:00"
         CORES=2
         QUEUE="parallel"
-        ;;
-    mmb0-1b_smb1-1b_1p)
-        RAM="25G"
-        TIME="0:10"
-        CORES=4
-        QUEUE="parallel"
-        ;;
+        ;;    
+    smb13-111b_1p)
+        RAM="80G"
+        TIME="12:00"
+        CORES=8
+        QUEUE="long"
+        ;;    
     *)
         echo "Invalid dataset name"
         exit 1
