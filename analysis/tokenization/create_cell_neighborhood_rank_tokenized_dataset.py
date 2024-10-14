@@ -23,66 +23,13 @@ import numpy as np
 import scanpy as sc
 import anndata as ad
 from pathlib import Path
-from typing import Set, List, Dict, Tuple, Union, Literal, Optional
-
-from pyensembl import EnsemblRelease
+from typing import List, Dict, Tuple, Union, Literal, Optional
 
 from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodRankTokenizer
 from nichejepa.preprocessors.aggregators import aggregate_neighbors
 from nichejepa.preprocessors.normalizers import normalize_by_read_depth
 from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
-
-def get_gene_set_from_ensembl_release(species: str, 
-                                        release: int = 111) -> Set[str]:
-    """
-    Get a list of gene IDs from the Ensembl release.
-    
-    Parameters:
-    ----------
-    - species (str): The species of the dataset.
-    
-    Returns:
-    ----------
-    - Set[str]: A set of gene IDs.
-    """
-    if species == 'mus_musculus':
-        # Extract Ensembl IDs of protein coding and miRNA mouse genes
-        ensembl = EnsemblRelease(release=release, species=species)
-        ensembl.download()
-        ensembl.index()
-        all_genes = ensembl.genes()
-        protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
-        mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
-        all_relevant_genes = protein_coding_genes + mirna_genes
-        gene_set = set([gene.gene_id for gene in all_relevant_genes])
-    else:
-        gene_set = None
-    return gene_set
-
-
-def build_gene_panel(ensembl_gene_set: Set[str],
-                                        adata: sc.AnnData) -> Set[str]:
-    """
-    Build a gene panel from the intersection of Ensembl gene IDs in the AnnData object and the Ensembl gene set from Ensembl Release (if applicable).
-    
-    Parameters:
-    ----------
-    - ensembl_gene_set (Set[str]): A set of Ensembl gene IDs.
-    - adata (sc.AnnData): Annotated data matrix with gene expression information.
-    
-    Returns:
-    ----------
-    - Set[str]: A set of gene IDs.
-    """
-    # Extract gene ensembl IDs and create a gene panel
-    gene_panel = set(adata.var["ensembl_id"].values.tolist())
-    # TODO: Remove this block after dataset harmonization is complete
-    if ensembl_gene_set is not None:
-        # gene panel = genes in adata intersected with ensembl gene set
-        gene_panel = gene_panel.intersection(ensembl_gene_set)
-    
-    return gene_panel
 
 
 def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
@@ -227,8 +174,6 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                     print(f"This species is currently not supported.")
             if species_key not in species_key_list:
                 species_key_list.append(species_key)          
-                # Obtain gene set from Ensembl release
-                ensembl_gene_sets[species_key] = get_gene_set_from_ensembl_release(species=species_key)
             # ------------------------------------------------------------------------------------ 
             # Capture tissue keys for the current batch of AnnData
             # e.g. tissue_key = "brain" or "sim"...
@@ -249,8 +194,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # ------------------------------------------------------------------------------------
             # Capture gene panel id key and gene panel mappings for the current batch of AnnData
             # Creates gene panel as an intersection of Ensembl gene set and genes in adata
-            # TODO: Save the correct gene panel to gene panel ID and adata that is on the disk
-            gene_panel = build_gene_panel(ensembl_gene_sets[species_key], adata)
+            gene_panel = set(adata.var["ensembl_id"].values.tolist())
             
             # If gene panel is unique, assign a unique ID to it
             if gene_panel not in unique_gene_panels_list:
@@ -268,12 +212,6 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             else:
                 gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
                 file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
-            # ------------------------------------------------------------------------------------
-            # TODO: Remove this (gene subsetting) from here and move to the bronze -> silver data preprocessing step
-            # Filter adata to include only genes in gene panel
-            subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
-            # Subset adata to include only genes in gene panel
-            adata = adata[:, subset_genes]
             # ------------------------------------------------------------------------------------
             # Append processed and loaded adata to adata_batch_list
             adata_batch_list.append(adata)
@@ -626,6 +564,7 @@ def main(config: Dict):
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
     # ------------------------------------------------------------
+
     log_directory_path = Path("./logs") / experiment_name
         
     # Set profiler path
@@ -678,6 +617,7 @@ def main(config: Dict):
     output_file_prefix = f"{experiment_name}_{num_shards}_{norm_factor}_{norm_method}_{model_input_size}"
 
     # ------------------------------------------------------------
+    
     # TODO: Fix the following code block to handle multiple batches of data
     # Configure tokenized dictionary specific paths
     cell_gene_means_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_means_dictionary.pkl"
@@ -744,6 +684,7 @@ def main(config: Dict):
         del adata
             
     del adata_batch_list
+    
     # ------------------------------------------------------------
     
     # Tokenize data
