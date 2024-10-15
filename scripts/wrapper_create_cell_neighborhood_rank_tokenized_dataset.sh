@@ -41,9 +41,9 @@ case $EXPERIMENT_NAME in
         QUEUE="long"
         ;;
     mmb0-1b_smb1-1b_2p)
-        RAM="60G"
+        RAM="25G"
         TIME="0:20"
-        CORES=2
+        CORES=4
         QUEUE="parallel"
         ;;
     mmb0-1b_smb1-1b_1p)
