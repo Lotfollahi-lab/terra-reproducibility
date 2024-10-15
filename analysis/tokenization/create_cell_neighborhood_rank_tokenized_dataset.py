@@ -8,7 +8,7 @@ Usage
 
 Description
 ----------
-This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides values from the config file and is optional to use.
+This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides number of processes to use for tokenization and whether to rebuild and overwrite the intermediate files required for creating the tokenized data.
 """
 
 import os
@@ -97,7 +97,6 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
         # Initialize gene panel mappings
         unique_gene_panels_count = 0
         unique_gene_panels_list = []
-        ensembl_gene_sets = {}
         gene_panel_ID_to_gene_panel_dict = {}
         file_path_to_gene_panel_ID_dict = {}
                     
@@ -108,87 +107,31 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # ------------------------------------------------------------------------------------
             # Capture dataset_id for the current batch of AnnData
             # e.g. dataset_id = 0 or 1 or 2 or 3...
-            # Hardcodes dataset_id if unavailable in adata.uns (required for unique name for batch in the vocab token dictionary)
-            # TODO: Remove exception handling after dataset harmonization is complete
-            try:
-                dataset_id = adata.uns['dataset_id']
-                print("Dataset ID found in adata.uns.")
-            except:
-                if "merfish" in str(file_path):
-                    dataset_id = 0
-                elif "starmap" in str(file_path):
-                    dataset_id = 1
-                elif "sim1_1105fts" in str(file_path):
-                    dataset_id = 2
-                elif "sim1_1105genes" in str(file_path):
-                    dataset_id = 3
-                else:
-                    print(f"This data is currently not supported.")
+            dataset_id = adata.uns['dataset_id']
             print(f"Dataset ID: {dataset_id}")
             # ------------------------------------------------------------------------------------
             # Capture batch_id_key for the current batch of AnnData
             # e.g. batch_id_key = "0_batch1" or "1_batch1" or "0_batch2"...
-            # Hardcodes batch_id_key if unavailable in adata.uns
-            # TODO: Remove exception handling after dataset harmonization is complete
-            try:
-                batch_id = adata.uns['batch']
-                print("Batch ID found in adata.uns.")
-            except:
-                batch_id = "batch1"
+            batch_id = adata.uns['batch']
             batch_id_key = f"{dataset_id}_{batch_id}"    
             print(f"Batch ID Key: {batch_id_key}")
             batch_id_key_list.append(batch_id_key)
             # ------------------------------------------------------------------------------------ 
             # Capture assay keys for the current batch of AnnData
             # e.g. assay_key = "merfish" or "starmap" or "sim"...
-            # Hardcodes assay_key if unavailable in adata.uns (required for unique name for assay in the vocab token dictionary)
-            # TODO: Remove exception handling after dataset harmonization is complete
-            try:
-                assay_key = adata.uns['assay']
-                print("Assay ID found in adata.uns.")
-            except:
-                if "merfish" in str(file_path):
-                    assay_key = "merfish"
-                elif "starmap" in str(file_path):
-                    assay_key = "starmap"
-                elif "sim" in str(file_path):
-                    assay_key = "sim"
-                else:
-                    print(f"This assay is currently not supported.")
+            assay_key = adata.uns['assay']
             if assay_key not in assay_key_list:
                 assay_key_list.append(assay_key)
             # ------------------------------------------------------------------------------------ 
             # Capture species keys for the current batch of AnnData
             # e.g. species_key = "mus_musculus" or "homo_sapiens" or "sim"...
-            # Hardcodes species_key if unavailable in adata.uns (required for unique name for species in the vocab token dictionary)
-            # TODO: Remove exception handling after dataset harmonization is complete
-            try:
-                species_key = adata.uns['species']
-                print("Species ID found in adata.uns")
-            except:
-                if "mouse" in str(file_path):
-                    species_key = "mus_musculus"
-                elif "sim" in str(file_path):
-                    species_key = "sim"
-                else:
-                    print(f"This species is currently not supported.")
+            species_key = adata.uns['species']
             if species_key not in species_key_list:
                 species_key_list.append(species_key)          
             # ------------------------------------------------------------------------------------ 
             # Capture tissue keys for the current batch of AnnData
             # e.g. tissue_key = "brain" or "sim"...
-            # Hardcodes tissue_key if unavailable in adata.uns (required for unique name for tissue in the vocab token dictionary)
-            # TODO: Remove exception handling after dataset harmonization is complete
-            try:
-                tissue_key = adata.uns['tissue']
-                print("Tissue ID found in adata.uns.")
-            except:
-                if "brain" or "cns" in str(file_path):
-                    tissue_key = "brain"
-                elif "sim" in str(file_path):
-                    tissue_key = "sim"
-                else:
-                    print(f"This tissue is currently not supported.")
+            tissue_key = adata.uns['tissue']
             if tissue_key not in tissue_key_list:
                 tissue_key_list.append(tissue_key)            
             # ------------------------------------------------------------------------------------
@@ -508,8 +451,6 @@ def collect_configs(args: argparse.Namespace) -> Dict:
                     config['experiment'][key] = True
                 elif value == 'False':
                     config['experiment'][key] = False
-            else:
-                config['experiment'][key] = value
                     
     return config
 
