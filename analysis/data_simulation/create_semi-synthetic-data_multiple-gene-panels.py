@@ -5,7 +5,7 @@ For each batch of AnnData in the input directory, this script creates `n_gene_pa
 3. The shared genes and the genes in each subset are concatenated to form the gene panels.
 
 Usage:
->>> python create_semi-synthetic-data_multiple_gene_panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_mmb0-300k-2b_1p_mmb0-300k-2b_2p.yaml
+>>> python create_semi-synthetic-data_multiple-gene-panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_mmb0-300k-2b_1p_mmb0-300k-2b_2p.yaml
 
 """
 
@@ -53,10 +53,9 @@ def create_dataset_with_multiple_gene_panels(input_directory: Path,
             
             # Update cell_id
             new_adata.obs['cell_id'] = [f"{dataset_id}_{new_adata.uns['batch']}_{cell_idx}" for cell_idx in range(new_adata.shape[0])]
-                        
-            print(new_adata.uns['batch'], new_adata.obs['cell_id'][2])
-            
+                                    
             print(f"Panel ID: {panel_idx} | New adata shape: {new_adata.shape}")
+            print(new_adata.obs['cell_id'])
          
             # Write new_adata to output_directory with same file name
             new_file_name = f"{file_path.stem}_panel_{panel_idx}{file_path.suffix}"
@@ -193,7 +192,6 @@ def main(config: Dict):
     
    # Configure experiment parameters
     input_experiment_name = config['experiment']['input_experiment_name']
-    n_gene_panels = config['experiment']['n_gene_panels']
     output_experiment_name = config['experiment']['output_experiment_name']
     
     # Set input data directory
@@ -206,6 +204,7 @@ def main(config: Dict):
     os.makedirs(output_directory, exist_ok=True)
 
     # Set gene panel parameters
+    n_gene_panels = config['gene_panel']['n_gene_panels']
     shared_genes_ratio = config['gene_panel']['shared_genes_ratio']
     subset_ratios = config['gene_panel']['subset_ratios']
     seed = config['gene_panel']['seed']

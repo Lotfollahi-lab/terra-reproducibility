@@ -1,12 +1,12 @@
 experiment:
   input_experiment_name: 'mmb0-300k-2b_1p'
-  n_gene_panels: 2
   output_experiment_name: 'mmb0-300k-2b_2p'
   
 paths:
   data_directory_path: '/lustre/scratch126/cellgen/team361/DATASETS/'
 
 gene_panel:
+  n_gene_panels: 2
   shared_genes_ratio: 0.4
   subset_ratios: [0.4, 0.2]
   seed: 42
