@@ -1,0 +1,8 @@
+experiment:
+  input_experiment_name: mmb0-1b_smb1-1b_2p
+  output_experiment_name: mmb0-1b_smb1-1b_1p
+  
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
+  merfish_data_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_2p/harmonised_merfish_mouse_brain_239-batch_batch82.h5ad'
+  starmap_data_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_2p/harmonised_starmap_plus_mouse_cns_batch15.h5ad'
