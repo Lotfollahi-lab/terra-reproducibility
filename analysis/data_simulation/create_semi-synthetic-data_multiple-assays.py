@@ -1,110 +1,77 @@
-import argparse
-from pathlib import Path
 import os
 import yaml
-from typing import Dict, List
-import anndata as ad
+import argparse
 import scanpy as sc
-import pyensembl
+import anndata as ad
+from typing import Dict
+from pathlib import Path
 
-def harmonize_obs(input_directory: Path = None) -> List[ad.AnnData]:
+
+def identify_shared_genes(input_directory: Path) -> ad.AnnData:
     """
-    Harmonize obs of all datasets.
+    Identify shared genes across AnnData batch objects.
     
-    Parameters
+    Parameters:
     ----------
-    input_directory:
-        Directory containing input (silver) preprocessed anndata files.
+    - input_directory (Path): The directory containing the input AnnData objects.
     
-    Returns
+    Returns:
     ----------
-    adata_batch_list:
-        List of AnnData objects containing the harmonized data.
+    - shared_gene_symbols (set): The set of shared gene symbols.
     """
-    starmap_file_path = Path('/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_2p/harmonised_starmap_plus_mouse_cns_batch15.h5ad')
-    adata_starmap = sc.read(starmap_file_path)
-    print("Original starmap data:")
-    print(adata_starmap)
+    shared_gene_symbols = set()
+    
+    # Iterate over all files in the input directory
+    for file_path in input_directory.glob("*.h5ad"):
+        adata = sc.read(file_path)
+        print(f"File: {file_path}")
+        # If shared_gene_symbols is empty, add all genes in the first file
+        if set(shared_gene_symbols) == set():
+            shared_gene_symbols = set(adata.var.index)
+        # Otherwise, take the intersection of shared_gene_symbols and the genes in the current file
+        else:
+            shared_gene_symbols = shared_gene_symbols.intersection(set(adata.var.index))
 
-    # adata_starmap.X = adata_starmap.layers["counts"]
-    # Multiply the coordinates of starmap by 1000
-    # adata_starmap.obsm["spatial"] = adata_starmap.obsm["spatial"] * 1000
-    
-    # sc.pp.filter_cells(adata_starmap, min_genes=10)
-    # print("Filtered starmap data:")
-    # print(adata_starmap)
-
-    merfish_file_path = Path('/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_2p/harmonised_merfish_mouse_brain_239-batch_batch82.h5ad')
-    adata_merfish = sc.read(merfish_file_path)
-    print("Original merfish data:")
-    print(adata_merfish)
-
-    # sc.pp.filter_cells(adata_merfish, min_genes=10)
-    
-    # print("Filtered merfish data:")
-    # print(adata_merfish)
-
-    # Ensure both adata_starmap and adata_merfish are initialized
-    # if adata_starmap is None or adata_merfish is None:
-        # raise ValueError("Both starmap and merfish datasets must be provided.")
-        
-    # Set donor_id in starmap
-    # donor_id = list(adata_merfish.obs["donor_id"].value_counts().to_dict().keys())[0]
-    # adata_starmap.obs["donor_id"] = donor_id
-
-    # Set brain_section_label for starmap
-    brain_section_label = list(adata_merfish.obs["brain_section_label"].value_counts().to_dict().keys())[0]
-    adata_starmap.obs["brain_section_label"] = brain_section_label
-    
-    # Set sample_id for merfish and starmap
-    # sample_id = list(adata_starmap.obs["batch"].value_counts().to_dict().keys())[0]
-    # adata_starmap.obs["sample_id"] = sample_id
-    # adata_merfish.obs["sample_id"] = sample_id
-    
-    # Set batch for starmap
-    # adata_starmap.obs["batch"] = starmap_file_path.stem.split('_')[-1]
-    
-    # Set assay for merfish and starmap
-    # adata_merfish.obs["assay"] = "merfish"
-    # adata_starmap.obs["assay"] = "starmap"
-        
-    # Set major_brain_region in starmap
-    # adata_starmap.obs["major_brain_region"] = adata_starmap.obs["Main_molecular_tissue_region"]
-    
-    # Set cell_type in starmap
-    # adata_starmap.obs["cell_type"] = adata_starmap.obs["Main_molecular_cell_type"]
-    
-    # Set ccf_region_name in starmap to NaN
-    # adata_starmap.obs["ccf_region_name"] = "NaN"
-    
-    # Set Sub_molecular_cell_type in merfish to NaN
-    # adata_merfish.obs["Sub_molecular_cell_type"] = "NaN"
-    
-    # Set Sub_molecular_tissue_region in merfish to NaN
-    # adata_merfish.obs["Sub_molecular_tissue_region"] = "NaN"
-        
-    return starmap_file_path, merfish_file_path, adata_starmap, adata_merfish
-
-
-def fix_var(adata_starmap, adata_merfish) -> ad.AnnData:
-    print(adata_starmap.var)
-    print(adata_merfish.var)
-    adata_starmap.var.index = [s.capitalize() for s in adata_starmap.var.index]
-    starmap_gene_symbols = set([s.capitalize() for s in adata_starmap.var.index.tolist()])
-    merfish_gene_symbols = set([s.capitalize() for s in adata_merfish.var.index.tolist()])
-    shared_gene_symbols = starmap_gene_symbols.intersection(merfish_gene_symbols)
     print(f"Number of shared gene symbols: {len(shared_gene_symbols)}")
+    return shared_gene_symbols
     
-    adata_merfish_var_fixed = adata_merfish[:, adata_merfish.var.index.isin(shared_gene_symbols)].copy()
-    adata_starmap_var_capital = adata_starmap[:, adata_starmap.var.index.isin(shared_gene_symbols)].copy()
     
-    starmap_var_ordered = adata_starmap_var_capital.var.loc[adata_merfish_var_fixed.var.index]
-    adata_starmap_var_fixed = adata_starmap_var_capital[:, starmap_var_ordered.index].copy()
+def create_dataset_with_shared_genes(input_directory: Path, 
+                                     output_directory: Path, 
+                                     shared_gene_symbols: set):
+    """
+    Create a new dataset with shared genes from the input_directory.
     
-    adata_starmap_var_fixed.var.index.name = 'gene_symbol'
-    adata_starmap_var_fixed.var['ensembl_id'] = adata_merfish_var_fixed.var['ensembl_id']
+    Parameters:
+    ----------
+    - input_directory (Path): The directory containing the input datasets.
+    - output_directory (Path): The directory to write the output datasets.
+    - shared_gene_symbols (set): The set of shared gene symbols.
     
-    return adata_starmap_var_fixed, adata_merfish_var_fixed
+    Returns:
+    ----------
+    - None
+    """
+    for file_path in input_directory.glob("*.h5ad"):
+        adata = sc.read(file_path)
+        print(f"Old adata shape: {adata.shape}")
+        
+        # Create a new adata object with only the shared genes and filter cells with less than 10 genes
+        new_adata = adata[:, adata.var.index.isin(shared_gene_symbols)].copy()
+        sc.pp.filter_cells(new_adata, min_genes=10)
+        
+        # Rename cell_id
+        new_adata.obs['cell_id'] = [f"{new_adata.uns['dataset_id']}_{new_adata.uns['batch']}_{cell_idx}" for cell_idx in range(new_adata.shape[0])]
+        
+        print(f"New adata shape: {new_adata.shape}")
+        print(new_adata.obs['cell_id'])
+        
+        # Write new_adata to output_directory with same file name
+        new_file_name = f"{file_path.stem}_shared_genes{file_path.suffix}"
+        output_file_path = output_directory / new_file_name
+        new_adata.write(output_file_path)
+            
+    return
     
 
 def parse_arguments() -> argparse.Namespace:
@@ -166,25 +133,14 @@ def main(config: Dict):
     output_directory = st_data_silver_folder_path / output_experiment_name
     os.makedirs(output_directory, exist_ok=True)
 
-    # harmonize obs of all datasets
-    starmap_file_path, merfish_file_path, adata_starmap, adata_merfish = harmonize_obs()
+    # Identify shared genes
+    shared_gene_symbols = identify_shared_genes(input_directory)
     
-    adata_starmap_var_fixed, adata_merfish_var_fixed = fix_var(adata_starmap, adata_merfish)
+    # Create dataset with shared genes
+    create_dataset_with_shared_genes(input_directory, 
+                                     output_directory, 
+                                     shared_gene_symbols)
     
-    sc.pp.filter_cells(adata_starmap_var_fixed, min_genes=10)
-    sc.pp.filter_cells(adata_merfish_var_fixed, min_genes=10)
-    
-    print("Filtered starmap data:")
-    print(adata_starmap_var_fixed)
-    print(adata_starmap_var_fixed.obs['cell_id'][2])
-    print("Filtered merfish data:")
-    print(adata_merfish_var_fixed)
-    print(adata_merfish_var_fixed.obs['cell_id'][2])
-    
-    
-    # Save the harmonized data
-    adata_starmap_var_fixed.write(output_directory / starmap_file_path.name)
-    adata_merfish_var_fixed.write(output_directory / merfish_file_path.name)
     print(f"Harmonized data saved to {output_directory}")
 
 
