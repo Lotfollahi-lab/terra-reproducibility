@@ -35,15 +35,27 @@ def create_dataset_with_multiple_gene_panels(input_directory: Path,
     - None
     """
     file_paths = list(input_directory.glob(f"**/*.h5ad"))
+    offset = 1000
     
     for file_path in file_paths:
         print(f"Loading data from {file_path}")
         adata = sc.read_h5ad(file_path)
         print(f"Old adata shape: {adata.shape}")
+        dataset_id = adata.uns['dataset_id']
         
         # Subset the adata object to include only the genes in the gene_panel
         for panel_idx, gene_panel in enumerate(gene_panel_list):
             new_adata = adata[:, adata.var['ensembl_id'].isin(gene_panel)].copy()
+
+            original_batch_id = int(new_adata.uns['batch'][5:])
+            new_batch_id = original_batch_id + offset * (panel_idx+1)
+            new_adata.uns['batch'] = f"batch{new_batch_id}"
+            
+            # Update cell_id
+            new_adata.obs['cell_id'] = [f"{dataset_id}_{new_adata.uns['batch']}_{cell_idx}" for cell_idx in range(new_adata.shape[0])]
+                        
+            print(new_adata.uns['batch'], new_adata.obs['cell_id'][2])
+            
             print(f"Panel ID: {panel_idx} | New adata shape: {new_adata.shape}")
          
             # Write new_adata to output_directory with same file name
