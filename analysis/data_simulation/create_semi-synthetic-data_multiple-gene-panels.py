@@ -5,7 +5,7 @@ For each batch of AnnData in the input directory, this script creates `n_gene_pa
 3. The shared genes and the genes in each subset are concatenated to form the gene panels.
 
 Usage:
->>> python create_semi-synthetic-data_multiple-gene-panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_mmb0-300k-2b_1p_mmb0-300k-2b_2p.yaml
+>>> python create_semi-synthetic-data_multiple-gene-panels.py --config_file config/multiple-gene-panels/multiple-gene-panels_mmb0-300k-2b_1p_to_mmb0-300k-2b_2p.yaml
 
 """
 

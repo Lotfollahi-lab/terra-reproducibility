@@ -1,3 +1,10 @@
+"""
+For each batch of AnnData in the input directory, this script creates a list of shared gene symbols across all batches. It then creates a new batch of AnnData for each batch in the input directory with only the shared genes. The new batches are saved in the output directory.
+
+Usage:
+>>> python create_semi-synthetic-data_multiple-assays.py --config_file config/multiple-assays/multiple-assays_mmb0-1b_smb1-1b_2p_to_mmb0-1b_smb1-1b_1p.yaml
+"""
+
 import os
 import yaml
 import argparse
