@@ -34,7 +34,10 @@ python create_semi-synthetic-data_multiple-assays.py --config_file [CONFIG-FILE]
 To create `mmb0-1b_smb1-1b_1p` from `mmb0-1b_smb1-1b_2p`, use `config/multiple-assays/multiple-assays_mmb0-1b_smb1-1b_2p_to_mmb0-1b_smb1-1b_1p.yaml`
 - `mmb0-1b_smb1-1b_2p` -- Merfish Mouse Brain | Batch 82 | Starmap Plus Mouse CNS | Batch 15 | 2 gene panels
 - `mmb0-1b_smb1-1b_1p` -- Merfish Mouse Brain | Batch 82 | Starmap Plus Mouse CNS | Batch 15 | 1 gene panels (semi-real, shared genes only)
-
+Use `config/multiple-assays/mmb70-1b_smb71-1b_smb13-1b_3p_to_mmb70-1b_smb71-1b_smb13-1b_1p.yaml` for creating a shared gene panel from the following three datasets (CAST paper):
+- `mmb70-1b` -- Merfish Mouse Brain | co1_slice37 in co1_sample13
+- `smb71-1b` -- STARmap plus Mouse Brain | S1–S8, S64_1 and S64_2 from SCP1375
+- `smb13-1b` -- Slide-seq Mouse Brain | Puck/Slice 42
 
 ## Tokenization
 
