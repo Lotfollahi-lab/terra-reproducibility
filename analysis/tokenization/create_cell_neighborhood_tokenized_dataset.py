@@ -4,11 +4,11 @@ Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 Usage
 ----------
 .. terminal
-    >>> python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1 overwrite=True
+    >>> python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py --config_file config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1 overwrite=True
 
 Description
 ----------
-This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides number of processes to use for tokenization and whether to rebuild and overwrite the intermediate files required for creating the tokenized data.
+This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides number of processes to use for tokenization and whether to rebuild and overwrite the intermediate files required for creating the tokenized data.
 """
 
 import os

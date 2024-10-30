@@ -10,8 +10,8 @@ module load cellgen/conda
 conda activate nichejepa-reproducibility
 
 case $TOKENIZER_NAME in
-    cell-neighborhood-rank-tokenizer)
-        python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py \
+    cell-neighborhood-tokenizer)
+        python analysis/tokenization/create_cell_neighborhood_tokenized_dataset.py \
             --config_file ${CONFIG_FILE} \
             --override \
             nproc=${CORES} \

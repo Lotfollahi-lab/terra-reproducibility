@@ -4,7 +4,7 @@ GROUP="team361"
 
 # Set the experiment parameters
 EXPERIMENT_NAME="${1:-sss2-1b_1p}"
-TOKENIZER_NAME="cell-neighborhood-rank-tokenizer"
+TOKENIZER_NAME="cell-neighborhood-tokenizer"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
 SCRIPT="scripts/create_tokenized_data.sh"

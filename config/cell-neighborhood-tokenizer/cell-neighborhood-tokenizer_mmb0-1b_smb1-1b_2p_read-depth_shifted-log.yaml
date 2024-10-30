@@ -1,8 +1,8 @@
 experiment:
-  experiment_name: "smb13-111b_1p"
-  experiment_description: "slideseq mouse brain CAST (dataset-id = 13) | 111-batch | 1-panel"
-  tokenizer: "cell-neighborhood-rank-tokenizer"
-  nproc: 8
+  experiment_name: "mmb0-1b_smb1-1b_2p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 1-batch | starmap_mouse_brain (dataset-id = 1) | 1-batch | 2-panel"
+  tokenizer: "cell-neighborhood-tokenizer"
+  nproc: 4
   overwrite: False
 
 tokenization:
@@ -11,7 +11,7 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 64
+  num_shards: 8
   keep_in_memory: False
 
 wandb:

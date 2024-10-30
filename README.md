@@ -47,7 +47,7 @@ Execute the following to create a Hugging Face dataset created using the Cell Ne
 ```
 python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
 ```
-Sample config file is available at `config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml`. The override flag allows you to override two things: (1) the number of processes parameter from the config file by using `nproc=[NPROC]`, and (2) whether to reuse the intermediate files such as token dictionary or rebuild them first before recreating the tokenized data by using `overwrite=True`. Other parameters from the config file remain unaffected. If in doubt, it may be safer to overwrite.
+Sample config file is available at `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml`. The override flag allows you to override two things: (1) the number of processes parameter from the config file by using `nproc=[NPROC]`, and (2) whether to reuse the intermediate files such as token dictionary or rebuild them first before recreating the tokenized data by using `overwrite=True`. Other parameters from the config file remain unaffected. If in doubt, it may be safer to overwrite.
 
 If you are on `farm22`, then the easier alternative is to simply use the wrapper script as follows:
 ```
@@ -70,9 +70,9 @@ This will create an LSF job with the appropriate requirements and fetch the corr
 To tokenize a new experiment, follow the steps below:
 1. Choose an `[EXPERIMENT-NAME]` (e.g.`mmb0-8b_1p`)
 2. Create a folder at the following location: `/lustre/scratch126/cellgen/team361/DATASETS/silver/[EXPERIMENT-NAME]`. Add the appropriate (harmonized) AnnData batch files.
-3. Create a config file at the following location with this naming convention: `config/cell-neighborhood-rank-tokenizer/cell-neighborhood-rank-tokenizer_[EXPERIMENT-NAME]_read-depth_shifted-log.yaml`
+3. Create a config file at the following location with this naming convention: `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_[EXPERIMENT-NAME]_read-depth_shifted-log.yaml`
 4. Update the `experiment_name`, `experiment_description`, and potentially `nproc` and `num_shards`. Ideally, you shouldn't need to update any of the other parameters here if you just want to repeat the same tokenization pipeline on a new experiment.
-5. Update `scripts/wrapper_create_cell_neighborhood_rank_tokenized_dataset.sh` by adding the `RAM`, `TIME`, `CORES`, and `QUEUE` as LSF job parameters as a new case titled `[EXPERIMENT-NAME]`.
+5. Update `scripts/wrapper_create_cell_neighborhood_tokenized_dataset.sh` by adding the `RAM`, `TIME`, `CORES`, and `QUEUE` as LSF job parameters as a new case titled `[EXPERIMENT-NAME]`.
 
 
 ## Analysis

@@ -1,8 +1,8 @@
 experiment:
-  experiment_name: "mmb0-239b_1p"
-  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 239-batch | 1-panel"
-  tokenizer: "cell-neighborhood-rank-tokenizer"
-  nproc: 8
+  experiment_name: "mmb0-8b_1p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 8-batch | 1-panel"
+  tokenizer: "cell-neighborhood-tokenizer"
+  nproc: 2
   overwrite: False
 
 tokenization:
@@ -11,7 +11,7 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 64
+  num_shards: 8
   keep_in_memory: False
 
 wandb:

@@ -1,8 +1,8 @@
 experiment:
-  experiment_name: "smb13-2b_1p"
-  experiment_description: "slideseq mouse brain CAST (dataset-id = 13) | 2-batch | 1-panel"
-  tokenizer: "cell-neighborhood-rank-tokenizer"
-  nproc: 2
+  experiment_name: "mmb0-300k-2b_1p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) 300K | 2-batch | 1-panel"
+  tokenizer: "cell-neighborhood-tokenizer"
+  nproc: 4
   overwrite: False
 
 tokenization:
