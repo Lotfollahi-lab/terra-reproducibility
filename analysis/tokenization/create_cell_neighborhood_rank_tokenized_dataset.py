@@ -25,7 +25,7 @@ import anndata as ad
 from pathlib import Path
 from typing import List, Dict, Tuple, Union, Literal, Optional
 
-from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodRankTokenizer
+from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodTokenizer
 from nichejepa.preprocessors.aggregators import aggregate_neighbors
 from nichejepa.preprocessors.normalizers import normalize_by_read_depth
 from nichejepa.preprocessors.filters import filter_poor_quality_cells
@@ -113,25 +113,25 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             # Capture batch_id_key for the current batch of AnnData
             # e.g. batch_id_key = "0_batch1" or "1_batch1" or "0_batch2"...
             batch_id = adata.uns['batch']
-            batch_id_key = f"{dataset_id}_{batch_id}"    
+            batch_id_key = f"spv_{dataset_id}_{batch_id}"    
             print(f"Batch ID Key: {batch_id_key}")
             batch_id_key_list.append(batch_id_key)
             # ------------------------------------------------------------------------------------ 
             # Capture assay keys for the current batch of AnnData
             # e.g. assay_key = "merfish" or "starmap" or "sim"...
-            assay_key = adata.uns['assay']
+            assay_key = f"spv_{adata.uns['assay']}"
             if assay_key not in assay_key_list:
                 assay_key_list.append(assay_key)
             # ------------------------------------------------------------------------------------ 
             # Capture species keys for the current batch of AnnData
             # e.g. species_key = "mus_musculus" or "homo_sapiens" or "sim"...
-            species_key = adata.uns['species']
+            species_key = f"spv_{adata.uns['species']}"
             if species_key not in species_key_list:
                 species_key_list.append(species_key)          
             # ------------------------------------------------------------------------------------ 
             # Capture tissue keys for the current batch of AnnData
             # e.g. tissue_key = "brain" or "sim"...
-            tissue_key = adata.uns['tissue']
+            tissue_key = f"spv_{adata.uns['tissue']}"
             if tissue_key not in tissue_key_list:
                 tissue_key_list.append(tissue_key)            
             # ------------------------------------------------------------------------------------
@@ -148,8 +148,9 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 unique_gene_panels_count += 1
                 
                 # Creates gene panel id key list for use in token dictionary
-                # e.g. gene_panel_id_key_list = ["gene_panel0", "gene_panel1", ...]
-                gene_panel_id_key_list.append(gene_panel_ID)
+                # e.g. gene_panel_id_key_list = ["spv_gene_panel0", "gene_panel1", ...]
+                gene_panel_id_key = f"spv_{gene_panel_ID}"
+                gene_panel_id_key_list.append(gene_panel_id_key)
                 
             # If gene panel is not unique, assign find its ID and append file path
             else:
@@ -250,6 +251,14 @@ def build_token_dictionary(token_dictionary_file: str,
         # e.g. token_dict = {'brain': 4 + len(gene_list) + len(batch_id_key_list) + len(gene_panel_id_key_list) + len(assay_key_list) + len(species), ...}
         curr_token_dict_size = len(token_dict)
         token_dict.update({tissue_key: idx + curr_token_dict_size for idx, tissue_key in enumerate(tissue_key_list)})
+        
+        # Add meta tokens
+        curr_token_dict_size = len(token_dict)
+        token_dict.update({'spt_batch': curr_token_dict_size, 
+                           'spt_gene_panel': curr_token_dict_size + 1,
+                           'spt_assay': curr_token_dict_size + 2,
+                           'spt_species': curr_token_dict_size + 3,
+                           'spt_tissue': curr_token_dict_size + 4})
 
         with open(token_dictionary_file, "wb") as file:
             pickle.dump(token_dict, file)
@@ -633,7 +642,7 @@ def main(config: Dict):
         start = time.time()
         
         # Instantiate tokenizer
-        tk = CellNeighborhoodRankTokenizer(
+        tk = CellNeighborhoodTokenizer(
                 model_input_size=model_input_size,
                 norm_method=norm_method,
                 norm_factor=norm_factor,
