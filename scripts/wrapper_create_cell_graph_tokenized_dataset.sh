@@ -1,69 +1,98 @@
-#!/bin/bash
-
 GROUP="team361"
-SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
 
-DATASET_NAME=$1
-CORES="${2:-4}" # If not provided, use the default value, i.e. 4 cores
-QUEUE="${3:-normal}" # If not provided, use the default value, i.e. normal queue
+# Set the experiment parameters
+EXPERIMENT_NAME="${1:-sss2-1b_1p}"
+TOKENIZER_NAME="cell-graph-tokenizer"
+LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
-TOKENIZER_NAME="graph"
+SCRIPT="scripts/create_tokenized_data.sh"
 
-case $DATASET_NAME in
-    sim1_1105fts_10000locs)
-        RAM="5G"
-        TIME="0:05"
-        ;;
-    sim1_1105genes_100klocs_strongincrements)
-        RAM="30G"
+case $EXPERIMENT_NAME in
+    mmb0-8b_1p)
+        RAM="25G"
         TIME="0:20"
-        ;;    
-    merfish_mouse_brain_8-batch)
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-100k-1b_1p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-300k-2b_1p)
+        RAM="45G"
+        TIME="0:45"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-300k-2b_2p)
+        RAM="45G"
+        TIME="0:45"
+        CORES=8
+        QUEUE="parallel"
+        ;;
+    mmb0-1b_smb1-1b_2p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-1b_smb1-1b_1p)
+        RAM="25G"
+        TIME="0:20"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    sss2-1b_1p)
+        RAM="2G"
+        TIME="0:10"
+        CORES=1
+        QUEUE="parallel"
+        ;;
+    sss3-1b_1p)
         RAM="25G"
         TIME="0:30"
+        CORES=8
+        QUEUE="parallel"
         ;;
-    merfish_mouse_brain_16-batch)
-        RAM="45G"
-        TIME="0:20"
-        ;;
-    merfish_mouse_brain_64-batch)
-        RAM="60G"
-        TIME="0:30"
-        ;;
-    merfish_mouse_brain_239-batch)
-        RAM="120G"
-        TIME="12:00"
-        ;;
-    merfish_mouse_brain_100k)
-        RAM="30G"
-        TIME="0:15"
-        ;;
-    merfish_mouse_brain_300k)
-        RAM="30G"
-        TIME="0:30"
-        ;;
+    smb13-2b_1p)
+        RAM="25G"
+        TIME="1:00"
+        CORES=2
+        QUEUE="parallel"
+        ;;    
     *)
         echo "Invalid dataset name"
         exit 1
         ;;
 esac
 
-CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
-mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
+# If not provided, use the default value
+CORES="${2:-$CORES}"
+QUEUE="${3:-$QUEUE}"
 
-CONFIG_FILE="reproducibility/config/cell-${TOKENIZER_NAME}-tokenization_${DATASET_NAME}_read-depth_shifted-log.yaml"
-OUTPUT_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.out"
-ERROR_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.err"
-JOB_NAME="${DATASET_NAME}_cell_${TOKENIZER_NAME}_tokenization_${CORES}"
+# Set the configuration file
+CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}_read-depth_shifted-log.yaml"
 
-echo "Tokenizing ${DATASET_NAME} with Cell ${TOKENIZER_NAME} Rank using ${CORES} cores..."
+# Set the output and error files
+mkdir -p "${LOG_DIR}"
+OUTPUT_FILE="${LOG_DIR}/${TOKENIZER_NAME}_${CORES}_%J.out"
+ERROR_FILE="${LOG_DIR}/${TOKENIZER_NAME}_${CORES}_%J.err"
+
+JOB_NAME="${EXPERIMENT_NAME}_${TOKENIZER_NAME}_${CORES}"
+
+echo "Log directory: ${LOG_DIR}"
+echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 
 bsub \
-    -G "${GROUP}" -q "${QUEUE}" -n "${CORES}" \
+    -G "${GROUP}" \
+    -n "${CORES}" \
+    -q "${QUEUE}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
     -W "${TIME}" \
     -cwd "${CWD}" \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${DATASET_NAME}" "${TOKENIZER_NAME}" "${CONFIG_FILE}" "${CORES}"
+    "${SCRIPT}" "${EXPERIMENT_NAME}" "${TOKENIZER_NAME}" "${CONFIG_FILE}" "${CORES}"
