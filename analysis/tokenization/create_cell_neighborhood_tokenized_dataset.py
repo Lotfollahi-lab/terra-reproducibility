@@ -21,11 +21,12 @@ import cProfile
 import argparse
 import numpy as np
 import scanpy as sc
+import squidpy as sq
 import anndata as ad
 from pathlib import Path
 from typing import List, Dict, Tuple, Union, Literal, Optional
 
-from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodTokenizer
+from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodTokenizer, CellGraphTokenizer
 from nichejepa.preprocessors.aggregators import aggregate_neighbors
 from nichejepa.preprocessors.normalizers import normalize_by_read_depth
 from nichejepa.preprocessors.filters import filter_poor_quality_cells
@@ -186,6 +187,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
 
 
 def build_token_dictionary(token_dictionary_file: str,
+                                tokenizer: str,
                                 gene_list: List[str],
                                 batch_id_key_list: List[str],
                                 gene_panel_id_key_list: List[str],
@@ -199,6 +201,7 @@ def build_token_dictionary(token_dictionary_file: str,
     Parameters:
     ----------
     - token_dictionary_file (str): The file path to save the token dictionary.
+    - tokenizer (str): The tokenizer to build token dictionary for.
     - gene_list (List[str]): The list of gene IDs.
     - batch_id_key_list (List[str]): A list of batch IDs, one per batch.
     - gene_panel_id_key_list (List[str]): A list of gene panel IDs, one per unique gene panel across batches.
@@ -220,7 +223,14 @@ def build_token_dictionary(token_dictionary_file: str,
         print(f"Creating token dictionary for NicheJEPA and saving to {token_dictionary_file}.")
         
         # Initialize with mandatory tokens
-        token_dict = {'<pad>': 0, '<mask>': 1, '<cls_cell>': 2, '<cls_neighborhood>': 3}
+        token_dict = {'<pad>': 0, '<mask>': 1}
+        
+        # Add cls tokens depending on the tokenizer
+        if tokenizer == "cell-neighborhood-tokenizer":
+            token_dict.update({'<cls_cell>': 2, '<cls_neighborhood>': 3})
+        elif tokenizer == "cell-graph-tokenizer":
+            # cls_0: 2 is for cell, cls_1: 3 is for 1st neighbor, cls_2: 4 is for 2nd neighbor, ..., upto 100 neighbors
+            token_dict.update({f'<cls_{i}>' : i + 2 for i in range(100)})
         
         # Add gene tokens
         # e.g. token_dict = {'ENSG00000139618': 4, ...}
@@ -267,6 +277,29 @@ def build_token_dictionary(token_dictionary_file: str,
     print("")
     
     return token_dict
+
+
+def compute_max_neighbors(adata: sc.AnnData) -> int:
+    """
+    Compute the maximum number of neighbors in the dataset.
+
+    Parameters:
+    ----------
+    - adata (sc.AnnData): Annotated data matrix with gene expression information.
+
+    Returns:
+    ----------
+    - int: The maximum number of neighbors.
+    """
+    sq.gr.spatial_neighbors(adata,
+                            coord_type="generic",
+                            spatial_key="spatial",
+                            radius=27.50,
+                            )
+
+    max_neighbors = int(np.max(adata.obsp["spatial_connectivities"].sum(1)))
+
+    return max_neighbors
     
 
 def normalize_gene_counts(adata: sc.AnnData, 
@@ -547,6 +580,7 @@ def main(config: Dict):
 
     # Build token dictionary
     token_dict = build_token_dictionary(token_dictionary_file,
+                                                tokenizer,
                                                 gene_list,
                                                 batch_id_key_list,
                                                 gene_panel_id_key_list,
@@ -556,11 +590,20 @@ def main(config: Dict):
                                                 overwrite)
     print(f"Number of Tokens: {len(token_dict)}.")
     
-    # Set model input size
+    # Set model input size based on tokenizer
     try:
         model_input_size = config["experiment"]["model_input_size"]
     except:
-        model_input_size = len(gene_list) * 2
+        if tokenizer == "cell-neighborhood-tokenizer":
+            model_input_size = len(gene_list) * 2
+        elif tokenizer == "cell-graph-tokenizer":
+            try:
+                tokens_per_cell = config["tokenization"]["tokens_per_cell"]
+            except:
+                raise ValueError("Please specify the number of tokens per cell.")
+            max_neighbors = compute_max_neighbors(adata)
+            model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
+
     print(f"Model Input Size: {model_input_size}")
     
     # Set output file prefix
@@ -641,8 +684,13 @@ def main(config: Dict):
     with cProfile.Profile() as pr:
         start = time.time()
         
+        if tokenizer == 'cell-neighborhood-tokenizer':
+            Tokenizer = CellNeighborhoodTokenizer
+        elif tokenizer == 'cell-graph-tokenizer':
+            Tokenizer = CellGraphTokenizer
+            
         # Instantiate tokenizer
-        tk = CellNeighborhoodTokenizer(
+        tk = Tokenizer(
                 model_input_size=model_input_size,
                 norm_method=norm_method,
                 norm_factor=norm_factor,
