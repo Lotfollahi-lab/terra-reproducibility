@@ -121,4 +121,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${EXPERIMENT_NAME}" "${TOKENIZER_NAME}" "${CONFIG_FILE}" "${CORES}"
+    "${SCRIPT}" "${CONFIG_FILE}" "${CORES}"
