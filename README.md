@@ -64,6 +64,7 @@ This will create an LSF job with the appropriate requirements and fetch the corr
 - `smb1-20b_1p` -- Starmap Plus Mouse CNS | Batches 1-20 | 1 gene panel
 - `sss2-1b_1p` -- Simulated 10k | Batch 1 | 1 gene panel
 - `sss3-1b_1p` -- Simulated 100k | Batch 1 | 1 gene panel
+- `xhs1000-39b_1p` -- Xenium Human Skin | Batch 39 | 1 gene panel
 
 
 ### Adding A New Experiment:
