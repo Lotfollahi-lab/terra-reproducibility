@@ -7,7 +7,7 @@ CORES=$2    # number of cores
 module load cellgen/conda
 conda activate nichejepa-reproducibility
 
-python analysis/tokenization/create_tokenized_dataset.py \
+python analysis/tokenization/create_cell_tokenized_dataset.py \
     --config_file ${CONFIG_FILE} \
     --override \
     nproc=${CORES} \
