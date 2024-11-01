@@ -41,17 +41,17 @@ Use `config/multiple-assays/mmb70-1b_smb71-1b_smb13-1b_3p_to_mmb70-1b_smb71-1b_s
 
 ## Tokenization
 
-### CellNeighborhoodRankTokenizer:
+### CellNeighborhoodTokenizer:
 
-Execute the following to create a Hugging Face dataset created using the Cell Neighborhood Rank Tokenization from a preprocessed `anndata` object:
+Execute the following to create a Hugging Face dataset created using the Cell Neighborhood Tokenization from a preprocessed `anndata` object:
 ```
-python analysis/tokenization/create_cell_neighborhood_rank_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
+python analysis/tokenization/create_cell_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
 ```
 Sample config file is available at `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml`. The override flag allows you to override two things: (1) the number of processes parameter from the config file by using `nproc=[NPROC]`, and (2) whether to reuse the intermediate files such as token dictionary or rebuild them first before recreating the tokenized data by using `overwrite=True`. Other parameters from the config file remain unaffected. If in doubt, it may be safer to overwrite.
 
 If you are on `farm22`, then the easier alternative is to simply use the wrapper script as follows:
 ```
-./scripts/wrapper_create_cell_neighborhood_rank_tokenized_dataset.sh [EXPERIMENT-NAME]
+./scripts/wrapper_create_cell_neighborhood_tokenized_dataset.sh [EXPERIMENT-NAME]
 ```
 This will create an LSF job with the appropriate requirements and fetch the corresponding config file. Currently, the following experiment names are supported:
 - `mmb0-8b_1p` -- Merfish Mouse Brain | Batches 1-8 | 1 gene panel
@@ -74,6 +74,16 @@ To tokenize a new experiment, follow the steps below:
 3. Create a config file at the following location with this naming convention: `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_[EXPERIMENT-NAME]_read-depth_shifted-log.yaml`
 4. Update the `experiment_name`, `experiment_description`, and potentially `nproc` and `num_shards`. Ideally, you shouldn't need to update any of the other parameters here if you just want to repeat the same tokenization pipeline on a new experiment.
 5. Update `scripts/wrapper_create_cell_neighborhood_tokenized_dataset.sh` by adding the `RAM`, `TIME`, `CORES`, and `QUEUE` as LSF job parameters as a new case titled `[EXPERIMENT-NAME]`.
+
+
+### CellGraphTokenizer:
+
+Executing Cell Graph Tokenization from a preprocessed `anndata` object occurs in exactly the same way as the Cell Neighborhood Tokenization described above:
+```
+python analysis/tokenization/create_cell_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
+```
+The only difference is that the config files are stored in `config/cell-graph-tokenizer`.
+The corresponding wrapper script is available at `scripts/wrapper_create_cell_graph_tokenized_dataset.sh`.
 
 
 ## Analysis
