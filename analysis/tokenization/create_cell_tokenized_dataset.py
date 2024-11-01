@@ -532,6 +532,7 @@ def main(config: Dict):
     os.makedirs(cache_directory_path, exist_ok=True)
 
     # Configure tokenizer paths
+    # tokenizer_directory_path = Path(".") / "tokenizer"
     tokenizer_directory_path = data_directory_path / "tokenizer"
     tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
@@ -601,6 +602,8 @@ def main(config: Dict):
                 tokens_per_cell = config["tokenization"]["tokens_per_cell"]
             except:
                 raise ValueError("Please specify the number of tokens per cell.")
+            adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
+            # TODO: Fix the following code block to handle multiple batches of data
             max_neighbors = compute_max_neighbors(adata)
             model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
 
