@@ -4,6 +4,8 @@ experiment:
   tokenizer: "cell-graph-tokenizer"
   nproc: 4
   overwrite: False
+  radius: null
+  delaunay_radius_union: False
 
 tokenization:
   tokens_per_cell: 64

@@ -520,10 +520,7 @@ def main(config: Dict):
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
     radius = config["tokenization"]["radius"]
-    if config["tokenization"]["delaunay_radius_union"] == "True":
-        delaunay_radius_union = True
-    elif config["tokenization"]["delaunay_radius_union"] == "False":
-        delaunay_radius_union = False
+    delaunay_radius_union = config["tokenization"]["delaunay_radius_union"]
 
     # ------------------------------------------------------------
         

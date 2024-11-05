@@ -11,8 +11,10 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 16
+  num_shards: 32
   keep_in_memory: False
+  radius: null
+  delaunay_radius_union: False
 
 wandb:
   project: "NicheJEPA"
