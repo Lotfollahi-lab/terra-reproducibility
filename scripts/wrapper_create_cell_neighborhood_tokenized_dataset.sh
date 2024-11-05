@@ -1,82 +1,91 @@
 #!/bin/bash
 
 GROUP="team361"
-SCRIPT="reproducibility/scripts/create_tokenized_data.sh"
 
-DATASET_NAME="${1:-sss2-1b_1p}"
-TOKENIZER_NAME="neighborhood"
+# Set the experiment parameters
+EXPERIMENT_NAME="${1:-sss2-1b_1p}"
+TOKENIZER_NAME="cell-neighborhood-tokenizer"
+LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
-case $DATASET_NAME in
-    sss2-1b_1p)
-        RAM="2G"
-        TIME="0:05"
-        CORES=1
-        QUEUE="normal"
-        ;;
-    sim1_1105genes_100klocs_strongincrements)
-        RAM="25G"
-        TIME="0:10"
-        CORES=4
-        QUEUE="normal"
-        ;;
-    merfish_mouse_brain_2-batch)
-        RAM="5G"
-        TIME="0:05"
-        CORES=2
-        QUEUE="normal"
-        ;;
-    merfish_mouse_brain_8-batch)
+SCRIPT="scripts/create_tokenized_data.sh"
+
+case $EXPERIMENT_NAME in
+    mmb0-8b_1p)
         RAM="25G"
         TIME="0:20"
         CORES=4
         QUEUE="parallel"
         ;;
-    merfish_mouse_brain_16-batch)
-        RAM="30G"
-        TIME="0:30"
+    mmb0-100k-1b_1p)
+        RAM="25G"
+        TIME="0:20"
         CORES=4
         QUEUE="parallel"
         ;;
-    merfish_mouse_brain_64-batch)
-        RAM="60G"
-        TIME="1:00"
+    mmb0-300k-2b_1p)
+        RAM="45G"
+        TIME="0:45"
+        CORES=4
+        QUEUE="parallel"
+        ;;
+    mmb0-300k-2b_2p)
+        RAM="45G"
+        TIME="0:45"
         CORES=8
         QUEUE="parallel"
         ;;
-    merfish_mouse_brain_239-batch)
+    mmb0-239b_1p)
         RAM="120G"
-        TIME="12:00"
-        CORES=16
+        TIME="18:00"
+        CORES=8
         QUEUE="long"
         ;;
-    merfish_mouse_brain_100k)
+    mmb0-1b_smb1-1b_2p)
         RAM="25G"
         TIME="0:20"
         CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_300k)
-        RAM="45G"
-        TIME="0:45"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merfish_mouse_brain_300k_2-gene-panels)
-        RAM="45G"
-        TIME="0:45"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    merscope_human_liver_cancer_1-batch)
-        RAM="25G"
-        TIME="0:45"
-        CORES=2
         QUEUE="parallel"
         ;;
     mmb0-1b_smb1-1b_1p)
         RAM="25G"
-        TIME="0:10"
+        TIME="0:20"
         CORES=4
+        QUEUE="parallel"
+        ;;
+    smb1-20b_1p)
+        RAM="50G"
+        TIME="2:00"
+        CORES=4
+        QUEUE="parallel"
+        ;;    
+    sss2-1b_1p)
+        RAM="2G"
+        TIME="0:10"
+        CORES=1
+        QUEUE="parallel"
+        ;;
+    sss3-1b_1p)
+        RAM="25G"
+        TIME="0:15"
+        CORES=8
+        QUEUE="parallel"
+        ;;
+    smb13-2b_1p)
+        RAM="25G"
+        TIME="1:00"
+        CORES=2
+        QUEUE="parallel"
+        ;;    
+    smb13-111b_1p)
+        RAM="80G"
+        TIME="12:00"
+        CORES=8
+        QUEUE="long"
+        ;;
+    xhs1000-39b_1p)
+        RAM="45G"
+        TIME="2:00"
+        CORES=8
         QUEUE="parallel"
         ;;
     *)
@@ -89,15 +98,18 @@ esac
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
 
-CWD="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/"
-mkdir -p "logs/${DATASET_NAME}/profile-nprocs"
+# Set the configuration file
+CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}_read-depth_shifted-log.yaml"
 
-CONFIG_FILE="reproducibility/config/cell-neighborhood-tokenization/cell-${TOKENIZER_NAME}-tokenization_${DATASET_NAME}_read-depth_shifted-log.yaml"
-OUTPUT_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.out"
-ERROR_FILE="logs/${DATASET_NAME}/profile-nprocs/cell_${TOKENIZER_NAME}_tokenization_${CORES}_%J.err"
-JOB_NAME="${DATASET_NAME}_cell_${TOKENIZER_NAME}_tokenization_${CORES}"
+# Set the output and error files
+mkdir -p "${LOG_DIR}"
+OUTPUT_FILE="${LOG_DIR}/${TOKENIZER_NAME}_${CORES}_%J.out"
+ERROR_FILE="${LOG_DIR}/${TOKENIZER_NAME}_${CORES}_%J.err"
 
-echo "Tokenizing ${DATASET_NAME} with Cell ${TOKENIZER_NAME} Rank using ${CORES} cores..."
+JOB_NAME="${EXPERIMENT_NAME}_${TOKENIZER_NAME}_${CORES}"
+
+echo "Log directory: ${LOG_DIR}"
+echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 
 bsub \
     -G "${GROUP}" \
@@ -109,4 +121,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${DATASET_NAME}" "${TOKENIZER_NAME}" "${CONFIG_FILE}" "${CORES}"
+    "${SCRIPT}" "${CONFIG_FILE}" "${CORES}"

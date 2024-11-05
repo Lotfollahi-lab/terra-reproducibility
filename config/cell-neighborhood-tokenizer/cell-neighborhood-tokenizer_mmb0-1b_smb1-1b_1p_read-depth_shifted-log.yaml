@@ -1,7 +1,8 @@
 experiment:
-  experiment_name: "sss2-1b_1p" # sim1_1105fts_10000locs (2) 1-batch 1-panel
+  experiment_name: "mmb0-1b_smb1-1b_1p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 1-batch | starmap_mouse_brain (dataset-id = 1) | 1-batch | 1-panel (shared genes only)"
   tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 1
+  nproc: 4
   overwrite: False
 
 tokenization:
@@ -10,7 +11,7 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 2
+  num_shards: 8
   keep_in_memory: False
 
 wandb:
@@ -21,5 +22,3 @@ wandb:
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
-  tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/"
-  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/"
