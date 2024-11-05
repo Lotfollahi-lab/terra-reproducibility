@@ -33,14 +33,14 @@ from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
 
 
-def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
-                                        gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
-                                        file_path_to_gene_panel_ID_dict_file: Union[Path, str],
-                                        gene_list_file: Union[Path, str],
-                                        overwrite: Literal[True,False] = False) \
-                                        -> Tuple[List[sc.AnnData], List[str], List[str], List[str], List[str], List[str], List[str]]:
+def process_anndata_batches(input_directory: Union[Path, str],
+                                gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
+                                file_path_to_gene_panel_ID_dict_file: Union[Path, str],
+                                gene_list_file: Union[Path, str],
+                                overwrite: Literal[True,False] = False) \
+                                -> Tuple[List[sc.AnnData], List[str], List[str], List[str], List[str], List[str], List[str]]:
     """
-    Create gene panel mappings for each batch of data and load the data into AnnData objects.
+    Capture set of unique genes, gene panels, batches, assays, tissues, and species across all batches of anndata in the input directory. These are then used to create the token mappings (vocabularies) for the tokenizer.
 
     Parameters
     ----------
@@ -578,11 +578,11 @@ def main(config: Dict):
     species_key_list, \
     tissue_key_list, \
     gene_list \
-        = map_anndata_batches_to_gene_panels(input_directory,
-                                                gene_panel_ID_to_gene_panel_dict_file,
-                                                file_path_to_gene_panel_ID_dict_file,
-                                                gene_list_file, 
-                                                overwrite)
+        = process_anndata_batches(input_directory,
+                                    gene_panel_ID_to_gene_panel_dict_file,
+                                    file_path_to_gene_panel_ID_dict_file,
+                                    gene_list_file, 
+                                    overwrite)
 
     # Build token dictionary
     token_dict = build_token_dictionary(token_dictionary_file,
