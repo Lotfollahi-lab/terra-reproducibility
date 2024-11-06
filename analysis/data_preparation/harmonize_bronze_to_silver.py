@@ -1,12 +1,21 @@
 import os
+import time
+import tqdm
+import zipfile
+import tempfile
+import requests
+import yaml
 import pickle
 import argparse
 import numpy as np
 import scanpy as sc
 import pandas as pd
+from typing import Dict
 from pathlib import Path
 import scipy.sparse as sp
 from pyensembl import EnsemblRelease
+
+CHUNK_SIZE = 5 * 1024 * 1024
 
 
 def create_gene_name_to_ensembl_id_dict(species: str, 
@@ -23,13 +32,13 @@ def create_gene_name_to_ensembl_id_dict(species: str,
     ----------
     - Dict: A dictionary of gene symbol names to ensembl id.
     """
-    fname = Path("/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets") / f"{species}_gene_name_to_ensembl_id_dict.pkl"
+    fname = Path("/lustre/scratch126/cellgen/team361/DATASETS/genes") / f"{species}_gene_name_to_ensembl_id_dict.pkl"
     if os.path.exists(fname):
-        print(f"Loading gene name to ensembl id dictionary for Species {args.species}...")
+        print(f"Loading gene name to ensembl id dictionary for Species {species}...")
         with open(fname, 'rb') as f:
             gene_name_to_ensembl_id_dict = pickle.load(f)
     else:
-        print(f"Creating gene name to ensembl id dictionary for Species {args.species}...")
+        print(f"Creating gene name to ensembl id dictionary for Species {species}...")
         # Extract Ensembl IDs of protein coding and miRNA mouse genes
         ensembl = EnsemblRelease(release=release, species=species)
         ensembl.download()
@@ -45,8 +54,7 @@ def create_gene_name_to_ensembl_id_dict(species: str,
     return gene_name_to_ensembl_id_dict
 
 
-
-def harmonize_X_gene_counts(args, adata):
+def harmonize_X_gene_counts(adata):
     if adata.X is None and 'counts' not in adata.layers.keys():
         raise ValueError("Both adata.X and adata.layers['counts'] are missing.")
 
@@ -66,8 +74,7 @@ def harmonize_X_gene_counts(args, adata):
     return adata
     
 
-def harmonize_var_gene_names(args,
-                             adata,
+def harmonize_var_gene_names(adata,
                              gene_name_to_ensembl_id_dict):
     if adata.var is None:
         raise ValueError("adata.var is missing.")
@@ -92,27 +99,22 @@ def harmonize_var_gene_names(args,
             # print(f"Gene name {gene_name} not found in gene_name_to_ensembl_id_dict. Skipped...")
 
     print("Number of genes in bronze data:", len(gene_names))
-    print("Number of genes with matching ensemble ids:", len(harmonized_gene_names))
+    print("Number of genes with matching ensembl ids:", len(harmonized_gene_names))
     print(f"Number of genes skipped: {len(gene_names) - len(harmonized_gene_names)}")
 
     original_sum = adata.X.sum()
-    original_selected_sum = adata[:, adata.var.index.isin(harmonized_gene_names)].X.sum()
-    original_nonselected_sum = adata[:, ~adata.var.index.isin(harmonized_gene_names)].X.sum()
-
+    original_selected_sum = adata[:, adata.var.index.isin(harmonized_gene_names)].copy().X.sum()
+    original_nonselected_sum = adata[:, ~adata.var.index.isin(harmonized_gene_names)].copy().X.sum()
+    print(f"Original sum: {original_sum}")
+    print(f"Original selected sum: {original_selected_sum}")
+    print(f"Original nonselected sum: {original_nonselected_sum}")
     adata = adata[:, adata.var.index.isin(harmonized_gene_names)].copy()
     
     adata.var = pd.DataFrame(index=pd.Index(harmonized_gene_names, name="gene_name"), data={"ensembl_id": matching_ensembl_ids})
 
     harmonized_sum = adata.X.sum()
     
-    assert original_sum == original_selected_sum + original_nonselected_sum
     assert harmonized_sum == original_selected_sum
-    
-    # print("Sum of original adata.X:", original_sum)
-    # print("Sum of original selected gene name columns:", original_selected_sum)
-    # print("Sum of original non selected gene name columns:", original_nonselected_sum)
-    # print(f"Original sum == original selected + original non selected: {original_sum == original_selected_sum + original_nonselected_sum}")
-    # print(f"harmonized_sum == original_selected_sum: {harmonized_sum == original_selected_sum}")
     
     print("adata.var:")
     print(adata.var)
@@ -120,8 +122,7 @@ def harmonize_var_gene_names(args,
     return adata
 
 
-def harmonize_obsm_spatial(args,
-                            adata):
+def harmonize_obsm_spatial(adata):
     if adata.obsm is None:
         raise ValueError("adata.obsm is missing.")
     
@@ -134,58 +135,53 @@ def harmonize_obsm_spatial(args,
         if adata.obsm['spatial'].dtype != np.float32:
             adata.obsm['spatial'] = adata.obsm['spatial'].astype(np.float32)
         print("adata.obsm['spatial'] is already present.")
+    else:
+        raise ValueError("Spatial coordinates are missing.")
 
-    if 'spatial' not in adata.obsm.keys():
-        if args.x_coords not in adata.obs.keys():
-            raise ValueError(f"{args.x_coords} is missing in adata.obs.")
-        if args.y_coords not in adata.obs.keys():
-            raise ValueError(f"{args.y_coords} is missing in adata.obs.")
-        x_coords = np.array(adata.obs[args.x_coords].tolist(), dtype=np.float32)
-        y_coords = np.array(adata.obs[args.y_coords].tolist(), dtype=np.float32)
-        adata.obsm['spatial'] = np.vstack([x_coords, y_coords]).T
-        
     print("adata.obsm['spatial']:")
     print(adata.obsm['spatial'])
     
     return adata
-    
 
-def harmonize_uns_metadata(args,
+
+def harmonize_uns_metadata(uns_metadata,
                             adata):
-    for key in ['dataset_id', 'assay', 'tissue', 'species', 'batch']:
+    print(adata)
+    for key in uns_metadata.keys():
+        print(key)
         try:
             print(f"{key} is present in adata.uns: {adata.uns[key]}")
         except:
+            print("Setting metadata from config file to adata.uns")
             try:
-                if key in adata.obs.keys() and adata.obs[key].nunique() == 1:
-                    print(f"{key} is present in adata.obs: {adata.obs[key].iloc[0]}")
-                    adata.uns[key] = adata.obs[key].iloc[0]
+                assert key in adata.obs.keys() and adata.obs[key].nunique() == 1
+                print(f"{key} is present in adata.obs: {adata.obs[key].iloc[0]}")
+                adata.uns[key] = adata.obs[key].iloc[0]
             except:
-                print(f"{key} is missing from adata. Setting it from args to {getattr(args,key)}")
-                adata.uns[key] = getattr(args,key)
+                print(f"{key} is missing from adata. Setting it from config file to {uns_metadata[key]}")
+                print(f"Setting adata.uns['{key}'] = {uns_metadata[key]}")
+                adata.uns[key] = uns_metadata[key]
 
     if 'batch' not in adata.uns['batch']:
         adata.uns['batch'] = f"batch{adata.uns['batch']}"
     
     print("Metadata in adata.uns:")
-    for key in ['dataset_id', 'assay', 'tissue', 'species', 'batch']:
+    for key in uns_metadata.keys():
         print(f"{key}: {adata.uns[key]}")
     return adata
 
 
-def harmonize_batch(args,
+def harmonize_batch(uns_metadata,
                     file,
                     gene_name_to_ensembl_id_dict):
     adata = sc.read_h5ad(file)
     print(f"Raw adata shape: {adata.shape}")
     
-    adata = harmonize_X_gene_counts(args, 
-                                    adata)
-    adata = harmonize_var_gene_names(args,
-                                     adata, gene_name_to_ensembl_id_dict)
-    adata = harmonize_obsm_spatial(args,
-                                   adata)
-    adata = harmonize_uns_metadata(args,
+    adata = harmonize_X_gene_counts(adata)
+    adata = harmonize_var_gene_names(adata,
+                                     gene_name_to_ensembl_id_dict)
+    adata = harmonize_obsm_spatial(adata)
+    adata = harmonize_uns_metadata(uns_metadata,
                                    adata)
     
     # filter cells with less than 10 genes
@@ -200,83 +196,232 @@ def harmonize_batch(args,
     return adata    
 
 
-def harmonize_bronze_data_to_silver_data(args,
+def harmonize_bronze_data_to_silver_data(uns_metadata,
                                          input_directory,
                                          output_directory,
-                                         gene_name_to_ensembl_id_dict):    
+                                         gene_name_to_ensembl_id_dict):
+    batch_count = 0
     for file in input_directory.glob("**/*.h5ad"):
         print(f"Harmonizing: {file}")
-        file_adata = harmonize_batch(args,
+        uns_metadata["batch"] = str(batch_count)
+        file_adata = harmonize_batch(uns_metadata,
                                      file,
                                      gene_name_to_ensembl_id_dict)
         print(file_adata)
         print(f"Writing to: {output_directory / file.name}")
         file_adata.write(output_directory / file.name)
-        
+
         print("")
+        batch_count += 1
 
     return
 
 
-def main(args):
-    data_directory_path = Path(args.data_directory_path)
+def pre_process_10x_xenium(raw_path):
+    # What Xenium output looks like:
+    # https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/analysis/xoa-output-understanding-outputs
+    raw_path = str(raw_path)
+    print(f"[+] Reading {raw_path}")
+    temp_dir = tempfile.TemporaryDirectory()
+    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
+        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
+        with zipfile.ZipFile(raw_path, "r") as zip:
+            zip.extract("cell_feature_matrix.h5", path=temp_dir.name)
+            zip.extract("cells.parquet", path=temp_dir.name)
+            zip.extract("experiment.xenium", path=temp_dir.name)
+            zip.extract("gene_panel.json", path=temp_dir.name)
+            zip.extract("analysis.zarr.zip", path=temp_dir.name)
+        raw_path = temp_dir.name
+
+    cells_parquet = os.path.join(raw_path, "cells.parquet")
+    cell_feature_h5 = os.path.join(raw_path, "cell_feature_matrix.h5")
+
+    # read cell-feature matrix
+    print(f"[+] Reading cell-feature matrix {cell_feature_h5}")
+    adata = sc.read_10x_h5(filename=cell_feature_h5)
+
+    # make sure var_names is ensembl_id instead of gene name
+    adata.var = adata.var.drop(columns=["feature_types","genome"])
+    adata.var = adata.var.reset_index()
+    adata.var.columns = ['gene_name','ensembl_id']
+    adata.var = adata.var.set_index('gene_name')
+
+    # read observations
+    print(f"[+] Reading observations {cells_parquet}")
+    df = pd.read_parquet(cells_parquet)
+    df = df.set_index(adata.obs_names)
+    adata.obs = df.copy()
+    # get spatial coordintes in the embedings slot
+    adata.obsm["spatial"] = adata.obs[["x_centroid", "y_centroid"]].copy().to_numpy()
+    adata.obs = adata.obs.drop(columns=["x_centroid", "y_centroid"])
+
+    # record xenium experiment and gene panel information
+    experiment_xenium = os.path.join(raw_path, "experiment.xenium")
+    print(f"[+] Reading experiment {experiment_xenium}")
+    with open(experiment_xenium, "rt") as f:
+        adata.uns["experiment.xenium"] = f.read()
+    gene_panel = os.path.join(raw_path, "gene_panel.json")
+    print(f"[+] Reading gene panel {gene_panel}")
+    with open(gene_panel, "rt") as f:
+        adata.uns["gene_panel.json"] = f.read()
+
+    return adata
+
+
+def download_zipfiles(urls: list[str] = [],
+                      input_directory: Path = None,
+                      redownload: str = "False") -> list[Path]:
+    raw_zipfile_paths = []
+    for url in urls:
+        raw_zipfile_name = f"{os.path.basename(url)}"
+        raw_zipfile_path = input_directory / raw_zipfile_name
+        raw_zipfile_paths.append(raw_zipfile_path)
+
+        # download files if not already downloaded
+        if not os.path.exists(raw_zipfile_path) or redownload == "True":
+            # download files
+            print(f"Downloading files from {url}...")
+            download_url(url,
+                        raw_zipfile_path)
+        else:
+            print(f"{raw_zipfile_path} already exists. Skipping download...")
+    return raw_zipfile_paths
+
+
+def download_url(url: str = None,
+                 raw_file_path: Path = None):
+    # poor man's retry
+    _ATTEMPTS=3
+    for attempt in range(1,_ATTEMPTS+1):
+        try:
+            r = requests.get(url, stream=True)
+            total_size = int(r.headers.get("content-length", 0))
+            with tqdm.tqdm(
+                total=total_size, unit="B", unit_scale=True, desc=os.path.basename(url)
+            ) as p:
+                with open(raw_file_path, "wb") as f:
+                    for chunk in r.iter_content(CHUNK_SIZE):
+                        p.update(len(chunk))
+                        f.write(chunk)
+            return True
+        except Exception as ex:
+            # log error, wait 60s and try agaain
+            print(f"Attempt #{attempt} failed to download. Error :{repr(ex)}")
+            time.sleep(60)
+    print(f"ERROR. Fail all {_ATTEMPTS} attempts")
+
+
+def main(config: Dict):
+    # get experiment params
+    experiment_name = config["experiment"]["name"]
+    print(f"Experiment Name: {experiment_name}")
+    
+    # set data paths
+    data_directory_path = Path(config["paths"]["data_directory_path"])
     bronze_directory_path = data_directory_path / "bronze"
     silver_directory_path = data_directory_path / "silver"
     
-    input_directory = bronze_directory_path / args.experiment_name
-    output_directory = silver_directory_path / args.experiment_name
+    # download files and put them in here
+    input_directory = bronze_directory_path / experiment_name
+    os.makedirs(input_directory, exist_ok=True)
+    print(f"Input Directory: {input_directory}")
+    h5ad_files = list(input_directory.glob("**/*.h5ad"))
+    print(h5ad_files)
     
+
+    # preprocess files saved in input_directory and save them in output_directory
+    output_directory = silver_directory_path / experiment_name
     os.makedirs(output_directory, exist_ok=True)
+
+    # get dataset params
+    uns_metadata = {}
+    uns_metadata["dataset_id"] = config["dataset"]["dataset_id"]
+    uns_metadata["assay"] = config["dataset"]["assay"]
+    uns_metadata["species"] = config["dataset"]["species"]
+    uns_metadata["tissue"] = config["dataset"]["tissue"]
     
-    print(f"Experiment Name: {args.experiment_name}")
+    if config["data_source"]["online"]:
+        raw_zipfile_paths = download_zipfiles(config["data_source"]["urls"],
+                                                input_directory,
+                                                config["data_source"]["redownload"])
+        
+        # create raw adata from raw zip file or load it if already exists
+        if len(h5ad_files) == 0 or config["experiment"]["overwrite"]:
+            for raw_zipfile_path in raw_zipfile_paths:
+                print("Creating raw adata from raw zip file...")
+                adata = pre_process_10x_xenium(raw_zipfile_path)
+                print("Raw adata:")
+                print(adata)
+                raw_adata_fname = input_directory / f"{raw_zipfile_path.stem}.h5ad"
+                print(f"Writing raw adata to file: {raw_adata_fname}")
+                adata.write(raw_adata_fname)
+        else:
+            print("Raw adata already exists.")
+
+    # save or load gene_name_to_ensembl_id_dict
+    gene_name_to_ensembl_id_dict = create_gene_name_to_ensembl_id_dict(uns_metadata["species"])
+
+    harmonize_bronze_data_to_silver_data(uns_metadata,
+                                        input_directory,
+                                        output_directory,
+                                        gene_name_to_ensembl_id_dict)
+
+
+def parse_arguments() -> argparse.Namespace:
+    """
+    Parse command line arguments.
     
-    gene_name_to_ensembl_id_dict = create_gene_name_to_ensembl_id_dict(args.species)
+    Returns:
+    ----------
+    - argparse.Namespace: The command line arguments.
+    """
+    parser = argparse.ArgumentParser(description='Process command line arguments.')
     
-    harmonize_bronze_data_to_silver_data(args,
-                                         input_directory,
-                                         output_directory,
-                                         gene_name_to_ensembl_id_dict)
+    parser.add_argument('--config_file', 
+                        type=str,
+                        default='/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/config/bronze_to_silver/xhs1000-39b_1p.yaml',
+                        help='Path to the config file')
+    parser.add_argument('--override', 
+                        nargs='+', 
+                        help='Override parameters in the config file')
+    
+    return parser.parse_args()
+
+
+def collect_configs(args: argparse.Namespace) -> Dict:
+    """
+    Collect configurations from the config file and command line arguments.
+    
+    Parameters:
+    ----------
+    - args (argparse.Namespace): The command line arguments.
+    
+    Returns:
+    ----------
+    - Dict: The configuration dictionary.
+    """
+    # Get the config file name from command line argument
+    config_fname = args.config_file
+
+    # Read parameters from config file
+    with open(config_fname, "r") as f:
+        config = yaml.safe_load(f)
+    
+    # Override parameters from command line
+    if args.override:
+        for arg in args.override:
+            key, value = arg.split("=")
+            if key == 'overwrite':
+                if value == 'True':
+                    config['experiment'][key] = True
+                elif value == 'False':
+                    config['experiment'][key] = False
+                    
+    return config
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process command line arguments.')
-    
-    parser.add_argument('--data_directory_path', 
-                        type=str,
-                        default='/lustre/scratch126/cellgen/team361/DATASETS',
-                        help='Top-level directory path for all datasets')
-    parser.add_argument('--experiment_name',
-                        type=str,
-                        default="xhs1000-39b_1p",
-                        help='Name of the experiment')
-    parser.add_argument('--dataset_id',
-                        type=str,
-                        default="1000",
-                        help='Dataset ID')
-    parser.add_argument('--assay',
-                        type=str,
-                        default="xenium",
-                        help='Assay or technology used')
-    parser.add_argument('--tissue',
-                        type=str,
-                        default="skin",
-                        help='Name of tissue')
-    parser.add_argument('--species',
-                        type=str,
-                        default="homo_sapiens",
-                        help='Name of species')
-    parser.add_argument('--batch',
-                        type=str,
-                        default="batch0",
-                        help='batch id')
-    parser.add_argument('--x_coords',
-                        type=str,
-                        default="Raw_X",
-                        help='Key in .obs to use as x coordinate')
-    parser.add_argument('--y_coords',
-                        type=str,
-                        default="Raw_Y",
-                        help='Key in .obs to use as y coordinate')
-    args = parser.parse_args()    
-    
-    main(args)
+
+    args = parse_arguments()
+    config = collect_configs(args)
+    main(config)
