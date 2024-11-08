@@ -1,0 +1,6 @@
+experiment:
+  input_experiment_name: mmb0-1b_smb1-1b_smb13-1b_3p
+  output_experiment_name: mmb0-1b_smb1-1b_smb13-1b_1p
+  
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"

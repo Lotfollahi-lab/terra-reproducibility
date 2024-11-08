@@ -1,0 +1,24 @@
+experiment:
+  experiment_name: "smb1-20b_1p"
+  experiment_description: "starmap_plus_mouse_cns (dataset-id = 1) | 20-batch | 1-panel"
+  tokenizer: "cell-neighborhood-tokenizer"
+  nproc: 4
+  overwrite: False
+
+tokenization:
+  use_generator: True
+  norm_method: "shifted_log"
+  norm_factor: "read_depth"
+  prenormalize: False
+  processing_mode: "parallel"
+  num_shards: 8
+  keep_in_memory: False
+
+wandb:
+  project: "NicheJEPA"
+  job_type: "create-tokenized-dataset"
+  save_artifact: False
+  mode: "offline"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"

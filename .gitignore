@@ -3,9 +3,9 @@ archive
 scgpt
 
 wandb
+artifacts
+logs
+
 *__pycache__*
 .ipynb_checkpoints
 analysis/data_analysis/logs
-wandb
-artifacts
-

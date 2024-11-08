@@ -4,11 +4,11 @@ Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 Usage
 ----------
 .. terminal
-    >>> python create_cell_neighborhood_tokenized_dataset.py --config_file cell-neighborhood-tokenization_mmb0-1b_smb1-1b_1p_read-depth_shifted-log.yaml --override nproc=1    
+    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1 overwrite=True
 
 Description
 ----------
-This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Rank Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary.
+This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Tokenizer or the Cell Graph Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides number of processes to use for tokenization and whether to rebuild and overwrite the intermediate files required for creating the tokenized data.
 """
 
 import os
@@ -21,67 +21,16 @@ import cProfile
 import argparse
 import numpy as np
 import scanpy as sc
+import squidpy as sq
 import anndata as ad
 from pathlib import Path
-from typing import Set, List, Dict, Tuple, Union, Literal, Optional
+from typing import List, Dict, Tuple, Union, Literal, Optional
 
-from pyensembl import EnsemblRelease
+from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodTokenizer, CellGraphTokenizer
+from nichejepa.preprocessors.aggregators import aggregate_neighbors
+from nichejepa.preprocessors.normalizers import normalize_by_read_depth
+from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
-from nichejepa import tokenizers
-from nichejepa.aggregators.aggregate_neighbors import aggregate_neighbors
-from nichejepa.normalizers.normalize_by_read_depth import normalize_by_read_depth
-from nichejepa.preprocessors.filter_poor_quality_cells import filter_poor_quality_cells
-
-
-def get_gene_set_from_ensembl_release(species: str, 
-                                        release: int = 111) -> Set[str]:
-    """
-    Get a list of gene IDs from the Ensembl release.
-    
-    Parameters:
-    ----------
-    - species (str): The species of the dataset.
-    
-    Returns:
-    ----------
-    - Set[str]: A set of gene IDs.
-    """
-    if species == 'mus_musculus':
-        # Extract Ensembl IDs of protein coding and miRNA mouse genes
-        ensembl = EnsemblRelease(release=release, species=species)
-        ensembl.download()
-        ensembl.index()
-        all_genes = ensembl.genes()
-        protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
-        mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
-        all_relevant_genes = protein_coding_genes + mirna_genes
-        gene_set = set([gene.gene_id for gene in all_relevant_genes])
-    else:
-        gene_set = None
-    return gene_set
-
-
-def build_gene_panel(ensembl_gene_set: Set[str],
-                                        adata: sc.AnnData) -> Set[str]:
-    """
-    Build a gene panel from the intersection of Ensembl gene IDs in the AnnData object and the Ensembl gene set from Ensembl Release (if applicable).
-    
-    Parameters:
-    ----------
-    - ensembl_gene_set (Set[str]): A set of Ensembl gene IDs.
-    - adata (sc.AnnData): Annotated data matrix with gene expression information.
-    
-    Returns:
-    ----------
-    - Set[str]: A set of gene IDs.
-    """
-    # Extract gene ensembl IDs and create a gene panel
-    gene_panel = set(adata.var["ensembl_id"].values.tolist())
-    if ensembl_gene_set is not None:
-        # gene panel = genes in adata intersected with ensembl gene set
-        gene_panel = gene_panel.intersection(ensembl_gene_set)
-    
-    return gene_panel
 
 
 def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
@@ -134,7 +83,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             print(f"Loading data from {file_path}")
             adata = sc.read_h5ad(file_path)
             adata_batch_list.append(adata)
-        
+              
     # If gene panel ID mappings do not exist or overwrite is True, create them
     else:
         print("Creating gene panel mappings.")
@@ -149,7 +98,6 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
         # Initialize gene panel mappings
         unique_gene_panels_count = 0
         unique_gene_panels_list = []
-        ensembl_gene_sets = {}
         gene_panel_ID_to_gene_panel_dict = {}
         file_path_to_gene_panel_ID_dict = {}
                     
@@ -158,90 +106,39 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
             adata = sc.read_h5ad(file_path)
 
             # ------------------------------------------------------------------------------------
+            # Capture dataset_id for the current batch of AnnData
+            # e.g. dataset_id = 0 or 1 or 2 or 3...
+            dataset_id = adata.uns['dataset_id']
+            print(f"Dataset ID: {dataset_id}")
+            # ------------------------------------------------------------------------------------
             # Capture batch_id_key for the current batch of AnnData
-            # Hardcoding dataset ID for now (required for unique name for batch_id_key)
-            # TODO: Capture dataset ID from adata.uns['dataset_id']
-            try:
-                dataset_id = adata.uns['dataset_id']
-            except:
-                if "merfish" in str(file_path):
-                    dataset_id = 0
-                elif "starmap" in str(file_path):
-                    dataset_id = 1
-                elif "sim" in str(file_path):
-                    dataset_id = 2
-                else:
-                    print(f"This data is currently not supported.")
-            # If batch not present in adata.obs.keys(), hardcodes default batch_id_key
-            if "batch" not in adata.obs.keys():
-                batch_id_key = f"{dataset_id}_batch1"
-            # If present, this assumes file_path contains cells belonging to the same batch
             # e.g. batch_id_key = "0_batch1" or "1_batch1" or "0_batch2"...
-            else:
-                batch_id_key = f"{dataset_id}_{adata.obs['batch'].tolist()[0]}"
-            print(f"Dataset ID: {dataset_id} | Batch ID Key: {batch_id_key}")
+            batch_id = adata.uns['batch']
+            batch_id_key = f"spv_{dataset_id}_{batch_id}"    
+            print(f"Batch ID Key: {batch_id_key}")
             batch_id_key_list.append(batch_id_key)
             # ------------------------------------------------------------------------------------ 
             # Capture assay keys for the current batch of AnnData
-            # Hardcoding assay for now (required for unique name for assay_key)
-            # TODO: Capture assay from adata.uns['assay']
-            try:
-                assay_key = adata.uns['assay']
-            except:
-                if "merfish" in str(file_path):
-                    assay_key = "merfish"
-                elif "starmap" in str(file_path):
-                    assay_key = "starmap"
-                elif "sim" in str(file_path):
-                    assay_key = "sim"
-                else:
-                    print(f"This assay is currently not supported.")
+            # e.g. assay_key = "merfish" or "starmap" or "sim"...
+            assay_key = f"spv_{adata.uns['assay']}"
             if assay_key not in assay_key_list:
                 assay_key_list.append(assay_key)
             # ------------------------------------------------------------------------------------ 
             # Capture species keys for the current batch of AnnData
-            # Hardcoding species for now (required for unique name for species_key)
-            # TODO: Capture species from adata.uns['species']
-            try:
-                species_key = adata.uns['species']
-            except:
-                if "mouse" in str(file_path):
-                    species_key = "mus_musculus"
-                elif "sim" in str(file_path):
-                    species_key = "sim"
-                else:
-                    print(f"This species is currently not supported.")
+            # e.g. species_key = "mus_musculus" or "homo_sapiens" or "sim"...
+            species_key = f"spv_{adata.uns['species']}"
             if species_key not in species_key_list:
-                # Obtain gene set from Ensembl release
-                ensembl_gene_sets[species_key] = get_gene_set_from_ensembl_release(species=species_key)
-                species_key_list.append(species_key)            
+                species_key_list.append(species_key)          
             # ------------------------------------------------------------------------------------ 
             # Capture tissue keys for the current batch of AnnData
-            # Hardcoding tissue for now (required for unique name for tissue_key)
-            # TODO: Capture tissue from adata.uns['tissue']
-            try:
-                tissue_key = adata.uns['tissue']
-            except:
-                if "brain" or "cns" in str(file_path):
-                    tissue_key = "brain"
-                elif "sim" in str(file_path):
-                    tissue_key = "sim"
-                else:
-                    print(f"This tissue is currently not supported.")
+            # e.g. tissue_key = "brain" or "sim"...
+            tissue_key = f"spv_{adata.uns['tissue']}"
             if tissue_key not in tissue_key_list:
                 tissue_key_list.append(tissue_key)            
             # ------------------------------------------------------------------------------------
             # Capture gene panel id key and gene panel mappings for the current batch of AnnData
-            # Extract gene ensembl IDs and create a gene panel
-            # TODO: Remove this (gene subsetting) from here and move to the bronze -> silver data preprocessing step
-            # TODO: Save the correct gene panel to gene panel ID and adata that is on the disk
-            gene_panel = build_gene_panel(ensembl_gene_sets[species_key], adata)
-            # Filter adata to include only genes in gene panel
-            subset_genes = adata.var['ensembl_id'].isin(list(gene_panel))
-            # Subset adata to include only genes in gene panel
-            adata = adata[:, subset_genes]
-            # Append processed and loaded adata to adata_batch_list
-            adata_batch_list.append(adata)
+            # Creates gene panel as an intersection of Ensembl gene set and genes in adata
+            gene_panel = set(adata.var["ensembl_id"].values.tolist())
             
             # If gene panel is unique, assign a unique ID to it
             if gene_panel not in unique_gene_panels_list:
@@ -252,15 +149,18 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
                 unique_gene_panels_count += 1
                 
                 # Creates gene panel id key list for use in token dictionary
-                # e.g. gene_panel_id_key_list = ["gene_panel0", "gene_panel1", ...]
-                gene_panel_id_key_list.append(gene_panel_ID)
+                # e.g. gene_panel_id_key_list = ["spv_gene_panel0", "gene_panel1", ...]
+                gene_panel_id_key = f"spv_{gene_panel_ID}"
+                gene_panel_id_key_list.append(gene_panel_id_key)
                 
             # If gene panel is not unique, assign find its ID and append file path
             else:
                 gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
                 file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
             # ------------------------------------------------------------------------------------
-        
+            # Append processed and loaded adata to adata_batch_list
+            adata_batch_list.append(adata)
+
         # Build a complete list of genes in the dataset across all batches of anndata
         # e.g. gene_list = ['ENSMUSG00000020734','ENSMUSG00000021099', 'ENSMUSG00000019787']
         gene_list = list(set().union(*unique_gene_panels_list))
@@ -287,6 +187,7 @@ def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
 
 
 def build_token_dictionary(token_dictionary_file: str,
+                                tokenizer: str,
                                 gene_list: List[str],
                                 batch_id_key_list: List[str],
                                 gene_panel_id_key_list: List[str],
@@ -300,6 +201,7 @@ def build_token_dictionary(token_dictionary_file: str,
     Parameters:
     ----------
     - token_dictionary_file (str): The file path to save the token dictionary.
+    - tokenizer (str): The tokenizer to build token dictionary for.
     - gene_list (List[str]): The list of gene IDs.
     - batch_id_key_list (List[str]): A list of batch IDs, one per batch.
     - gene_panel_id_key_list (List[str]): A list of gene panel IDs, one per unique gene panel across batches.
@@ -321,7 +223,14 @@ def build_token_dictionary(token_dictionary_file: str,
         print(f"Creating token dictionary for NicheJEPA and saving to {token_dictionary_file}.")
         
         # Initialize with mandatory tokens
-        token_dict = {'<pad>': 0, '<mask>': 1, '<cls_cell>': 2, '<cls_neighborhood>': 3}
+        token_dict = {'<pad>': 0, '<mask>': 1}
+        
+        # Add cls tokens depending on the tokenizer
+        if tokenizer == "cell-neighborhood-tokenizer":
+            token_dict.update({'<cls_cell>': 2, '<cls_neighborhood>': 3})
+        elif tokenizer == "cell-graph-tokenizer":
+            # cls_0: 2 is for cell, cls_1: 3 is for 1st neighbor, cls_2: 4 is for 2nd neighbor, ..., upto 100 neighbors
+            token_dict.update({f'<cls_{i}>' : i + 2 for i in range(100)})
         
         # Add gene tokens
         # e.g. token_dict = {'ENSG00000139618': 4, ...}
@@ -352,6 +261,14 @@ def build_token_dictionary(token_dictionary_file: str,
         # e.g. token_dict = {'brain': 4 + len(gene_list) + len(batch_id_key_list) + len(gene_panel_id_key_list) + len(assay_key_list) + len(species), ...}
         curr_token_dict_size = len(token_dict)
         token_dict.update({tissue_key: idx + curr_token_dict_size for idx, tissue_key in enumerate(tissue_key_list)})
+        
+        # Add meta tokens
+        curr_token_dict_size = len(token_dict)
+        token_dict.update({'spt_batch': curr_token_dict_size, 
+                           'spt_gene_panel': curr_token_dict_size + 1,
+                           'spt_assay': curr_token_dict_size + 2,
+                           'spt_species': curr_token_dict_size + 3,
+                           'spt_tissue': curr_token_dict_size + 4})
 
         with open(token_dictionary_file, "wb") as file:
             pickle.dump(token_dict, file)
@@ -360,6 +277,29 @@ def build_token_dictionary(token_dictionary_file: str,
     print("")
     
     return token_dict
+
+
+def compute_max_neighbors(adata: sc.AnnData) -> int:
+    """
+    Compute the maximum number of neighbors in the dataset.
+
+    Parameters:
+    ----------
+    - adata (sc.AnnData): Annotated data matrix with gene expression information.
+
+    Returns:
+    ----------
+    - int: The maximum number of neighbors.
+    """
+    sq.gr.spatial_neighbors(adata,
+                            coord_type="generic",
+                            spatial_key="spatial",
+                            radius=27.50,
+                            )
+
+    max_neighbors = int(np.max(adata.obsp["spatial_connectivities"].sum(1)))
+
+    return max_neighbors
     
 
 def normalize_gene_counts(adata: sc.AnnData, 
@@ -553,20 +493,22 @@ def collect_configs(args: argparse.Namespace) -> Dict:
                     config['experiment'][key] = True
                 elif value == 'False':
                     config['experiment'][key] = False
-            else:
-                config['experiment'][key] = value
                     
     return config
 
 
 def main(config: Dict):
         
+    # ------------------------------------------------------------
+
     # Configure experiment arguments
     experiment_name = config["experiment"]["experiment_name"]
+    experiment_description = config["experiment"]["experiment_description"]
     tokenizer = config["experiment"]["tokenizer"]
     nproc = config["experiment"]["nproc"]
     overwrite = config["experiment"]["overwrite"]
     print(f"Experiment Name: {experiment_name}")
+    print(f"Experiment Description: {experiment_description}")
     print(f"Tokenizer: {tokenizer}")
     
     # Configure tokenization parameters
@@ -577,25 +519,21 @@ def main(config: Dict):
     processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
+
+    # ------------------------------------------------------------
         
     # Configure data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
     st_data_silver_folder_path = data_directory_path / "silver"
     st_data_gold_folder_path = data_directory_path / "gold"
-    
-    # Configure profiler path
-    profiler_path = Path(config["paths"]["profiler_path"]) / experiment_name / "profiler" / tokenizer
-    os.makedirs(profiler_path, exist_ok=True)
-    
+        
     # Configure cache path
-    try:
-        cache_directory_path = Path(config["paths"]["cache_directory_path"])
-    except:
-        cache_directory_path = data_directory_path / "cache"
-    os.makedirs(cache_directory_path, exist_ok=True)    
+    cache_directory_path = data_directory_path / "cache"
+    os.makedirs(cache_directory_path, exist_ok=True)
 
     # Configure tokenizer paths
-    tokenizer_directory_path = Path(config["paths"]["tokenizer_directory_path"])
+    # tokenizer_directory_path = Path(".") / "tokenizer"
+    tokenizer_directory_path = data_directory_path / "tokenizer"
     tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
@@ -609,8 +547,15 @@ def main(config: Dict):
     gene_panel_ID_to_gene_panel_dict_file = tokenizer_folder_path / "gene_panel_ID_to_gene_panel_dict.pkl"
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
+    # ------------------------------------------------------------
+
+    log_directory_path = Path("./logs") / experiment_name
+        
+    # Set profiler path
+    profiler_path = log_directory_path / "cProfiler" / tokenizer
+    os.makedirs(profiler_path, exist_ok=True)
+
     # Initialize wandb run
-    # TODO: fix tags
     wandb_tags = [experiment_name, tokenizer, norm_method, norm_factor, processing_mode]
     wandb.init(project=config["wandb"]["project"],
                         job_type=config["wandb"]["job_type"],
@@ -618,6 +563,8 @@ def main(config: Dict):
                         mode=config["wandb"]["mode"],
                         config=config)
         
+    # ------------------------------------------------------------
+
     # Load data and create gene panel mappings
     adata_batch_list, \
     batch_id_key_list, \
@@ -634,6 +581,7 @@ def main(config: Dict):
 
     # Build token dictionary
     token_dict = build_token_dictionary(token_dictionary_file,
+                                                tokenizer,
                                                 gene_list,
                                                 batch_id_key_list,
                                                 gene_panel_id_key_list,
@@ -643,18 +591,29 @@ def main(config: Dict):
                                                 overwrite)
     print(f"Number of Tokens: {len(token_dict)}.")
     
-    # Set model input size
+    # Set model input size based on tokenizer
     try:
         model_input_size = config["experiment"]["model_input_size"]
     except:
-        model_input_size = len(gene_list) * 2
+        if tokenizer == "cell-neighborhood-tokenizer":
+            model_input_size = len(gene_list) * 2
+        elif tokenizer == "cell-graph-tokenizer":
+            try:
+                tokens_per_cell = config["tokenization"]["tokens_per_cell"]
+            except:
+                raise ValueError("Please specify the number of tokens per cell.")
+            adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
+            # TODO: Fix the following code block to handle multiple batches of data
+            max_neighbors = compute_max_neighbors(adata)
+            model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
+
     print(f"Model Input Size: {model_input_size}")
     
     # Set output file prefix
     output_file_prefix = f"{experiment_name}_{num_shards}_{norm_factor}_{norm_method}_{model_input_size}"
 
-
     # ------------------------------------------------------------
+    
     # TODO: Fix the following code block to handle multiple batches of data
     # Configure tokenized dictionary specific paths
     cell_gene_means_dictionary_file = tokenizer_folder_path / f"cell_gene_{norm_factor}_means_dictionary.pkl"
@@ -721,14 +680,20 @@ def main(config: Dict):
         del adata
             
     del adata_batch_list
+    
     # ------------------------------------------------------------
     
     # Tokenize data
     with cProfile.Profile() as pr:
         start = time.time()
         
+        if tokenizer == 'cell-neighborhood-tokenizer':
+            Tokenizer = CellNeighborhoodTokenizer
+        elif tokenizer == 'cell-graph-tokenizer':
+            Tokenizer = CellGraphTokenizer
+            
         # Instantiate tokenizer
-        tk = tokenizers.CellNeighborhoodRankTokenizer(
+        tk = Tokenizer(
                 model_input_size=model_input_size,
                 norm_method=norm_method,
                 norm_factor=norm_factor,
@@ -776,7 +741,7 @@ def main(config: Dict):
                                     type=f"{config['experiment']['tokenizer']}",
                                     metadata=config)
         # add files to artifact
-        artifact.add_file(local_path=token_dictionary_file, name="NicheJEPA Token Dictionary")
+        artifact.add_file(local_path=token_dictionary_file, name="NicheJEPA Neighborhood Token Dictionary")
         artifact.add_file(local_path=profiler_stats_fname, name="cProfile Stats")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
