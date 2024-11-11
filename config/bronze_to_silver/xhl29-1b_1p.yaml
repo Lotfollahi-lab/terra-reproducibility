@@ -1,0 +1,19 @@
+experiment:
+  name: "xhb29-1b_1p"
+  description: "Xenium Human Lung Cancer (dataset-id 29) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver"
+  file_names: ["Xenium_V1_hLung_cancer_section"]
+  study: "Human Lung Cancer Preview Data "
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  dataset_id: 29
+  assay: xenium
+  species: "homo_sapiens"
+  tissue: "lung"
+
+data_source:
+  online: True
+  redownload: False
+  urls: ["https://cf.10xgenomics.com/samples/xenium/1.5.0/Xenium_V1_hLung_cancer_section/Xenium_V1_hLung_cancer_section_outs.zip"]

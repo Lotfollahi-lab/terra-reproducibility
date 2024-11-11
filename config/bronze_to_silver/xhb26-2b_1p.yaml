@@ -1,0 +1,21 @@
+experiment:
+  name: "xhb26-2b_1p"
+  description: "Xenium Human Breast (dataset-id 26) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver"
+  file_names: ["Xenium_V1_FFPE_Human_Breast_IDC",
+                  "Xenium_V1_FFPE_Human_Breast_ILC"]
+  study: "FFPE Human Breast with Pre-designed Panel"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  dataset_id: 26
+  assay: xenium
+  species: "homo_sapiens"
+  tissue: "breast"
+
+data_source:
+  online: True
+  redownload: False
+  urls: ["https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC/Xenium_V1_FFPE_Human_Breast_IDC_outs.zip",
+    "https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_ILC/Xenium_V1_FFPE_Human_Breast_ILC_outs.zip"]

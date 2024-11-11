@@ -11,4 +11,6 @@ dataset:
   assay: xenium
   species: "homo_sapiens"
   tissue: "skin"
-  batch_info: null
+
+data_source:
+  online: False

@@ -47,7 +47,7 @@ def create_gene_name_to_ensembl_id_dict(species: str,
         protein_coding_genes = [gene for gene in all_genes if gene.biotype == "protein_coding"]
         mirna_genes = [gene for gene in all_genes if gene.biotype == "miRNA"]
         all_relevant_genes = protein_coding_genes + mirna_genes
-        gene_name_to_ensembl_id_dict = {gene.gene_name.capitalize(): gene.gene_id for gene in all_relevant_genes}
+        gene_name_to_ensembl_id_dict = {gene.gene_name: gene.gene_id for gene in all_relevant_genes}
         with open(fname, 'wb') as f:
             pickle.dump(gene_name_to_ensembl_id_dict, f)
 
@@ -70,9 +70,9 @@ def harmonize_X_gene_counts(adata):
 
     print(f"adata.X shape: {adata.X.shape}")
     print(f"type(adata.X): {type(adata.X)}")
-    
+
     return adata
-    
+
 
 def harmonize_var_gene_names(adata,
                              gene_name_to_ensembl_id_dict):
@@ -86,7 +86,7 @@ def harmonize_var_gene_names(adata,
         print(adata.var.index)
         assert len(adata.var.index) == adata.shape[1], "Number of genes in adata.var is not equal to number of genes in adata.X."
 
-    gene_names = [gene_name.capitalize() for gene_name in adata.var_names.tolist()]
+    gene_names = [gene_name for gene_name in adata.var_names.tolist()]
     adata.var.index = gene_names
     
     harmonized_gene_names = []
@@ -113,7 +113,7 @@ def harmonize_var_gene_names(adata,
     adata.var = pd.DataFrame(index=pd.Index(harmonized_gene_names, name="gene_name"), data={"ensembl_id": matching_ensembl_ids})
 
     harmonized_sum = adata.X.sum()
-    
+    # assert original_sum == original_selected_sum + original_nonselected_sum
     assert harmonized_sum == original_selected_sum
     
     print("adata.var:")
@@ -164,7 +164,7 @@ def harmonize_uns_metadata(uns_metadata,
 
     if 'batch' not in adata.uns['batch']:
         adata.uns['batch'] = f"batch{adata.uns['batch']}"
-    
+
     print("Metadata in adata.uns:")
     for key in uns_metadata.keys():
         print(f"{key}: {adata.uns[key]}")
