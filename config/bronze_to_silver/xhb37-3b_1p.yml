@@ -1,0 +1,25 @@
+experiment:
+  name: xhb37-3b_1p
+  description: Xenium Human Bone  (dataset-id 37) |  | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - Xenium_V1_hBoneMarrow_acute_lymphoid_leukemia_section
+    - Xenium_V1_hBoneMarrow_nondiseased_section
+    - Xenium_V1_hBone_nondiseased_section
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 37
+  assay: xenium
+  species: homo_sapiens
+  tissue: bone
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hBoneMarrow_acute_lymphoid_leukemia_section/Xenium_V1_hBoneMarrow_acute_lymphoid_leukemia_section_outs.zip
+    - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hBoneMarrow_nondiseased_section/Xenium_V1_hBoneMarrow_nondiseased_section_outs.zip
+    - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hBone_nondiseased_section/Xenium_V1_hBone_nondiseased_section_outs.zip
+

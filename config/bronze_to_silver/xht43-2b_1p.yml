@@ -1,0 +1,23 @@
+experiment:
+  name: xht43-2b_1p
+  description: Xenium Human Tonsil  (dataset-id 43) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE
+    - Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 43
+  assay: xenium
+  species: homo_sapiens
+  tissue: tonsil
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.9.0/Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE/Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE_outs.zip
+    - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.9.0/Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE/Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE_outs.zip
+

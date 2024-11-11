@@ -1,0 +1,21 @@
+experiment:
+  name: xmc8-1b_1p
+  description: Xenium Mouse Colon (dataset-id 8) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - Xenium_V1_mouse_Colon_FF
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 8
+  assay: xenium
+  species: mus_musculus
+  tissue: colon
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_mouse_Colon_FF/Xenium_V1_mouse_Colon_FF_outs.zip
+

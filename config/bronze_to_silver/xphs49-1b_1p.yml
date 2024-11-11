@@ -1,0 +1,21 @@
+experiment:
+  name: xphs49-1b_1p
+  description: Xenium Prime Human Skin(dataset-id 49) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - Xenium_Prime_Human_Skin_FFPE
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 49
+  assay: xenium
+  species: homo_sapiens
+  tissue: skin
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://cf.10xgenomics.com/samples/xenium/3.0.0/Xenium_Prime_Human_Skin_FFPE/Xenium_Prime_Human_Skin_FFPE_outs.zip
+

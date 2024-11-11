@@ -1,0 +1,23 @@
+experiment:
+  name: xhl41-2b_1p
+  description: Xenium Human Lung  (dataset-id 41) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - Xenium_Preview_Human_Non_diseased_Lung_With_Add_on_FFPE
+    - Xenium_Preview_Human_Lung_Cancer_With_Add_on_2_FFPE
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 41
+  assay: xenium
+  species: homo_sapiens
+  tissue: lung
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://cf.10xgenomics.com/samples/xenium/1.3.0/Xenium_Preview_Human_Non_diseased_Lung_With_Add_on_FFPE/Xenium_Preview_Human_Non_diseased_Lung_With_Add_on_FFPE_outs.zip
+    - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.3.0/Xenium_Preview_Human_Lung_Cancer_With_Add_on_2_FFPE/Xenium_Preview_Human_Lung_Cancer_With_Add_on_2_FFPE_outs.zip
+
