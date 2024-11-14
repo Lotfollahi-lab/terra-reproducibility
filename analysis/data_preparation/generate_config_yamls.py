@@ -29,7 +29,7 @@ for dataset_name, row in meta0.iterrows():
     ds_name = row['sample'].split('-')[0]
     # Remove numbers from ds_name
     ds_name = ''.join(c for c in ds_name if not c.isdigit())
-    ds_short = ''.join(c.lower() for c in ds_name if c.isupper())
+    ds_short = ''.join(c[0].lower() for c in ds_name.split())
 
     # Construct the experiment name
     exp_name = f"{ds_short}{dataset_id}-{total_batch}b_1p"
@@ -84,5 +84,5 @@ for dataset_name, row in meta0.iterrows():
     modified_yaml_str = '\n'.join(new_lines)
 
     # Write the modified YAML string to the file
-    with open(f'../../config/bronze_to_silver/{exp_name}.yml', 'w') as outfile:
+    with open(f'../../config/bronze_to_silver/{exp_name}.yaml', 'w') as outfile:
         outfile.write(modified_yaml_str)
