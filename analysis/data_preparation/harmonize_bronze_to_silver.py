@@ -468,7 +468,8 @@ def parse_arguments() -> argparse.Namespace:
                         default='/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/config/bronze_to_silver/xhs1000-39b_1p.yaml',
                         help='Path to the config file')
     parser.add_argument('--override', 
-                        nargs='+', 
+                        nargs='+',
+                        default=False, 
                         help='Override parameters in the config file')
     
     return parser.parse_args()
@@ -502,6 +503,8 @@ def collect_configs(args: argparse.Namespace) -> Dict:
                     config['experiment'][key] = True
                 elif value == 'False':
                     config['experiment'][key] = False
+    else:
+        config["experiment"]["overwrite"] = False
                     
     return config
 
