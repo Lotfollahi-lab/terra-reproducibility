@@ -268,6 +268,92 @@ def pre_process_10x_xenium(raw_path):
     return adata
 
 
+def pre_process_cosmx(raw_path):
+    """
+    Preprocesses raw data from NanoString CosMx
+
+    Parameters:
+    ----------
+    raw_path (str): Path of the folder with NanoString CosMx zip file
+    
+    Returns:
+    -------
+    adata: AnnData object with the NanoString CosMx data
+    """
+    raw_path = str(raw_path)
+    print(f"[+] Reading {raw_path}")
+    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
+        temp_dir = tempfile.TemporaryDirectory()
+        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
+        zip_file = zipfile.ZipFile(raw_path)
+        for file in zip_file.namelist():
+            if any([ext in file for ext in ['exprMat','metadata']]):
+                if 'exprMat' in file:
+                    exprfile = file
+                elif 'metadata' in file:
+                    metafile = file
+                with zipfile.ZipFile(raw_path, "r") as zipp:
+                    zipp.extract(file, path=temp_dir.name)
+        raw_path = temp_dir.name
+    else:
+        print(f"[+] Input is a directory. Finding required files")
+        for file in os.listdir(raw_path):
+            if any([ext in file for ext in ['exprMat','metadata']]):
+                if 'exprMat' in file:
+                    exprfile = file
+                elif 'metadata' in file:
+                    metafile = file
+                    
+    exprfile = os.path.join(raw_path, exprfile)
+    metafile = os.path.join(raw_path, metafile)
+
+    print(f"[+] Reading cell-feature matrix {exprfile}")
+    exp = pd.read_csv(exprfile)
+    exp.index = [f"{i}_{j}" for i,j in zip(exp['fov'], exp['cell_ID'])]
+
+    print(f"[+] Reading metadata matrix {metafile}")
+    meta = pd.read_csv(metafile)
+    meta.index = [f"{i}_{j}" for i,j in zip(meta['fov'], meta['cell_ID'])]
+
+    exp = exp.drop(columns=['fov', 'cell_ID', 'cell'], errors='ignore')
+
+    adata = sc.AnnData(exp)
+
+    adata.obs_names = exp.index
+    adata.var_names = exp.columns
+    
+    common_obsnames = adata.obs_names[adata.obs_names.isin(meta.index)]
+
+    meta = meta.loc[common_obsnames]
+
+    adata = adata[common_obsnames].copy()
+    adata.obs = meta
+    
+    return adata
+
+
+def pre_process(raw_path, assay):
+    """
+    Preprocesses raw data according to the assay type
+
+    Parameters:
+    ----------
+    - raw_path (str) : Path of the folder with raw files, assuming the folder name is the sample name
+    - assay (str) : Type of assay  
+    
+    Returns:
+    -------
+    - adata : AnnData object with the NanoString CosMx data
+    """
+    
+    if assay == 'xenium':
+        adata = pre_process_10x_xenium(raw_path)
+    elif assay == 'cosmx':
+        adata = pre_process_cosmx(raw_path)
+    
+    return adata
+
+
 def download_zipfiles(urls: list[str] = [],
                       input_directory: Path = None,
                       redownload: str = "False") -> list[Path]:
@@ -349,7 +435,7 @@ def main(config: Dict):
         if len(h5ad_files) == 0 or config["experiment"]["overwrite"]:
             for raw_zipfile_path in raw_zipfile_paths:
                 print("Creating raw adata from raw zip file...")
-                adata = pre_process_10x_xenium(raw_zipfile_path)
+                adata = pre_process(raw_zipfile_path, uns_metadata["assay"])
                 print("Raw adata:")
                 print(adata)
                 raw_adata_fname = input_directory / f"{raw_zipfile_path.stem}.h5ad"
