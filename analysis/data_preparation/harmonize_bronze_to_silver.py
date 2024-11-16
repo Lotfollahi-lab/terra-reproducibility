@@ -172,9 +172,8 @@ def harmonize_uns_metadata(uns_metadata,
 
 
 def harmonize_batch(uns_metadata,
-                    file,
+                    adata,
                     gene_name_to_ensembl_id_dict):
-    adata = sc.read_h5ad(file)
     print(f"Raw adata shape: {adata.shape}")
     
     adata = harmonize_X_gene_counts(adata)
@@ -188,6 +187,8 @@ def harmonize_batch(uns_metadata,
     sc.pp.filter_cells(adata, min_genes=10)
     
     # set cell id
+    if 'cell_id' in adata.obs.keys():
+        adata.obs['original_cell_id'] = adata.obs['cell_id']
     adata.obs['cell_id'] = [f"{adata.uns['dataset_id']}_{adata.uns['batch']}_{cell_idx}" for cell_idx in range(adata.shape[0])]
     print("adata.obs['cell_id']:")
     print(adata.obs['cell_id'])
@@ -196,23 +197,76 @@ def harmonize_batch(uns_metadata,
     return adata    
 
 
+def get_sample_ids(adata):
+    # Hardcoded for xenium human skin data from Lloyd
+    
+    # Order for sorting within BK groups
+    order = ['Non-lesional Baseline', 'Lesional Baseline', 'Day 3', 'Day 14', 'Week 12']
+
+    # Sort the list
+    sorted_sample_ids = sorted(
+        adata.obs['sample'].unique().tolist(),
+        key=lambda x: (int(x.split('_')[0][2:]), order.index(next(filter(lambda y: y in x, order))))
+    )
+
+    print(sorted_sample_ids)
+    return sorted_sample_ids
+
+
 def harmonize_bronze_data_to_silver_data(uns_metadata,
                                          input_directory,
                                          output_directory,
-                                         gene_name_to_ensembl_id_dict):
+                                         gene_name_to_ensembl_id_dict,
+                                         split_by_batch: bool = False):
+    files = list(input_directory.glob("**/*.h5ad"))
+    
     batch_count = 0
-    for file in input_directory.glob("**/*.h5ad"):
-        print(f"Harmonizing: {file}")
-        uns_metadata["batch"] = str(batch_count)
-        file_adata = harmonize_batch(uns_metadata,
-                                     file,
-                                     gene_name_to_ensembl_id_dict)
-        print(file_adata)
-        print(f"Writing to: {output_directory / file.name}")
-        file_adata.write(output_directory / file.name)
 
-        print("")
-        batch_count += 1
+    if split_by_batch:
+        # hardcoding for xenium human skin data from Lloyd
+        assert input_directory.name == "xhs1000-39b_1p", "Input directory should be xhs1000-39b_1p."
+        print("Data is not split by batch. Splitting data by batch...")
+
+        file = files[0]
+        print(f"Harmonizing: {file}")
+
+        adata = sc.read_h5ad(file)
+        adata.obs['cell_type'] = adata.obs['Annotation']
+        adata.obs['niche_type'] = adata.obs['NICHE_NAMES']
+        
+        sample_ids = get_sample_ids(adata)
+        for sample_id in sample_ids:
+            print(f"Harmonizing: {sample_id}")
+            sample_adata = adata[adata.obs['sample'] == sample_id].copy()
+
+            uns_metadata["batch"] = str(batch_count)
+            sample_adata = harmonize_batch(uns_metadata,
+                                            sample_adata,
+                                            gene_name_to_ensembl_id_dict)
+            print(sample_adata)
+            sample_id = sample_id.replace(' ', '_')
+            out_fname = f"{file.stem}_batch{batch_count}_{sample_id}.h5ad"
+            print(f"Writing to: {output_directory / out_fname}")
+            sample_adata.write(output_directory / out_fname)
+            print("")
+            batch_count += 1
+    else:
+        print("Data is already split by batch.")
+        for file in input_directory.glob("**/*.h5ad"):
+            print(f"Harmonizing: {file}")
+            adata = sc.read_h5ad(file)
+
+            uns_metadata["batch"] = str(batch_count)
+                    
+            file_adata = harmonize_batch(uns_metadata,
+                                        adata,
+                                        gene_name_to_ensembl_id_dict)
+            print(file_adata)
+            print(f"Writing to: {output_directory / file.name}")
+            file_adata.write(output_directory / file.name)
+
+            print("")
+            batch_count += 1
 
     return
 
@@ -339,7 +393,13 @@ def main(config: Dict):
     uns_metadata["assay"] = config["dataset"]["assay"]
     uns_metadata["species"] = config["dataset"]["species"]
     uns_metadata["tissue"] = config["dataset"]["tissue"]
-    
+
+    try:
+        split_by_batch = config["data_source"]["split_by_batch"]
+    except:
+        split_by_batch = False
+    print(f"Split by batch: {split_by_batch}")
+        
     if config["data_source"]["online"]:
         raw_zipfile_paths = download_zipfiles(config["data_source"]["urls"],
                                                 input_directory,
@@ -364,7 +424,8 @@ def main(config: Dict):
     harmonize_bronze_data_to_silver_data(uns_metadata,
                                         input_directory,
                                         output_directory,
-                                        gene_name_to_ensembl_id_dict)
+                                        gene_name_to_ensembl_id_dict,
+                                        split_by_batch)
 
 
 def parse_arguments() -> argparse.Namespace:

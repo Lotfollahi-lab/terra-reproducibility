@@ -14,3 +14,4 @@ dataset:
 
 data_source:
   online: False
+  split_by_batch: True
