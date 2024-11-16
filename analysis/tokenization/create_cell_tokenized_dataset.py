@@ -31,6 +31,7 @@ from nichejepa.preprocessors.aggregators import aggregate_neighbors
 from nichejepa.preprocessors.normalizers import normalize_by_read_depth
 from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
+MINIMUM_MAX_NEIGHBORS = 32
 
 
 def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
@@ -605,7 +606,9 @@ def main(config: Dict):
             adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # TODO: Fix the following code block to handle multiple batches of data
             max_neighbors = compute_max_neighbors(adata)
-            model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
+            print(f"Max Neighbors: {max_neighbors}")
+            # TODO: Either remove 16 altogether and always use max neighbors or make it a parameter and set a larger default value
+            model_input_size = tokens_per_cell * max_neighbors + 1
 
     print(f"Model Input Size: {model_input_size}")
     
