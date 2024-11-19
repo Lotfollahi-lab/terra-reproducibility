@@ -8,7 +8,7 @@ experiment:
 tokenization:
   use_generator: True
   norm_method: "shifted_log"
-  norm_factor: "read_depth"
+  norm_factor: null
   prenormalize: False
   processing_mode: "parallel"
   num_shards: 16
