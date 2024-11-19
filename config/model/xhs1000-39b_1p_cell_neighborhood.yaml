@@ -1,7 +1,7 @@
 data:
   dataset_name: 'xhs1000-39b_1p'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/xhs1000-39b_1p'
-  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-neighborhood-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_32_read_depth_shifted_log_9896.dataset'
+  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-neighborhood-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_16_read_depth_shifted_log_9896.dataset'
   tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-neighborhood-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_16_None_shifted_log_9896.dataset'
   tokenizer_type: 'cell_neighborhood' # 'cell_neighborhood', 'cell_graph'
   n_special_values: 43 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-neighborhood-tokenizer/xhs1000-39b_1p/token_dictionary.pkl')

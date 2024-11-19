@@ -10,9 +10,9 @@ data:
   split: 0
   test_batch_ids: ['batch11', 'batch19', 'batch32']
   stratify: False
-  vocab_size: 5000 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-neighborhood-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl')
-  seq_len_cell: 64 # 1934 # max number of non-zero cell tokens per cell
-  seq_len_neighborhood: 640 # 2801 # max number of non-zero neighborhood tokens per cell
+  vocab_size: 5098 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-neighborhood-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl')
+  seq_len_cell: 128 # 1934 # max number of non-zero cell tokens per cell
+  seq_len_neighborhood: 1280 # 2801 # max number of non-zero neighborhood tokens per cell
   n_segments: 11 # number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
   batch_size: 64
