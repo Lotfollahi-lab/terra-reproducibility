@@ -62,12 +62,6 @@ case $EXPERIMENT_NAME in
         CORES=2
         QUEUE="parallel"
         ;;
-    xhs1000-39b_1p)
-        RAM="80G"
-        TIME="6:00"
-        CORES=4
-        QUEUE="parallel"
-        ;;
     *)
         echo "Invalid dataset name"
         exit 1
