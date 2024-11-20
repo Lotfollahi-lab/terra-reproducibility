@@ -1,11 +1,11 @@
 experiment:
-  experiment_name: "smb1-20b_1p"
-  experiment_description: "starmap_plus_mouse_cns (dataset-id = 1) | 20-batch | 1-panel"
-  tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 4
-  overwrite: False
+  experiment_name: "mmb0-1b_smb1-1b_1p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 1-batch | starmap_mouse_brain (dataset-id = 1) | 1-batch | 1-panel (shared genes only)"
+  tokenizer: "cell-graph-tokenizer"
+  overwrite: True
 
 tokenization:
+  tokens_per_cell: 64
   use_generator: True
   norm_method: "shifted_log"
   norm_factor: "read_depth"
@@ -13,6 +13,8 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 8
   keep_in_memory: False
+  radius: null
+  delaunay_radius_union: False
 
 wandb:
   project: "NicheJEPA"

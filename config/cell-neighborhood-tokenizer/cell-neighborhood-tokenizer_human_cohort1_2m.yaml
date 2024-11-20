@@ -1,9 +1,8 @@
 experiment:
-  experiment_name: "mmb0-8b_1p"
-  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 8-batch | 1-panel"
+  experiment_name: "human_cohort1_2m"
+  experiment_description: "Xenium human cohort 1 (approximately 2.5m cells)"
   tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 2
-  overwrite: False
+  overwrite: True
 
 tokenization:
   use_generator: True
@@ -11,8 +10,10 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 8
+  num_shards: 32
   keep_in_memory: False
+  radius: null
+  delaunay_radius_union: False
 
 wandb:
   project: "NicheJEPA"

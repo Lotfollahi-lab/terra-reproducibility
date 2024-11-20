@@ -1,9 +1,8 @@
 experiment:
-  experiment_name: "xhs1000-39b_1p"
-  experiment_description: "xenium human skin (dataset-id = 1000) | 39-batch | 1-panel"
+  experiment_name: "mmb0-300k-2b_1p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) 300K | 2-batch | 1-panel"
   tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 8
-  overwrite: False
+  overwrite: True
 
 tokenization:
   use_generator: True
@@ -13,6 +12,8 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 16
   keep_in_memory: False
+  radius: null
+  delaunay_radius_union: False
 
 wandb:
   project: "NicheJEPA"
