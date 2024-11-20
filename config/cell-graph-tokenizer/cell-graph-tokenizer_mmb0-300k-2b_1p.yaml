@@ -2,8 +2,7 @@ experiment:
   experiment_name: "mmb0-300k-2b_1p"
   experiment_description: "merfish_mouse_brain (dataset-id = 0) 300K | 2-batch | 1-panel"
   tokenizer: "cell-graph-tokenizer"
-  nproc: 4
-  overwrite: False
+  overwrite: True
 
 tokenization:
   tokens_per_cell: 64

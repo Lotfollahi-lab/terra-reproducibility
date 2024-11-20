@@ -2,8 +2,7 @@ experiment:
   experiment_name: "sss2-1b_1p" 
   experiment_description: "sim1_1105fts_10000locs (dataset-id = 2) | 1-batch | 1-panel"
   tokenizer: "cell-graph-tokenizer"
-  nproc: 1
-  overwrite: False
+  overwrite: True
 
 tokenization:
   tokens_per_cell: 64

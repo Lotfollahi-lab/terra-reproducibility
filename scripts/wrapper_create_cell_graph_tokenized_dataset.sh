@@ -8,12 +8,6 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 SCRIPT="scripts/create_tokenized_data.sh"
 
 case $EXPERIMENT_NAME in
-    mmb0-8b_1p)
-        RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
     mmb0-100k-1b_1p)
         RAM="25G"
         TIME="0:20"
@@ -32,13 +26,13 @@ case $EXPERIMENT_NAME in
         CORES=8
         QUEUE="parallel"
         ;;
-    mmb0-1b_smb1-1b_2p)
+    mmb0-1b_smb1-1b_1p)
         RAM="25G"
         TIME="0:20"
         CORES=4
         QUEUE="parallel"
         ;;
-    mmb0-1b_smb1-1b_1p)
+    mmb0-1b_smb1-1b_2p)
         RAM="25G"
         TIME="0:20"
         CORES=4
@@ -56,12 +50,6 @@ case $EXPERIMENT_NAME in
         CORES=8
         QUEUE="parallel"
         ;;
-    smb13-2b_1p)
-        RAM="25G"
-        TIME="1:00"
-        CORES=2
-        QUEUE="parallel"
-        ;;
     xhs1000-39b_1p)
         RAM="80G"
         TIME="2:00"
@@ -77,9 +65,10 @@ esac
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
+OVERWRITE="${4:-True}"
 
 # Set the configuration file
-CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}_read-depth_shifted-log.yaml"
+CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
 
 # Set the output and error files
 mkdir -p "${LOG_DIR}"
@@ -101,4 +90,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${CONFIG_FILE}" "${CORES}"
+    "${SCRIPT}" "${CONFIG_FILE}" "${OVERWRITE}"
