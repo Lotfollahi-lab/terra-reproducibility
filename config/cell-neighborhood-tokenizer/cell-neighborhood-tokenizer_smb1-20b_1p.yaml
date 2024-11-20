@@ -1,9 +1,8 @@
 experiment:
-  experiment_name: "mmb0-300k-2b_2p"
-  experiment_description: "merfish_mouse_brain (dataset-id = 0) 300K | 2-batch | 2-panel"
+  experiment_name: "smb1-20b_1p"
+  experiment_description: "starmap_plus_mouse_cns (dataset-id = 1) | 20-batch | 1-panel"
   tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 8
-  overwrite: False
+  overwrite: True
 
 tokenization:
   use_generator: True
@@ -11,7 +10,7 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 32
+  num_shards: 8
   keep_in_memory: False
 
 wandb:

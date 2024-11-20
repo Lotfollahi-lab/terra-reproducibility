@@ -1,14 +1,19 @@
 """
 Adapted from cell_neighborhood_rank_tokenizer.ipynb.
 
-Usage
+Sample Usage
 ----------
+CellNeighborhoodTokenizer
 .. terminal
-    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml --override nproc=1 overwrite=True
+    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p.yaml --override overwrite=False
+
+CellGraphTokenizer
+.. terminal
+    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-graph-tokenizer/cell-graph-tokenizer_sss2-1b_1p.yaml --override overwrite=False
 
 Description
 ----------
-This script tokenizes the gene expression data from the preprocessed AnnData (silver) dataset using the Cell Neighborhood Tokenizer or the Cell Graph Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command overrides number of processes to use for tokenization and whether to rebuild and overwrite the intermediate files required for creating the tokenized data.
+This script tokenizes the gene expression data from the harmonized AnnData (silver) dataset using the Cell Neighborhood Tokenizer or the Cell Graph Tokenizer. It logs tokenization time and CPU statistics to wandb. It also optionally creates a wandb artifact containing the tokenized dataset and the token dictionary. The `override` parameter in the usage command is used to override the overwrite parameter which controls whether to use a previously created token dictionary or recreate it from scratch. By default, the script will recreate the token dictionary.
 """
 
 import os
@@ -457,9 +462,7 @@ def collect_configs(args: argparse.Namespace) -> Dict:
     if args.override:
         for arg in args.override:
             key, value = arg.split("=")
-            if key == 'nproc':
-                config['experiment'][key] = int(value)
-            elif key == 'overwrite':
+            if key == 'overwrite':
                 if value == 'True':
                     config['experiment'][key] = True
                 elif value == 'False':
@@ -476,7 +479,7 @@ def main(config: Dict):
     experiment_name = config["experiment"]["experiment_name"]
     experiment_description = config["experiment"]["experiment_description"]
     tokenizer = config["experiment"]["tokenizer"]
-    nproc = config["experiment"]["nproc"]
+    nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
     overwrite = config["experiment"]["overwrite"]
     print(f"Experiment Name: {experiment_name}")
     print(f"Experiment Description: {experiment_description}")
@@ -542,6 +545,8 @@ def main(config: Dict):
 
     # Load token vocabulary dictionary if it exists and not overwrite, else create it
     if os.path.exists(token_dictionary_file) and not overwrite:
+        print("Overwrite was set to False. Re-using previously created token dictionary...")
+        
         adata_batch_list = []
         file_paths = list(input_directory.glob(f"**/*.h5ad"))
         for file_path in file_paths:
@@ -551,6 +556,9 @@ def main(config: Dict):
         print(f"Loading token dictionary from {token_dictionary_file}")
         with open(token_dictionary_file, "rb") as file:
             token_dict = pickle.load(file)
+            
+        n_gene_tokens = sum("ENS" in key for key in token_dict.keys())
+
     else:
         # Load data and create gene panel mappings
         adata_batch_list, \
@@ -576,7 +584,9 @@ def main(config: Dict):
                                                     species_key_list,
                                                     tissue_key_list)
 
-        
+        n_gene_tokens = len(gene_list)
+    
+    print(f"Number of Gene Tokens: {n_gene_tokens}.")
     print(f"Number of Tokens: {len(token_dict)}.")
     
     # Set model input size based on tokenizer
@@ -584,7 +594,7 @@ def main(config: Dict):
         model_input_size = config["experiment"]["model_input_size"]
     except:
         if tokenizer == "cell-neighborhood-tokenizer":
-            model_input_size = len(gene_list) * 2
+            model_input_size = n_gene_tokens * 2
         elif tokenizer == "cell-graph-tokenizer":
             try:
                 tokens_per_cell = config["tokenization"]["tokens_per_cell"]
