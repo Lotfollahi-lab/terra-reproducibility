@@ -493,6 +493,8 @@ def main(config: Dict):
     processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
+    radius = config["tokenization"]["radius"]
+    delaunay_radius_union = config["tokenization"]["delaunay_radius_union"]
 
     # ------------------------------------------------------------
         
@@ -692,11 +694,13 @@ def main(config: Dict):
             
         # Instantiate tokenizer
         tk = Tokenizer(
-                model_input_size=model_input_size,
-                norm_method=norm_method,
-                norm_factor=norm_factor,
                 nproc=nproc,
                 processing_mode=processing_mode,
+                model_input_size=model_input_size,
+                radius=radius,
+                delaunay_radius_union=delaunay_radius_union,
+                norm_method=norm_method,
+                norm_factor=norm_factor,
                 gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
                 file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
                 cell_gene_means_file=cell_gene_means_dictionary_file,

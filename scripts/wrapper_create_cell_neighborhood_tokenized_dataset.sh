@@ -66,7 +66,7 @@ case $EXPERIMENT_NAME in
         ;;
     xhs1000-39b_1p)
         RAM="45G"
-        TIME="2:00"
+        TIME="4:00"
         CORES=8
         QUEUE="parallel"
         ;;
