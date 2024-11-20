@@ -24,22 +24,23 @@ import scanpy as sc
 import squidpy as sq
 import anndata as ad
 from pathlib import Path
-from typing import List, Dict, Tuple, Union, Literal, Optional
+from typing import List, Dict, Tuple, Union, Optional
 
 from nichejepa.tokenizers.cell_tokenizers import CellNeighborhoodTokenizer, CellGraphTokenizer
 from nichejepa.preprocessors.aggregators import aggregate_neighbors
 from nichejepa.preprocessors.normalizers import normalize_by_read_depth
 from nichejepa.preprocessors.filters import filter_poor_quality_cells
 
+MINIMUM_MAX_NEIGHBORS = 32
 
 
-def map_anndata_batches_to_gene_panels(input_directory: Union[Path, str],
+def map_anndata_batches_to_token_keys(input_directory: Union[Path, str],
                                         gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
                                         file_path_to_gene_panel_ID_dict_file: Union[Path, str],
                                         gene_list_file: Union[Path, str]) \
                                         -> Tuple[List[sc.AnnData], List[str], List[str], List[str], List[str], List[str], List[str]]:
     """
-    Create gene panel mappings for each batch of data and load the data into AnnData objects.
+    Process each batch of AnnData to build keys for gene and special tokens.
 
     Parameters
     ----------
@@ -541,10 +542,15 @@ def main(config: Dict):
 
     # Load token vocabulary dictionary if it exists and not overwrite, else create it
     if os.path.exists(token_dictionary_file) and not overwrite:
+        adata_batch_list = []
+        file_paths = list(input_directory.glob(f"**/*.h5ad"))
+        for file_path in file_paths:
+            print(f"Loading data from {file_path}")
+            adata_batch_list.append(sc.read_h5ad(file_path))
+
         print(f"Loading token dictionary from {token_dictionary_file}")
         with open(token_dictionary_file, "rb") as file:
             token_dict = pickle.load(file)
-
     else:
         # Load data and create gene panel mappings
         adata_batch_list, \
@@ -554,7 +560,7 @@ def main(config: Dict):
         species_key_list, \
         tissue_key_list, \
         gene_list \
-            = map_anndata_batches_to_gene_panels(input_directory,
+            = map_anndata_batches_to_token_keys(input_directory,
                                                     gene_panel_ID_to_gene_panel_dict_file,
                                                     file_path_to_gene_panel_ID_dict_file,
                                                     gene_list_file
@@ -587,7 +593,7 @@ def main(config: Dict):
             adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # TODO: Fix the following code block to handle multiple batches of data
             max_neighbors = compute_max_neighbors(adata)
-            model_input_size = tokens_per_cell * min(16, max_neighbors) + 1
+            model_input_size = tokens_per_cell * max_neighbors + 1
 
     print(f"Model Input Size: {model_input_size}")
     
