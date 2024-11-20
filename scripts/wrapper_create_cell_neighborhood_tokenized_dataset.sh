@@ -70,6 +70,12 @@ case $EXPERIMENT_NAME in
         CORES=8
         QUEUE="parallel"
         ;;
+    human_cohort1_2m)
+        RAM="60G"
+        TIME="4:00"
+        CORES=8
+        QUEUE="parallel"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
