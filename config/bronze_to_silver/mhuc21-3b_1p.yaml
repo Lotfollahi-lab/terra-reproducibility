@@ -1,0 +1,22 @@
+experiment:
+  name: mhuc21-3b_1p
+  description: MERSCOPE Human Uterine Cancer (dataset-id 21) |  | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - MERSCOPE_Human_Uterine_Cancer_Patient1
+    - MERSCOPE_Human_Uterine_Cancer_Patient2_RACostain
+    - MERSCOPE_Human_Uterine_Cancer_Patient2_ROCostain
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 21
+  assay: merfish
+  species: homo_sapiens
+  tissue: uterus
+
+data_source:
+  online: true
+  redownload: false
+  urls: []
+

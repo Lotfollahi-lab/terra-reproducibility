@@ -1,0 +1,21 @@
+experiment:
+  name: mhlc16-2b_1p
+  description: MERSCOPE Human Liver Cancer (dataset-id 16) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - MERSCOPE_Human_Liver_Cancer_Patient1
+    - MERSCOPE_Human_Liver_Cancer_Patient2
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 16
+  assay: merfish
+  species: homo_sapiens
+  tissue: liver
+
+data_source:
+  online: true
+  redownload: false
+  urls: []
+

@@ -1,0 +1,21 @@
+experiment:
+  name: mhpc20-2b_1p
+  description: MERSCOPE Human Prostate Cancer (dataset-id 20) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - MERSCOPE_Human_Prostate_Cancer_Patient1
+    - MERSCOPE_Human_Prostate_Cancer_Patient2
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 20
+  assay: merfish
+  species: homo_sapiens
+  tissue: prostate
+
+data_source:
+  online: true
+  redownload: false
+  urls: []
+

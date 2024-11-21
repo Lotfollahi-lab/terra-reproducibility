@@ -1,5 +1,6 @@
 import pandas as pd
 import yaml
+import os
 
 # Read metadata csv and filter out non-xenium datasets
 meta0 = pd.read_csv('/lustre/scratch126/cellgen/team361/bc8/cytoweave/nichejepa/actions/nichejepa_updated_meta.csv', index_col=0)
@@ -11,10 +12,19 @@ meta0['dataset_id'] = [int(i) for i in meta0['dataset_id']]
 did_counts = meta0['dataset_id'].value_counts()
 
 for dataset_name, row in meta0.iterrows():
+    # Generate a short code from uppercase letters in the sample name
+    ds_name = row['sample'].split('-')[0]
+    # Remove numbers from ds_name
+    ds_name = ''.join(c for c in ds_name if not c.isdigit())
+    ds_short = ''.join(c[0].lower() for c in ds_name.split())
 
-    # Extract dataset_id and total number of batches
+    # Construct the experiment name and extract dataset_id & total number of batches
     dataset_id = row['dataset_id']
     total_batch = did_counts.get(dataset_id, 0)  # Use .get() to avoid KeyError
+    exp_name = f"{ds_short}{dataset_id}-{total_batch}b_1p"
+
+    if os.path.isfile(f'../../config/bronze_to_silver/{exp_name}.yaml'):
+        continue
 
     # Determine sample names and URLs based on the total_batch
     if total_batch > 1:
@@ -25,14 +35,8 @@ for dataset_name, row in meta0.iterrows():
         sample_names = [dataset_name]
         urls = [row['download_url']]
 
-    # Generate a short code from uppercase letters in the sample name
-    ds_name = row['sample'].split('-')[0]
-    # Remove numbers from ds_name
-    ds_name = ''.join(c for c in ds_name if not c.isdigit())
-    ds_short = ''.join(c[0].lower() for c in ds_name.split())
-
-    # Construct the experiment name
-    exp_name = f"{ds_short}{dataset_id}-{total_batch}b_1p"
+    if row['assay'] == 'merfish':
+        urls = []
 
     # Build the data dictionary
     data_dict = {
