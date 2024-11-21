@@ -298,21 +298,20 @@ def pre_process_cosmx(raw_path):
     else:
         print(f"[+] Input is a directory. Finding required files")
         for file in os.listdir(raw_path):
-            if any([ext in file for ext in ['exprMat','metadata']]):
-                if 'exprMat' in file:
-                    exprfile = file
-                elif 'metadata' in file:
-                    metafile = file
+            if 'exprMat' in file:
+                exprfile = file
+            elif 'metadata' in file:
+                metafile = file
                     
-    exprfile = os.path.join(raw_path, exprfile)
-    metafile = os.path.join(raw_path, metafile)
+    expr_file = os.path.join(raw_path, exprfile)
+    meta_file = os.path.join(raw_path, metafile)
 
-    print(f"[+] Reading cell-feature matrix {exprfile}")
-    exp = pd.read_csv(exprfile)
+    print(f"[+] Reading cell-feature matrix {expr_file}")
+    exp = pd.read_csv(expr_file)
     exp.index = [f"{i}_{j}" for i,j in zip(exp['fov'], exp['cell_ID'])]
 
-    print(f"[+] Reading metadata matrix {metafile}")
-    meta = pd.read_csv(metafile)
+    print(f"[+] Reading metadata matrix {meta_file}")
+    meta = pd.read_csv(meta_file)
     meta.index = [f"{i}_{j}" for i,j in zip(meta['fov'], meta['cell_ID'])]
 
     exp = exp.drop(columns=['fov', 'cell_ID', 'cell'], errors='ignore')
@@ -329,6 +328,42 @@ def pre_process_cosmx(raw_path):
     adata = adata[common_obsnames].copy()
     adata.obs = meta
     
+    return adata
+
+
+def pre_process_merfish(raw_merfish_dir: Path):
+    """
+    Assumes the input directory is not a zip file but folder instead.
+    """
+    for file in os.listdir(raw_merfish_dir):
+        if 'cell_by_gene' in file:
+            expr_file = file
+        elif 'cell_metadata' in file:
+            meta_file = file
+    
+    expr_file = os.path.join(raw_merfish_dir, expr_file)
+    meta_file = os.path.join(raw_merfish_dir, meta_file)
+    
+    sample = raw_merfish_dir.name
+    region = "region_0"
+    slide_id = f"{sample}_{region}"
+    
+    expr = pd.read_csv(expr_file, index_col=0, dtype={"cell": str})
+    meta = pd.read_csv(meta_file, index_col=0, dtype={"EntityID": str})
+
+    meta.index = meta.index.astype(str) + f"_{slide_id}"
+    expr.index = expr.index.astype(str) + f"_{slide_id}"
+    meta = meta.loc[expr.index]
+
+    is_gene = ~expr.columns.str.lower().str.contains("blank")
+
+    adata = sc.AnnData(expr.loc[:, is_gene], dtype=np.uint16, obs=meta)
+
+    adata.obsm["spatial"] = adata.obs[["center_x", "center_y"]].values
+    adata.obs["slide_id"] = pd.Series(slide_id, index=adata.obs_names, dtype="category")
+
+    adata.X = sp.csr_matrix(adata.X)
+
     return adata
 
 
@@ -350,6 +385,8 @@ def pre_process(raw_path, assay):
         adata = pre_process_10x_xenium(raw_path)
     elif assay == 'cosmx':
         adata = pre_process_cosmx(raw_path)
+    elif assay == 'merfish':
+        adata = pre_process_merfish(raw_path)
     
     return adata
 
@@ -358,19 +395,23 @@ def download_zipfiles(urls: list[str] = [],
                       input_directory: Path = None,
                       redownload: str = "False") -> list[Path]:
     raw_zipfile_paths = []
-    for url in urls:
-        raw_zipfile_name = f"{os.path.basename(url)}"
-        raw_zipfile_path = input_directory / raw_zipfile_name
-        raw_zipfile_paths.append(raw_zipfile_path)
+    if urls == []:
+        print(f"There is no URL to download in this config, probably folders in {input_directory} has input files. Skipping download...")
+        raw_zipfile_paths = list(input_directory.glob("*"))
+    else:
+        for url in urls:
+            raw_zipfile_name = f"{os.path.basename(url)}"
+            raw_zipfile_path = input_directory / raw_zipfile_name
+            raw_zipfile_paths.append(raw_zipfile_path)
 
-        # download files if not already downloaded
-        if not os.path.exists(raw_zipfile_path) or redownload == "True":
-            # download files
-            print(f"Downloading files from {url}...")
-            download_url(url,
-                        raw_zipfile_path)
-        else:
-            print(f"{raw_zipfile_path} already exists. Skipping download...")
+            # download files if not already downloaded
+            if not os.path.exists(raw_zipfile_path) or redownload == "True":
+                # download files
+                print(f"Downloading files from {url}...")
+                download_url(url,
+                            raw_zipfile_path)
+            else:
+                print(f"{raw_zipfile_path} already exists. Skipping download...")
     return raw_zipfile_paths
 
 
