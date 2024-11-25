@@ -381,6 +381,36 @@ def pre_process_merfish(raw_merfish_dir: Path):
     return adata
 
 
+def pre_process_starmap(raw_starmap_dir: Path):
+    """
+    Assumes the input directory is not a zip file but folder instead.
+    """
+    for file in os.listdir(raw_starmap_dir):
+        if 'raw_expression' in file:
+            expr_file = file
+        elif 'cell_metadata' in file:
+            meta_file = file
+    
+    expr_file = os.path.join(raw_starmap_dir, expr_file)
+    meta_file = os.path.join(raw_starmap_dir, meta_file)
+    
+    sample = raw_starmap_dir.name
+    region = "region_0"
+    
+    expr = pd.read_csv(expr_file, index_col=0)
+    meta = pd.read_csv(meta_file, index_col=0)
+
+    adata = sc.AnnData(expr, dtype=np.uint16, obs=meta)
+
+    adata.obsm["spatial"] = adata.obs[["x", "y"]].values
+    adata.obs["cell_id_orig"] = adata.obs_names
+    adata.obs = adata.obs.reset_index(drop=True)
+
+    adata.X = sp.csr_matrix(adata.X)
+
+    return adata
+
+
 def pre_process(raw_path, assay):
     """
     Preprocesses raw data according to the assay type
@@ -401,6 +431,8 @@ def pre_process(raw_path, assay):
         adata = pre_process_cosmx(raw_path)
     elif assay == 'merfish':
         adata = pre_process_merfish(raw_path)
+    elif assay == 'starmap':
+        adata = pre_process_starmap(raw_path)
     
     return adata
 
