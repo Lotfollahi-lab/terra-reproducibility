@@ -38,17 +38,17 @@ def download_zipfiles(
             # download files
             print(f"Downloading files from {url}...")
             if len(url.split("|")) > 1:
-                    url_multi = url.split("|")
-                    raw_zipfile_name = find_common_prefix([u.split('/')[-1] for u in url_multi])
-                    raw_zipfile_path = input_directory / raw_zipfile_name
-                    raw_zipfile_paths[-1] = raw_zipfile_path
-                    os.makedirs(raw_zipfile_path, exist_ok=True)
-                    for u in url_multi:
-                        download_url(u,
-                            f"{raw_zipfile_path}/{os.path.basename(u)}")
-                else:
-                    download_url(url,
-                        raw_zipfile_path)
+                url_multi = url.split("|")
+                raw_zipfile_name = find_common_prefix([u.split('/')[-1] for u in url_multi])
+                raw_zipfile_path = input_directory / raw_zipfile_name
+                raw_zipfile_paths[-1] = raw_zipfile_path
+                os.makedirs(raw_zipfile_path, exist_ok=True)
+                for u in url_multi:
+                    download_url(u,
+                        f"{raw_zipfile_path}/{os.path.basename(u)}")
+            else:
+                download_url(url,
+                    raw_zipfile_path)
         else:
             print(f"{raw_zipfile_path} already exists. Skipping download...")
     return raw_zipfile_paths
