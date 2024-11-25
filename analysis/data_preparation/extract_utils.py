@@ -23,7 +23,7 @@ def pre_process(raw_path, assay):
         adata = pre_process_10x_xenium(raw_path)
     elif assay == 'cosmx':
         adata = pre_process_cosmx(raw_path)
-    elif assay == 'merscope':
+    elif assay == 'merfish':
         adata = pre_process_merfish(raw_path)
     elif assay == 'starmap':
         adata = pre_process_starmap(raw_path)
