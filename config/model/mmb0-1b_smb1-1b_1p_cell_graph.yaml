@@ -1,19 +1,21 @@
 data:
   dataset_name: 'mmb0-1b_smb1-1b_1p'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_1p_labels'
-  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_shifted_log_2000.dataset'
-  tokenizer_type: 'cell_graph' # 'cell_neighborhood', 'cell_graph'
-  n_special_values: 109
+  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_8_read_depth_shifted_log_1793.dataset'
+  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_8_None_shifted_log_1793.dataset'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_None_shifted_log_1793_knn_10.dataset'
+  tokenizer_type: 'cell_graph'
+  n_special_values: 7
   random_state: 0
   sample_subset: False
   split: 0.2
   stratify: False
   vocab_size: 1769 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl')
-  seq_len_cell: 64 # max number of non-zero cell tokens per cell
-  seq_len_neighborhood: 640 # max number of non-zero neighborhood tokens per cell
-  n_segments: 11 # number of unique segment tokens (gene segments)
+  seq_len_cell: 128
+  seq_len_neighborhood: 1280
+  n_segments: 11 # number of unique segment tokens (1 index and 10 neighbor gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 64
+  batch_size: 32
   num_workers: 6 
   pin_memory: True
 meta:
@@ -33,19 +35,18 @@ mask:
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
   per_block_mask_ratio: 0.5 # [0.5, 0.8]
-  #controlled_attention_pattern:
+  controlled_attention_pattern:
   #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
   #  # 'Matrix', 'null'
-  #  - [0, 1, 0, 1] # cls
-  #  - [0, 1, 0, 0] # genes
-  controlled_attention_pattern: null
-  controlled_attention_pred: False
+    - [0, 0, 0, 1] # cls
+    - [0, 1, 0, 1] # genes
+  #controlled_attention_pattern: null
   restrict_special_attention: True
 optimization:
   warmup: 3
   epochs: 100
   ema:
-  - 0.9764319982153814 # 0.6, 0.9764319982153814
+  - 0.7
   - 1.0
   start_lr: 2.0e-05
   lr: 2.0e-05

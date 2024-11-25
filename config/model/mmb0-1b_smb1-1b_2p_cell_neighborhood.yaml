@@ -18,7 +18,7 @@ data:
   num_workers: 6 
   pin_memory: True
 meta:
-  gt_type: 'counts' # 'rank', 'counts'
+  gt_type: 'rank' # 'rank', 'counts'
   enc_depth: 3
   enc_emb_dim: 768
   pred_depth: 1
@@ -40,13 +40,12 @@ mask:
   #  - [0, 1, 0, 1] # cls
   #  - [0, 1, 0, 1] # genes
   controlled_attention_pattern: null
-  controlled_attention_pred: False
   restrict_special_attention: True
 optimization:
   warmup: 3
   epochs: 100
   ema:
-  - 0.9764319982153814 # 0.6, 0.9764319982153814
+  - 0.7
   - 1.0
   start_lr: 2.0e-05
   lr: 2.0e-05

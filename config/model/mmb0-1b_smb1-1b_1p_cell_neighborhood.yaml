@@ -14,7 +14,7 @@ data:
   seq_len_neighborhood: 309 # max number of non-zero neighborhood tokens per cell
   n_segments: 2 # number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 64
+  batch_size: 64 # 128
   num_workers: 6 
   pin_memory: True
 meta:
@@ -28,7 +28,7 @@ meta:
   seg_learnable: False
   use_bfloat16: True
 mask:
-  n_contexts: 1 # this is the number of context blocks in block masking
+  n_contexts: 2 # this is the number of context blocks in block masking
   n_targets: 5 # this is the number of target blocks in block masking
   block_masking: True # this doesn't have meaning in block masking.
   context_mask_size: 200 # this doesn't have meaning in block masking.
@@ -38,10 +38,10 @@ mask:
   #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
   #  # 'Matrix', 'null'
   #  - [0, 1, 0, 1] # cls
-  #  - [0, 1, 0, 1] # genes
+  #  - [0, 1, 0, 0] # genes
   controlled_attention_pattern: null
   controlled_attention_pred: False
-  restrict_special_attention: True
+  restrict_special_attention: False
 optimization:
   warmup: 3
   epochs: 100
