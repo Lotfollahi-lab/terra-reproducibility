@@ -23,7 +23,7 @@ for dataset_name, row in meta0.iterrows():
     total_batch = did_counts.get(dataset_id, 0)  # Use .get() to avoid KeyError
     exp_name = f"{ds_short}{dataset_id}-{total_batch}b_1p"
 
-    if os.path.isfile(f'../../config/bronze_to_silver/{exp_name}.yaml'):
+    if os.path.isfile(f'config/bronze_to_silver/{exp_name}.yaml'):
         continue
 
     # Determine sample names and URLs based on the total_batch
@@ -88,5 +88,5 @@ for dataset_name, row in meta0.iterrows():
     modified_yaml_str = '\n'.join(new_lines)
 
     # Write the modified YAML string to the file
-    with open(f'../../config/bronze_to_silver/{exp_name}.yaml', 'w') as outfile:
+    with open(f'config/bronze_to_silver/{exp_name}.yaml', 'w') as outfile:
         outfile.write(modified_yaml_str)
