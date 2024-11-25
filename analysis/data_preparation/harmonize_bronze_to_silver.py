@@ -18,6 +18,20 @@ from pyensembl import EnsemblRelease
 CHUNK_SIZE = 5 * 1024 * 1024
 
 
+def find_common_prefix(strings):
+    if not strings:
+        return ""
+    
+    # Find the shortest string
+    shortest = min(strings, key=len)
+    
+    # Check prefix length
+    for i in range(len(shortest)):
+        if any(s[i] != shortest[i] for s in strings):
+            return shortest[:i]
+    
+    return shortest
+
 def create_gene_name_to_ensembl_id_dict(species: str, 
                                         release: int = 111) -> dict:
     """
@@ -408,8 +422,18 @@ def download_zipfiles(urls: list[str] = [],
             if not os.path.exists(raw_zipfile_path) or redownload == "True":
                 # download files
                 print(f"Downloading files from {url}...")
-                download_url(url,
-                            raw_zipfile_path)
+                if len(url.split("|")) > 1:
+                    url_multi = url.split("|")
+                    raw_zipfile_name = find_common_prefix([u.split('/')[-1] for u in url_multi])
+                    raw_zipfile_path = input_directory / raw_zipfile_name
+                    raw_zipfile_paths[-1] = raw_zipfile_path
+                    os.makedirs(raw_zipfile_path, exist_ok=True)
+                    for u in url_multi:
+                        download_url(u,
+                            f"{raw_zipfile_path}/{os.path.basename(u)}")
+                else:
+                    download_url(url,
+                        raw_zipfile_path)
             else:
                 print(f"{raw_zipfile_path} already exists. Skipping download...")
     return raw_zipfile_paths
