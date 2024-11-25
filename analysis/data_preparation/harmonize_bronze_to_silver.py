@@ -1,12 +1,5 @@
 import os
-import time
-import tqdm
-import zipfile
-import tempfile
-import requests
-import yaml
 import pickle
-import argparse
 import numpy as np
 import scanpy as sc
 import pandas as pd
@@ -15,25 +8,16 @@ from pathlib import Path
 import scipy.sparse as sp
 from pyensembl import EnsemblRelease
 
-CHUNK_SIZE = 5 * 1024 * 1024
+from argparse_utils import parse_arguments, collect_configs
+from download_utils import download_zipfiles
+from extract_utils import pre_process
 
 
-def find_common_prefix(strings):
-    if not strings:
-        return ""
-    
-    # Find the shortest string
-    shortest = min(strings, key=len)
-    
-    # Check prefix length
-    for i in range(len(shortest)):
-        if any(s[i] != shortest[i] for s in strings):
-            return shortest[:i]
-    
-    return shortest
 
-def create_gene_name_to_ensembl_id_dict(species: str, 
-                                        release: int = 111) -> dict:
+def create_gene_ensembl_map_dict(
+        species: str, 
+        release: int = 111
+    ) -> dict:
     """
     Create a dictionary of gene symbol names to ensembl id obtained from Ensembl Release.
     
@@ -48,11 +32,11 @@ def create_gene_name_to_ensembl_id_dict(species: str,
     """
     fname = Path("/lustre/scratch126/cellgen/team361/DATASETS/genes") / f"{species}_gene_name_to_ensembl_id_dict.pkl"
     if os.path.exists(fname):
-        print(f"Loading gene name to ensembl id dictionary for Species {species}...")
+        print(f"Loading gene name to ensembl id dictionary for species = {species}...")
         with open(fname, 'rb') as f:
             gene_name_to_ensembl_id_dict = pickle.load(f)
     else:
-        print(f"Creating gene name to ensembl id dictionary for Species {species}...")
+        print(f"Creating gene name to ensembl id dictionary for species = {species}...")
         # Extract Ensembl IDs of protein coding and miRNA mouse genes
         ensembl = EnsemblRelease(release=release, species=species)
         ensembl.download()
@@ -88,8 +72,10 @@ def harmonize_X_gene_counts(adata):
     return adata
 
 
-def harmonize_var_gene_names(adata,
-                             gene_name_to_ensembl_id_dict):
+def harmonize_var_gene_names(
+        adata,
+        gene_ensembl_map_dict,
+    ):
     if adata.var is None:
         raise ValueError("adata.var is missing.")
     
@@ -106,11 +92,11 @@ def harmonize_var_gene_names(adata,
     harmonized_gene_names = []
     matching_ensembl_ids = []
     for gene_name in gene_names:
-        if gene_name in gene_name_to_ensembl_id_dict.keys():
+        if gene_name in gene_ensembl_map_dict.keys():
             harmonized_gene_names.append(gene_name)
-            matching_ensembl_ids.append(gene_name_to_ensembl_id_dict[gene_name])
+            matching_ensembl_ids.append(gene_ensembl_map_dict[gene_name])
         # else:
-            # print(f"Gene name {gene_name} not found in gene_name_to_ensembl_id_dict. Skipped...")
+            # print(f"Gene name {gene_name} not found in gene_ensembl_map_dict. Skipped...")
 
     print("Number of genes in bronze data:", len(gene_names))
     print("Number of genes with matching ensembl ids:", len(harmonized_gene_names))
@@ -158,343 +144,157 @@ def harmonize_obsm_spatial(adata):
     return adata
 
 
-def harmonize_uns_metadata(uns_metadata,
-                            adata):
+def harmonize_uns_metadata(
+        adata,
+        uns_params,
+    ):
     print(adata)
-    for key in uns_metadata.keys():
-        print(key)
+    for key, value in uns_params.items():
         try:
-            print(f"{key} is present in adata.uns: {adata.uns[key]}")
+            if value != adata.uns[key]:
+                print(f"{key} present in adata.uns.")
+                print("Value is not harmonized. Setting from config...")
+                adata.uns[f'original_{key}'] = adata.uns[key]
+            else:
+                print(f"{key} present in adata.uns.")
+                print("Value is already harmonized.")
         except:
-            print("Setting metadata from config file to adata.uns")
-            try:
-                assert key in adata.obs.keys() and adata.obs[key].nunique() == 1
-                print(f"{key} is present in adata.obs: {adata.obs[key].iloc[0]}")
-                adata.uns[key] = adata.obs[key].iloc[0]
-            except:
-                print(f"{key} is missing from adata. Setting it from config file to {uns_metadata[key]}")
-                print(f"Setting adata.uns['{key}'] = {uns_metadata[key]}")
-                adata.uns[key] = uns_metadata[key]
+            print(f"{key} not present in adata.uns.")
+            print("Setting from config...")
 
-    if 'batch' not in adata.uns['batch']:
-        adata.uns['batch'] = f"batch{adata.uns['batch']}"
+        adata.uns[key] = value
+        print(f"adata.uns['{key}']: {value}")
 
-    print("Metadata in adata.uns:")
-    for key in uns_metadata.keys():
-        print(f"{key}: {adata.uns[key]}")
     return adata
 
 
-def harmonize_batch(uns_metadata,
-                    file,
-                    gene_name_to_ensembl_id_dict):
-    adata = sc.read_h5ad(file)
-    print(f"Raw adata shape: {adata.shape}")
+def harmonize_batch(
+        adata_batch,
+        uns_params,
+        misc_params,
+        gene_ensembl_map_dict,
+    ):
+    print(f"Raw adata shape: {adata_batch.shape}")
     
-    adata = harmonize_X_gene_counts(adata)
-    adata = harmonize_var_gene_names(adata,
-                                     gene_name_to_ensembl_id_dict)
-    adata = harmonize_obsm_spatial(adata)
-    adata = harmonize_uns_metadata(uns_metadata,
-                                   adata)
+    adata_batch = harmonize_X_gene_counts(
+                    adata_batch
+                    )
+    adata_batch = harmonize_var_gene_names(
+                    adata_batch,
+                    gene_ensembl_map_dict,
+                    )
+    adata_batch = harmonize_obsm_spatial(
+                    adata_batch
+                    )
+    adata_batch = harmonize_uns_metadata(
+                    adata_batch,
+                    uns_params,
+                    )
     
     # filter cells with less than 10 genes
-    sc.pp.filter_cells(adata, min_genes=10)
+    sc.pp.filter_cells(
+        adata_batch,
+        min_genes=misc_params['min_genes']
+    )
     
     # set cell id
-    adata.obs['cell_id'] = [f"{adata.uns['dataset_id']}_{adata.uns['batch']}_{cell_idx}" for cell_idx in range(adata.shape[0])]
-    print("adata.obs['cell_id']:")
-    print(adata.obs['cell_id'])
+    if 'cell_id' in adata_batch.obs.keys():
+        adata_batch.obs['original_cell_id'] = adata_batch.obs['cell_id']
+    adata_batch.obs['cell_id'] = [f"{adata_batch.uns['dataset_id']}_{adata_batch.uns['batch']}_{cell_idx}" for cell_idx in range(adata_batch.shape[0])]
+    print("adata_batch.obs['cell_id']:")
+    print(adata_batch.obs['cell_id'])
     
-    print(f"Harmonized adata shape: {adata.shape}")
-    return adata    
+    print(f"Harmonized adata_batch shape: {adata_batch.shape}")
+    return adata_batch
 
 
-def harmonize_bronze_data_to_silver_data(uns_metadata,
-                                         input_directory,
-                                         output_directory,
-                                         gene_name_to_ensembl_id_dict):
-    batch_count = 0
-    for file in input_directory.glob("**/*.h5ad"):
+def harmonize_bronze_data_to_silver_data(
+        input_directory,
+        uns_params,
+        batch_params,
+        key_mappings,
+        misc_params,
+        output_directory,
+    ):
+
+    # save or load gene_name_to_ensembl_id_dict
+    gene_ensembl_map_dict = create_gene_ensembl_map_dict(
+                                uns_params["species"]
+                            )
+    
+    files = list(input_directory.glob("**/*.h5ad"))
+
+    if batch_params['split_by_batch']:
+        print("Data is not split by batch. Splitting data by batch...")
+
+        # TODO: Remove this hardcoding
+        file = files[0]
         print(f"Harmonizing: {file}")
-        uns_metadata["batch"] = str(batch_count)
-        file_adata = harmonize_batch(uns_metadata,
-                                     file,
-                                     gene_name_to_ensembl_id_dict)
-        print(file_adata)
-        print(f"Writing to: {output_directory / file.name}")
-        file_adata.write(output_directory / file.name)
 
-        print("")
-        batch_count += 1
+        adata = sc.read_h5ad(file)
+
+        adata.obs['cell_type'] = adata.obs[key_mappings['cell_type']]
+        adata.obs['niche_type'] = adata.obs[key_mappings['niche_type']]
+        
+        sample_batch_map = batch_params['sample_batch_map']
+        if len(sample_batch_map) > 0:            
+            for sample_id, batch_id in batch_params['sample_batch_map'].items():
+                print(f"Harmonizing Sample ID: {sample_id}")
+                adata_batch = adata[adata.obs[key_mappings['batch']] == sample_id]
+
+                uns_params['batch'] = f"batch{batch_id}"
+
+                adata_batch = harmonize_batch(
+                                    adata_batch,
+                                    uns_params,
+                                    misc_params,
+                                    gene_ensembl_map_dict,
+                                )
+                
+                print(f"Final Harmonized Adata: Batch = {batch_id}")
+                print(adata_batch)
+                
+                out_fname = f"adata_batch{batch_id}.h5ad"
+                print(f"Writing to: {output_directory / out_fname}")
+                adata_batch.write(output_directory / out_fname)
+                print("")
+        else:
+            # TODO: Fix this error handling
+            print("Raw Adata has the following keys:")
+            print(adata)
+            raise ValueError("Sample batch map is empty.")
+    else:
+        print("Data is already split by batch.")
+        for file in files:
+            batch_id = 0
+
+            print(f"Harmonizing: {file}")
+            adata_batch = sc.read_h5ad(file)
+
+            uns_params['batch'] = f"batch{batch_id}"
+
+            adata_batch = harmonize_batch(
+                                adata_batch,
+                                uns_params,
+                                misc_params,
+                                gene_ensembl_map_dict,
+                            )
+
+            print(f"Final Harmonized Adata: Batch = {batch_id}")
+            print(adata_batch)
+
+            out_fname = f"{file.stem}.h5ad"
+            print(f"Writing to: {output_directory / out_fname}")
+            adata_batch.write(output_directory / out_fname)
+            print("")
+            
+            batch_id += 1
 
     return
 
 
-def pre_process_10x_xenium(raw_path):
-    # What Xenium output looks like:
-    # https://www.10xgenomics.com/support/software/xenium-onboard-analysis/latest/analysis/xoa-output-understanding-outputs
-    raw_path = str(raw_path)
-    print(f"[+] Reading {raw_path}")
-    temp_dir = tempfile.TemporaryDirectory()
-    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
-        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
-        with zipfile.ZipFile(raw_path, "r") as zip:
-            zip.extract("cell_feature_matrix.h5", path=temp_dir.name)
-            zip.extract("cells.parquet", path=temp_dir.name)
-            zip.extract("experiment.xenium", path=temp_dir.name)
-            zip.extract("gene_panel.json", path=temp_dir.name)
-            zip.extract("analysis.zarr.zip", path=temp_dir.name)
-        raw_path = temp_dir.name
-
-    cells_parquet = os.path.join(raw_path, "cells.parquet")
-    cell_feature_h5 = os.path.join(raw_path, "cell_feature_matrix.h5")
-
-    # read cell-feature matrix
-    print(f"[+] Reading cell-feature matrix {cell_feature_h5}")
-    adata = sc.read_10x_h5(filename=cell_feature_h5)
-
-    # make sure var_names is ensembl_id instead of gene name
-    adata.var = adata.var.drop(columns=["feature_types","genome"])
-    adata.var = adata.var.reset_index()
-    adata.var.columns = ['gene_name','ensembl_id']
-    adata.var = adata.var.set_index('gene_name')
-
-    # read observations
-    print(f"[+] Reading observations {cells_parquet}")
-    df = pd.read_parquet(cells_parquet)
-    df = df.set_index(adata.obs_names)
-    adata.obs = df.copy()
-    # get spatial coordintes in the embedings slot
-    adata.obsm["spatial"] = adata.obs[["x_centroid", "y_centroid"]].copy().to_numpy()
-    adata.obs = adata.obs.drop(columns=["x_centroid", "y_centroid"])
-
-    # record xenium experiment and gene panel information
-    experiment_xenium = os.path.join(raw_path, "experiment.xenium")
-    print(f"[+] Reading experiment {experiment_xenium}")
-    with open(experiment_xenium, "rt") as f:
-        adata.uns["experiment.xenium"] = f.read()
-    gene_panel = os.path.join(raw_path, "gene_panel.json")
-    print(f"[+] Reading gene panel {gene_panel}")
-    with open(gene_panel, "rt") as f:
-        adata.uns["gene_panel.json"] = f.read()
-
-    return adata
-
-
-def pre_process_cosmx(raw_path):
-    """
-    Preprocesses raw data from NanoString CosMx
-
-    Parameters:
-    ----------
-    raw_path (str): Path of the folder with NanoString CosMx zip file
-    
-    Returns:
-    -------
-    adata: AnnData object with the NanoString CosMx data
-    """
-    raw_path = str(raw_path)
-    print(f"[+] Reading {raw_path}")
-    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
-        temp_dir = tempfile.TemporaryDirectory()
-        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
-        zip_file = zipfile.ZipFile(raw_path)
-        for file in zip_file.namelist():
-            if any([ext in file for ext in ['exprMat','metadata']]):
-                if 'exprMat' in file:
-                    exprfile = file
-                elif 'metadata' in file:
-                    metafile = file
-                with zipfile.ZipFile(raw_path, "r") as zipp:
-                    zipp.extract(file, path=temp_dir.name)
-        raw_path = temp_dir.name
-    else:
-        print(f"[+] Input is a directory. Finding required files")
-        for file in os.listdir(raw_path):
-            if 'exprMat' in file:
-                exprfile = file
-            elif 'metadata' in file:
-                metafile = file
-                    
-    expr_file = os.path.join(raw_path, exprfile)
-    meta_file = os.path.join(raw_path, metafile)
-
-    print(f"[+] Reading cell-feature matrix {expr_file}")
-    exp = pd.read_csv(expr_file)
-    exp.index = [f"{i}_{j}" for i,j in zip(exp['fov'], exp['cell_ID'])]
-
-    print(f"[+] Reading metadata matrix {meta_file}")
-    meta = pd.read_csv(meta_file)
-    meta.index = [f"{i}_{j}" for i,j in zip(meta['fov'], meta['cell_ID'])]
-
-    exp = exp.drop(columns=['fov', 'cell_ID', 'cell'], errors='ignore')
-
-    adata = sc.AnnData(exp)
-
-    adata.obs_names = exp.index
-    adata.var_names = exp.columns
-    
-    common_obsnames = adata.obs_names[adata.obs_names.isin(meta.index)]
-
-    meta = meta.loc[common_obsnames]
-
-    adata = adata[common_obsnames].copy()
-    adata.obs = meta
-    
-    return adata
-
-
-def pre_process_merfish(raw_merfish_dir: Path):
-    """
-    Assumes the input directory is not a zip file but folder instead.
-    """
-    for file in os.listdir(raw_merfish_dir):
-        if 'cell_by_gene' in file:
-            expr_file = file
-        elif 'cell_metadata' in file:
-            meta_file = file
-    
-    expr_file = os.path.join(raw_merfish_dir, expr_file)
-    meta_file = os.path.join(raw_merfish_dir, meta_file)
-    
-    sample = raw_merfish_dir.name
-    region = "region_0"
-    slide_id = f"{sample}_{region}"
-    
-    expr = pd.read_csv(expr_file, index_col=0, dtype={"cell": str})
-    meta = pd.read_csv(meta_file, index_col=0, dtype={"EntityID": str})
-
-    meta.index = meta.index.astype(str) + f"_{slide_id}"
-    expr.index = expr.index.astype(str) + f"_{slide_id}"
-    meta = meta.loc[expr.index]
-
-    is_gene = ~expr.columns.str.lower().str.contains("blank")
-
-    adata = sc.AnnData(expr.loc[:, is_gene], dtype=np.uint16, obs=meta)
-
-    adata.obsm["spatial"] = adata.obs[["center_x", "center_y"]].values
-    adata.obs["slide_id"] = pd.Series(slide_id, index=adata.obs_names, dtype="category")
-
-    adata.X = sp.csr_matrix(adata.X)
-
-    return adata
-
-
-def pre_process_starmap(raw_starmap_dir: Path):
-    """
-    Assumes the input directory is not a zip file but folder instead.
-    """
-    for file in os.listdir(raw_starmap_dir):
-        if 'raw_expression' in file:
-            expr_file = file
-        elif 'cell_metadata' in file:
-            meta_file = file
-    
-    expr_file = os.path.join(raw_starmap_dir, expr_file)
-    meta_file = os.path.join(raw_starmap_dir, meta_file)
-    
-    sample = raw_starmap_dir.name
-    region = "region_0"
-    
-    expr = pd.read_csv(expr_file, index_col=0)
-    meta = pd.read_csv(meta_file, index_col=0)
-
-    adata = sc.AnnData(expr, dtype=np.uint16, obs=meta)
-
-    adata.obsm["spatial"] = adata.obs[["x", "y"]].values
-    adata.obs["cell_id_orig"] = adata.obs_names
-    adata.obs = adata.obs.reset_index(drop=True)
-
-    adata.X = sp.csr_matrix(adata.X)
-
-    return adata
-
-
-def pre_process(raw_path, assay):
-    """
-    Preprocesses raw data according to the assay type
-
-    Parameters:
-    ----------
-    - raw_path (str) : Path of the folder with raw files, assuming the folder name is the sample name
-    - assay (str) : Type of assay  
-    
-    Returns:
-    -------
-    - adata : AnnData object with the NanoString CosMx data
-    """
-    
-    if assay == 'xenium':
-        adata = pre_process_10x_xenium(raw_path)
-    elif assay == 'cosmx':
-        adata = pre_process_cosmx(raw_path)
-    elif assay == 'merfish':
-        adata = pre_process_merfish(raw_path)
-    elif assay == 'starmap':
-        adata = pre_process_starmap(raw_path)
-    
-    return adata
-
-
-def download_zipfiles(urls: list[str] = [],
-                      input_directory: Path = None,
-                      redownload: str = "False") -> list[Path]:
-    raw_zipfile_paths = []
-    if urls == []:
-        print(f"There is no URL to download in this config, probably folders in {input_directory} has input files. Skipping download...")
-        raw_zipfile_paths = list(input_directory.glob("*"))
-    else:
-        for url in urls:
-            raw_zipfile_name = f"{os.path.basename(url)}"
-            raw_zipfile_path = input_directory / raw_zipfile_name
-            raw_zipfile_paths.append(raw_zipfile_path)
-
-            # download files if not already downloaded
-            if not os.path.exists(raw_zipfile_path) or redownload == "True":
-                # download files
-                print(f"Downloading files from {url}...")
-                if len(url.split("|")) > 1:
-                    url_multi = url.split("|")
-                    raw_zipfile_name = find_common_prefix([u.split('/')[-1] for u in url_multi])
-                    raw_zipfile_path = input_directory / raw_zipfile_name
-                    raw_zipfile_paths[-1] = raw_zipfile_path
-                    os.makedirs(raw_zipfile_path, exist_ok=True)
-                    for u in url_multi:
-                        download_url(u,
-                            f"{raw_zipfile_path}/{os.path.basename(u)}")
-                else:
-                    download_url(url,
-                        raw_zipfile_path)
-            else:
-                print(f"{raw_zipfile_path} already exists. Skipping download...")
-    return raw_zipfile_paths
-
-
-def download_url(url: str = None,
-                 raw_file_path: Path = None):
-    # poor man's retry
-    _ATTEMPTS=3
-    for attempt in range(1,_ATTEMPTS+1):
-        try:
-            r = requests.get(url, stream=True)
-            total_size = int(r.headers.get("content-length", 0))
-            with tqdm.tqdm(
-                total=total_size, unit="B", unit_scale=True, desc=os.path.basename(url)
-            ) as p:
-                with open(raw_file_path, "wb") as f:
-                    for chunk in r.iter_content(CHUNK_SIZE):
-                        p.update(len(chunk))
-                        f.write(chunk)
-            return True
-        except Exception as ex:
-            # log error, wait 60s and try agaain
-            print(f"Attempt #{attempt} failed to download. Error :{repr(ex)}")
-            time.sleep(60)
-    print(f"ERROR. Fail all {_ATTEMPTS} attempts")
-
-
 def main(config: Dict):
+    # -------------------- Parse Args from Config ------------------------------
     # get experiment params
     experiment_name = config["experiment"]["name"]
     print(f"Experiment Name: {experiment_name}")
@@ -504,106 +304,64 @@ def main(config: Dict):
     bronze_directory_path = data_directory_path / "bronze"
     silver_directory_path = data_directory_path / "silver"
     
-    # download files and put them in here
+    # set input directory for bronze (raw) files for this dataset
     input_directory = bronze_directory_path / experiment_name
     os.makedirs(input_directory, exist_ok=True)
     print(f"Input Directory: {input_directory}")
-    h5ad_files = list(input_directory.glob("**/*.h5ad"))
-    print(h5ad_files)
-    
 
-    # preprocess files saved in input_directory and save them in output_directory
+    # set output directory for silver (harmonized) files for this dataset
     output_directory = silver_directory_path / experiment_name
     os.makedirs(output_directory, exist_ok=True)
+    print(f"Output Directory: {output_directory}")
 
-    # get dataset params
-    uns_metadata = {}
-    uns_metadata["dataset_id"] = config["dataset"]["dataset_id"]
-    uns_metadata["assay"] = config["dataset"]["assay"]
-    uns_metadata["species"] = config["dataset"]["species"]
-    uns_metadata["tissue"] = config["dataset"]["tissue"]
-    
-    if config["data_source"]["online"]:
-        raw_zipfile_paths = download_zipfiles(config["data_source"]["urls"],
-                                                input_directory,
-                                                config["data_source"]["redownload"])
+    # get harmonization params
+    uns_params = config['harmonization']['uns']
+    batch_params = config['harmonization']['batch']
+    key_mappings = config['harmonization']['key_mappings']
+    misc_params = config['harmonization']['misc']
+
+    # -------------------- Download (if necessary) ------------------------------
+    # if files are online and have not been previously downloaded, download them
+    if config["dataset"]["source"] == 'online':
+        raw_zipfile_paths = download_zipfiles(
+                                input_directory,
+                                **config["dataset"]["download_params"]
+                            )
+
+    # ------------------ Extract AnnData from ZipFiles --------------------------
+    h5ad_files = list(input_directory.glob("**/*.h5ad"))
+
+    # create raw h5ad from raw zip file or load it if already exists
+    if len(h5ad_files) == 0 or config["dataset"]["overwrite"]:
+        if len(h5ad_files) == 0:
+            print("No bronze (raw) .h5ad files found.")
+        elif config["experiment"]["overwrite"]:
+            print("Overwriting previously existing bronze (raw) .h5ad files...")
         
-        # create raw adata from raw zip file or load it if already exists
-        if len(h5ad_files) == 0 or config["experiment"]["overwrite"]:
-            for raw_zipfile_path in raw_zipfile_paths:
-                print("Creating raw adata from raw zip file...")
-                adata = pre_process(raw_zipfile_path, uns_metadata["assay"])
-                print("Raw adata:")
-                print(adata)
-                raw_adata_fname = input_directory / f"{raw_zipfile_path.stem}.h5ad"
-                print(f"Writing raw adata to file: {raw_adata_fname}")
-                adata.write(raw_adata_fname)
-        else:
-            print("Raw adata already exists.")
-
-    # save or load gene_name_to_ensembl_id_dict
-    gene_name_to_ensembl_id_dict = create_gene_name_to_ensembl_id_dict(uns_metadata["species"])
-
-    harmonize_bronze_data_to_silver_data(uns_metadata,
-                                        input_directory,
-                                        output_directory,
-                                        gene_name_to_ensembl_id_dict)
-
-
-def parse_arguments() -> argparse.Namespace:
-    """
-    Parse command line arguments.
-    
-    Returns:
-    ----------
-    - argparse.Namespace: The command line arguments.
-    """
-    parser = argparse.ArgumentParser(description='Process command line arguments.')
-    
-    parser.add_argument('--config_file', 
-                        type=str,
-                        default='/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/config/bronze_to_silver/xhs1000-39b_1p.yaml',
-                        help='Path to the config file')
-    parser.add_argument('--override', 
-                        nargs='+',
-                        default=False, 
-                        help='Override parameters in the config file')
-    
-    return parser.parse_args()
-
-
-def collect_configs(args: argparse.Namespace) -> Dict:
-    """
-    Collect configurations from the config file and command line arguments.
-    
-    Parameters:
-    ----------
-    - args (argparse.Namespace): The command line arguments.
-    
-    Returns:
-    ----------
-    - Dict: The configuration dictionary.
-    """
-    # Get the config file name from command line argument
-    config_fname = args.config_file
-
-    # Read parameters from config file
-    with open(config_fname, "r") as f:
-        config = yaml.safe_load(f)
-    
-    # Override parameters from command line
-    if args.override:
-        for arg in args.override:
-            key, value = arg.split("=")
-            if key == 'overwrite':
-                if value == 'True':
-                    config['experiment'][key] = True
-                elif value == 'False':
-                    config['experiment'][key] = False
+        for raw_zipfile_path in raw_zipfile_paths:
+            print(f"Extracting bronze (raw) .h5ad from {raw_zipfile_path}...")
+            adata = pre_process(
+                        raw_zipfile_path,
+                        uns_params['assay'],
+                    )
+            print("Raw adata:")
+            print(adata)
+            raw_adata_fname = input_directory / f"{raw_zipfile_path.stem}.h5ad"
+            print(f"Writing to file: {raw_adata_fname}")
+            adata.write(raw_adata_fname)
     else:
-        config["experiment"]["overwrite"] = False
-                    
-    return config
+        print("Using existing bronze (raw) .h5ad files...")
+
+    # ------------------ Harmonize --------------------------
+
+    harmonize_bronze_data_to_silver_data(
+        input_directory,
+        uns_params,
+        batch_params,
+        key_mappings,
+        misc_params,
+        output_directory,
+    )
 
 
 if __name__ == '__main__':

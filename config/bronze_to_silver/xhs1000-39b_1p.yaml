@@ -1,16 +1,72 @@
 experiment:
   name: "xhs1000-39b_1p"
   description: "Xenium Human Skin (dataset-id 1000) | 39 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver"
-  min_genes: 10
+  study: "Beacon Data from Lloyd Steele"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
 
 dataset:
-  dataset_id: 1000
-  assay: xenium
-  species: "homo_sapiens"
-  tissue: "skin"
+  source: "sanger"
+  download_params: {}
+  file_names: []
 
-data_source:
-  online: False
+harmonization:
+  uns: {
+  'dataset_id': 1000,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'skin'
+  }
+  batch: {
+    'split_by_batch': True,
+    'sample_batch_map': {
+                        'BK27_Week 12': 0,
+                        'BK27_Day 14': 1,
+                        'BK21_Lesional Baseline': 2,
+                        'BK20_Lesional Baseline': 3,
+                        'BK18_Non-lesional Baseline': 4,
+                        'BK21_Day 3': 5,
+                        'BK18_Week 12': 6,
+                        'BK20_Day 14': 7,
+                        'BK20_Non-lesional Baseline': 8,
+                        'BK27_Non-lesional Baseline': 9,
+                        'BK21_Day 14': 10,
+                        'BK18_Lesional Baseline': 11,
+                        'BK18_Day 3': 12,
+                        'BK27_Day 3': 13,
+                        'BK21_Non-lesional Baseline': 14,
+                        'BK20_Week 12': 15,
+                        'BK21_Week 12': 16,
+                        'BK20_Day 3': 17,
+                        'BK18_Day 14': 18,
+                        'BK39_Lesional Baseline': 19,
+                        'BK30_Non-lesional Baseline': 20,
+                        'BK39_Non-lesional Baseline': 21,
+                        'BK39_Week 12': 22,
+                        'BK25_Day 3': 23,
+                        'BK25_Day 14': 24,
+                        'BK25_Non-lesional Baseline': 25,
+                        'BK30_Day 3': 26,
+                        'BK30_Day 14': 27,
+                        'BK25_Lesional Baseline': 28,
+                        'BK25_Week 12': 29,
+                        'BK24_Lesional Baseline': 30,
+                        'BK24_Day 14': 31,
+                        'BK30_Lesional Baseline': 32,
+                        'BK24_Non-lesional Baseline': 33,
+                        'BK39_Day 14': 34,
+                        'BK24_Day 3': 35,
+                        'BK30_Week 12': 36,
+                        'BK24_Week 12': 37,
+                        'BK39_Day 3': 38
+                        }    
+  }
+  key_mappings: {
+    'cell_type': 'Annotation',
+    'niche_type': 'NICHE_NAMES',
+    'batch': 'sample',
+  }
+  misc: {
+    'min_genes': 10,
+  }
