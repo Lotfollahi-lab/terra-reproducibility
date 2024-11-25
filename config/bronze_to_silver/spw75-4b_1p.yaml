@@ -1,0 +1,27 @@
+experiment:
+  name: spw75-4b_1p
+  description: STARMAP Placenta W(dataset-id 75) |  | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  file_names:
+    - STARmap-ISS_sample_W11
+    - STARmap-ISS_sample_W7
+    - STARmap-ISS_sample_W8-2
+    - STARmap-ISS_sample_W9
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  dataset_id: 75
+  assay: starmap
+  species: homo_sapiens
+  tissue: placenta
+
+data_source:
+  online: true
+  redownload: false
+  urls:
+    - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W11_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W11_raw_expression.csv?download=1
+    - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W7_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W7_raw_expression.csv?download=1
+    - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_raw_expression.csv?download=1
+    - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_raw_expression.csv?download=1
+
