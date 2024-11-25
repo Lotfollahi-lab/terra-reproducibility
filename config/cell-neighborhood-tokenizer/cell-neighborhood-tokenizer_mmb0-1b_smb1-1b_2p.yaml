@@ -1,9 +1,8 @@
 experiment:
-  experiment_name: "sss3-1b_1p"
-  experiment_description: "sim1_1105genes_100klocs_strongincrements (dataset-id = 3) | 1-batch | 1-panel"
+  experiment_name: "mmb0-1b_smb1-1b_2p"
+  experiment_description: "merfish_mouse_brain (dataset-id = 0) | 1-batch | starmap_mouse_brain (dataset-id = 1) | 1-batch | 2-panel"
   tokenizer: "cell-neighborhood-tokenizer"
-  nproc: 8
-  overwrite: False
+  overwrite: True
 
 tokenization:
   use_generator: True
@@ -11,8 +10,10 @@ tokenization:
   norm_factor: "read_depth"
   prenormalize: False
   processing_mode: "parallel"
-  num_shards: 4
+  num_shards: 8
   keep_in_memory: False
+  radius: null
+  delaunay_radius_union: False
 
 wandb:
   project: "NicheJEPA"

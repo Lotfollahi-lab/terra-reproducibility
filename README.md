@@ -47,20 +47,19 @@ Execute the following to create a Hugging Face dataset created using the Cell Ne
 ```
 python analysis/tokenization/create_cell_tokenized_dataset.py --config_file [CONFIG-FILE] --override [OPTIONS]
 ```
-Sample config file is available at `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p_read-depth_shifted-log.yaml`. The override flag allows you to override two things: (1) the number of processes parameter from the config file by using `nproc=[NPROC]`, and (2) whether to reuse the intermediate files such as token dictionary or rebuild them first before recreating the tokenized data by using `overwrite=True`. Other parameters from the config file remain unaffected. If in doubt, it may be safer to overwrite.
+Sample config file is available at `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_sss2-1b_1p`. The override flag allows you to override `overwrite` parameter which is set to `True` by default in the config files. The `overwrite` parameter controls whether a previously created token dictionary should be reused or if it should be recreated from scratch.
 
 If you are on `farm22`, then the easier alternative is to simply use the wrapper script as follows:
 ```
 ./scripts/wrapper_create_cell_neighborhood_tokenized_dataset.sh [EXPERIMENT-NAME]
 ```
 This will create an LSF job with the appropriate requirements and fetch the corresponding config file. Currently, the following experiment names are supported:
-- `mmb0-8b_1p` -- Merfish Mouse Brain | Batches 1-8 | 1 gene panel
 - `mmb0-100k-1b_1p` -- Merfish Mouse Brain | Batch 224 | 1 gene panel
 - `mmb0-300k-2b_1p` -- Merfish Mouse Brain | Batches 217, 218 | 1 gene panel
 - `mmb0-300k-2b_2p` -- Merfish Mouse Brain | Batches 217, 218 | 2 gene panel (semi-real)
 - `mmb0-239b_1p` -- Merfish Mouse Brain | All Batches 1-239 | 1 gene panel
-- `mmb0-1b_smb1-1b_2p` -- Merfish Mouse Brain | Batch 82 | Starmap Plus Mouse CNS | Batch 15 | 2 gene panels
 - `mmb0-1b_smb1-1b_1p` -- Merfish Mouse Brain | Batch 82 | Starmap Plus Mouse CNS | Batch 15 | 1 gene panels (semi-real, shared genes only)
+- `mmb0-1b_smb1-1b_2p` -- Merfish Mouse Brain | Batch 82 | Starmap Plus Mouse CNS | Batch 15 | 2 gene panels
 - `smb1-20b_1p` -- Starmap Plus Mouse CNS | Batches 1-20 | 1 gene panel
 - `sss2-1b_1p` -- Simulated 10k | Batch 1 | 1 gene panel
 - `sss3-1b_1p` -- Simulated 100k | Batch 1 | 1 gene panel
@@ -71,8 +70,8 @@ This will create an LSF job with the appropriate requirements and fetch the corr
 To tokenize a new experiment, follow the steps below:
 1. Choose an `[EXPERIMENT-NAME]` (e.g.`mmb0-8b_1p`)
 2. Create a folder at the following location: `/lustre/scratch126/cellgen/team361/DATASETS/silver/[EXPERIMENT-NAME]`. Add the appropriate (harmonized) AnnData batch files.
-3. Create a config file at the following location with this naming convention: `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_[EXPERIMENT-NAME]_read-depth_shifted-log.yaml`
-4. Update the `experiment_name`, `experiment_description`, and potentially `nproc` and `num_shards`. Ideally, you shouldn't need to update any of the other parameters here if you just want to repeat the same tokenization pipeline on a new experiment.
+3. Create a config file at the following location with this naming convention: `config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_[EXPERIMENT-NAME].yaml`
+4. Update the `experiment_name`, `experiment_description`, and potentially `num_shards`. Ideally, you shouldn't need to update any of the other parameters here if you just want to repeat the same tokenization pipeline on a new experiment.
 5. Update `scripts/wrapper_create_cell_neighborhood_tokenized_dataset.sh` by adding the `RAM`, `TIME`, `CORES`, and `QUEUE` as LSF job parameters as a new case titled `[EXPERIMENT-NAME]`.
 
 
