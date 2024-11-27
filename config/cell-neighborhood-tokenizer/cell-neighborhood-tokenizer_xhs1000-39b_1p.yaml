@@ -12,8 +12,9 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 16
   keep_in_memory: False
+  n_neighs: 10
   radius: null
-  delaunay_radius_union: False
+  delaunay: False
 
 wandb:
   project: "NicheJEPA"
