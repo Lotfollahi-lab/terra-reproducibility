@@ -1,147 +1,0 @@
-wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
-wandb: Tracking run with wandb version 0.18.0
-wandb: W&B syncing is set to `offline` in this directory.  
-wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
-/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:294: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
-  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
-/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:419: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
-  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
-Exception in thread Thread-3 (_pin_memory_loop):
-Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
-    self.run()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
-    self._target(*self._args, **self._kwargs)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
-    do_one_step()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
-    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
-    return _ForkingPickler.loads(res)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
-    fd = df.detach()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
-    with _resource_sharer.get_connection(self._id) as conn:
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
-    c = Client(address, authkey=process.current_process().authkey)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 508, in Client
-    answer_challenge(c, authkey)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 757, in answer_challenge
-    response = connection.recv_bytes(256)        # reject large message
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 216, in recv_bytes
-    buf = self._recv_bytes(maxlength)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-ConnectionResetError: [Errno 104] Connection reset by peer
-Process Process-1:
-Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
-    self.run()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/main.py", line 57, in process_main
-    train(params, train_dataset, test_dataset, save_folder_path=folder_path)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 351, in train
-    for itr, (udata, masks_enc, masks_pred, masks_attention) in enumerate(train_loader):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
-    data = self._next_data()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1344, in _next_data
-    return self._process_data(data)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1370, in _process_data
-    data.reraise()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/_utils.py", line 706, in reraise
-    raise exception
-RuntimeError: Caught RuntimeError in DataLoader worker process 3.
-Original Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 309, in _worker_loop
-    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
-    return self.collate_fn(data)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/masks/segment_masking.py", line 211, in __call__
-    collated_masks_target = torch.utils.data.default_collate(collated_masks_target)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 317, in default_collate
-    return collate(batch, collate_fn_map=default_collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 183, in collate
-    clone[i] = collate(samples, collate_fn_map=collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 142, in collate
-    return collate_fn_map[elem_type](batch, collate_fn_map=collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 213, in collate_tensor_fn
-    out = elem.new(storage).resize_(len(batch), *list(elem.size()))
-RuntimeError: Trying to resize storage that is not resizable
-
-/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:79: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
-  checkpoint = torch.load(r_path, map_location=torch.device(device))
-0it [00:00, ?it/s]/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/infer.py:238: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
-  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
-1it [00:09,  9.32s/it]3it [00:10,  2.98s/it]6it [00:11,  1.31s/it]7it [00:12,  1.14s/it]8it [00:15,  1.67s/it]9it [00:16,  1.56s/it]10it [00:16,  1.16s/it]13it [00:18,  1.11it/s]15it [00:21,  1.01it/s]18it [00:22,  1.44it/s]19it [00:24,  1.08it/s]21it [00:25,  1.28it/s]22it [00:26,  1.21it/s]23it [00:26,  1.22it/s]24it [00:27,  1.24it/s]25it [00:30,  1.21s/it]27it [00:31,  1.04s/it]28it [00:32,  1.05it/s]29it [00:33,  1.11it/s]31it [00:36,  1.22s/it]33it [00:37,  1.01s/it]34it [00:38,  1.16it/s]36it [00:38,  1.66it/s]37it [00:40,  1.01s/it]39it [00:42,  1.06it/s]40it [00:43,  1.01s/it]43it [00:47,  1.15s/it]45it [00:48,  1.13it/s]46it [00:49,  1.08it/s]49it [00:51,  1.16it/s]51it [00:53,  1.23it/s]52it [00:54,  1.05it/s]55it [00:57,  1.11it/s]57it [00:58,  1.18it/s]58it [01:00,  1.04s/it]61it [01:01,  1.31it/s]62it [01:03,  1.15it/s]63it [01:04,  1.13it/s]64it [01:06,  1.13s/it]67it [01:08,  1.09it/s]69it [01:09,  1.23it/s]70it [01:11,  1.08s/it]73it [01:14,  1.02it/s]75it [01:14,  1.26it/s]76it [01:16,  1.04it/s]79it [01:18,  1.23it/s]81it [01:19,  1.29it/s]82it [01:21,  1.09it/s]84it [01:22,  1.25it/s]85it [01:24,  1.06s/it]88it [01:25,  1.39it/s]89it [01:26,  1.25it/s]90it [01:28,  1.12it/s]91it [01:30,  1.27s/it]94it [01:31,  1.23it/s]95it [01:32,  1.39it/s]96it [01:33,  1.15it/s]97it [01:35,  1.22s/it]99it [01:36,  1.23it/s]100it [01:36,  1.42it/s]102it [01:37,  1.60it/s]103it [01:40,  1.19s/it]105it [01:41,  1.12it/s]106it [01:41,  1.32it/s]108it [01:42,  1.71it/s]109it [01:46,  1.32s/it]110it [01:46,  1.07s/it]112it [01:47,  1.35it/s]114it [01:48,  1.63it/s]115it [01:50,  1.07it/s]117it [01:52,  1.01s/it]120it [01:52,  1.69it/s]121it [01:56,  1.09s/it]123it [01:57,  1.02it/s]126it [01:58,  1.47it/s]127it [02:00,  1.17it/s]129it [02:02,  1.08it/s]131it [02:03,  1.28it/s]132it [02:04,  1.31it/s]133it [02:05,  1.16it/s]135it [02:06,  1.33it/s]136it [02:07,  1.27it/s]137it [02:08,  1.23it/s]138it [02:08,  1.35it/s]139it [02:10,  1.04s/it]141it [02:11,  1.21it/s]142it [02:13,  1.12s/it]145it [02:15,  1.29it/s]147it [02:17,  1.04it/s]148it [02:19,  1.08s/it]151it [02:19,  1.57it/s]152it [02:20,  1.57it/s]153it [02:22,  1.04s/it]154it [02:23,  1.01s/it]157it [02:24,  1.71it/s]158it [02:25,  1.61it/s]159it [02:27,  1.05s/it]162it [02:27,  1.69it/s]163it [02:28,  1.64it/s]164it [02:29,  1.41it/s]165it [02:33,  1.38s/it]166it [02:33,  1.20s/it]170it [02:34,  1.60it/s]171it [02:38,  1.10s/it]172it [02:39,  1.07s/it]177it [02:42,  1.13it/s]178it [02:44,  1.04s/it]183it [02:45,  1.71it/s]184it [02:50,  1.09s/it]189it [02:51,  1.45it/s]190it [02:55,  1.06s/it]194it [02:55,  1.53it/s]195it [02:56,  1.39it/s]196it [02:57,  1.32it/s]197it [03:00,  1.15s/it]201it [03:03,  1.10it/s]202it [03:06,  1.22s/it]206it [03:06,  1.43it/s]207it [03:10,  1.15s/it]208it [03:11,  1.08s/it]212it [03:11,  1.62it/s]213it [03:14,  1.04it/s]214it [03:15,  1.06it/s]215it [03:16,  1.05it/s]219it [03:18,  1.36it/s]221it [03:21,  1.04it/s]225it [03:23,  1.38it/s]226it [03:25,  1.18it/s]227it [03:26,  1.01it/s]231it [03:29,  1.27it/s]233it [03:31,  1.10it/s]237it [03:33,  1.49it/s]239it [03:35,  1.17it/s]243it [03:38,  1.33it/s]245it [03:40,  1.23it/s]247it [03:41,  1.41it/s]248it [03:41,  1.52it/s]249it [03:42,  1.35it/s]250it [03:43,  1.33it/s]251it [03:44,  1.25it/s]252it [03:46,  1.03s/it]255it [03:46,  1.60it/s]256it [03:47,  1.62it/s]257it [03:48,  1.62it/s]258it [03:50,  1.06it/s]261it [03:51,  1.45it/s]263it [03:52,  1.67it/s]264it [03:54,  1.12it/s]267it [03:55,  1.44it/s]269it [03:56,  1.64it/s]270it [03:57,  1.61it/s]271it [03:58,  1.24it/s]273it [03:59,  1.41it/s]275it [04:00,  1.61it/s]276it [04:01,  1.49it/s]277it [04:02,  1.21it/s]279it [04:03,  1.49it/s]281it [04:05,  1.53it/s]282it [04:05,  1.57it/s]283it [04:06,  1.40it/s]285it [04:07,  1.63it/s]286it [04:07,  1.75it/s]287it [04:09,  1.43it/s]288it [04:10,  1.26it/s]289it [04:10,  1.41it/s]290it [04:11,  1.36it/s]291it [04:11,  1.72it/s]292it [04:11,  2.20it/s]293it [04:12,  1.94it/s]294it [04:13,  1.56it/s]295it [04:14,  1.37it/s]296it [04:14,  1.47it/s]297it [04:15,  1.65it/s]298it [04:15,  1.75it/s]299it [04:16,  1.39it/s]300it [04:18,  1.09s/it]303it [04:19,  1.76it/s]304it [04:19,  1.85it/s]305it [04:20,  1.62it/s]306it [04:22,  1.01it/s]309it [04:23,  1.74it/s]310it [04:23,  1.83it/s]311it [04:24,  1.68it/s]312it [04:26,  1.07it/s]313it [04:26,  1.20it/s]316it [04:27,  1.92it/s]317it [04:28,  1.61it/s]318it [04:31,  1.12s/it]323it [04:32,  1.80it/s]324it [04:36,  1.02it/s]329it [04:36,  1.76it/s]330it [04:37,  1.61it/s]331it [04:40,  1.06it/s]335it [04:41,  1.69it/s]336it [04:42,  1.44it/s]337it [04:44,  1.11it/s]341it [04:45,  1.80it/s]342it [04:46,  1.72it/s]343it [04:46,  1.59it/s]344it [04:47,  1.47it/s]345it [04:49,  1.19it/s]347it [04:50,  1.45it/s]348it [04:50,  1.57it/s]349it [04:51,  1.53it/s]350it [04:53,  1.07it/s]351it [04:53,  1.16it/s]353it [04:54,  1.55it/s]354it [04:55,  1.39it/s]355it [04:56,  1.23it/s]356it [04:56,  1.40it/s]357it [04:58,  1.12it/s]359it [04:59,  1.53it/s]360it [05:00,  1.36it/s]361it [05:00,  1.28it/s]363it [05:02,  1.44it/s]365it [05:03,  1.55it/s]366it [05:05,  1.09it/s]369it [05:06,  1.59it/s]370it [05:06,  1.66it/s]371it [05:07,  1.61it/s]372it [05:09,  1.07s/it]375it [05:10,  1.50it/s]377it [05:11,  1.61it/s]378it [05:14,  1.04s/it]381it [05:14,  1.54it/s]383it [05:15,  1.70it/s]384it [05:17,  1.22it/s]385it [05:18,  1.23it/s]387it [05:18,  1.81it/s]389it [05:19,  2.01it/s]390it [05:23,  1.14s/it]395it [05:24,  1.79it/s]396it [05:27,  1.04s/it]401it [05:28,  1.66it/s]402it [05:31,  1.11it/s]407it [05:32,  1.90it/s]408it [05:33,  1.64it/s]409it [05:34,  1.51it/s]410it [05:35,  1.37it/s]411it [05:36,  1.44it/s]413it [05:36,  1.74it/s]414it [05:39,  1.03s/it]416it [05:40,  1.33it/s]419it [05:40,  2.03it/s]420it [05:45,  1.16s/it]425it [05:45,  1.74it/s]426it [05:49,  1.03it/s]431it [05:49,  1.91it/s]432it [05:54,  1.05s/it]438it [05:57,  1.24it/s]444it [06:01,  1.34it/s]446it [06:02,  1.36it/s]450it [06:04,  1.57it/s]452it [06:06,  1.48it/s]453it [06:07,  1.43it/s]456it [06:09,  1.36it/s]458it [06:11,  1.29it/s]462it [06:14,  1.31it/s]464it [06:15,  1.37it/s]468it [06:19,  1.22it/s]470it [06:19,  1.47it/s]474it [06:24,  1.21it/s]476it [06:24,  1.51it/s]480it [06:24,  2.14it/s]482it [06:27,  1.45it/s]484it [06:28,  1.72it/s]486it [06:30,  1.36it/s]488it [06:32,  1.32it/s]492it [06:34,  1.46it/s]494it [06:36,  1.34it/s]498it [06:39,  1.41it/s]500it [06:39,  1.59it/s]501it [06:40,  1.59it/s]503it [06:40,  2.04it/s]504it [06:42,  1.34it/s]506it [06:44,  1.27it/s]510it [06:45,  1.78it/s]511it [06:46,  1.73it/s]512it [06:48,  1.22it/s]515it [06:48,  2.04it/s]516it [06:49,  1.88it/s]517it [06:50,  1.43it/s]518it [06:52,  1.01s/it]522it [06:53,  1.81it/s]523it [06:57,  1.09s/it]528it [06:57,  1.82it/s]529it [06:59,  1.37it/s]530it [07:01,  1.16it/s]534it [07:01,  2.07it/s]535it [07:02,  1.90it/s]536it [07:05,  1.04s/it]541it [07:06,  1.72it/s]542it [07:10,  1.08it/s]547it [07:11,  1.74it/s]548it [07:13,  1.17it/s]553it [07:15,  1.78it/s]554it [07:15,  1.68it/s]555it [07:18,  1.21it/s]559it [07:19,  1.77it/s]560it [07:21,  1.21it/s]561it [07:22,  1.32it/s]565it [07:23,  1.87it/s]566it [07:25,  1.36it/s]567it [07:26,  1.23it/s]571it [07:27,  1.93it/s]572it [07:28,  1.72it/s]573it [07:30,  1.18it/s]575it [07:30,  1.72it/s]577it [07:31,  1.89it/s]578it [07:32,  1.60it/s]579it [07:34,  1.10it/s]583it [07:35,  1.88it/s]584it [07:35,  1.71it/s]585it [07:38,  1.05it/s]589it [07:39,  1.75it/s]590it [07:39,  1.73it/s]591it [07:41,  1.24it/s]593it [07:42,  1.55it/s]594it [07:42,  1.85it/s]595it [07:43,  1.82it/s]596it [07:43,  1.68it/s]597it [07:44,  1.51it/s]598it [07:45,  1.51it/s]599it [07:46,  1.36it/s]601it [07:46,  1.77it/s]602it [07:47,  1.84it/s]603it [07:49,  1.03s/it]605it [07:50,  1.25it/s]607it [07:51,  1.70it/s]609it [07:53,  1.31it/s]611it [07:54,  1.49it/s]613it [07:55,  1.74it/s]615it [07:56,  1.69it/s]616it [07:57,  1.56it/s]617it [07:58,  1.55it/s]618it [07:58,  1.42it/s]621it [08:00,  1.51it/s]623it [08:01,  1.67it/s]624it [08:02,  1.45it/s]627it [08:04,  1.76it/s]629it [08:04,  1.88it/s]630it [08:05,  1.64it/s]631it [08:06,  1.64it/s]633it [08:07,  1.75it/s]634it [08:08,  1.58it/s]635it [08:09,  1.53it/s]636it [08:09,  1.43it/s]639it [08:10,  1.95it/s]640it [08:11,  1.65it/s]641it [08:12,  1.57it/s]642it [08:13,  1.50it/s]643it [08:13,  1.58it/s]645it [08:15,  1.73it/s]646it [08:15,  1.67it/s]647it [08:17,  1.14it/s]649it [08:17,  1.81it/s]651it [08:18,  1.98it/s]652it [08:19,  1.61it/s]653it [08:20,  1.25it/s]655it [08:21,  1.74it/s]657it [08:22,  1.97it/s]658it [08:23,  1.48it/s]659it [08:24,  1.37it/s]660it [08:25,  1.30it/s]662it [08:25,  2.04it/s]663it [08:26,  1.72it/s]664it [08:27,  1.58it/s]665it [08:27,  1.56it/s]666it [08:28,  1.45it/s]668it [08:28,  2.27it/s]669it [08:29,  2.18it/s]670it [08:30,  1.87it/s]671it [08:31,  1.21it/s]673it [08:32,  1.44it/s]675it [08:33,  1.64it/s]676it [08:34,  1.41it/s]677it [08:35,  1.46it/s]678it [08:36,  1.43it/s]679it [08:36,  1.54it/s]681it [08:37,  1.62it/s]682it [08:38,  1.55it/s]683it [08:39,  1.66it/s]684it [08:39,  1.46it/s]685it [08:40,  1.41it/s]687it [08:41,  1.89it/s]688it [08:42,  1.75it/s]689it [08:43,  1.41it/s]690it [08:43,  1.55it/s]691it [08:44,  1.45it/s]692it [08:45,  1.50it/s]693it [08:45,  1.69it/s]694it [08:45,  2.04it/s]695it [08:46,  1.50it/s]696it [08:47,  1.65it/s]697it [08:47,  1.89it/s]698it [08:48,  1.55it/s]699it [08:49,  1.48it/s]701it [08:50,  1.84it/s]702it [08:50,  1.67it/s]703it [08:51,  1.62it/s]704it [08:52,  1.57it/s]705it [08:53,  1.27it/s]707it [08:54,  1.56it/s]709it [08:54,  1.97it/s]710it [08:55,  1.70it/s]711it [08:57,  1.24it/s]713it [08:57,  1.92it/s]714it [08:57,  2.06it/s]715it [08:58,  1.98it/s]716it [08:59,  1.83it/s]717it [09:00,  1.41it/s]717it [09:00,  1.33it/s]
-Exception in thread Thread-3 (_pin_memory_loop):
-Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
-    self.run()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
-    self._target(*self._args, **self._kwargs)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
-    do_one_step()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
-    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
-    return _ForkingPickler.loads(res)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
-    fd = df.detach()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
-    with _resource_sharer.get_connection(self._id) as conn:
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
-    c = Client(address, authkey=process.current_process().authkey)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 509, in Client
-    deliver_challenge(c, authkey)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 740, in deliver_challenge
-    response = connection.recv_bytes(256)        # reject large message
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 216, in recv_bytes
-    buf = self._recv_bytes(maxlength)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 414, in _recv_bytes
-    buf = self._recv(4)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 379, in _recv
-    chunk = read(handle, remaining)
-ConnectionResetError: [Errno 104] Connection reset by peer
-Process Process-2:
-Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
-    self.run()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/main.py", line 60, in process_main
-    train_data = infer(params, train_dataset, load_folder_path=folder_path)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-    return func(*args, **kwargs)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/infer.py", line 226, in infer
-    for itr, (udata, masks_enc, masks_pred, masks_attention) in tqdm(enumerate(loader)):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/tqdm/std.py", line 1181, in __iter__
-    for obj in iterable:
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 630, in __next__
-    data = self._next_data()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1324, in _next_data
-    return self._process_data(data)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/dataloader.py", line 1370, in _process_data
-    data.reraise()
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/_utils.py", line 706, in reraise
-    raise exception
-RuntimeError: Caught RuntimeError in DataLoader worker process 3.
-Original Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/worker.py", line 309, in _worker_loop
-    data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/fetch.py", line 55, in fetch
-    return self.collate_fn(data)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/masks/segment_masking.py", line 211, in __call__
-    # Trim masks to the minimum size across the batch and collate them
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 317, in default_collate
-    return collate(batch, collate_fn_map=default_collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 183, in collate
-    clone[i] = collate(samples, collate_fn_map=collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 142, in collate
-    return collate_fn_map[elem_type](batch, collate_fn_map=collate_fn_map)
-  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/collate.py", line 213, in collate_tensor_fn
-    out = elem.new(storage).resize_(len(batch), *list(elem.size()))
-RuntimeError: Trying to resize storage that is not resizable
-
