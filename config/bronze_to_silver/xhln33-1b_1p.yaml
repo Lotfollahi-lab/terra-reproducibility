@@ -1,21 +1,31 @@
 experiment:
   name: xhln33-1b_1p
-  description: Xenium Human Lymph Node (dataset-id 33) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - Xenium_V1_hLymphNode_nondiseased_section
+  description: Xenium Human Lymph Node (dataset-id 33) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Xenium Human Lymph Node 1
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 33
-  assay: xenium
-  species: homo_sapiens
-  tissue: lymph node
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.5.0/Xenium_V1_hLymphNode_nondiseased_section/Xenium_V1_hLymphNode_nondiseased_section_outs.zip
+  file_names:
+    - Xenium_V1_hLymphNode_nondiseased_section
 
-data_source:
-  online: true
-  redownload: false
-  urls:
-    - https://cf.10xgenomics.com/samples/xenium/1.5.0/Xenium_V1_hLymphNode_nondiseased_section/Xenium_V1_hLymphNode_nondiseased_section_outs.zip
+harmonization:
+  uns:
+    dataset_id: 33
+    assay: xenium
+    species: homo_sapiens
+    tissue: lymph node
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

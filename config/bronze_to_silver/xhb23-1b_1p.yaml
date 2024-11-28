@@ -1,21 +1,31 @@
 experiment:
   name: xhb23-1b_1p
-  description: Xenium Human Brain (dataset-id 23) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - Xenium_V1_Human_Brain_GBM_FFPE
+  description: Xenium Human Brain (dataset-id 23) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Xenium Human Brain 2
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 23
-  assay: xenium
-  species: homo_sapiens
-  tissue: brain
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/2.0.0/Xenium_V1_Human_Brain_GBM_FFPE/Xenium_V1_Human_Brain_GBM_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_Human_Brain_GBM_FFPE
 
-data_source:
-  online: true
-  redownload: false
-  urls:
-    - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/2.0.0/Xenium_V1_Human_Brain_GBM_FFPE/Xenium_V1_Human_Brain_GBM_FFPE_outs.zip
+harmonization:
+  uns:
+    dataset_id: 23
+    assay: xenium
+    species: homo_sapiens
+    tissue: brain
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

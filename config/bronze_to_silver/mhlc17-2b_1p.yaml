@@ -1,21 +1,31 @@
 experiment:
   name: mhlc17-2b_1p
-  description: MERSCOPE Human Lung Cancer (dataset-id 17) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - MERSCOPE_Human_Lung_Cancer_Patient1
-    - MERSCOPE_Human_Lung_Cancer_Patient2
+  description: MERSCOPE Human Lung Cancer (dataset-id 17) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: MERSCOPE_FFPE_Human_Immuno-Oncology
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 17
-  assay: merfish
-  species: homo_sapiens
-  tissue: lung
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - MERSCOPE_Human_Lung_Cancer_Patient1
+    - MERSCOPE_Human_Lung_Cancer_Patient2
 
-data_source:
-  online: true
-  redownload: false
-  urls: []
+harmonization:
+  uns:
+    dataset_id: 17
+    assay: merfish
+    species: homo_sapiens
+    tissue: lung
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

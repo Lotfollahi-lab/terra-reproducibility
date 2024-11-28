@@ -1,0 +1,32 @@
+experiment:
+  name: xisspc55-3b_1p
+  description: Xenium In Situ, Sample P CRC(dataset-id 55) | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Characterization of immune cell populations in the tumor microenvironment of colorectal cancer using high definition spatial profiling
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_V1_Human_Colon_Cancer_P1_CRC_Add_on_FFPE
+    - Xenium_V1_Human_Colon_Cancer_P2_CRC_Add_on_FFPE
+    - Xenium_V1_Human_Colon_Cancer_P5_CRC_Add_on_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 55
+    assay: xenium
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

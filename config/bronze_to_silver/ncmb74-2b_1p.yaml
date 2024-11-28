@@ -1,23 +1,33 @@
 experiment:
   name: ncmb74-2b_1p
-  description: Nanostring CosMx Mouse Brain (dataset-id 74) |  | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - CosMx_Mouse_FFPE_CoronalHippocampusCortex
-    - CosMx_Mouse_FFPE_CoronalHemisphere
+  description: Nanostring CosMx Mouse Brain (dataset-id 74) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: CosMx SMI Mouse Brain FFPE Dataset
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 74
-  assay: cosmx
-  species: mus_musculus
-  tissue: brain
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://smi-public.objects.liquidweb.services/Quarter%20Brain.zip
+      - https://smi-public.objects.liquidweb.services/Half%20%20Brain%20simple%20%20files%20.zip
+  file_names:
+    - CosMx_Mouse_FFPE_CoronalHippocampusCortex
+    - CosMx_Mouse_FFPE_CoronalHemisphere
 
-data_source:
-  online: true
-  redownload: false
-  urls:
-    - https://smi-public.objects.liquidweb.services/Quarter%20Brain.zip
-    - https://smi-public.objects.liquidweb.services/Half%20%20Brain%20simple%20%20files%20.zip
+harmonization:
+  uns:
+    dataset_id: 74
+    assay: cosmx
+    species: mus_musculus
+    tissue: brain
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

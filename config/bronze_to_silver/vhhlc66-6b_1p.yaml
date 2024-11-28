@@ -1,0 +1,35 @@
+experiment:
+  name: vhhlc66-6b_1p
+  description: Visium HD Human Lung Cancer(dataset-id 66) | 6 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Visium HD Spatial Gene Expression Library, Human Lung Cancer, IF Stained (FFPE)
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Visium_HD_Human_Lung_Cancer
+    - Visium_HD_Human_Lung_Cancer_Fixed_Frozen
+    - Visium_HD_Human_Lung_Cancer_HD_Only_Experiment1
+    - Visium_HD_Human_Lung_Cancer_HD_Only_Experiment2
+    - Visium_HD_Human_Lung_Cancer_post_Xenium_Prime_5K_Experiment2
+    - Visium_HD_Human_Lung_Cancer_post_Xenium_v1_Experiment1
+
+harmonization:
+  uns:
+    dataset_id: 66
+    assay: visium_hd
+    species: homo_sapiens
+    tissue: lung
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

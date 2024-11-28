@@ -1,0 +1,30 @@
+experiment:
+  name: vhhcc65-1b_1p
+  description: Visium HD Human Colon Cancer(dataset-id 65) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: "Visium HD Spatial Gene Expression Library, Human Colorectal Cancer (FFPE)\t"
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Visium_HD_Human_Colon_Cancer
+
+harmonization:
+  uns:
+    dataset_id: 65
+    assay: visium_hd
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

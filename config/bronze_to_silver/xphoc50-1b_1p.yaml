@@ -1,21 +1,31 @@
 experiment:
   name: xphoc50-1b_1p
-  description: Xenium Prime Human Ovarian Cancer(dataset-id 50) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - Xenium_Prime_Ovarian_Cancer_FFPE
+  description: Xenium Prime Human Ovarian Cancer(dataset-id 50) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: FFPE Human Ovarian Cancer with 5K Human Pan Tissue and Pathways Panel plus 100 Custom Genes
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 50
-  assay: xenium
-  species: homo_sapiens
-  tissue: ovary
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Ovarian_Cancer_FFPE/Xenium_Prime_Ovarian_Cancer_FFPE_outs.zip
+  file_names:
+    - Xenium_Prime_Ovarian_Cancer_FFPE
 
-data_source:
-  online: true
-  redownload: false
-  urls:
-    - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Ovarian_Cancer_FFPE/Xenium_Prime_Ovarian_Cancer_FFPE_outs.zip
+harmonization:
+  uns:
+    dataset_id: 50
+    assay: xenium
+    species: homo_sapiens
+    tissue: ovary
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

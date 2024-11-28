@@ -1,25 +1,35 @@
 experiment:
   name: xmb6-3b_1p
-  description: Xenium Mouse Brain  (dataset-id 6) |  | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  file_names:
-    - Xenium_V1_FF_Mouse_Brain_MultiSection_1
-    - Xenium_V1_FF_Mouse_Brain_MultiSection_2
-    - Xenium_V1_FF_Mouse_Brain_MultiSection_3
+  description: Xenium Mouse Brain  (dataset-id 6) | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Fresh Frozen Mouse Brain Replicates
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 6
-  assay: xenium
-  species: mus_musculus
-  tissue: brain
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_1/Xenium_V1_FF_Mouse_Brain_MultiSection_1_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_2/Xenium_V1_FF_Mouse_Brain_MultiSection_2_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_3/Xenium_V1_FF_Mouse_Brain_MultiSection_3_outs.zip
+  file_names:
+    - Xenium_V1_FF_Mouse_Brain_MultiSection_1
+    - Xenium_V1_FF_Mouse_Brain_MultiSection_2
+    - Xenium_V1_FF_Mouse_Brain_MultiSection_3
 
-data_source:
-  online: true
-  redownload: false
-  urls:
-    - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_1/Xenium_V1_FF_Mouse_Brain_MultiSection_1_outs.zip
-    - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_2/Xenium_V1_FF_Mouse_Brain_MultiSection_2_outs.zip
-    - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FF_Mouse_Brain_MultiSection_3/Xenium_V1_FF_Mouse_Brain_MultiSection_3_outs.zip
+harmonization:
+  uns:
+    dataset_id: 6
+    assay: xenium
+    species: mus_musculus
+    tissue: brain
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
 

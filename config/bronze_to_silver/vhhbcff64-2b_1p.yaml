@@ -1,0 +1,31 @@
+experiment:
+  name: vhhbcff64-2b_1p
+  description: Visium HD Human Breast Cancer Fresh Frozen(dataset-id 64) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Visium HD Spatial Gene Expression Library, Human Breast Cancer (Fresh Frozen)
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Visium_HD_Human_Breast_Cancer_Fixed_Frozen
+    - Visium_HD_Human_Breast_Cancer_Fresh_Frozen
+
+harmonization:
+  uns:
+    dataset_id: 64
+    assay: visium_hd
+    species: homo_sapiens
+    tissue: breast
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+
