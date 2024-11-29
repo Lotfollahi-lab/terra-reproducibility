@@ -3,6 +3,8 @@ import zipfile
 import tempfile
 import scanpy as sc
 import pandas as pd
+import numpy as np
+import scipy.sparse as sp
 
 
 def pre_process(raw_path, assay):
@@ -23,8 +25,10 @@ def pre_process(raw_path, assay):
         adata = pre_process_10x_xenium(raw_path)
     elif assay == 'cosmx':
         adata = pre_process_cosmx(raw_path)
-    elif assay == 'merscope':
-        raise NotImplementedError("Merscope data not supported yet.")
+    elif assay == 'merfish':
+        adata = pre_process_merfish(raw_path)
+    elif assay == 'starmap':
+        adata = pre_process_starmap(raw_path)
     else:
         raise ValueError(f"Assay type {assay} not supported.")
     
@@ -143,4 +147,69 @@ def pre_process_cosmx(raw_path):
     adata = adata[common_obsnames].copy()
     adata.obs = meta
     
+    return adata
+
+def pre_process_merfish(raw_merfish_dir):
+    """
+    Assumes the input directory is not a zip file but folder instead.
+    """
+    for file in os.listdir(raw_merfish_dir):
+        if 'cell_by_gene' in file:
+            expr_file = file
+        elif 'cell_metadata' in file:
+            meta_file = file
+    
+    expr_file = os.path.join(raw_merfish_dir, expr_file)
+    meta_file = os.path.join(raw_merfish_dir, meta_file)
+    
+    sample = raw_merfish_dir.name
+    region = "region_0"
+    slide_id = f"{sample}_{region}"
+    
+    expr = pd.read_csv(expr_file, index_col=0, dtype={"cell": str})
+    meta = pd.read_csv(meta_file, index_col=0, dtype={"EntityID": str})
+
+    meta.index = meta.index.astype(str) + f"_{slide_id}"
+    expr.index = expr.index.astype(str) + f"_{slide_id}"
+    meta = meta.loc[expr.index]
+
+    is_gene = ~expr.columns.str.lower().str.contains("blank")
+
+    adata = sc.AnnData(expr.loc[:, is_gene], dtype=np.uint16, obs=meta)
+
+    adata.obsm["spatial"] = adata.obs[["center_x", "center_y"]].values
+    adata.obs["slide_id"] = pd.Series(slide_id, index=adata.obs_names, dtype="category")
+
+    adata.X = sp.csr_matrix(adata.X)
+
+    return adata
+
+
+def pre_process_starmap(raw_starmap_dir):
+    """
+    Assumes the input directory is not a zip file but folder instead.
+    """
+    for file in os.listdir(raw_starmap_dir):
+        if 'raw_expression' in file:
+            expr_file = file
+        elif 'cell_metadata' in file:
+            meta_file = file
+    
+    expr_file = os.path.join(raw_starmap_dir, expr_file)
+    meta_file = os.path.join(raw_starmap_dir, meta_file)
+    
+    sample = raw_starmap_dir.name
+    region = "region_0"
+    
+    expr = pd.read_csv(expr_file, index_col=0)
+    meta = pd.read_csv(meta_file, index_col=0)
+
+    adata = sc.AnnData(expr, dtype=np.uint16, obs=meta)
+
+    adata.obsm["spatial"] = adata.obs[["x", "y"]].values
+    adata.obs["cell_id_orig"] = adata.obs_names
+    adata.obs = adata.obs.reset_index(drop=True)
+
+    adata.X = sp.csr_matrix(adata.X)
+
     return adata

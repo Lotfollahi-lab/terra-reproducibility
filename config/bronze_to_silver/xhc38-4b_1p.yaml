@@ -1,0 +1,37 @@
+experiment:
+  name: xhc38-4b_1p
+  description: Xenium Human Colon  (dataset-id 38) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Human Colon Preview Data (Xenium Human Colon Gene Expression Panel)
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hColon_Non_diseased_Base_FFPE/Xenium_V1_hColon_Non_diseased_Base_FFPE_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hColon_Non_diseased_Add_on_FFPE/Xenium_V1_hColon_Non_diseased_Add_on_FFPE_outs.zip
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.6.0/Xenium_V1_hColon_Cancer_Base_FFPE/Xenium_V1_hColon_Cancer_Base_FFPE_outs.zip
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.6.0/Xenium_V1_hColon_Cancer_Add_on_FFPE/Xenium_V1_hColon_Cancer_Add_on_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_hColon_Non_diseased_Base_FFPE
+    - Xenium_V1_hColon_Non_diseased_Add_on_FFPE
+    - Xenium_V1_hColon_Cancer_Base_FFPE
+    - Xenium_V1_hColon_Cancer_Add_on_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 38
+    assay: xenium
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

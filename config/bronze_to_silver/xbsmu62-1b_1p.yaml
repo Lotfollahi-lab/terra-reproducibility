@@ -1,0 +1,30 @@
+experiment:
+  name: xbsmu62-1b_1p
+  description: Xenium Burn Scar Marjolin's Ulcer(dataset-id 62) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Spatial and Single-Cell Transcriptomics Reveal that Oncofetal Reprogramming of Fibroblasts Is Associated with Malignant Degeneration of Burn Scar
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Burn_Scar_MU_Interface_Section
+
+harmonization:
+  uns:
+    dataset_id: 62
+    assay: xenium
+    species: homo_sapiens
+    tissue: skin
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

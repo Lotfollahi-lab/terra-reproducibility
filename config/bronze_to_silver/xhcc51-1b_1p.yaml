@@ -1,0 +1,31 @@
+experiment:
+  name: xhcc51-1b_1p
+  description: Xenium Human Colorectal Cancer(dataset-id 51) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: FFPE Human Colorectal Cancer Data with Human Immuno-Oncology Profiling Panel and Custom Add-on
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/2.0.0/Xenium_V1_Human_Colorectal_Cancer_Addon_FFPE/Xenium_V1_Human_Colorectal_Cancer_Addon_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_Human_Colorectal_Cancer_Addon_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 51
+    assay: xenium
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

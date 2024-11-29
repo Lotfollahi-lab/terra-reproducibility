@@ -61,8 +61,8 @@ def harmonize_X_gene_counts(adata):
             adata.layers['counts'] = adata.layers['counts'].tocsr()
         adata.X = adata.layers['counts']
     elif adata.X is not None and 'counts' not in adata.layers.keys():
-        if not isinstance(adata.X, sp.csr_matrix):
-            adata.X = adata.X.tocsr()
+        if isinstance(adata.X, np.ndarray) or isinstance(adata.X, pd.DataFrame):
+            adata.X = sp.csr_matrix(adata.X)
                 
     adata.X = adata.X.astype(np.float32)
 

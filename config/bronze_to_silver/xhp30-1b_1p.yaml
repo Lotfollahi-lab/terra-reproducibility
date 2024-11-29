@@ -1,19 +1,31 @@
 experiment:
-  name: "xhp30-1b_1p"
-  description: "Xenium Human Pancreas Cancer (dataset-id 30) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver"
-  file_names: ["Xenium_V1_hPancreas_Cancer_Add_on_FFPE"]
-  study: "Pancreatic Cancer with Xenium Human Multi-Tissue and Cancer Panel"
+  name: xhp30-1b_1p
+  description: Xenium Human Pancreas (dataset-id 30) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Pancreatic Cancer with Xenium Human Multi-Tissue and Cancer Panel
 
 paths:
-  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  dataset_id: 30
-  assay: xenium
-  species: "homo_sapiens"
-  tissue: "pancreas"
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hPancreas_Cancer_Add_on_FFPE/Xenium_V1_hPancreas_Cancer_Add_on_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_hPancreas_Cancer_Add_on_FFPE
 
-data_source:
-  online: True
-  redownload: False
-  urls: ["https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hPancreas_Cancer_Add_on_FFPE/Xenium_V1_hPancreas_Cancer_Add_on_FFPE_outs.zip"]
+harmonization:
+  uns:
+    dataset_id: 30
+    assay: xenium
+    species: homo_sapiens
+    tissue: pancreas
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

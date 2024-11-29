@@ -1,0 +1,45 @@
+experiment:
+  name: nchn59-8b_1p
+  description: Nanostring CosMx Human NSCLC(dataset-id 59) | 8 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Nanostring CosMx SMI Datasets
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung5_Rep1/Lung5_Rep1+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung5_Rep2/Lung5_Rep2+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung5_Rep3/Lung5_Rep3+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung6/Lung6+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung9_Rep1/Lung9_Rep1+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung9_Rep2/Lung9_Rep2+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung12/Lung12+SMI+Flat+data.tar.gz
+      - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung13/Lung13+SMI+Flat+data.tar.gz
+  file_names:
+    - CosMx_Human_FFPE_NSCLC_Lung5_Rep1
+    - CosMx_Human_FFPE_NSCLC_Lung5_Rep2
+    - CosMx_Human_FFPE_NSCLC_Lung5_Rep3
+    - CosMx_Human_FFPE_NSCLC_Lung6
+    - CosMx_Human_FFPE_NSCLC_Lung9_Rep1
+    - CosMx_Human_FFPE_NSCLC_Lung9_Rep2
+    - CosMx_Human_FFPE_NSCLC_Lung12
+    - CosMx_Human_FFPE_NSCLC_Lung13
+
+harmonization:
+  uns:
+    dataset_id: 59
+    assay: cosmx
+    species: homo_sapiens
+    tissue: lung
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

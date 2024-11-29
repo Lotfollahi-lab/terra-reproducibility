@@ -1,0 +1,33 @@
+experiment:
+  name: xhl40-2b_1p
+  description: Xenium Human Liver  (dataset-id 40) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Xenium Human Liver 1
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hLiver_nondiseased_section_FFPE/Xenium_V1_hLiver_nondiseased_section_FFPE_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hLiver_cancer_section_FFPE/Xenium_V1_hLiver_cancer_section_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_hLiver_nondiseased_section_FFPE
+    - Xenium_V1_hLiver_cancer_section_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 40
+    assay: xenium
+    species: homo_sapiens
+    tissue: liver
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

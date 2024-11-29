@@ -1,0 +1,31 @@
+experiment:
+  name: xpho47-1b_1p
+  description: Xenium Prime Human Ovary(dataset-id 47) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Fresh Frozen Human Ovarian Adenocarcinoma with 5K Human Pan Tissue and Pathways Panel
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Human_Ovary_FF/Xenium_Prime_Human_Ovary_FF_outs.zip
+  file_names:
+    - Xenium_Prime_Human_Ovary_FF
+
+harmonization:
+  uns:
+    dataset_id: 47
+    assay: xenium
+    species: homo_sapiens
+    tissue: ovary
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

@@ -1,0 +1,33 @@
+experiment:
+  name: xhs36-2b_1p
+  description: Xenium Human Skin  (dataset-id 36) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Human Skin Data with Xenium Human Multi-Tissue and Cancer Panel
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hSkin_nondiseased_section_1_FFPE/Xenium_V1_hSkin_nondiseased_section_1_FFPE_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hSkin_nondiseased_section_2_FFPE/Xenium_V1_hSkin_nondiseased_section_2_FFPE_outs.zip
+  file_names:
+    - Xenium_V1_hSkin_nondiseased_section_1_FFPE
+    - Xenium_V1_hSkin_nondiseased_section_2_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 36
+    assay: xenium
+    species: homo_sapiens
+    tissue: skin
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

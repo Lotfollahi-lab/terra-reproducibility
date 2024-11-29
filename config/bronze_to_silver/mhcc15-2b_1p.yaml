@@ -1,0 +1,31 @@
+experiment:
+  name: mhcc15-2b_1p
+  description: MERSCOPE Human Colon Cancer (dataset-id 15) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: MERSCOPE_FFPE_Human_Immuno-Oncology
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - MERSCOPE_Human_Colon_Cancer_Patient1
+    - MERSCOPE_Human_Colon_Cancer_Patient2
+
+harmonization:
+  uns:
+    dataset_id: 15
+    assay: merfish
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+
