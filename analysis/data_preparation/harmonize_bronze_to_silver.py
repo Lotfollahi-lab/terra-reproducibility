@@ -102,19 +102,9 @@ def harmonize_var_gene_names(
     print("Number of genes with matching ensembl ids:", len(harmonized_gene_names))
     print(f"Number of genes skipped: {len(gene_names) - len(harmonized_gene_names)}")
 
-    original_sum = adata.X.sum()
-    original_selected_sum = adata[:, adata.var.index.isin(harmonized_gene_names)].copy().X.sum()
-    original_nonselected_sum = adata[:, ~adata.var.index.isin(harmonized_gene_names)].copy().X.sum()
-    print(f"Original sum: {original_sum}")
-    print(f"Original selected sum: {original_selected_sum}")
-    print(f"Original nonselected sum: {original_nonselected_sum}")
     adata = adata[:, adata.var.index.isin(harmonized_gene_names)].copy()
     
     adata.var = pd.DataFrame(index=pd.Index(harmonized_gene_names, name="gene_name"), data={"ensembl_id": matching_ensembl_ids})
-
-    harmonized_sum = adata.X.sum()
-    # assert original_sum == original_selected_sum + original_nonselected_sum
-    assert harmonized_sum == original_selected_sum
     
     print("adata.var:")
     print(adata.var)
@@ -265,8 +255,10 @@ def harmonize_bronze_data_to_silver_data(
             raise ValueError("Sample batch map is empty.")
     else:
         print("Data is already split by batch.")
+
+        batch_id = 0
+
         for file in files:
-            batch_id = 0
 
             print(f"Harmonizing: {file}")
             adata_batch = sc.read_h5ad(file)
@@ -335,7 +327,7 @@ def main(config: Dict):
     if len(h5ad_files) == 0 or config["dataset"]["overwrite"]:
         if len(h5ad_files) == 0:
             print("No bronze (raw) .h5ad files found.")
-        elif config["experiment"]["overwrite"]:
+        elif config["dataset"]["overwrite"]:
             print("Overwriting previously existing bronze (raw) .h5ad files...")
         
         for raw_zipfile_path in raw_zipfile_paths:

@@ -12,6 +12,7 @@ def download_zipfiles(
         input_directory: Path = None,
         redownload: str = "False",
         urls: list[str] = [],
+        file_names: list[str] = []
     ) -> list[Path]:
     raw_zipfile_paths = []
     for url in urls:
