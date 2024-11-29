@@ -5,7 +5,7 @@ experiment:
   overwrite: True
 
 tokenization:
-  tokens_per_cell: 128
+  tokens_per_cell: 256 # 128, 256
   use_generator: True
   add_cls_tokens: False
   norm_method: "shifted_log"
@@ -14,7 +14,7 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 32
   keep_in_memory: False
-  n_neighs: 10
+  n_neighs: 20 # 10, 20
   radius: null
   delaunay: False
 
