@@ -146,6 +146,8 @@ def pre_process_cosmx(raw_path):
 
     adata = adata[common_obsnames].copy()
     adata.obs = meta
+
+    adata.obsm["spatial"] = adata.obs[["CenterX_local_px", "CenterY_local_px"]].copy().to_numpy()
     
     return adata
 
