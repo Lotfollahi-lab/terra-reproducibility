@@ -331,6 +331,8 @@ def main(config: Dict):
                                 input_directory,
                                 **config["dataset"]["download_params"]
                             )
+    else:
+        raw_zipfile_paths = [input_directory]
 
     # ------------------ Extract AnnData from ZipFiles --------------------------
     h5ad_files = list(input_directory.glob("**/*.h5ad"))
