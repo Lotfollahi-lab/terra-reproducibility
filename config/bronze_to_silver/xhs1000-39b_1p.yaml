@@ -21,6 +21,7 @@ harmonization:
   }
   batch: {
     'split_by_batch': True,
+    'batch_key': 'sample',
     'sample_batch_map': {
                         'BK27_Week 12': 0,
                         'BK27_Day 14': 1,
@@ -66,7 +67,6 @@ harmonization:
   key_mappings: {
     'cell_type': 'Annotation',
     'niche_type': 'NICHE_NAMES',
-    'batch': 'sample',
   }
   misc: {
     'min_genes': 10,

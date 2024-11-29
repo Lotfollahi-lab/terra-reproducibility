@@ -223,14 +223,20 @@ def harmonize_bronze_data_to_silver_data(
 
         adata = sc.read_h5ad(file)
 
-        adata.obs['cell_type'] = adata.obs[key_mappings['cell_type']]
-        adata.obs['niche_type'] = adata.obs[key_mappings['niche_type']]
+        # check if the obs key for batch is specified in the config file
+        assert batch_params['batch_key'] is not None, "Key for batch is not provided in key_mappings."
+        # check if this key is present in adata.obs.keys()
+        assert batch_params['batch_key'] in adata.obs.keys(), f"Key {batch_params['batch_key']} not found in adata.obs.keys()."
+
+        for key in key_mappings.keys():
+            print(f'Setting {key} in adata.obs')
+            adata.obs[key] = adata.obs[key_mappings['key']]
         
         sample_batch_map = batch_params['sample_batch_map']
         if len(sample_batch_map) > 0:            
             for sample_id, batch_id in batch_params['sample_batch_map'].items():
                 print(f"Harmonizing Sample ID: {sample_id}")
-                adata_batch = adata[adata.obs[key_mappings['batch']] == sample_id]
+                adata_batch = adata[adata.obs[batch_params['batch_key']] == sample_id]
 
                 uns_params['batch'] = f"batch{batch_id}"
 
@@ -256,12 +262,18 @@ def harmonize_bronze_data_to_silver_data(
     else:
         print("Data is already split by batch.")
 
+        # NOTE: this is hardcoded to assume that we don't have a sample_batch_map when split_by_batch is False
         batch_id = 0
-
+        
         for file in files:
 
             print(f"Harmonizing: {file}")
             adata_batch = sc.read_h5ad(file)
+
+            # NOTE: this is hardcoded that all batches within the same dataset have the same key for keys in key_mappings such as cell_type, niche_type, etc.
+            for key in key_mappings.keys():
+                print(f'Setting {key} in adata.obs')
+                adata.obs[key] = adata.obs[key_mappings['key']]
 
             uns_params['batch'] = f"batch{batch_id}"
 
