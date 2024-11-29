@@ -12,7 +12,7 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 32
   keep_in_memory: False
-  n_neighs: 10
+  n_neighs: 20 # 10, 20
   radius: null
   delaunay: False
 
