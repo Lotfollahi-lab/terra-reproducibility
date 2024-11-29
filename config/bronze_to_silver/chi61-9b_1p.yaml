@@ -1,0 +1,47 @@
+experiment:
+  name: chi61-9b_1p
+  description: CosMx Human IBD Colonic Mucosa  (dataset-id 61) | 9 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: IBD CosMx NanoString data from colonic mucosa - Garrido-Trigo23
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473682/suppl/GSM7473682%5FHCa.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473683/suppl/GSM7473683%5FHCb.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473684/suppl/GSM7473684%5FHCc.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473685/suppl/GSM7473685%5FUCa.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473686/suppl/GSM7473686%5FUCb.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473687/suppl/GSM7473687%5FUCc.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473688/suppl/GSM7473688%5FCDa.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473689/suppl/GSM7473689%5FCDb.tar.gz
+      - https://ftp.ncbi.nlm.nih.gov/geo/samples/GSM7473nnn/GSM7473690/suppl/GSM7473690%5FCDc.tar.gz
+  file_names:
+    - GSM7473682
+    - GSM7473683
+    - GSM7473684
+    - GSM7473685
+    - GSM7473686
+    - GSM7473687
+    - GSM7473688
+    - GSM7473689
+    - GSM7473690
+
+harmonization:
+  uns:
+    dataset_id: 61
+    assay: cosmx
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

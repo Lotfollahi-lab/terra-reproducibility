@@ -1,0 +1,40 @@
+experiment:
+  name: crt78-11b_1p
+  description: CARTANA Reproductive Tract Early (dataset-id 78) | 11 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: ISS CARTANA by Valentina
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - CM008_annotated
+    - CM013_annotated
+    - CM015_annotated
+    - CM016_annotated
+    - CM018_annotated
+    - CM017_annotated
+    - CM019_annotated
+    - CM007_annotated
+    - CM009_annotated
+    - CM011_annotated
+    - CM020_annotated
+
+harmonization:
+  uns:
+    dataset_id: 78
+    assay: cartana
+    species: homo_sapiens
+    tissue: male_reproductive_system
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+
