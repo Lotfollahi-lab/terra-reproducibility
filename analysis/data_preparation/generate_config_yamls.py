@@ -21,7 +21,7 @@ for dataset_name, row in meta0.iterrows():
     # Construct the experiment name and extract dataset_id & total number of batches
     dataset_id = row['dataset_id']
     total_batch = did_counts.get(dataset_id, 0)  # Use .get() to avoid KeyError
-    exp_name = f"{ds_short}{dataset_id}-{total_batch}b_1p"
+    exp_name = f"{ds_short[:3]}{dataset_id}-{total_batch}b_1p"
 
     # Determine sample names and URLs based on the total_batch
     if total_batch > 1:
