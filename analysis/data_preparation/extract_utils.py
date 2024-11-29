@@ -147,7 +147,7 @@ def pre_process_cosmx(raw_path):
     
     return adata
 
-def pre_process_merfish(raw_merfish_dir: Path):
+def pre_process_merfish(raw_merfish_dir):
     """
     Assumes the input directory is not a zip file but folder instead.
     """
@@ -183,7 +183,7 @@ def pre_process_merfish(raw_merfish_dir: Path):
     return adata
 
 
-def pre_process_starmap(raw_starmap_dir: Path):
+def pre_process_starmap(raw_starmap_dir):
     """
     Assumes the input directory is not a zip file but folder instead.
     """
