@@ -23,10 +23,10 @@ import wandb
 import pickle
 import pstats
 import cProfile
+import warnings
 import argparse
 import numpy as np
 import scanpy as sc
-import squidpy as sq
 import anndata as ad
 from pathlib import Path
 from typing import List, Dict, Tuple, Union, Optional
@@ -449,25 +449,28 @@ def collect_configs(args: argparse.Namespace) -> Dict:
 
 
 def main(config: Dict):
-        
+    
+    # Suppress warnings
+    warnings.filterwarnings("ignore")
+    
     # ------------------------------------------------------------
 
     # Configure experiment arguments
     experiment_name = config["experiment"]["experiment_name"]
     experiment_description = config["experiment"]["experiment_description"]
     tokenizer = config["experiment"]["tokenizer"]
-    nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
     overwrite = config["experiment"]["overwrite"]
     print(f"Experiment Name: {experiment_name}")
     print(f"Experiment Description: {experiment_description}")
     print(f"Tokenizer: {tokenizer}")
     
+    # Configure multiprocessing parameters
+    max_cores = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
+    
     # Configure tokenization parameters
-    use_generator = config["tokenization"]["use_generator"]
     norm_method = config["tokenization"]["norm_method"]
     norm_factor = config["tokenization"]["norm_factor"]
     prenormalize = config["tokenization"]["prenormalize"]
-    processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
     n_neighs = config["tokenization"]["n_neighs"]
@@ -513,8 +516,7 @@ def main(config: Dict):
     wandb_tags = [experiment_name,
                   tokenizer,
                   str(norm_method),
-                  str(norm_factor),
-                  processing_mode]
+                  str(norm_factor)]
     wandb.init(project=config["wandb"]["project"],
                job_type=config["wandb"]["job_type"],
                tags=wandb_tags,
@@ -685,8 +687,7 @@ def main(config: Dict):
             
         # Instantiate tokenizer
         tk = Tokenizer(
-            nproc=nproc,
-            processing_mode=processing_mode,
+            max_cores=max_cores,
             model_input_size=model_input_size,
             n_neighs=n_neighs,
             radius=radius,
@@ -707,15 +708,15 @@ def main(config: Dict):
         tk.tokenize_data(input_directory=input_directory,
                          output_directory=output_directory,
                          output_file_prefix=output_file_prefix,
-                         use_generator=use_generator,
-                         cache_directory_path=cache_directory_path,
+                         num_shards=num_shards,
                          keep_in_memory=keep_in_memory,
-                         num_shards=num_shards)
+                         cache_directory_path=cache_directory_path,
+                         )
     
         end = time.time()
     
         # Save time profiling stats to disk
-        profiler_stats_fname = str(profiler_path / f"{output_file_prefix}_{nproc}_{processing_mode}.prof")
+        profiler_stats_fname = str(profiler_path / f"{output_file_prefix}_{max_cores}.prof")
         pr.dump_stats(profiler_stats_fname)
         print(f"Profiling stats saved to: {profiler_stats_fname}.")
                     
@@ -723,7 +724,7 @@ def main(config: Dict):
         cumulative_times = obtain_cumulative_times(profiler_stats_fname)
 
     # Log tokenization and profiling times to wandb
-    wandb.log({"nproc": nproc})
+    wandb.log({"max_cores": max_cores})
     wandb.log({"tokenization_time": end - start})
     for func_name, ct in cumulative_times.items():
         wandb.log({f"cumulative_time_{func_name}": ct})
