@@ -10,6 +10,12 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 SCRIPT="scripts/create_tokenized_data.sh"
 
 case $EXPERIMENT_NAME in
+    mmb0-4b_1p)
+        RAM="25G"
+        TIME="0:10"
+        CORES=4
+        QUEUE="normal"
+        ;;
     mmb0-100k-1b_1p)
         RAM="25G"
         TIME="0:20"
