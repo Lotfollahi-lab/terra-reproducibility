@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # File containing the list of DATASETS names
-DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/large_human_corpus_dataset_names.txt"
+DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/human_cohort1_50m_dataset_names.txt"
 
 # Check if the file exists
 if [[ ! -f $DATASET_NAMES_FILE ]]; then
