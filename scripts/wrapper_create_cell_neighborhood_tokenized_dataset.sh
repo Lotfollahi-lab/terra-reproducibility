@@ -2,8 +2,11 @@
 
 GROUP="team361"
 
-# Set the experiment parameters
+# Select dataset (default = ss2-1b_1p)
 EXPERIMENT_NAME="${1:-sss2-1b_1p}"
+# Overwrite token dictionary files (default = False)
+OVERWRITE="${2:-False}"
+
 TOKENIZER_NAME="cell-neighborhood-tokenizer"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
@@ -77,14 +80,14 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     human_cohort1_2m)
-        RAM="256G"
-        TIME="48:00"
+        RAM="120G"
+        TIME="6:00"
         CORES=16
-        QUEUE="long"
+        QUEUE="normal"
         ;;
     human_cohort1_10m)
         RAM="512G"
-        TIME="48:00"
+        TIME="24:00"
         CORES=16
         QUEUE="long"
         ;;
@@ -93,11 +96,6 @@ case $EXPERIMENT_NAME in
         exit 1
         ;;
 esac
-
-# If not provided, use the default value
-CORES="${2:-$CORES}"
-QUEUE="${3:-$QUEUE}"
-OVERWRITE="${4:-True}"
 
 # Set the configuration file
 CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
