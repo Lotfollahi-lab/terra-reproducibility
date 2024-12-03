@@ -2,7 +2,7 @@
 
 GROUP="team361"
 
-# Select dataset (default = ss2-1b_1p)
+# Select dataset (default = sss2-1b_1p)
 EXPERIMENT_NAME="${1:-sss2-1b_1p}"
 # Overwrite token dictionary files (default = False)
 OVERWRITE="${2:-False}"
@@ -89,6 +89,12 @@ case $EXPERIMENT_NAME in
         RAM="512G"
         TIME="24:00"
         CORES=16
+        QUEUE="long"
+        ;;
+    human_cohort1_50m)
+        RAM="650G"
+        TIME="48:00"
+        CORES=8
         QUEUE="long"
         ;;
     *)
