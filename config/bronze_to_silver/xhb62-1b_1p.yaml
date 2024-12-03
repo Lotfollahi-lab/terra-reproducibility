@@ -1,5 +1,5 @@
 experiment:
-  name: xhb62-1b_1p
+  name: xhs62-1b_1p
   description: Xenium Human Burn Scar Marjolin's Ulcer(dataset-id 62) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: Spatial and Single-Cell Transcriptomics Reveal that Oncofetal Reprogramming of Fibroblasts Is Associated with Malignant Degeneration of Burn Scar
 
@@ -11,9 +11,10 @@ dataset:
   source: online
   download_params:
     redownload: false
-    urls: []
+    urls:
+      - https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM7990295
   file_names:
-    - Burn_Scar_MU_Interface_Section
+    - Burn_Scar_MU_Interface_Section_outs.zip
 
 harmonization:
   uns:

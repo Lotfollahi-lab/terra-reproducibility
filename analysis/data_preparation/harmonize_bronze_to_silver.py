@@ -63,7 +63,13 @@ def harmonize_X_gene_counts(adata):
     elif adata.X is not None and 'counts' not in adata.layers.keys():
         if isinstance(adata.X, np.ndarray) or isinstance(adata.X, pd.DataFrame):
             adata.X = sp.csr_matrix(adata.X)
-                
+    
+    # Check if all entries of adata.X are integers even if the type is float
+    if not np.all(np.mod(adata.X.data, 1) == 0):
+        raise ValueError("Not all entries in adata.X are integers.")
+    else:
+        print("All entries in adata.X are integers.")
+    
     adata.X = adata.X.astype(np.float32)
 
     print(f"adata.X shape: {adata.X.shape}")
@@ -229,8 +235,18 @@ def harmonize_bronze_data_to_silver_data(
         assert batch_params['batch_key'] in adata.obs.keys(), f"Key {batch_params['batch_key']} not found in adata.obs.keys()."
 
         for key in key_mappings.keys():
-            print(f'Setting {key} in adata.obs')
-            adata.obs[key] = adata.obs[key_mappings['key']]
+            if key in ['cell_type', 'niche_type']:
+                print(f'Setting {key} in adata.obs')
+                adata.obs[key] = adata.obs[key_mappings[key]]
+            elif key == 'X_coordinate':
+                x_coordinates = np.array(adata.obs[key_mappings[key]])
+            elif key == 'Y_coordinate':
+                y_coordinates = np.array(adata.obs[key_mappings[key]])
+            
+        try:
+            adata.obsm['spatial'] = np.column_stack((x_coordinates, y_coordinates))
+        except:
+            pass
         
         sample_batch_map = batch_params['sample_batch_map']
         if len(sample_batch_map) > 0:            
@@ -272,8 +288,19 @@ def harmonize_bronze_data_to_silver_data(
 
             # NOTE: this is hardcoded that all batches within the same dataset have the same key for keys in key_mappings such as cell_type, niche_type, etc.
             for key in key_mappings.keys():
-                print(f'Setting {key} in adata.obs')
-                adata.obs[key] = adata.obs[key_mappings['key']]
+                if key in ['cell_type', 'niche_type']:
+                    print(f'Setting {key} in adata.obs')
+                    adata_batch.obs[key] = adata_batch.obs[key_mappings[key]]
+                elif key == 'X_coordinate':
+                    x_coordinates = np.array(adata_batch.obs[key_mappings[key]])
+                elif key == 'Y_coordinate':
+                    y_coordinates = np.array(adata_batch.obs[key_mappings[key]])
+                
+            try:
+                print("Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...")
+                adata_batch.obsm['spatial'] = np.column_stack((x_coordinates, y_coordinates))
+            except:
+                pass
 
             uns_params['batch'] = f"batch{batch_id}"
 

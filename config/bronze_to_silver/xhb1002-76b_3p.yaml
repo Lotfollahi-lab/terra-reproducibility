@@ -1,6 +1,6 @@
 experiment:
-  name: "xhb1002-76b_1p"
-  description: "Xenium Human Brain  (dataset-id 1002) | 76 batch | 1 panel"
+  name: "xhb1002-76b_3p"
+  description: "Xenium Human Brain  (dataset-id 1002) | 76 batch | 3 panel"
   study: "GBM Data by Koen from Omer's Lab"
 
 paths:

@@ -1,6 +1,6 @@
 experiment:
-  name: xt77-3b_1p
-  description: Xenium TCR(dataset-id 77) | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  name: xhsc1006-2b_1p
+  description: Xenium TCR (dataset-id 1006) | 1 batch | 1 panel
   study: Mats & Sergio Xenium
 
 paths:
@@ -13,20 +13,22 @@ dataset:
     redownload: false
     urls: []
   file_names:
-    - breast_Xenium_no_exp_qc
-    - NSCLC_healthy_lymph_node
-    - NSCLC_PT
+    - human_spinal_chord_active.h5ad
+    - human_spinal_chord_inactive.h5ad
 
 harmonization:
   uns:
-    dataset_id: 77
+    dataset_id: 1006
     assay: xenium
     species: homo_sapiens
-    tissue: .nan
+    tissue: spinal cord
   batch:
     split_by_batch: false
     sample_batch_map: {}
-  key_mappings: {}
+  key_mappings: {
+    'X_coordinate': 'x_centroid',
+    'Y_coordinate': 'y_centroid',
+  }
   misc:
     min_genes: 10
 

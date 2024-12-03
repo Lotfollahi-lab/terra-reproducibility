@@ -1,0 +1,33 @@
+experiment:
+  name: xhb1003-1b_1p
+  description: Xenium TCR (dataset-id 1003) | 1 batch | 1 panel
+  study: Mats & Sergio Xenium
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - breast_Xenium_no_exp_qc.h5ad
+
+harmonization:
+  uns:
+    dataset_id: 1003
+    assay: xenium
+    species: homo_sapiens
+    tissue: breast
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {
+    'X_coordinate': 'x_centroid',
+    'Y_coordinate': 'y_centroid',
+  }
+  misc:
+    min_genes: 10
+

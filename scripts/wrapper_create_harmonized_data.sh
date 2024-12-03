@@ -7,27 +7,30 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/bronze-to-silver"
 SCRIPT="scripts/create_harmonized_data.sh"
 
 case $EXPERIMENT_NAME in
-    xhl40-2b_2p)
-        RAM="25G"
-        TIME="0:05"
-        CORES=1
-        QUEUE="normal"
-        ;;
     xhb1002-76b_1p)
         RAM="80G"
         TIME="2:00"
         CORES=1
         QUEUE="normal"
         ;;
+    xho47-1b_1p)
+        RAM="80G"
+        TIME="0:30"
+        CORES=1
+        QUEUE="normal"
+        ;;
     *)
-        echo "Invalid dataset name"
-        exit 1
+        RAM="25G"
+        TIME="0:30"
+        CORES=1
+        QUEUE="normal"
         ;;
 esac
 
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
+TIME="${3:-$TIME}"
 
 # Set the configuration file
 CONFIG_FILE="config/bronze_to_silver/${EXPERIMENT_NAME}.yaml"
