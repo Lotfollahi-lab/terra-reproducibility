@@ -15,7 +15,7 @@ data:
   seq_len_neighborhood: 640
   n_segments: 11 # number of unique segment tokens (1 index and 10 neighbor gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 32
+  batch_size: 32 # 32
   num_workers: 6 
   pin_memory: True
 meta:
@@ -43,7 +43,7 @@ mask:
     - [0, 0, 0, 1] # cls
     - [0, 1, 0, 1] # genes
   #controlled_attention_pattern: null
-  controlled_attention_type: 'enc'
+  controlled_attention_type: 'enc_pred'
   restrict_special_attention: True
 optimization:
   warmup: 3
