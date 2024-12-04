@@ -1,0 +1,10 @@
+name: cellplm
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.9
+  - pip
+  - jupyterlab
+  - cudatoolkit=11.7

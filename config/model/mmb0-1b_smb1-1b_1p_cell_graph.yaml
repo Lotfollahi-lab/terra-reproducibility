@@ -40,10 +40,10 @@ mask:
   controlled_attention_pattern:
   #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
   #  # 'Matrix', 'null'
-    - [0, 0, 0, 1] # cls
+    - [0, 1, 0, 1] # cls
     - [0, 1, 0, 1] # genes
   #controlled_attention_pattern: null
-  controlled_attention_type: 'enc_pred'
+  controlled_attention_type: 'pred'
   restrict_special_attention: True
 optimization:
   warmup: 3
