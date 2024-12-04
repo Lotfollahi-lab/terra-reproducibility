@@ -383,11 +383,7 @@ def main(config: Dict):
             print(f"Writing to file: {raw_adata_fname}")
             adata.write(raw_adata_fname)
     else:
-        h5ad_preprocessed = [is_preprocessed(h5ad_file) for h5ad_file in h5ad_files]
-        if any(h5ad_preprocessed):
-            print("Using existing bronze (raw) .h5ad files...")
-        else:
-            raise ValueError("Existing .h5ad files in bronze directory are not preprocessed.")
+        print("Using existing bronze (raw) .h5ad files...")
 
     # ------------------ Harmonize --------------------------
 
