@@ -53,8 +53,20 @@ case $EXPERIMENT_NAME in
     xhs1000-39b_1p)
         RAM="80G"
         TIME="2:00"
-        CORES=4
-        QUEUE="parallel"
+        CORES=12
+        QUEUE="long"
+        ;;
+    human_cohort1_2m)
+        RAM="256G"
+        TIME="48:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    human_cohort1_10m)
+        RAM="512G"
+        TIME="48:00"
+        CORES=12
+        QUEUE="long"
         ;;
     *)
         echo "Invalid dataset name"

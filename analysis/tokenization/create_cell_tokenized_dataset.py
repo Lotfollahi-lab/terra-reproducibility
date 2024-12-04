@@ -253,29 +253,6 @@ def build_token_dictionary(token_dictionary_file: str,
     print("")
     
     return token_dict
-
-
-def compute_max_neighbors(adata: sc.AnnData) -> int:
-    """
-    Compute the maximum number of neighbors in the dataset.
-
-    Parameters:
-    ----------
-    - adata (sc.AnnData): Annotated data matrix with gene expression information.
-
-    Returns:
-    ----------
-    - int: The maximum number of neighbors.
-    """
-    sq.gr.spatial_neighbors(adata,
-                            coord_type="generic",
-                            spatial_key="spatial",
-                            radius=27.50,
-                            )
-
-    max_neighbors = int(np.max(adata.obsp["spatial_connectivities"].sum(1)))
-
-    return max_neighbors
     
 
 def normalize_gene_counts(adata: sc.AnnData, 
@@ -493,8 +470,9 @@ def main(config: Dict):
     processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
+    n_neighs = config["tokenization"]["n_neighs"]
     radius = config["tokenization"]["radius"]
-    delaunay_radius_union = config["tokenization"]["delaunay_radius_union"]
+    delaunay = config["tokenization"]["delaunay"]
 
     # ------------------------------------------------------------
         
@@ -538,10 +516,10 @@ def main(config: Dict):
                   str(norm_factor),
                   processing_mode]
     wandb.init(project=config["wandb"]["project"],
-                        job_type=config["wandb"]["job_type"],
-                        tags=wandb_tags,
-                        mode=config["wandb"]["mode"],
-                        config=config)
+               job_type=config["wandb"]["job_type"],
+               tags=wandb_tags,
+               mode=config["wandb"]["mode"],
+               config=config)
         
     # ------------------------------------------------------------
 
@@ -571,20 +549,19 @@ def main(config: Dict):
         tissue_key_list, \
         gene_list \
             = map_anndata_batches_to_token_keys(input_directory,
-                                                    gene_panel_ID_to_gene_panel_dict_file,
-                                                    file_path_to_gene_panel_ID_dict_file,
-                                                    gene_list_file
-                                                )
+                                                gene_panel_ID_to_gene_panel_dict_file,
+                                                file_path_to_gene_panel_ID_dict_file,
+                                                gene_list_file)
 
         # Build token dictionary
         token_dict = build_token_dictionary(token_dictionary_file,
-                                                    tokenizer,
-                                                    gene_list,
-                                                    batch_id_key_list,
-                                                    gene_panel_id_key_list,
-                                                    assay_key_list,
-                                                    species_key_list,
-                                                    tissue_key_list)
+                                            tokenizer,
+                                            gene_list,
+                                            batch_id_key_list,
+                                            gene_panel_id_key_list,
+                                            assay_key_list,
+                                            species_key_list,
+                                            tissue_key_list)
 
         n_gene_tokens = len(gene_list)
     
@@ -604,13 +581,27 @@ def main(config: Dict):
                 raise ValueError("Please specify the number of tokens per cell.")
             adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # TODO: Fix the following code block to handle multiple batches of data
-            max_neighbors = compute_max_neighbors(adata)
-            model_input_size = tokens_per_cell * max_neighbors + 1
+            adata = aggregate_neighbors(adata,
+                                        n_neighs,
+                                        radius,
+                                        delaunay,
+                                        include_self_loop=False)
+            max_neighbors = int(
+                np.max(adata.obsp["spatial_connectivities"].sum(1)))
+            model_input_size = tokens_per_cell * (max_neighbors + 1)
 
     print(f"Model Input Size: {model_input_size}")
+
+    neighborhood_graph = ""
+    if n_neighs:
+        neighborhood_graph += f"knn_{n_neighs}_"
+    if radius:
+        neighborhood_graph += f"radius_{radius}_"
+    if delaunay:
+        neighborhood_graph += "delaunay_"
     
     # Set output file prefix
-    output_file_prefix = f"{experiment_name}_{num_shards}_{norm_factor}_{norm_method}_{model_input_size}"
+    output_file_prefix = f"{experiment_name}_{num_shards}_{norm_factor}_{norm_method}_{neighborhood_graph}{model_input_size}"
 
     # ------------------------------------------------------------
     
@@ -694,43 +685,43 @@ def main(config: Dict):
             
         # Instantiate tokenizer
         tk = Tokenizer(
-                nproc=nproc,
-                processing_mode=processing_mode,
-                model_input_size=model_input_size,
-                radius=radius,
-                delaunay_radius_union=delaunay_radius_union,
-                norm_method=norm_method,
-                norm_factor=norm_factor,
-                gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
-                file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
-                cell_gene_means_file=cell_gene_means_dictionary_file,
-                cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
-                cell_gene_logmeans_file=cell_gene_logmeans_dictionary_file,
-                neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
-                neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
-                neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
-                token_dictionary_file=token_dictionary_file)
+            nproc=nproc,
+            processing_mode=processing_mode,
+            model_input_size=model_input_size,
+            n_neighs=n_neighs,
+            radius=radius,
+            delaunay=delaunay,
+            norm_method=norm_method,
+            norm_factor=norm_factor,
+            gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
+            file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
+            cell_gene_means_file=cell_gene_means_dictionary_file,
+            cell_gene_nzmeans_file=cell_gene_nzmeans_dictionary_file,
+            cell_gene_logmeans_file=cell_gene_logmeans_dictionary_file,
+            neighborhood_gene_means_file=neighborhood_gene_means_dictionary_file,
+            neighborhood_gene_nzmeans_file=neighborhood_gene_nzmeans_dictionary_file,
+            neighborhood_gene_logmeans_file=neighborhood_gene_logmeans_dictionary_file,
+            token_dictionary_file=token_dictionary_file)
 
         # Tokenize data 
         tk.tokenize_data(input_directory=input_directory,
-                            output_directory=output_directory,
-                            output_file_prefix=output_file_prefix,
-                            use_generator=use_generator,
-                            cache_directory_path=cache_directory_path,
-                            keep_in_memory=keep_in_memory,
-                            num_shards=num_shards)
+                         output_directory=output_directory,
+                         output_file_prefix=output_file_prefix,
+                         use_generator=use_generator,
+                         cache_directory_path=cache_directory_path,
+                         keep_in_memory=keep_in_memory,
+                         num_shards=num_shards)
     
         end = time.time()
     
         # Save time profiling stats to disk
         profiler_stats_fname = str(profiler_path / f"{output_file_prefix}_{nproc}_{processing_mode}.prof")
         pr.dump_stats(profiler_stats_fname)
-        print(f"Profiling stats saved to: {profiler_stats_fname}")
+        print(f"Profiling stats saved to: {profiler_stats_fname}.")
                     
         # Extract cumulative times from profiler stats
         cumulative_times = obtain_cumulative_times(profiler_stats_fname)
 
-    
     # Log tokenization and profiling times to wandb
     wandb.log({"nproc": nproc})
     wandb.log({"tokenization_time": end - start})
@@ -740,15 +731,15 @@ def main(config: Dict):
     if config["wandb"]["save_artifact"]:
         # Create wandb artifact
         artifact = wandb.Artifact(name=f"{config['experiment']['experiment_name']}-tokenized",
-                                    type=f"{config['experiment']['tokenizer']}",
-                                    metadata=config)
-        # add files to artifact
+                                  type=f"{config['experiment']['tokenizer']}",
+                                  metadata=config)
+        # Add files to artifact
         artifact.add_file(local_path=token_dictionary_file, name="NicheJEPA Neighborhood Token Dictionary")
         artifact.add_file(local_path=profiler_stats_fname, name="cProfile Stats")
         artifact.add_dir(local_path=st_data_silver_folder_path, name=f"AnnData (silver)")
         artifact.add_dir(local_path=output_directory, name=f"Hugging Face Dataset (gold)")
         
-        # save artifact
+        # Save artifact
         artifact.save()
         
     wandb.finish()
