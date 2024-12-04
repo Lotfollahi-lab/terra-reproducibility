@@ -56,21 +56,53 @@ def harmonize_X_gene_counts(adata):
     if adata.X is None and 'counts' not in adata.layers.keys():
         raise ValueError("Both adata.X and adata.layers['counts'] are missing.")
 
-    if adata.X is None and 'counts' in adata.layers.keys():
+    elif adata.X is None and 'counts' in adata.layers.keys():
+        print("adata.X is missing. adata.layers['counts'] is present.")
+        
+        # convert adata.layers['counts'] to sp.csr_matrix if it is not already
         if not isinstance(adata.layers['counts'], sp.csr_matrix):
             adata.layers['counts'] = adata.layers['counts'].tocsr()
+        
+        # check if all entries in adata.layers['counts'] are integers
+        if not np.all(np.mod(adata.layers['counts'].data, 1) == 0):
+            raise ValueError("Not all entries in adata.layers['counts'] are integers.")
+        
+        # if all entries are integers, set adata.X from adata.layers['counts']
+        print("All entries in adata.layers['counts'] are integers.")
+        print("Setting adata.X from adata.layers['counts']...")
         adata.X = adata.layers['counts']
-    elif adata.X is not None and 'counts' not in adata.layers.keys():
-        if isinstance(adata.X, np.ndarray) or isinstance(adata.X, pd.DataFrame):
+        
+    elif adata.X is not None:
+        print("adata.X is present.")
+
+        if not isinstance(adata.X, sp.csr_matrix):
             adata.X = sp.csr_matrix(adata.X)
-    
-    # Check if all entries of adata.X are integers even if the type is float
-    if not np.all(np.mod(adata.X.data, 1) == 0):
-        raise ValueError("Not all entries in adata.X are integers.")
-    else:
-        print("All entries in adata.X are integers.")
-    
-    adata.X = adata.X.astype(np.float32)
+
+        # Check if all entries of adata.X are integers even if the type is float
+        if not np.all(np.mod(adata.X.data, 1) == 0):
+            print("Not all entries in adata.X are integers.")
+            if adata.layers['counts'] is None:
+                raise ValueError("adata.layers['counts'] is missing and adata.X has float entries.")
+            else:
+                # convert adata.layers['counts'] to sp.csr_matrix if it is not already
+                if not isinstance(adata.layers['counts'], sp.csr_matrix):
+                    adata.layers['counts'] = adata.layers['counts'].tocsr()
+                
+                if not np.all(np.mod(adata.layers['counts'].data, 1) == 0):
+                    raise ValueError("Not all entries in adata.layers['counts'] are integers.")
+                else:
+                    print("All entries in adata.layers['counts'] are integers.")
+                    print("Setting adata.X from adata.layers['counts']...")
+                    adata.X = adata.layers['counts']
+        else:
+            print("All entries in adata.X are integers.")
+
+
+    assert isinstance(adata.X, sp.csr_matrix), "adata.X is not a sp.csr_matrix."
+    assert np.all(np.mod(adata.X.data, 1) == 0), "Not all entries in adata.X are integers."
+       
+    # convert adata.X to sp.csr_matrix if it is not already
+    adata.X = adata.X.astype(int)
 
     print(f"adata.X shape: {adata.X.shape}")
     print(f"type(adata.X): {type(adata.X)}")

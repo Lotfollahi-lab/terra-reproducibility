@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# cohort_name="human_cohort2_2m"
+cohort_name="human_cohort2_10m"
+# cohort_name="human_cohort1_50m"
+
 # File containing the list of DATASETS names
-DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/human_cohort1_50m_dataset_names.txt"
+DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/${cohort_name}_dataset_names.txt"
 
 # Check if the file exists
 if [[ ! -f $DATASET_NAMES_FILE ]]; then
@@ -21,7 +25,7 @@ while IFS= read -r dataset_name; do
     config_file="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/config/bronze_to_silver/${dataset_name}.yaml"
     echo "Config file: $config_file"
 
-    /lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/create_harmonized_data.sh "$config_file" >> /lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/logs/harmonize_datasets.log 2>&1
+    /lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/create_harmonized_data.sh "$config_file" >> /lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/logs/harmonize_datasets_${cohort_name}.log 2>&1
 
 done < "$DATASET_NAMES_FILE"
 
