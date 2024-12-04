@@ -190,11 +190,13 @@ def create_token_keys(
     # Build a complete list of genes in the dataset across all batches of anndata
     # e.g. gene_list = ['ENSMUSG00000020734','ENSMUSG00000021099', 'ENSMUSG00000019787']
     gene_list = list(set().union(*unique_gene_panels_list))
+
+    # TODO: sort gene_panel_id_keys
     gene_list = sorted(gene_list)
-    
-    assay_keys = list(assay_keys)
-    species_keys = list(species_keys)
-    tissue_keys = list(tissue_keys)
+    batch_id_keys = sorted(batch_id_keys)
+    assay_keys = sorted(list(assay_keys))
+    species_keys = sorted(list(species_keys))
+    tissue_keys = sorted(list(tissue_keys))
     # ------------------------------------------------------------------------------------
     # Save gene panel mappings to disk
     with open(gene_list_file, "wb") as file:
@@ -221,137 +223,6 @@ def create_token_keys(
             assay_keys, \
             species_keys, \
             tissue_keys,
-
-
-def map_anndata_batches_to_token_keys(input_directory: Union[Path, str],
-                                        gene_panel_ID_to_gene_panel_dict_file: Union[Path, str],
-                                        file_path_to_gene_panel_ID_dict_file: Union[Path, str],
-                                        gene_list_file: Union[Path, str]) \
-                                        -> Tuple[List[sc.AnnData], List[str], List[str], List[str], List[str], List[str], List[str]]:
-    """
-    Process each batch of AnnData to build keys for gene and special tokens.
-
-    Parameters
-    ----------
-    - input_directory (Union[Path, str]): The path to the input directory.
-    - gene_panel_ID_to_gene_panel_dict_file (Union[Path, str]): The file path to save the gene panel ID to gene panel dictionary.
-    - file_path_to_gene_panel_ID_dict_file (Union[Path, str]): The file path to save the file path to gene panel ID dictionary.
-    - gene_list_file (Union[Path, str]): The file path to save the gene list.
-
-    Returns:
-    ----------
-    - List[sc.AnnData]: A list of AnnData objects, one per batch.
-    - List[str]: A list of batch IDs, one per batch.
-    - List[str]: A list of gene panel IDs, one per unique gene panel across batches.
-    - List[str]: A list of assay IDs, one per unique assay across batches.
-    - List[str]: A list of species IDs, one per unique species across batches.
-    - List[str]: A list of tissue IDs, one per unique tissue across batches.
-    - List[str]: A list of all unique gene IDs across batches.
-    """
-    file_paths = list(input_directory.glob(f"**/*.h5ad"))
-    if len(file_paths) == 0:
-        raise FileNotFoundError(f"No .h5ad files found in {input_directory}")
-    
-    adata_batch_list = []
-
-    print("Creating gene panel mappings.")
-            
-    # Initialize lists for capturing names for special tokens related to batch, gene panel, assay, species, and tissue from batched data
-    batch_id_key_list = []
-    gene_panel_id_key_list = []
-    assay_key_list = []
-    species_key_list = []
-    tissue_key_list = []
-
-    # Initialize gene panel mappings
-    unique_gene_panels_count = 0
-    unique_gene_panels_list = []
-    gene_panel_ID_to_gene_panel_dict = {}
-    file_path_to_gene_panel_ID_dict = {}
-                
-    for file_path in file_paths:
-        print(f"Loading data from {file_path}")
-        adata = sc.read_h5ad(file_path)
-
-        # ------------------------------------------------------------------------------------
-        # Capture dataset_id for the current batch of AnnData
-        # e.g. dataset_id = 0 or 1 or 2 or 3...
-        dataset_id = adata.uns['dataset_id']
-        print(f"Dataset ID: {dataset_id}")
-        # ------------------------------------------------------------------------------------
-        # Capture batch_id_key for the current batch of AnnData
-        # e.g. batch_id_key = "0_batch1" or "1_batch1" or "0_batch2"...
-        batch_id = adata.uns['batch']
-        batch_id_key = f"spv_{dataset_id}_{batch_id}"    
-        print(f"Batch ID Key: {batch_id_key}")
-        batch_id_key_list.append(batch_id_key)
-        # ------------------------------------------------------------------------------------ 
-        # Capture assay keys for the current batch of AnnData
-        # e.g. assay_key = "merfish" or "starmap" or "sim"...
-        assay_key = f"spv_{adata.uns['assay']}"
-        if assay_key not in assay_key_list:
-            assay_key_list.append(assay_key)
-        # ------------------------------------------------------------------------------------ 
-        # Capture species keys for the current batch of AnnData
-        # e.g. species_key = "mus_musculus" or "homo_sapiens" or "sim"...
-        species_key = f"spv_{adata.uns['species']}"
-        if species_key not in species_key_list:
-            species_key_list.append(species_key)          
-        # ------------------------------------------------------------------------------------ 
-        # Capture tissue keys for the current batch of AnnData
-        # e.g. tissue_key = "brain" or "sim"...
-        tissue_key = f"spv_{adata.uns['tissue']}"
-        if tissue_key not in tissue_key_list:
-            tissue_key_list.append(tissue_key)            
-        # ------------------------------------------------------------------------------------
-        # Capture gene panel id key and gene panel mappings for the current batch of AnnData
-        # Creates gene panel as an intersection of Ensembl gene set and genes in adata
-        gene_panel = set(adata.var["ensembl_id"].values.tolist())
-        
-        # If gene panel is unique, assign a unique ID to it
-        if gene_panel not in unique_gene_panels_list:
-            unique_gene_panels_list.append(gene_panel)
-            gene_panel_ID = f"gene_panel{unique_gene_panels_count}"
-            gene_panel_ID_to_gene_panel_dict[gene_panel_ID] = gene_panel
-            file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
-            unique_gene_panels_count += 1
-            
-            # Creates gene panel id key list for use in token dictionary
-            # e.g. gene_panel_id_key_list = ["spv_gene_panel0", "gene_panel1", ...]
-            gene_panel_id_key = f"spv_{gene_panel_ID}"
-            gene_panel_id_key_list.append(gene_panel_id_key)
-            
-        # If gene panel is not unique, assign find its ID and append file path
-        else:
-            gene_panel_ID = next((k for k, v in gene_panel_ID_to_gene_panel_dict.items() if v == gene_panel), None)
-            file_path_to_gene_panel_ID_dict[str(file_path)] = gene_panel_ID
-        # ------------------------------------------------------------------------------------
-        # Append processed and loaded adata to adata_batch_list
-        adata_batch_list.append(adata)
-
-    # Build a complete list of genes in the dataset across all batches of anndata
-    # e.g. gene_list = ['ENSMUSG00000020734','ENSMUSG00000021099', 'ENSMUSG00000019787']
-    gene_list = list(set().union(*unique_gene_panels_list))
-    gene_list = sorted(gene_list)
-        
-    # Save gene panel mappings to disk
-    with open(gene_list_file, "wb") as file:
-        print(f"Saving gene list to {gene_list_file}")
-        pickle.dump(gene_list, file)
-    with open(gene_panel_ID_to_gene_panel_dict_file, "wb") as file:
-        print(f"Saving gene panel ID to gene panel dictionary to {gene_panel_ID_to_gene_panel_dict_file}")
-        pickle.dump(gene_panel_ID_to_gene_panel_dict, file)
-    with open(file_path_to_gene_panel_ID_dict_file, "wb") as file:
-        print(f"Saving file path to gene panel ID dictionary to {file_path_to_gene_panel_ID_dict_file}")
-        pickle.dump(file_path_to_gene_panel_ID_dict, file)
-
-    return adata_batch_list, \
-            batch_id_key_list, \
-            gene_panel_id_key_list, \
-            assay_key_list, \
-            species_key_list, \
-            tissue_key_list, \
-            gene_list
 
 
 def build_token_dictionary(token_dictionary_file: str,
@@ -438,6 +309,64 @@ def build_token_dictionary(token_dictionary_file: str,
     
     return token_dict
     
+
+def compute_max_neighbors_per_batch(
+        adata_batch_path: Union[Path, str],
+        n_neighs: int,
+        radius: float,
+        delaunay: bool,
+    ) -> int:
+    # Load the AnnData batch
+    adata_batch = sc.read_h5ad(adata_batch_path)
+
+    # Compute the spatial neighborhood graph
+    adata_batch = aggregate_neighbors(
+                        adata_batch,
+                        n_neighs,
+                        radius,
+                        delaunay,
+                        include_self_loop=False
+                    )
+
+    # Compute max neighbors for a cell in the current batch of AnnData
+    max_neighbors_batch = int(
+                            np.max(adata_batch.obsp["spatial_connectivities"].sum(1))
+                            )
+    return max_neighbors_batch
+
+
+def compute_max_neighbors(
+    max_cores: int,
+    input_directory: Union[Path, str],
+    n_neighs: int,
+    radius: float,
+    delaunay: bool,
+    ) -> int:
+    # Assert that the input directory contains .h5ad files
+    file_paths = list(input_directory.glob(f"**/*.h5ad"))
+    num_files = len(file_paths)
+    if num_files == 0:
+        raise FileNotFoundError(f"No .h5ad files found in {input_directory}")
+
+    # Set the number of processes to use
+    nproc = min(max_cores, num_files)
+    print(f"Processing {num_files} files using {nproc} processes...")
+
+    # Process each batch of AnnData in parallel
+    with concurrent.futures.ProcessPoolExecutor(max_workers=nproc) as executor:
+        max_neighbors_list = list(
+                                executor.map(
+                                    compute_max_neighbors_per_batch,
+                                    file_paths,
+                                    [n_neighs] * num_files,
+                                    [radius] * num_files,
+                                    [delaunay] * num_files
+                                    )
+                                )
+
+    max_neighbors = max(max_neighbors_list)
+    return max_neighbors
+
 
 def normalize_gene_counts(adata: sc.AnnData, 
                           norm_factor: str) -> sc.AnnData:
@@ -673,7 +602,6 @@ def main(config: Dict):
     os.makedirs(cache_directory_path, exist_ok=True)
 
     # Configure tokenizer paths
-    # tokenizer_directory_path = Path(".") / "tokenizer"
     tokenizer_directory_path = data_directory_path / "tokenizer"
     tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
@@ -689,6 +617,7 @@ def main(config: Dict):
     file_path_to_gene_panel_ID_dict_file = tokenizer_folder_path / "file_path_to_gene_panel_ID_dict.pkl"
 
     # ------------------------------------------------------------
+
     log_directory_path = Path("./logs") / experiment_name
         
     # Set profiler path
@@ -705,19 +634,29 @@ def main(config: Dict):
                tags=wandb_tags,
                mode=config["wandb"]["mode"],
                config=config)
+
     # ------------------------------------------------------------
+
     # Load token vocabulary dictionary if it exists and not overwrite, else create it
     if os.path.exists(token_dictionary_file) and not overwrite:
         print(f"Overwrite was set to False. Loading previously created token dictionary from {token_dictionary_file}...")
         with open(token_dictionary_file, "rb") as file:
             token_dict = pickle.load(file)
             
+        max_neighbors = compute_max_neighbors(
+                            max_cores=max_cores,
+                            input_directory=input_directory,
+                            n_neighs=n_neighs,
+                            radius=radius,
+                            delaunay=delaunay,
+                    )
+        
         n_gene_tokens = sum("ENS" in key for key in token_dict.keys())
 
     else:
         tracemalloc.start()
         
-        new_start = time.time()
+        token_dict_start = time.time()
         
         # Create token keys from AnnData batches
         max_neighbors, \
@@ -727,14 +666,16 @@ def main(config: Dict):
         assay_keys, \
         species_keys, \
         tissue_keys, \
-            = create_token_keys(max_cores=max_cores,
-                                 input_directory=input_directory,
-                                n_neighs=n_neighs,
-                                radius=radius,
-                                delaunay=delaunay,
-                                gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
-                                file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
-                                gene_list_file=gene_list_file)
+            = create_token_keys(
+                max_cores=max_cores,
+                input_directory=input_directory,
+                n_neighs=n_neighs,
+                radius=radius,
+                delaunay=delaunay,
+                gene_panel_ID_to_gene_panel_dict_file=gene_panel_ID_to_gene_panel_dict_file,
+                file_path_to_gene_panel_ID_dict_file=file_path_to_gene_panel_ID_dict_file,
+                gene_list_file=gene_list_file
+            )
 
         # Build token dictionary
         token_dict = build_token_dictionary(
@@ -747,21 +688,16 @@ def main(config: Dict):
                             species_key_list=species_keys,
                             tissue_key_list=tissue_keys,
                         )
-
-        n_gene_tokens = len(gene_list)
-
-        new_end = time.time()        
+        token_dict_end = time.time()
+        print(f"Time taken to create token dictionary: {token_dict_start - token_dict_end:.2f} seconds.")
 
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
-
-        print(f"Peak memory usage in new method was {(peak / 10**6):.2f} MB.")
+        print(f"Peak memory usage during token dictionary creation was {(peak / 10**6):.2f} MB.")
         print(f"Current memory usage is {(current / 10**6):.2f} MB.")
-        print(f"Time taken to create new token dictionary: {new_end - new_start:.2f} seconds.")
-    
-    print(f"New Number of Gene Tokens: {n_gene_tokens}.")
-    print(f"New Number of Tokens: {len(token_dict)}.")
 
+        n_gene_tokens = len(gene_list)
+    
     # Set model input size based on tokenizer
     try:
         model_input_size = config["experiment"]["model_input_size"]
@@ -775,123 +711,11 @@ def main(config: Dict):
                 raise ValueError("Please specify the number of tokens per cell.")
             model_input_size = tokens_per_cell * (max_neighbors + 1)
 
-    print(f"New Model Input Size: {model_input_size}")
-    
-    new_token_dict = token_dict.copy()
-    new_n_gene_tokens = n_gene_tokens
-    new_num_tokens = len(token_dict)
-    new_max_neighbors = max_neighbors
-    # ------------------------------------------------------------
-
-    # Load token vocabulary dictionary if it exists and not overwrite, else create it
-    if os.path.exists(token_dictionary_file) and not overwrite:
-        print("Overwrite was set to False. Re-using previously created token dictionary...")
-        
-        adata_batch_list = []
-        file_paths = list(input_directory.glob(f"**/*.h5ad"))
-        for file_path in file_paths:
-            print(f"Loading data from {file_path}")
-            adata_batch_list.append(sc.read_h5ad(file_path))
-
-        print(f"Loading token dictionary from {token_dictionary_file}")
-        with open(token_dictionary_file, "rb") as file:
-            token_dict = pickle.load(file)
-            
-        n_gene_tokens = sum("ENS" in key for key in token_dict.keys())
-
-    else:
-        tracemalloc.start()
-        
-        old_start = time.time()
-
-        # Load data and create gene panel mappings
-        adata_batch_list, \
-        batch_id_key_list, \
-        gene_panel_id_key_list, \
-        assay_key_list, \
-        species_key_list, \
-        tissue_key_list, \
-        gene_list \
-            = map_anndata_batches_to_token_keys(input_directory,
-                                                gene_panel_ID_to_gene_panel_dict_file,
-                                                file_path_to_gene_panel_ID_dict_file,
-                                                gene_list_file)
-
-        # Build token dictionary
-        token_dict = build_token_dictionary(token_dictionary_file,
-                                            tokenizer,
-                                            gene_list,
-                                            batch_id_key_list,
-                                            gene_panel_id_key_list,
-                                            assay_key_list,
-                                            species_key_list,
-                                            tissue_key_list)
-
-        n_gene_tokens = len(gene_list)
-    
-        old_end = time.time()
-
-        current, peak = tracemalloc.get_traced_memory()
-        tracemalloc.stop()
-
-        print(f"Peak memory usage in old method was {(peak / 10**6):.2f} MB.")
-        print(f"Current memory usage is {(current / 10**6):.2f} MB.")
-        print(f"Time taken to create old token dictionary: {old_end - old_start:.2f} seconds.")
-    
     print(f"Number of Gene Tokens: {n_gene_tokens}.")
-    print(f"Number of Tokens: {len(token_dict)}.")
-    
-    # Set model input size based on tokenizer
-    try:
-        model_input_size = config["experiment"]["model_input_size"]
-    except:
-        if tokenizer == "cell-neighborhood-tokenizer":
-            model_input_size = n_gene_tokens * 2
-        elif tokenizer == "cell-graph-tokenizer":
-            try:
-                tokens_per_cell = config["tokenization"]["tokens_per_cell"]
-            except:
-                raise ValueError("Please specify the number of tokens per cell.")
-            adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
-            # TODO: Fix the following code block to handle multiple batches of data
-            adata = aggregate_neighbors(adata,
-                                        n_neighs,
-                                        radius,
-                                        delaunay,
-                                        include_self_loop=False)
-            max_neighbors = int(
-                np.max(adata.obsp["spatial_connectivities"].sum(1)))
-            model_input_size = tokens_per_cell * (max_neighbors + 1)
-
+    print(f"Total Number of Tokens: {len(token_dict)}.")
     print(f"Model Input Size: {model_input_size}")
 
     # ------------------------------------------------------------
-    print("Summary")
-    print(f"Number of Gene Tokens: New = {new_n_gene_tokens}, Old = {n_gene_tokens}")
-    print(f"Number of Tokens: New = {new_num_tokens}, Old = {len(token_dict)}")
-    print(f"Model Input Size: New = {model_input_size}, Old = {model_input_size}")
-    
-    keys_match = set(new_token_dict.keys()) == set(token_dict.keys())
-    if keys_match:
-        print("Keys match.")
-    else:
-        print("Keys do not match.")
-        print("Keys in new that are not in old:")
-        print(set(new_token_dict.keys()) - set(token_dict.keys()))
-        print("Keys in old that are not in new:")
-        print(set(token_dict.keys()) - set(new_token_dict.keys()))
-    
-    dicts_match = new_token_dict == token_dict
-    if dicts_match:
-        print("Dictionaries match.")
-    else:
-        print("Dictionaries do not match.")
-        print("Differences:")
-        for key in new_token_dict.keys():
-            if new_token_dict[key] != token_dict[key]:
-                print(f"Key: {key} | New Value: {new_token_dict[key]} | Old Value: {token_dict[key]}")
-    
-    # return
 
     neighborhood_graph = ""
     if n_neighs:
@@ -916,6 +740,22 @@ def main(config: Dict):
     neighborhood_gene_logmeans_dictionary_file = tokenizer_folder_path / f"neighborhood_gene_{norm_factor}_logmeans_dictionary.pkl"
 
     if prenormalize:
+        
+        file_paths = list(input_directory.glob(f"**/*.h5ad"))
+        nproc = min(max_cores, len(file_paths))
+        
+        def load_single_anndata_batch(adata_batch_path: Union[Path, str]) -> sc.AnnData:
+            adata_batch = sc.read_h5ad(adata_batch_path)
+            return adata_batch
+        
+        with concurrent.futures.ProcessPoolExecutor(max_workers=nproc) as executor:
+            adata_batch_list = list(
+                                    executor.map(
+                                        load_single_anndata_batch,
+                                        file_paths,
+                                        )
+                                    )
+                
         # Concatenate AnnData objects
         adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
         
@@ -970,8 +810,6 @@ def main(config: Dict):
         with open(neighborhood_gene_logmeans_dictionary_file, "wb") as file:
             pickle.dump(neighborhood_gene_logmeans_dict, file)
         del adata
-            
-    del adata_batch_list
     
     # ------------------------------------------------------------
     
