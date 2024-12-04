@@ -11,7 +11,10 @@ dataset:
   source: offline
   download_params:
     redownload: false
-    urls: []
+    urls:
+      - .nan
+      - .nan
+      - .nan
   file_names:
     - breast_Xenium_no_exp_qc.h5ad
 

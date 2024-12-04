@@ -1,6 +1,6 @@
 experiment:
-  name: crt78-11b_1p
-  description: CARTANA Reproductive Tract Early (dataset-id 78) | 11 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  name: chr78-11b_1p
+  description: CARTANA Human Reproductive Tract Early (dataset-id 78) | 11 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: ISS CARTANA by Valentina
 
 paths:

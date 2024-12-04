@@ -1,6 +1,6 @@
 experiment:
-  name: spw75-4b_1p
-  description: STARMAP Placenta W(dataset-id 75) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  name: shp75-4b_1p
+  description: STARMAP Human Placenta W(dataset-id 75) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: Spatial multiomic landscape of the human placenta at molecular resolution
 
 paths:

@@ -1,6 +1,6 @@
 experiment:
-  name: xhsc44-6b_1p
-  description: Xenium Human Spinal Cord MS Inactive_(dataset-id 44) | 6 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  name: xhm44-6b_1p
+  description: Xenium Human MS Inactive_(dataset-id 44) | 6 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: Cellular architecture of evolving neuroinflammatory lesions and multiple sclerosis pathology
 
 paths:
@@ -13,12 +13,12 @@ dataset:
     redownload: false
     urls: []
   file_names:
-    - Active-C_2013-019.h5ad
-    - Active-C_2017-100.h5ad
-    - Ctrl-C_2012-071.h5ad
-    - Ctrl-C_2017-16.h5ad
-    - Inactive-C_2007-069.h5ad
-    - Inactive-C_2012-078.h5ad
+    - Active-C_2013-019
+    - Active-C_2017-100
+    - Ctrl-C_2012-071
+    - Ctrl-C_2017-16
+    - Inactive-C_2007-069
+    - Inactive-C_2012-078
 
 harmonization:
   uns:

@@ -1,6 +1,6 @@
 experiment:
-  name: ncm74-2b_1p
-  description: Nanostring CosMx Mouse Brain (dataset-id 74) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  name: cmb74-2b_1p
+  description: CosMx Mouse Brain (dataset-id 74) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: CosMx SMI Mouse Brain FFPE Dataset
 
 paths:

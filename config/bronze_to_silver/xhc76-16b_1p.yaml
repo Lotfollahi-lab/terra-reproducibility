@@ -13,22 +13,22 @@ dataset:
     redownload: false
     urls: []
   file_names:
-    - 1837C.h5ad
-    - 1837P.h5ad
-    - 1886C.h5ad
-    - 1886P.h5ad
-    - 1893C.h5ad
-    - 1893P.h5ad
-    - 5730C.h5ad
-    - 5730P.h5ad
-    - 1264C.h5ad
-    - 1264P.h5ad
-    - 1310C.h5ad
-    - 1310P.h5ad
-    - 1816C.h5ad
-    - 1816P.h5ad
-    - 5331C.h5ad
-    - 5331P.h5ad
+    - 1837C
+    - 1837P
+    - 1886C
+    - 1886P
+    - 1893C
+    - 1893P
+    - 5730C
+    - 5730P
+    - 1264C
+    - 1264P
+    - 1310C
+    - 1310P
+    - 1816C
+    - 1816P
+    - 5331C
+    - 5331P
 
 harmonization:
   uns:

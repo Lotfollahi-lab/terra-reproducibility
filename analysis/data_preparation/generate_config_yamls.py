@@ -32,7 +32,7 @@ for dataset_name, row in meta0.iterrows():
         sample_names = [dataset_name]
         urls = [row['download_url']]
 
-    if row['assay'] == 'merfish' or pd.isna(row['download_url']):
+    if row['source'] == 'offline':
         urls = []
 
     # Build the data dictionary
