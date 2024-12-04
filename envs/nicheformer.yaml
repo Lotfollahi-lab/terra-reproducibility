@@ -1,0 +1,19 @@
+name: nicheformer
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.10
+  - pip
+  - jupyterlab
+  - pytorch
+  - pytorch-cuda=12.1
+  - merlin-core
+  - merlin-dataloader
+  - pip:
+    - lightning
+    - pyro-ppl
+    - squidpy
+    - dask[dataframe]
+    
