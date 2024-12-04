@@ -54,7 +54,7 @@ case $EXPERIMENT_NAME in
         RAM="80G"
         TIME="2:00"
         CORES=12
-        QUEUE="normal"
+        QUEUE="long"
         ;;
     human_cohort1_2m)
         RAM="256G"
