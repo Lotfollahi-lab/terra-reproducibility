@@ -359,7 +359,7 @@ def main(config: Dict):
                                 **config["dataset"]["download_params"]
                             )
     else:
-        raw_zipfile_paths = [input_directory]
+        raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
 
     # ------------------ Extract AnnData from ZipFiles --------------------------
     h5ad_files = list(input_directory.glob("**/*.h5ad"))
@@ -383,7 +383,11 @@ def main(config: Dict):
             print(f"Writing to file: {raw_adata_fname}")
             adata.write(raw_adata_fname)
     else:
-        print("Using existing bronze (raw) .h5ad files...")
+        h5ad_preprocessed = [is_preprocessed(h5ad_file) for h5ad_file in h5ad_files]
+        if any(h5ad_preprocessed):
+            print("Using existing bronze (raw) .h5ad files...")
+        else:
+            raise ValueError("Existing .h5ad files in bronze directory are not preprocessed.")
 
     # ------------------ Harmonize --------------------------
 
