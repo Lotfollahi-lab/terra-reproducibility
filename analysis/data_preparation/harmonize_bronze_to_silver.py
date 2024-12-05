@@ -97,15 +97,18 @@ def harmonize_X_gene_counts(adata):
         else:
             print("All entries in adata.X are integers.")
 
-
+    # set adata.X to int dtype
+    adata.X = adata.X.astype(int)
+    print(adata.X)
+    
+    # check that adata.X is sp.csr_matrix if it is not already
     assert isinstance(adata.X, sp.csr_matrix), "adata.X is not a sp.csr_matrix."
     assert np.all(np.mod(adata.X.data, 1) == 0), "Not all entries in adata.X are integers."
-       
-    # convert adata.X to sp.csr_matrix if it is not already
-    adata.X = adata.X.astype(int)
+    assert adata.X.dtype == int, "adata.X is not of int dtype."
 
     print(f"adata.X shape: {adata.X.shape}")
     print(f"type(adata.X): {type(adata.X)}")
+    print(f"adata.X.dtype: {adata.X.dtype}")
 
     return adata
 

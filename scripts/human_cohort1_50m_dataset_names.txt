@@ -34,6 +34,9 @@ xhln1004-1b_1p
 xhl1005-1b_1p
 xhsc1006-2b_1p
 
+xhs1000-39b_1p
+xhb1002-76b_3p
+
 mhb14-1b_1p
 mhc15-2b_1p
 mhl16-2b_1p
@@ -42,11 +45,9 @@ mhm18-2b_1p
 mho19-4b_1p
 mhp20-2b_1p
 mhu21-3b_1p
-mhh22-1b_1p
 mhl63-10b_1p
 
-xhs1000-39b_1p
-xhb1002-76b_3p
-
 chb56-1b_1p
-crt78-11b_1p
+chl57-2b_1p
+
+chr78-11b_1p
