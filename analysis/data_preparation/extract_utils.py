@@ -1,6 +1,7 @@
 import os
 import zipfile
 import tempfile
+import tarfile
 import scanpy as sc
 import pandas as pd
 import numpy as np
@@ -100,18 +101,28 @@ def pre_process_cosmx(raw_path):
     """
     raw_path = str(raw_path)
     print(f"[+] Reading {raw_path}")
-    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
+    if os.path.isfile(raw_path) and (raw_path.endswith("zip") or raw_path.endswith("tar.gz")):
         temp_dir = tempfile.TemporaryDirectory()
-        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
-        zip_file = zipfile.ZipFile(raw_path)
-        for file in zip_file.namelist():
+        if raw_path.endswith("zip"):
+            print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
+            zip_file = zipfile.ZipFile(raw_path)
+            filelist = zip_file.namelist()
+        elif raw_path.endswith("tar.gz"):
+            print(f"[+] Input is a tar.gz file. Extracting required files to {temp_dir.name}")
+            zip_file = tarfile.open(raw_path) 
+            filelist = zip_file.getnames()
+
+        for file in filelist:
             if any([ext in file for ext in ['exprMat','metadata']]):
                 if 'exprMat' in file:
                     exprfile = file
                 elif 'metadata' in file:
                     metafile = file
-                with zipfile.ZipFile(raw_path, "r") as zipp:
-                    zipp.extract(file, path=temp_dir.name)
+                if raw_path.endswith("zip"):
+                    with zipfile.ZipFile(raw_path, "r") as zipp:
+                        zipp.extract(file, path=temp_dir.name)
+                elif raw_path.endswith("tar.gz"):  
+                    zip_file.extract(file, path=temp_dir.name)      
         raw_path = temp_dir.name
     else:
         print(f"[+] Input is a directory. Finding required files")
