@@ -394,7 +394,13 @@ def main(config: Dict):
                                 **config["dataset"]["download_params"]
                             )
     else:
-        raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
+        # check if all files in input directory are zip files or directories
+        if all([i.suffix == '.zip' for i in list(input_directory.glob('*'))]):
+            raw_zipfile_paths = list(input_directory.glob("*"))
+        elif all([i.is_dir() for i in list(input_directory.glob('*'))]):
+            raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
+        else:
+            raise ValueError("Input directory should contain either all zip files or all directories.")
 
     # ------------------ Extract AnnData from ZipFiles --------------------------
     h5ad_files = list(input_directory.glob("**/*.h5ad"))
