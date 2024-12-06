@@ -42,18 +42,31 @@ def pre_process_10x_xenium(raw_path):
     raw_path = str(raw_path)
     print(f"[+] Reading {raw_path}")
     temp_dir = tempfile.TemporaryDirectory()
-    if os.path.isfile(raw_path) and raw_path.endswith("zip"):
-        print(f"[+] Input is a zip file. Extracting required files to {temp_dir.name}")
+    if os.path.isfile(raw_path) and raw_path.endswith("zip"):  
+        print(f"[+] Input is a zip file. Extracting required files to {raw_path}")
         with zipfile.ZipFile(raw_path, "r") as zip:
-            zip.extract("cell_feature_matrix.h5", path=temp_dir.name)
-            zip.extract("cells.parquet", path=temp_dir.name)
-            zip.extract("experiment.xenium", path=temp_dir.name)
-            zip.extract("gene_panel.json", path=temp_dir.name)
-            zip.extract("analysis.zarr.zip", path=temp_dir.name)
-        raw_path = temp_dir.name
-
-    cells_parquet = os.path.join(raw_path, "cells.parquet")
-    cell_feature_h5 = os.path.join(raw_path, "cell_feature_matrix.h5")
+            raw_path = temp_dir.name
+            for file in zip.namelist():
+                if any(subfile in file for subfile in ["cell_feature_matrix.h5", "cells.parquet", "experiment.xenium", "gene_panel.json", "analysis.zarr.zip"]):
+                    zip.extract(file, path=raw_path)
+                    if file.endswith("cells.parquet"):
+                        cells_parquet = os.path.join(raw_path, file)
+                    elif file.endswith("cell_feature_matrix.h5"):
+                        cell_feature_h5 = os.path.join(raw_path, file)
+                    elif file.endswith("experiment.xenium"):
+                        experiment_xenium = os.path.join(raw_path, file)
+                    elif file.endswith("gene_panel.json"):
+                        gene_panel = os.path.join(raw_path, file)
+    else:
+       for file in os.listdir(raw_path):
+            if file.endswith("cells.parquet"):
+                cells_parquet = os.path.join(raw_path, file)
+            elif file.endswith("cell_feature_matrix.h5"):
+                cell_feature_h5 = os.path.join(raw_path, file)
+            elif file.endswith("experiment.xenium"):
+                experiment_xenium = os.path.join(raw_path, file)
+            elif file.endswith("gene_panel.json"):
+                gene_panel = os.path.join(raw_path, file)
 
     # read cell-feature matrix
     print(f"[+] Reading cell-feature matrix {cell_feature_h5}")
@@ -75,11 +88,9 @@ def pre_process_10x_xenium(raw_path):
     adata.obs = adata.obs.drop(columns=["x_centroid", "y_centroid"])
 
     # record xenium experiment and gene panel information
-    experiment_xenium = os.path.join(raw_path, "experiment.xenium")
     print(f"[+] Reading experiment {experiment_xenium}")
     with open(experiment_xenium, "rt") as f:
         adata.uns["experiment.xenium"] = f.read()
-    gene_panel = os.path.join(raw_path, "gene_panel.json")
     print(f"[+] Reading gene panel {gene_panel}")
     with open(gene_panel, "rt") as f:
         adata.uns["gene_panel.json"] = f.read()
