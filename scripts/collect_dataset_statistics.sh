@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cohort_name="human_cohort2_2m"
-# cohort_name="human_cohort2_10m"
-# cohort_name="human_cohort1_50m"
+# cohort_name="human_cohort1_2m"
+# cohort_name="human_cohort1_10m"
+cohort_name="human_cohort1_50m"
 
 # File containing the list of DATASETS names
 DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/scripts/${cohort_name}_dataset_names.txt"
