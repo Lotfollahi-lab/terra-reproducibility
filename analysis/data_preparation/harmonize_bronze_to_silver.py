@@ -389,41 +389,47 @@ def main(config: Dict):
     # -------------------- Download (if necessary) ------------------------------
     # if files are online and have not been previously downloaded, download them
     if config["dataset"]["source"] == 'online':
-        raw_zipfile_paths = download_zipfiles(
+        raw_file_paths = download_zipfiles(
                                 input_directory,
                                 **config["dataset"]["download_params"]
                             )
+    elif config["dataset"]["source"] == 'directories':
+        raw_file_paths = [path for path in input_directory.glob("*") if path.is_dir()]
     else:
-        # check if all files in input directory are zip files or directories
-        if all([i.suffix == '.zip' for i in list(input_directory.glob('*'))]):
-            raw_zipfile_paths = list(input_directory.glob("*"))
-        elif all([i.is_dir() for i in list(input_directory.glob('*'))]):
-            raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
-        elif all([i.suffix == '.h5ad' for i in list(input_directory.glob('*'))]):
-            h5ad_files = list(input_directory.glob("**/*.h5ad"))
-        else:
-            raise ValueError("Input directory should contain either all zip files, all h5ad files or all directories.")
+        pass
+    # else:
+    #     # check if all files in input directory are zip files or directories
+    #     if all([i.suffix == '.zip' for i in list(input_directory.glob('*'))]):
+    #         raw_zipfile_paths = list(input_directory.glob("*"))
+    #     elif all([i.is_dir() for i in list(input_directory.glob('*'))]):
+    #         raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
+    #     elif all([i.suffix == '.h5ad' for i in list(input_directory.glob('*'))]):
+    #         h5ad_files = list(input_directory.glob("**/*.h5ad"))
+    #     else:
+    #         raise ValueError("Input directory should contain either all zip files, all h5ad files or all directories.")
 
     # ------------------ Extract AnnData from ZipFiles --------------------------
+
+    h5ad_files = list(input_directory.glob("**/*.h5ad"))
 
     # create raw h5ad from raw zip file or load it if already exists
     if len(h5ad_files) == 0 or config["dataset"]["overwrite"]:
         if len(h5ad_files) == 0:
             print("No bronze (raw) .h5ad files found.")
-        elif config["dataset"]["overwrite"]:
+        if config["dataset"]["overwrite"]:
             print("Overwriting previously existing bronze (raw) .h5ad files...")
         
-        for raw_zipfile_path in raw_zipfile_paths:
-            print(f"Extracting bronze (raw) .h5ad from {raw_zipfile_path}...")
-            adata = pre_process(
-                        raw_zipfile_path,
-                        uns_params['assay'],
-                    )
-            print("Raw adata:")
-            print(adata)
-            raw_adata_fname = input_directory / f"{raw_zipfile_path.stem}.h5ad"
-            print(f"Writing to file: {raw_adata_fname}")
-            adata.write(raw_adata_fname)
+            for raw_file_path in raw_file_paths:
+                print(f"Extracting bronze (raw) .h5ad from {raw_file_path}...")
+                adata = pre_process(
+                            raw_file_path,
+                            uns_params['assay'],
+                        )
+                print("Raw adata:")
+                print(adata)
+                raw_adata_fname = input_directory / f"{raw_file_path.stem}.h5ad"
+                print(f"Writing to file: {raw_adata_fname}")
+                adata.write(raw_adata_fname)
     else:
         print("Using existing bronze (raw) .h5ad files...")
 

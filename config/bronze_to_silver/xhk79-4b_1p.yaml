@@ -1,14 +1,14 @@
 experiment:
   name: xhk79-4b_1p
   description: Xenium Human Kidney internal (dataset-id 79) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  study: Xenium Human Kidney 1
+  study: Xenium Human Kidney 1 from Menna
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
   overwrite: false
-  source: offline
+  source: directories
   download_params:
     redownload: false
     urls: []

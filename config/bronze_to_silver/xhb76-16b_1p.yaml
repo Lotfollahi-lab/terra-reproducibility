@@ -1,5 +1,5 @@
 experiment:
-  name: xhc76-16b_1p
+  name: xhb76-16b_1p
   description: Xenium Human Caudate putamen(dataset-id 76) | 16 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: Mats & Sergio Xenium
 
@@ -39,7 +39,10 @@ harmonization:
   batch:
     split_by_batch: false
     sample_batch_map: {}
-  key_mappings: {}
+  key_mappings: {
+    X_coordinate: 'x_centroid',
+    Y_coordinate: 'y_centroid',
+  }
   misc:
     min_genes: 10
 

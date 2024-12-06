@@ -8,9 +8,9 @@ paths:
 
 dataset:
   overwrite: false
-  source: offline
+  source: directories
   download_params:
-    redownload: fals
+    redownload: false
     urls: []
   file_names:
     - GSM7473682

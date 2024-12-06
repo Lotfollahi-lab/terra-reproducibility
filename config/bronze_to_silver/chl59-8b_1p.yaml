@@ -1,5 +1,5 @@
 experiment:
-  name: chn59-8b_1p
+  name: chl59-8b_1p
   description: CosMx Human NSCLC(dataset-id 59) | 8 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
   study: Nanostring CosMx SMI Datasets
 

@@ -19,6 +19,7 @@ xhl40-2b_2p
 xhl41-2b_1p
 xhb42-3b_1p
 xht43-2b_1p
+xhs44-6b_1p
 xhc45-1b_1p
 xhl46-1b_1p
 xho47-1b_1p
@@ -29,10 +30,13 @@ xhc51-1b_1p
 xhd52-1b_1p
 xhl53-1b_1p
 xho54-1b_1p
+xhc55-3b_1p
+xhs62-1b_1p
+xhb76-16b_1p
+xhk79-4b_1p
 xhb1003-1b_1p
 xhln1004-1b_1p
 xhl1005-1b_1p
-xhsc1006-2b_1p
 
 xhs1000-39b_1p
 xhb1002-76b_3p
@@ -49,5 +53,7 @@ mhl63-10b_1p
 
 chb56-1b_1p
 chl57-2b_1p
+chl59-8b_1p
+chc61-9b_1p
 
 chr78-11b_1p
