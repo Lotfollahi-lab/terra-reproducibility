@@ -399,11 +399,12 @@ def main(config: Dict):
             raw_zipfile_paths = list(input_directory.glob("*"))
         elif all([i.is_dir() for i in list(input_directory.glob('*'))]):
             raw_zipfile_paths = [path for path in input_directory.glob("*") if path.is_dir()]
+        elif all([i.suffix == '.h5ad' for i in list(input_directory.glob('*'))]):
+            h5ad_files = list(input_directory.glob("**/*.h5ad"))
         else:
-            raise ValueError("Input directory should contain either all zip files or all directories.")
+            raise ValueError("Input directory should contain either all zip files, all h5ad files or all directories.")
 
     # ------------------ Extract AnnData from ZipFiles --------------------------
-    h5ad_files = list(input_directory.glob("**/*.h5ad"))
 
     # create raw h5ad from raw zip file or load it if already exists
     if len(h5ad_files) == 0 or config["dataset"]["overwrite"]:
