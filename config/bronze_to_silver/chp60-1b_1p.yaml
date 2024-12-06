@@ -8,7 +8,7 @@ paths:
 
 dataset:
   overwrite: false
-  source: online
+  source: offline
   download_params:
     redownload: false
     urls:

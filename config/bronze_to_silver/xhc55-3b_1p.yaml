@@ -8,17 +8,14 @@ paths:
 
 dataset:
   overwrite: false
-  source: online
+  source: offline
   download_params:
     redownload: false
-    urls:
-      - .nan
-      - .nan
-      - .nan
+    urls: []
   file_names:
-    - Xenium_V1_Human_Colon_Cancer_P1_CRC_Add_on_FFPE
-    - Xenium_V1_Human_Colon_Cancer_P2_CRC_Add_on_FFPE
-    - Xenium_V1_Human_Colon_Cancer_P5_CRC_Add_on_FFPE
+    - Xenium_V1_Human_Colon_Cancer_P1_CRC_Add_on_FFPE_outs
+    - Xenium_V1_Human_Colon_Cancer_P2_CRC_Add_on_FFPE_outs
+    - Xenium_V1_Human_Colon_Cancer_P5_CRC_Add_on_FFPE_outs
 
 harmonization:
   uns:

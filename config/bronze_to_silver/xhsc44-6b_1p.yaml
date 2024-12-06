@@ -1,0 +1,38 @@
+experiment:
+  name: xhsc44-6b_1p
+  description: Xenium Human Spinal Cord MS (dataset-id 44) | 6 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Cellular architecture of evolving neuroinflammatory lesions and multiple sclerosis pathology
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names: []
+
+harmonization:
+  uns:
+    dataset_id: 44
+    assay: xenium
+    species: homo_sapiens
+    tissue: spinal_cord
+  batch:
+    batch: {
+    'split_by_batch': True,
+    'batch_key': 'library_id',
+    'sample_batch_map': {
+                        'Active-C_2013-019': 0,
+                        'Active-C_2017-100': 1,
+                        'Ctrl-C_2012-071': 2,
+                        'Ctrl-C_2017-16': 3,
+                        'Inactive-C_2007-069': 4,
+                        'Inactive-C_2012-078': 5
+                        }    
+  key_mappings: {}
+  misc:
+    min_genes: 10
+
