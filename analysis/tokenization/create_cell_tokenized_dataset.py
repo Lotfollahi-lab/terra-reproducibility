@@ -9,7 +9,7 @@ CellNeighborhoodTokenizer
 
 CellGraphTokenizer
 .. terminal
-    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-graph-tokenizer/cell-graph-tokenizer_sss2-1b_1p.yaml --override overwrite=False
+    >>> python analysis/tokenization/create_cell_tokenized_dataset.py --config_file config/cell-graph-tokenizer/sss2-1b_1p.yaml --override overwrite=False
 
 Description
 ----------
@@ -603,7 +603,10 @@ def main(config: Dict):
 
     # Configure tokenizer paths
     tokenizer_directory_path = data_directory_path / "tokenizer"
-    tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
+    try:
+        tokenizer_folder_path = tokenizer_directory_path / tokenizer / config["tokenization"]["token_dict_experiment_name"]
+    except:
+        tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
 
@@ -689,7 +692,7 @@ def main(config: Dict):
                             tissue_key_list=tissue_keys,
                         )
         token_dict_end = time.time()
-        print(f"Time taken to create token dictionary: {token_dict_start - token_dict_end:.2f} seconds.")
+        print(f"Time taken to create token dictionary: {token_dict_end - token_dict_start:.2f} seconds.")
 
         current, peak = tracemalloc.get_traced_memory()
         tracemalloc.stop()
