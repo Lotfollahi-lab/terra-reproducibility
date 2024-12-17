@@ -73,5 +73,5 @@ for dataset_name, _ in dataset_names_df.iterrows():
     modified_yaml_str = '\n'.join(new_lines)
 
     # Write the modified YAML string to the file
-    with open(f'config/{tokenizer}/{dataset_name}.yaml', 'w') as outfile:
+    with open(f'config/{tokenizer}/{tokenizer}_{dataset_name}.yaml', 'w') as outfile:
         outfile.write(modified_yaml_str)
