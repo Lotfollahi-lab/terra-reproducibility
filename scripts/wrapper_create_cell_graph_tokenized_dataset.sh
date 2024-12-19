@@ -76,7 +76,7 @@ case $EXPERIMENT_NAME in
         ;;
     *)
         RAM="80G"
-        TIME="1:00"
+        TIME="4:00"
         CORES=4
         QUEUE="normal"
         ;;
@@ -85,7 +85,7 @@ esac
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
-OVERWRITE="${4:-True}"
+OVERWRITE="${4:-False}"
 
 # Set the configuration file
 CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
@@ -98,7 +98,7 @@ ERROR_FILE="${LOG_DIR}/${TOKENIZER_NAME}_${CORES}_%J.err"
 JOB_NAME="${EXPERIMENT_NAME}_${TOKENIZER_NAME}_${CORES}"
 
 echo "Log directory: ${LOG_DIR}"
-echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
+echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores, ${RAM} memory, ${TIME} time limit where token dictionary OVERWRITE = ${OVERWRITE}..."
 
 bsub \
     -G "${GROUP}" \
