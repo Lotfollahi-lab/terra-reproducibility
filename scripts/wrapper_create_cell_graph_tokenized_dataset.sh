@@ -56,6 +56,12 @@ case $EXPERIMENT_NAME in
         CORES=12
         QUEUE="normal"
         ;;
+    xhb1002-76b_1p)
+        RAM="250G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="normal"
+        ;;
     human_cohort1_2m)
         RAM="256G"
         TIME="48:00"
@@ -76,8 +82,8 @@ case $EXPERIMENT_NAME in
         ;;
     *)
         RAM="80G"
-        TIME="4:00"
-        CORES=4
+        TIME="12:00"
+        CORES=2
         QUEUE="normal"
         ;;
 esac
