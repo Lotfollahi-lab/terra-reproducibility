@@ -730,7 +730,6 @@ def main(config: Dict):
         print(f"Current memory usage is {(current / 10**6):.2f} MB.")
 
         n_gene_tokens = len(gene_list)
-        return
     # Set model input size based on tokenizer
     try:
         model_input_size = config["experiment"]["model_input_size"]

@@ -70,7 +70,7 @@ case $EXPERIMENT_NAME in
         ;;
     human_cohort1_50m)
         RAM="200G"
-        TIME="1:00"
+        TIME="2:00"
         CORES=4
         QUEUE="normal"
         ;;
