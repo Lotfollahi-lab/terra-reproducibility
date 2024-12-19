@@ -225,14 +225,16 @@ def create_token_keys(
             tissue_keys,
 
 
-def build_token_dictionary(token_dictionary_file: str,
-                                tokenizer: str,
-                                gene_list: List[str],
-                                batch_id_key_list: List[str],
-                                gene_panel_id_key_list: List[str],
-                                assay_key_list: List[str],
-                                species_key_list: List[str],
-                                tissue_key_list: List[str]) -> Dict:
+def build_token_dictionary(
+    token_dictionary_file: str,
+    tokenizer: str,
+    gene_list: List[str],
+    batch_id_key_list: List[str],
+    gene_panel_id_key_list: List[str],
+    assay_key_list: List[str],
+    species_key_list: List[str],
+    tissue_key_list: List[str],
+    ) -> Dict:
     """
     Build token dictionary for NicheJEPA.
     
@@ -267,31 +269,37 @@ def build_token_dictionary(token_dictionary_file: str,
     # e.g. token_dict = {'ENSG00000139618': 4, ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({gene_id: idx + 4 for idx, gene_id in enumerate(gene_list)})
+    token_dict.update({f'<dummy_gene_{i}>' : i + 2 for i in range(100)})
     
     # Add 1 token per batch_id in batch_id_key_list
     # e.g. token_dict = {'0_batch1': 4 + len(gene_list), ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({batch_id_key: idx + curr_token_dict_size for idx, batch_id_key in enumerate(batch_id_key_list)})
+    token_dict.update({f'<dummy_batch_{i}>' : i + 2 for i in range(100)})
     
     # Add 1 token per gene_panel_id in gene_panel_id_key_list
     # e.g. token_dict = {'gene_panel0': 4 + len(gene_list) + len(batch_id_key_list), ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({gene_panel_id_key: idx + curr_token_dict_size for idx, gene_panel_id_key in enumerate(gene_panel_id_key_list)})
+    token_dict.update({f'<dummy_gene_panel_{i}>' : i + 2 for i in range(100)})
     
     # Add 1 token per assay in assay_key_list
     # e.g. token_dict = {'merfish': 4 + len(gene_list) + len(batch_id_key_list) + len(gene_panel_id_key_list), ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({assay_key: idx + curr_token_dict_size for idx, assay_key in enumerate(assay_key_list)})
+    token_dict.update({f'<dummy_assay_{i}>' : i + 2 for i in range(10)})
     
     # Add 1 token per species in species_key_list
     # e.g. token_dict = {'mus_musculus': 4 + len(gene_list) + len(batch_id_key_list) + len(gene_panel_id_key_list) + len(assay_key_list), ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({species_key: idx + curr_token_dict_size for idx, species_key in enumerate(species_key_list)})
+    token_dict.update({f'<dummy_species_{i}>' : i + 2 for i in range(10)})
     
     # Add 1 token per tissue in tissues_key_list
     # e.g. token_dict = {'brain': 4 + len(gene_list) + len(batch_id_key_list) + len(gene_panel_id_key_list) + len(assay_key_list) + len(species), ...}
     curr_token_dict_size = len(token_dict)
     token_dict.update({tissue_key: idx + curr_token_dict_size for idx, tissue_key in enumerate(tissue_key_list)})
+    token_dict.update({f'<dummy_species_{i}>' : i + 2 for i in range(100)})
     
     # Add meta tokens
     curr_token_dict_size = len(token_dict)
@@ -300,6 +308,7 @@ def build_token_dictionary(token_dictionary_file: str,
                         'spt_assay': curr_token_dict_size + 2,
                         'spt_species': curr_token_dict_size + 3,
                         'spt_tissue': curr_token_dict_size + 4})
+    token_dict.update({f'<dummy_spt_{i}>' : i + 2 for i in range(10)})    
 
     with open(token_dictionary_file, "wb") as file:
         pickle.dump(token_dict, file)
