@@ -57,10 +57,10 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     xhb1002-76b_1p)
-        RAM="250G"
-        TIME="12:00"
-        CORES=12
-        QUEUE="normal"
+        RAM="650G"
+        TIME="48:00"
+        CORES=4
+        QUEUE="long"
         ;;
     human_cohort1_2m)
         RAM="256G"
@@ -80,10 +80,40 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="normal"
         ;;
-    *)
+    xhln1004-1b_1p)
+        RAM="300G"
+        TIME="24:00"
+        CORES=1
+        QUEUE="long"
+        ;;
+    chb56-1b_1p)
         RAM="80G"
-        TIME="12:00"
+        TIME="6:00"
+        CORES=1
+        QUEUE="normal"
+        ;;
+    chl57-2b_1p)
+        RAM="200G"
+        TIME="6:00"
         CORES=2
+        QUEUE="normal"
+        ;;
+    chl59-8b_1p)
+        RAM="100G"
+        TIME="6:00"
+        CORES=2
+        QUEUE="long"
+        ;;
+    chc61-9b_1p)
+        RAM="100G"
+        TIME="6:00"
+        CORES=2
+        QUEUE="long"
+        ;;
+    *)
+        RAM="200G"
+        TIME="12:00"
+        CORES=1
         QUEUE="normal"
         ;;
 esac
