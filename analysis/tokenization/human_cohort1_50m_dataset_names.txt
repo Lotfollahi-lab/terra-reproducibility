@@ -38,9 +38,24 @@ xhk79-4b_1p
 xhb1003-1b_1p
 xhln1004-1b_1p
 xhl1005-1b_1p
-
 xhs1000-39b_1p
-xhb1002-76b_3p
+
+xhb1002-AT3-1b_1p
+xhb1002-AT4-3b_1p
+xhb1002-AT5-1b_1p
+xhb1002-AT6-4b_1p
+xhb1002-AT10-7b_1p
+xhb1002-AT12-1b_1p
+xhb1002-AT13-2b_1p
+xhb1002-AT14-1b_1p
+xhb1002-AT16-15b_1p
+xhb1002-AT17-2b_1p
+xhb1002-AT18-2b_1p
+xhb1002-AT19-1b_1p
+xhb1002-AT20-2b_1p
+xhb1002-AT21-2b_1p
+xhb1002-AT23-9b_1p
+xhb1002-AT101-6b_1p
 
 mhb14-1b_1p
 mhc15-2b_1p
