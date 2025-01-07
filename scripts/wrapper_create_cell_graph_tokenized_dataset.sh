@@ -87,34 +87,40 @@ case $EXPERIMENT_NAME in
         QUEUE="long"
         ;;
     chb56-1b_1p)
-        RAM="80G"
-        TIME="6:00"
+        RAM="300G"
+        TIME="12:00"
         CORES=1
         QUEUE="normal"
         ;;
     chl57-2b_1p)
-        RAM="200G"
-        TIME="6:00"
+        RAM="300G"
+        TIME="24:00"
         CORES=2
-        QUEUE="normal"
+        QUEUE="long"
         ;;
     chl59-8b_1p)
-        RAM="100G"
-        TIME="6:00"
+        RAM="300G"
+        TIME="24:00"
         CORES=2
         QUEUE="long"
         ;;
     chc61-9b_1p)
         RAM="100G"
-        TIME="6:00"
+        TIME="24:00"
         CORES=2
+        QUEUE="long"
+        ;;
+    xhb1002-AT3-1b_1p)
+        RAM="50G"
+        TIME="6:00"
+        CORES=1
         QUEUE="long"
         ;;
     *)
         RAM="200G"
-        TIME="12:00"
-        CORES=1
-        QUEUE="normal"
+        TIME="24:00"
+        CORES=2
+        QUEUE="long"
         ;;
 esac
 
