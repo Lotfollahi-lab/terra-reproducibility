@@ -314,7 +314,10 @@ def harmonize_bronze_data_to_silver_data(
         print("Data is already split by batch.")
 
         # NOTE: this is hardcoded to assume that we don't have a sample_batch_map when split_by_batch is False
-        batch_id = 0
+        if len(batch_params['sample_batch_map']) > 0:
+            sample_batch_map = batch_params['sample_batch_map']
+        else:
+            batch_id = 0
         
         for file in files:
 
@@ -337,6 +340,10 @@ def harmonize_bronze_data_to_silver_data(
             except:
                 pass
 
+            if len(batch_params['sample_batch_map']) > 0:
+                batch_key = adata_batch.uns[batch_params['batch_key']]  # e.g. slideID
+                batch_id = sample_batch_map[batch_key]
+                
             uns_params['batch'] = f"batch{batch_id}"
 
             adata_batch = harmonize_batch(
