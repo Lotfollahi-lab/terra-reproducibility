@@ -488,7 +488,10 @@ def main(config: Dict):
     # Configure tokenizer paths
     # tokenizer_directory_path = Path(".") / "tokenizer"
     tokenizer_directory_path = data_directory_path / "tokenizer"
-    tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
+    try:
+        tokenizer_folder_path = tokenizer_directory_path / tokenizer / config["tokenization"]["token_dict_experiment_name"]
+    except:
+        tokenizer_folder_path = tokenizer_directory_path / tokenizer / experiment_name
     token_dictionary_file = tokenizer_folder_path / "token_dictionary.pkl"
     os.makedirs(tokenizer_folder_path, exist_ok=True)
 
@@ -581,13 +584,32 @@ def main(config: Dict):
                 raise ValueError("Please specify the number of tokens per cell.")
             adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # TODO: Fix the following code block to handle multiple batches of data
-            adata = aggregate_neighbors(adata,
-                                        n_neighs,
-                                        radius,
-                                        delaunay,
-                                        include_self_loop=False)
-            max_neighbors = int(
-                np.max(adata.obsp["spatial_connectivities"].sum(1)))
+            # TODO: Fix the following code block to handle multiple batches of data
+            # adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
+            # adata = aggregate_neighbors(adata,
+            #                             n_neighs,
+            #                             radius,
+            #                             delaunay,
+            #                             include_self_loop=False)
+            # max_neighbors = int(
+            #     np.max(adata.obsp["spatial_connectivities"].sum(1)))
+            max_neighbors = 0
+            for adata_batch in adata_batch_list:
+
+                adata_batch = aggregate_neighbors(
+                                adata_batch,
+                                n_neighs,
+                                radius,
+                                delaunay,
+                                include_self_loop=False
+                                )
+                
+                batch_max_neighbors = int(
+                    np.max(adata_batch.obsp["spatial_connectivities"].sum(1)))
+                print(f"Batch Max Neighbors: {batch_max_neighbors}")
+                if batch_max_neighbors > max_neighbors:
+                    max_neighbors = batch_max_neighbors 
+
             model_input_size = tokens_per_cell * (max_neighbors + 1)
 
     print(f"Model Input Size: {model_input_size}")

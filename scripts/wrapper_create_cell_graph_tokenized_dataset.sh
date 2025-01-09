@@ -68,6 +68,54 @@ case $EXPERIMENT_NAME in
         CORES=12
         QUEUE="long"
         ;;
+    chl59-8b_1p)
+        RAM="300G"
+        TIME="12:00"
+        CORES=2
+        QUEUE="long"
+        ;;
+    xhb1002-AT5-1b_1p)
+        RAM="300G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
+        ;;
+    xhb1002-AT6-4b_1p)
+        RAM="500G"
+        TIME="48:00"
+        CORES=2
+        QUEUE="long"
+        ;;
+    xhb1002-AT9-3b_1p)
+        RAM="500G"
+        TIME="24:00"
+        CORES=6
+        QUEUE="long"
+        ;;
+    xhb1002-AT10-7b_1p)
+        RAM="600G"
+        TIME="24:00"
+        CORES=2
+        QUEUE="long"
+        ;;
+    xhb1002-AT15-7b_1p)
+        RAM="600G"
+        TIME="24:00"
+        CORES=4
+        QUEUE="long"
+        ;;
+    xhb1002-AT23-9b_1p)
+        RAM="300G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
+        ;;
+    xho47-1b_1p)
+        RAM="500G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1
@@ -77,7 +125,7 @@ esac
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
-OVERWRITE="${4:-True}"
+OVERWRITE="${4:-False}"
 
 # Set the configuration file
 CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
