@@ -37,9 +37,12 @@ xhs1000-39b_1p
 xhb1002-AT3-1b_1p
 xhb1002-AT4-3b_1p
 xhb1002-AT5-1b_1p
+xhb1002-AT9-6b_1p
+xhb1002-AT10-7b_1p
 xhb1002-AT12-1b_1p
 xhb1002-AT13-2b_1p
 xhb1002-AT14-1b_1p
+xhb1002-AT15-10b_1p
 xhb1002-AT16-15b_1p
 xhb1002-AT17-2b_1p
 xhb1002-AT18-2b_1p

@@ -81,9 +81,9 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     xhb1002-AT6-4b_1p)
-        RAM="500G"
+        RAM="600G"
         TIME="48:00"
-        CORES=2
+        CORES=3
         QUEUE="long"
         ;;
     xhb1002-AT9-3b_1p)
@@ -92,10 +92,16 @@ case $EXPERIMENT_NAME in
         CORES=6
         QUEUE="long"
         ;;
+    xhb1002-AT9-6b_1p)
+        RAM="500G"
+        TIME="48:00"
+        CORES=3
+        QUEUE="long"
+        ;;
     xhb1002-AT10-7b_1p)
         RAM="600G"
-        TIME="24:00"
-        CORES=2
+        TIME="48:00"
+        CORES=4
         QUEUE="long"
         ;;
     xhb1002-AT15-7b_1p)
@@ -103,6 +109,12 @@ case $EXPERIMENT_NAME in
         TIME="24:00"
         CORES=4
         QUEUE="long"
+        ;;
+    xhb1002-AT15-10b_1p)
+        RAM="500G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
         ;;
     xhb1002-AT23-9b_1p)
         RAM="300G"
