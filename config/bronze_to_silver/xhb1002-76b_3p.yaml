@@ -1,0 +1,29 @@
+experiment:
+  name: "xhb1002-76b_3p"
+  description: "Xenium Human Brain  (dataset-id 1002) | 76 batch | 3 panel"
+  study: "GBM Data by Koen from Omer's Lab"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+  'dataset_id': 1002,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'brain'
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

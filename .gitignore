@@ -5,6 +5,7 @@ scgpt
 wandb
 artifacts
 logs
+analysis/statistics/results/
 
 *__pycache__*
 .ipynb_checkpoints

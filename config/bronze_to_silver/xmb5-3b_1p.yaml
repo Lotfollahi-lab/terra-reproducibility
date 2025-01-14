@@ -1,0 +1,35 @@
+experiment:
+  name: xmb5-3b_1p
+  description: Xenium Mouse Bone  (dataset-id 5) |  | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Mouse Bone Data with Custom Add-on Panel
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: .nan
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_mFemur_formic_acid_24hrdecal_section/Xenium_V1_mFemur_formic_acid_24hrdecal_section_outs.zip
+      - .nan
+      - .nan
+  file_names:
+    - Xenium_V1_mFemur_formic_acid_24hrdecal_section
+    - Xenium_V1_mFemur_EDTA_3daydecal_section
+    - Xenium_V1_mFemur_EDTA_PFA_3daydecal_section
+
+harmonization:
+  uns:
+    dataset_id: 5
+    assay: xenium
+    species: mus_musculus
+    tissue: bone
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

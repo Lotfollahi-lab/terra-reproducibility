@@ -584,7 +584,6 @@ def main(config: Dict):
                 raise ValueError("Please specify the number of tokens per cell.")
             adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # TODO: Fix the following code block to handle multiple batches of data
-            # TODO: Fix the following code block to handle multiple batches of data
             # adata = ad.concat(adata_batch_list, join="inner", index_unique="-")
             # adata = aggregate_neighbors(adata,
             #                             n_neighs,
