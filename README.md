@@ -2,6 +2,8 @@
 
 ## Datasets
 
+List of datasets: https://docs.google.com/spreadsheets/d/1bfdBZ1MZEVKz2-4Ge89zwe5jVT4qnXAndStmXmJehTo/edit?gid=1836124407#gid=1836124407
+
 `/lustre/scratch126/cellgen/team361/DATASETS/` houses all the data across experiments. An experiment is defined as a collection of anndata objects that may be from the same or different datasets, species, tissues, gene panels, and batches. 
 - `silver` -- contains preprocessed AnnData files
 - `gold` -- contains tokenized datasets
