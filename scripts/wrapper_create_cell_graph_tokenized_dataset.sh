@@ -51,8 +51,8 @@ case $EXPERIMENT_NAME in
         QUEUE="parallel"
         ;;
     xhs1000-39b_1p)
-        RAM="80G"
-        TIME="2:00"
+        RAM="256G"
+        TIME="48:00"
         CORES=12
         QUEUE="long"
         ;;
