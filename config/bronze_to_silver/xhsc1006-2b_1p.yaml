@@ -1,0 +1,34 @@
+experiment:
+  name: xhsc1006-2b_1p
+  description: Xenium TCR (dataset-id 1006) | 1 batch | 1 panel
+  study: Mats & Sergio Xenium
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - human_spinal_chord_active.h5ad
+    - human_spinal_chord_inactive.h5ad
+
+harmonization:
+  uns:
+    dataset_id: 1006
+    assay: xenium
+    species: homo_sapiens
+    tissue: spinal cord
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {
+    'X_coordinate': 'x_centroid',
+    'Y_coordinate': 'y_centroid',
+  }
+  misc:
+    min_genes: 10
+

@@ -1,0 +1,30 @@
+experiment:
+  name: xmp11-1b_1p
+  description: Xenium Mouse Pup (dataset-id 11) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Whole Mouse Pup (FFPE) with 5K Mouse Pan Tissue and Pathways Panel and Snap25a/Snap25b Add-o
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: .nan
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_Prime_Mouse_Pup_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 11
+    assay: xenium
+    species: mus_musculus
+    tissue: multicellular_organism
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

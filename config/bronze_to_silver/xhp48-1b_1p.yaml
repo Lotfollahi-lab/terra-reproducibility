@@ -1,0 +1,31 @@
+experiment:
+  name: xhp48-1b_1p
+  description: Xenium Human Prostate (Prime)(dataset-id 48) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: 'Preview Data: FFPE Human Prostate Adenocarcinoma with 5K Human Pan Tissue and Pathways Panel'
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/3.0.0/Xenium_Prime_Human_Prostate_FFPE/Xenium_Prime_Human_Prostate_FFPE_outs.zip
+  file_names:
+    - Xenium_Prime_Human_Prostate_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 48
+    assay: xenium
+    species: homo_sapiens
+    tissue: prostate
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

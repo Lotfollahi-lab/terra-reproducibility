@@ -1,0 +1,48 @@
+experiment:
+  name: xhb76-16b_1p
+  description: Xenium Human Caudate putamen(dataset-id 76) | 16 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Mats & Sergio Xenium
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - 1837C
+    - 1837P
+    - 1886C
+    - 1886P
+    - 1893C
+    - 1893P
+    - 5730C
+    - 5730P
+    - 1264C
+    - 1264P
+    - 1310C
+    - 1310P
+    - 1816C
+    - 1816P
+    - 5331C
+    - 5331P
+
+harmonization:
+  uns:
+    dataset_id: 76
+    assay: xenium
+    species: homo_sapiens
+    tissue: brain
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {
+    X_coordinate: 'x_centroid',
+    Y_coordinate: 'y_centroid',
+  }
+  misc:
+    min_genes: 10
+
