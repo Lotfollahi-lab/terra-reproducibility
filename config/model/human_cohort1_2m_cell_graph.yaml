@@ -1,21 +1,22 @@
 data:
   dataset_name: 'human_cohort1_2m'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/human_cohort1_2m'
-  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort1_2m/human_cohort1_2m_32_None_shifted_log_knn_10_1408.dataset'
+  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort1_2m/human_cohort1_2m_32_None_shifted_log_knn_10_1408.dataset'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort1_2m/human_cohort1_2m_32_read_depth_shifted_log_knn_10_1408.dataset'
   tokenizer_type: 'cell_graph'
-  n_special_values: 46 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/human_cohort1_2m/token_dictionary.pkl')
+  n_special_values: 55 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/human_cohort1_2m/token_dictionary.pkl')
   random_state: 0
   sample_subset: False
   split: 0
   test_batch_ids: ['1000_'] # ['1000_'], ['1000_batch11', '1000_batch19', '1000_batch32']
   stratify: False
-  vocab_size: 5419 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/human_cohort1_2m/token_dictionary.pkl')
+  vocab_size: 5428 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/human_cohort1_2m/token_dictionary.pkl')
   seq_len_cell: 64
   seq_len_neighborhood: 640
   n_segments: 11 # number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
   batch_size: 32
-  num_workers: 6 
+  num_workers: 12 
   pin_memory: True
 meta:
   add_cls: True
@@ -40,9 +41,9 @@ mask:
   #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
   #  # 'Matrix', 'null'
   #  - [0, 1, 0, 1] # cls
-  #  - [0, 1, 0, 1] # genes
+  #  - [1, 1, 0, 0] # genes
   controlled_attention_pattern: null
-  controlled_attention_type: 'pred'
+  controlled_attention_type: '' # 'enc'
   restrict_special_attention: True
 optimization:
   warmup: 3

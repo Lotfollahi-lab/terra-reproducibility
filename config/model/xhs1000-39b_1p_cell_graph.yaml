@@ -1,7 +1,7 @@
 data:
   dataset_name: 'xhs1000-39b_1p'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/xhs1000-39b_1p'
-  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_16_None_shifted_log_14337.dataset'
+  token_dict_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/xhs1000-39b_1p/token_dictionary.pkl'
   tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_16_None_shifted_log_knn_10_1408.dataset'
   tokenizer_type: 'cell_graph'
   n_special_values: 43 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/xhs1000-39b_1p/token_dictionary.pkl')
@@ -19,7 +19,7 @@ data:
   num_workers: 6 
   pin_memory: True
 meta:
-  add_cls: True
+  add_cls: True # True, False
   gt_type: 'counts' # 'rank', 'counts'
   enc_depth: 3
   enc_emb_dim: 768
@@ -43,8 +43,8 @@ mask:
   #  - [0, 1, 0, 1] # cls
   #  - [0, 1, 0, 1] # genes
   controlled_attention_pattern: null
-  controlled_attention_type: 'pred'
-  restrict_special_attention: True
+  controlled_attention_type: '' # 'pred'
+  restrict_special_attention: True # True, False
 optimization:
   warmup: 3
   epochs: 100
