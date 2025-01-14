@@ -1,0 +1,26 @@
+experiment:
+  experiment_name: "human_cohort1_2m"
+  experiment_description: "Xenium human cohort 1 (approximately 2.5m cells)"
+  tokenizer: "cell-neighborhood-tokenizer"
+  overwrite: True
+
+tokenization:
+  use_generator: True
+  norm_method: "shifted_log"
+  norm_factor: null
+  prenormalize: False
+  processing_mode: "parallel"
+  num_shards: 32
+  keep_in_memory: False
+  n_neighs: 20 # 10, 20
+  radius: null
+  delaunay: False
+
+wandb:
+  project: "NicheJEPA"
+  job_type: "create-tokenized-dataset"
+  save_artifact: False
+  mode: "offline"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"

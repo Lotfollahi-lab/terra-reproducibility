@@ -7,7 +7,7 @@
 #BSUB -R "span[ptile=6]"
 #BSUB -M 128000  # RAM memory part 2. Default: 100MB
 #BSUB -R 'select[mem>128000] rusage[mem=128000]' # RAM memory part 1. Default: 100MB
-#BSUB -n 6 # number of cores
+#BSUB -n 12 # number of cores
 
 # Load modules
 . /usr/share/modules/init/bash
@@ -18,6 +18,6 @@ conda activate nichejepa_new
 cd /lustre/scratch126/cellgen/team361/sb75/nichejepa
 
 # Run main script
-python main.py --fname configs/merfish_2_gene_panels_new.yaml --devices cuda:0 cuda:1
+python main.py --fname /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/config/model/xhs1000-39b_1p_cell_neighborhood.yaml --devices cuda:0 cuda:1
 
 echo "Finished script." 
