@@ -13,7 +13,6 @@ from download_utils import download_zipfiles
 from extract_utils import pre_process
 
 
-
 def create_gene_ensembl_map_dict(
         species: str, 
         release: int = 111
@@ -74,7 +73,6 @@ def harmonize_X_gene_counts(adata):
         
     elif adata.X is not None:
         print("adata.X is present.")
-
         if not isinstance(adata.X, sp.csr_matrix):
             adata.X = sp.csr_matrix(adata.X)
 
@@ -101,7 +99,7 @@ def harmonize_X_gene_counts(adata):
     adata.X = adata.X.astype(int)
     print(adata.X)
     
-    # check that adata.X is sp.csr_matrix if it is not already
+    # check that adata.X is sp.csr_matrix
     assert isinstance(adata.X, sp.csr_matrix), "adata.X is not a sp.csr_matrix."
     assert np.all(np.mod(adata.X.data, 1) == 0), "Not all entries in adata.X are integers."
     assert adata.X.dtype == int, "adata.X is not of int dtype."
@@ -206,6 +204,7 @@ def harmonize_batch(
         gene_ensembl_map_dict,
     ):
     print(f"Raw adata shape: {adata_batch.shape}")
+    adata_batch = adata_batch.copy()
     
     adata_batch = harmonize_X_gene_counts(
                     adata_batch
@@ -341,7 +340,7 @@ def harmonize_bronze_data_to_silver_data(
                 pass
 
             if len(batch_params['sample_batch_map']) > 0:
-                batch_key = adata_batch.uns[batch_params['batch_key']]  # e.g. slideID
+                batch_key = adata_batch.uns[batch_params['batch_key']]
                 batch_id = sample_batch_map[batch_key]
                 
             uns_params['batch'] = f"batch{batch_id}"
@@ -367,7 +366,7 @@ def harmonize_bronze_data_to_silver_data(
 
 
 def main(config: Dict):
-    # -------------------- Parse Args from Config ------------------------------
+    # -------------------- Parse args from config ------------------------------
     # get experiment params
     experiment_name = config["experiment"]["name"]
     print(f"Experiment Name: {experiment_name}")
@@ -397,9 +396,8 @@ def main(config: Dict):
     # if files are online and have not been previously downloaded, download them
     if config["dataset"]["source"] == 'online':
         raw_file_paths = download_zipfiles(
-                                input_directory,
-                                **config["dataset"]["download_params"]
-                            )
+            input_directory,
+            **config["dataset"]["download_params"])
     elif config["dataset"]["source"] == 'directories':
         raw_file_paths = [path for path in input_directory.glob("*") if path.is_dir()]
     else:
@@ -423,20 +421,19 @@ def main(config: Dict):
     if len(h5ad_files) == 0 or config["dataset"]["overwrite"]:
         if len(h5ad_files) == 0:
             print("No bronze (raw) .h5ad files found.")
-        if config["dataset"]["overwrite"]:
+        elif config["dataset"]["overwrite"]:
             print("Overwriting previously existing bronze (raw) .h5ad files...")
-        
-            for raw_file_path in raw_file_paths:
-                print(f"Extracting bronze (raw) .h5ad from {raw_file_path}...")
-                adata = pre_process(
-                            raw_file_path,
-                            uns_params['assay'],
-                        )
-                print("Raw adata:")
-                print(adata)
-                raw_adata_fname = input_directory / f"{raw_file_path.stem}.h5ad"
-                print(f"Writing to file: {raw_adata_fname}")
-                adata.write(raw_adata_fname)
+        for raw_file_path in raw_file_paths:
+            print(f"Extracting bronze (raw) .h5ad from {raw_file_path}...")
+            adata = pre_process(
+                        raw_file_path,
+                        uns_params['assay'],
+                    )
+            print("Raw adata:")
+            print(adata)
+            raw_adata_fname = input_directory / f"{raw_file_path.stem}.h5ad"
+            print(f"Writing to file: {raw_adata_fname}")
+            adata.write(raw_adata_fname)
     else:
         print("Using existing bronze (raw) .h5ad files...")
 

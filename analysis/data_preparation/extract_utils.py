@@ -98,17 +98,19 @@ def pre_process_10x_xenium(raw_path):
     return adata
 
 
-def pre_process_cosmx(raw_path):
+def pre_process_cosmx(raw_path: str) -> sc.AnnData:
     """
-    Preprocesses raw data from NanoString CosMx
+    Preprocesses raw data from NanoString CosMx.
 
     Parameters:
     ----------
-    raw_path (str): Path of the folder with NanoString CosMx zip file
+    raw_path:
+        Path of the NanoString CosMx 'zip' or 'tar.gz' file.
     
     Returns:
     -------
-    adata: AnnData object with the NanoString CosMx data
+    adata:
+        AnnData object with the NanoString CosMx data.
     """
     raw_path = str(raw_path)
     print(f"[+] Reading {raw_path}")
@@ -169,7 +171,7 @@ def pre_process_cosmx(raw_path):
     adata = adata[common_obsnames].copy()
     adata.obs = meta
 
-    adata.obsm["spatial"] = adata.obs[["CenterX_local_px", "CenterY_local_px"]].copy().to_numpy()
+    adata.obsm["spatial"] = adata.obs[["CenterX_global_px", "CenterY_global_px"]].copy().to_numpy()
     
     return adata
 
