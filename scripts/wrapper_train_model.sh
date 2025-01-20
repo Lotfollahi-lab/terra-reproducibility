@@ -74,7 +74,7 @@ case $EXPERIMENT_NAME in
         N_GPU=1
         ;;
     human_cohort1_50m)
-        RAM="128G"
+        RAM="256G"
         TIME="96:00"
         CORES=24
         QUEUE="gpu-lotfollahi"
@@ -102,6 +102,7 @@ JOB_NAME="${EXPERIMENT_NAME}_${GT_TYPE}_${CORES}"
 
 echo "Log directory: ${LOG_DIR}"
 echo "Training ${GT_TYPE} model on ${EXPERIMENT_NAME} dataset using ${CORES} cores and ${N_GPU} GPUs..."
+echo "Running script ${SCRIPT} with config file ${CONFIG_FILE} and devices ${DEVICES}..."
 
 bsub \
     -G "${GROUP}" \

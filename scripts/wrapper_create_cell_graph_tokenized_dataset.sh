@@ -80,11 +80,29 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="normal"
         ;;
-    xhb1002-AT6-4b_1p)
-        RAM="600G"
+    xhb1002-AT6-1-1b_1p)
+        RAM="512G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="gpu-basement"
+        ;;
+    xhb1002-AT6-2-1b_1p)
+        RAM="512G"
+        TIME="48:00"
+        CORES=3
+        QUEUE="gpu-basement"
+        ;;
+    xhb1002-AT6-3-1b_1p)
+        RAM="256G"
+        TIME="48:00"
+        CORES=3
+        QUEUE="gpu-basement"
+        ;;
+    xhb1002-AT6-4-1b_1p)
+        RAM="512G"
+        TIME="48:00"
+        CORES=3
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT9-3b_1p)
         RAM="500G"
@@ -122,11 +140,77 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="normal"
         ;;
-    xho47-1b_1p)
-        RAM="500G"
+    xho47-S1-1b_1p)
+        RAM="512G"
+        TIME="36:00"
+        CORES=1
+        QUEUE="gpu-basement"
+        ;;
+    xho47-S2-1b_1p)
+        RAM="600G"
+        TIME="36:00"
+        CORES=1
+        QUEUE="gpu-basement"
+        ;;
+    mhh22-3b_1p)
+        RAM="64G"
         TIME="12:00"
         CORES=4
         QUEUE="normal"
+        ;;
+    chp60-1b_1p)
+        RAM="64G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
+        ;;
+    shp75-4b_1p)
+        RAM="64G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
+        ;;
+    xhsc1006-2b_1p)
+        RAM="64G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    xhc1001-1b_1p)
+        RAM="64G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    mhl80-8b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    xhb81-1b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    xhl82-2b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    mhb83-1b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    chl57-2b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
         ;;
     *)
         echo "Invalid dataset name"
@@ -152,11 +236,23 @@ JOB_NAME="${EXPERIMENT_NAME}_${TOKENIZER_NAME}_${CORES}"
 echo "Log directory: ${LOG_DIR}"
 echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 
+# Initialize GPU parameter
+GPU_PARAM=""
+
+# Check if the queue name contains 'gpu'
+if [[ "$QUEUE" == *gpu* ]]; then
+    GPU_PARAM="-gpu num=1"
+    echo "Queue requires GPUs. Requesting 1 GPU(s)."
+fi
+
+echo $GPU_PARAM
+
 bsub \
     -G "${GROUP}" \
     -n "${CORES}" \
     -q "${QUEUE}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
+    ${GPU_PARAM} \
     -W "${TIME}" \
     -cwd "${CWD}" \
     -o "${OUTPUT_FILE}" \

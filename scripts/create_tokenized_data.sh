@@ -5,9 +5,11 @@ OVERWRITE=$2  # overwrite the token dictionary files
 
 # Modify to match your python environment activation command(s)
 if [ "$USER" == "am84" ]; then
+    source /etc/profile.d/modules.sh
     module load cellgen/conda
     conda activate nichejepa-reproducibility
 elif [ "$USER" == "sb75" ]; then
+    source /etc/profile.d/modules.sh
     module load cellgen/conda
     conda activate nichejepa_new
 fi

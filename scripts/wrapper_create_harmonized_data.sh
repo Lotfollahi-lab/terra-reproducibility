@@ -9,25 +9,19 @@ SCRIPT="scripts/create_harmonized_data.sh"
 case $EXPERIMENT_NAME in
     xhb1002-76b_3p)
         RAM="80G"
-        TIME="0:30"
+        TIME="1:00"
         CORES=1
         QUEUE="normal"
         ;;
     xho47-1b_1p)
         RAM="80G"
-        TIME="0:30"
-        CORES=1
-        QUEUE="normal"
-        ;;
-    xhs1000-39b_1p)
-        RAM="25G"
-        TIME="0:30"
+        TIME="1:00"
         CORES=1
         QUEUE="normal"
         ;;
     *)
-        RAM="25G"
-        TIME="0:10"
+        RAM="50G"
+        TIME="1:00"
         CORES=1
         QUEUE="normal"
         ;;
