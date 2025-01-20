@@ -1,6 +1,6 @@
 experiment:
-  experiment_name: xhb1002-AT6-4b_1p
-  experiment_description: xhb1002-AT6-4b_1p (dataset-id 1002) | 4 batch | 1 panel
+  experiment_name: xho47-S1-1b_1p
+  experiment_description: xho47-S1-1b_1p (dataset-id 47) | 1 batch | 1 panel
   tokenizer: cell-graph-tokenizer
   overwrite: false
 

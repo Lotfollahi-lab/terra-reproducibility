@@ -1,6 +1,6 @@
 experiment:
   name: mhb14-1b_1p
-  description: MERSCOPE Human Breast Cancer (dataset-id 14) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: MERSCOPE Human Breast Cancer (dataset-id 14) | 1 batch | 1 panel | Preprocess to silver
   study: MERSCOPE_FFPE_Human_Immuno-Oncology
 
 paths:

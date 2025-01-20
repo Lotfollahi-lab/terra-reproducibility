@@ -1,6 +1,6 @@
 experiment:
   name: xho47-1b_1p
-  description: Xenium Human Ovary (Prime)(dataset-id 47) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Human Ovary (Prime)(dataset-id 47) | 1 batch | 1 panel | Download from 10x Genomics to bronze and preprocess to silver. Manually split into two sections (S1 and S2) because of space.
   study: Fresh Frozen Human Ovarian Adenocarcinoma with 5K Human Pan Tissue and Pathways Panel
 
 paths:

@@ -1,13 +1,13 @@
 experiment:
   name: chl59-8b_1p
-  description: CosMx Human NSCLC(dataset-id 59) | 8 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: CosMx Human NSCLC (dataset-id 59) | 8 batch | 1 panel | Download from NanoString to bronze and preprocess to silver
   study: Nanostring CosMx SMI Datasets
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  overwrite: false
+  overwrite: true
   source: online
   download_params:
     redownload: false

@@ -1,14 +1,14 @@
 experiment:
   name: chp60-1b_1p
-  description: CosMx Human Pancreas(dataset-id 60) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: CosMx Human Pancreas(dataset-id 60) | 1 batch | 1 panel | Download from NanoString to bronze, manual extraction because of zip compression type, and preprocess to silver
   study: Nanostring CosMx SMI Datasets
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  overwrite: false
-  source: offline
+  overwrite: true
+  source: directories # manually downloaded and extracted because of ZIP compression type
   download_params:
     redownload: false
     urls:

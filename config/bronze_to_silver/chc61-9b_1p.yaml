@@ -1,13 +1,13 @@
 experiment:
   name: chc61-9b_1p
-  description: CosMx Human Colon IBD Colonic Mucosa (dataset-id 61) | 9 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: CosMx Human Colon IBD Colonic Mucosa (dataset-id 61) | 9 batch | 1 panel | Preprocess to silver
   study: IBD CosMx NanoString data from colonic mucosa - Garrido-Trigo23
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  overwrite: false
+  overwrite: true
   source: directories
   download_params:
     redownload: false

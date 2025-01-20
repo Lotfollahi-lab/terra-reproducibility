@@ -21,7 +21,7 @@ harmonization:
     dataset_id: 1006
     assay: xenium
     species: homo_sapiens
-    tissue: spinal cord
+    tissue: spinal_cord
   batch:
     split_by_batch: false
     sample_batch_map: {}

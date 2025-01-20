@@ -1,16 +1,15 @@
 data:
   dataset_name: 'mmb0-1b_smb1-1b_1p'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/mmb0-1b_smb1-1b_1p'
+  token_dict_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_8_read_depth_shifted_log_1793.dataset'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_8_None_shifted_log_1793.dataset'
   tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/mmb0-1b_smb1-1b_1p_None_shifted_log_knn_10_1793.dataset'
   tokenizer_type: 'cell_graph'
-  n_special_values: 7
   random_state: 0
   sample_subset: False
   split: 0.2
   stratify: False
-  vocab_size: 1769 # from token dictionary ('/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/mmb0-1b_smb1-1b_1p/token_dictionary.pkl')
   seq_len_cell: 64
   seq_len_neighborhood: 640
   n_segments: 11 # number of unique segment tokens (1 index and 10 neighbor gene segments)
@@ -45,14 +44,14 @@ mask:
   #controlled_attention_pattern_pred:
   #  - [0, 1, 0, 1] # cls
   #  - [1, 1, 0, 1] # genes
-  controlled_attention_pattern:
+  #controlled_attention_pattern:
   #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
   #  # 'Matrix', 'null'
-    - [0, 0, 0, 1] # cls
-    - [1, 1, 0, 1] # genes
-  #controlled_attention_pattern: null
-  controlled_attention_type: 'enc' # 'enc', 'pred', 'enc_pred', ''
-  restrict_special_attention: False # True, False
+  #  - [0, 0, 0, 1] # cls
+  #  - [1, 1, 0, 1] # genes
+  controlled_attention_pattern: null
+  controlled_attention_type: '' # 'enc' # 'enc', 'pred', 'enc_pred', ''
+  restrict_special_attention: True # True, False
 optimization:
   warmup: 3
   epochs: 100

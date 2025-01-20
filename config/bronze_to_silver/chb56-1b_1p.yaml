@@ -7,7 +7,7 @@ paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
 
 dataset:
-  overwrite: false
+  overwrite: true
   source: online
   download_params:
     redownload: false

@@ -61,7 +61,8 @@ data:
                    '59_batch2',
                    '59_batch4',
                    '59_batch1',
-                   '59_batch5']
+                   '59_batch5',
+                   '49_batch0']
   stratify: False
   seq_len_cell: 64
   seq_len_neighborhood: 640
