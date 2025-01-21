@@ -1,0 +1,182 @@
+Experiment Name: xho47-1b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xho47-1b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/xho47-1b_1p
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/xho47-1b_1p/Xenium_Prime_Human_Ovary_FF_outs.zip already exists. Skipping download...
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xho47-1b_1p/Xenium_Prime_Human_Ovary_FF_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (1157659, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 956282509 stored elements and shape (1157659, 5001)>
+  Coords	Values
+  (0, 11)	1
+  (0, 12)	2
+  (0, 26)	1
+  (0, 36)	2
+  (0, 45)	2
+  (0, 53)	2
+  (0, 57)	2
+  (0, 66)	1
+  (0, 72)	7
+  (0, 79)	3
+  (0, 83)	1
+  (0, 93)	1
+  (0, 96)	1
+  (0, 117)	3
+  (0, 119)	1
+  (0, 123)	1
+  (0, 124)	2
+  (0, 127)	1
+  (0, 133)	5
+  (0, 139)	1
+  (0, 147)	2
+  (0, 150)	2
+  (0, 151)	3
+  (0, 153)	1
+  (0, 155)	1
+  :	:
+  (1157657, 4292)	1
+  (1157657, 4312)	1
+  (1157657, 4472)	1
+  (1157657, 4503)	1
+  (1157657, 4504)	1
+  (1157657, 4688)	1
+  (1157657, 4707)	3
+  (1157657, 4744)	1
+  (1157657, 4771)	1
+  (1157657, 4782)	1
+  (1157657, 4818)	1
+  (1157657, 4835)	1
+  (1157657, 4884)	1
+  (1157657, 4893)	1
+  (1157658, 884)	1
+  (1157658, 1141)	1
+  (1157658, 1592)	1
+  (1157658, 1624)	1
+  (1157658, 1656)	1
+  (1157658, 3023)	1
+  (1157658, 4113)	1
+  (1157658, 4129)	1
+  (1157658, 4456)	1
+  (1157658, 4726)	1
+  (1157658, 4929)	1
+adata.X shape: (1157659, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1258.7167   645.37885]
+ [1271.0454   644.8603 ]
+ [1260.0168   626.9946 ]
+ ...
+ [2595.8513  9295.897  ]
+ [2590.4219  9289.3545 ]
+ [2633.2114  9202.669  ]]
+AnnData object with n_obs × n_vars = 1157659 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 47
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: ovary
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaaapbh-1          47_batch0_0
+aaaabakn-1          47_batch0_1
+aaaabhic-1          47_batch0_2
+aaaabngi-1          47_batch0_3
+aaaabnhl-1          47_batch0_4
+                    ...        
+oilnefna-1    47_batch0_1156743
+oilnenmm-1    47_batch0_1156744
+oilnfbml-1    47_batch0_1156745
+oilngggn-1    47_batch0_1156746
+oilnghpk-1    47_batch0_1156747
+Name: cell_id, Length: 1156748, dtype: object
+Harmonized adata_batch shape: (1156748, 4949)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 1156748 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xho47-1b_1p/Xenium_Prime_Human_Ovary_FF_outs.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-10-3-2>
+Subject: Job 184064: <xho47-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xho47-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Jan 16 13:25:50 2025
+Job was executed on host(s) <node-10-3-2>, in queue <normal>, as user <sb75> in cluster <farm22> at Thu Jan 16 13:53:07 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Jan 16 13:53:07 2025
+Terminated at Thu Jan 16 13:55:31 2025
+Results reported at Thu Jan 16 13:55:31 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/xho47-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   105.55 sec.
+    Max Memory :                                 33700 MB
+    Average Memory :                             10955.82 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               48220.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   143 sec.
+    Turnaround time :                            1781 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xho47-1b_1p/farm-job-outputs/bronze-to-silver/1_184064.err> for stderr output of this job.
+

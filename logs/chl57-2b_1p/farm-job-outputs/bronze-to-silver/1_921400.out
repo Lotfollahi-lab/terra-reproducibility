@@ -1,0 +1,343 @@
+Experiment Name: chl57-2b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl57-2b_1p
+Overwriting previously existing bronze (raw) .h5ad files...
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal
+[+] Input is a directory. Finding required files
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal/exprMat_file.csv
+[+] Reading metadata matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal/metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 340706 × 1197
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CK8.18', 'Max.CK8.18', 'Mean.Membrane', 'Max.Membrane', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer
+[+] Input is a directory. Finding required files
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer/exprMat_file.csv
+[+] Reading metadata matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer/metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 463972 × 1197
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.Yellow', 'Max.Yellow', 'Mean.MembraneStain_B2M', 'Max.MembraneStain_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer.h5ad
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (340706, 1197)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 46315167 stored elements and shape (340706, 1197)>
+  Coords	Values
+  (1, 35)	1
+  (1, 47)	19
+  (1, 48)	23
+  (1, 50)	6
+  (1, 53)	1
+  (1, 62)	2
+  (1, 63)	1
+  (1, 70)	3
+  (1, 96)	1
+  (1, 97)	1
+  (1, 106)	1
+  (1, 109)	1
+  (1, 165)	1
+  (1, 166)	1
+  (1, 174)	2
+  (1, 185)	1
+  (1, 221)	4
+  (1, 230)	2
+  (1, 269)	1
+  (1, 310)	1
+  (1, 315)	1
+  (1, 334)	1
+  (1, 354)	2
+  (1, 355)	2
+  (1, 359)	1
+  :	:
+  (340705, 715)	1
+  (340705, 742)	1
+  (340705, 745)	1
+  (340705, 746)	1
+  (340705, 761)	3
+  (340705, 764)	1
+  (340705, 779)	1
+  (340705, 810)	1
+  (340705, 815)	1
+  (340705, 818)	1
+  (340705, 840)	4
+  (340705, 847)	1
+  (340705, 869)	1
+  (340705, 885)	1
+  (340705, 887)	1
+  (340705, 893)	1
+  (340705, 906)	1
+  (340705, 908)	1
+  (340705, 920)	1
+  (340705, 930)	1
+  (340705, 933)	1
+  (340705, 936)	1
+  (340705, 940)	1
+  (340705, 947)	1
+  (340705, 991)	1
+adata.X shape: (340706, 1197)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACACB', 'ACE', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACP5', 'ACTA2',
+       ...
+       'NegPrb6', 'NegPrb8', 'NegPrb9', 'NegPrb11', 'NegPrb13', 'NegPrb15',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=1197)
+Number of genes in bronze data: 1197
+Number of genes with matching ensembl ids: 983
+Number of genes skipped: 214
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACACB      ENSG00000076555
+ACE        ENSG00000159640
+...                    ...
+XKR4       ENSG00000206579
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZBTB16     ENSG00000109906
+ZFP36      ENSG00000128016
+
+[983 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-194080.33      8036.3335]
+ [-192790.33      8031.3335]
+ [-192704.33      8003.3335]
+ ...
+ [-176250.67    -58052.332 ]
+ [-176145.67    -58416.332 ]
+ [-175531.67    -58424.332 ]]
+AnnData object with n_obs × n_vars = 340706 × 983
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CK8.18', 'Max.CK8.18', 'Mean.Membrane', 'Max.Membrane', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 57
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+1_2             57_batch0_0
+1_3             57_batch0_1
+1_4             57_batch0_2
+1_5             57_batch0_3
+1_6             57_batch0_4
+                 ...       
+304_324    57_batch0_336617
+304_325    57_batch0_336618
+304_326    57_batch0_336619
+304_327    57_batch0_336620
+304_329    57_batch0_336621
+Name: cell_id, Length: 336622, dtype: object
+Harmonized adata_batch shape: (336622, 983)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 336622 × 983
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CK8.18', 'Max.CK8.18', 'Mean.Membrane', 'Max.Membrane', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl57-2b_1p/CosMx_Human_FFPE_Liver_Normal.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (463972, 1197)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 101762254 stored elements and shape (463972, 1197)>
+  Coords	Values
+  (0, 3)	3
+  (0, 6)	1
+  (0, 8)	1
+  (0, 9)	1
+  (0, 11)	1
+  (0, 15)	1
+  (0, 21)	3
+  (0, 22)	1
+  (0, 23)	1
+  (0, 31)	3
+  (0, 34)	3
+  (0, 37)	8
+  (0, 45)	9
+  (0, 46)	1
+  (0, 47)	29
+  (0, 48)	54
+  (0, 50)	216
+  (0, 51)	1
+  (0, 53)	2
+  (0, 55)	5
+  (0, 63)	1
+  (0, 64)	3
+  (0, 65)	4
+  (0, 68)	1
+  (0, 70)	65
+  :	:
+  (463970, 672)	1
+  (463970, 674)	1
+  (463970, 675)	2
+  (463970, 694)	1
+  (463970, 727)	1
+  (463970, 731)	2
+  (463970, 761)	3
+  (463970, 763)	1
+  (463970, 775)	1
+  (463970, 784)	1
+  (463970, 802)	1
+  (463970, 804)	1
+  (463970, 815)	1
+  (463970, 840)	2
+  (463970, 844)	1
+  (463970, 877)	1
+  (463970, 905)	1
+  (463970, 908)	1
+  (463970, 926)	1
+  (463970, 930)	1
+  (463970, 933)	1
+  (463970, 968)	1
+  (463970, 978)	1
+  (463971, 53)	1
+  (463971, 851)	2
+adata.X shape: (463972, 1197)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACACB', 'ACE', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACP5', 'ACTA2',
+       ...
+       'NegPrb6', 'NegPrb8', 'NegPrb9', 'NegPrb11', 'NegPrb13', 'NegPrb15',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=1197)
+Number of genes in bronze data: 1197
+Number of genes with matching ensembl ids: 983
+Number of genes skipped: 214
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACACB      ENSG00000076555
+ACE        ENSG00000159640
+...                    ...
+XKR4       ENSG00000206579
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZBTB16     ENSG00000109906
+ZFP36      ENSG00000128016
+
+[983 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[124132.664  38518.668]
+ [124230.664  38581.668]
+ [124004.664  38497.668]
+ ...
+ [171992.    -63053.   ]
+ [172598.    -63140.   ]
+ [173932.    -63525.   ]]
+AnnData object with n_obs × n_vars = 463972 × 983
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.Yellow', 'Max.Yellow', 'Mean.MembraneStain_B2M', 'Max.MembraneStain_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 57
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+1_1             57_batch1_0
+1_2             57_batch1_1
+1_3             57_batch1_2
+1_4             57_batch1_3
+1_5             57_batch1_4
+                 ...       
+383_406    57_batch1_462213
+383_408    57_batch1_462214
+383_409    57_batch1_462215
+383_410    57_batch1_462216
+383_411    57_batch1_462217
+Name: cell_id, Length: 462218, dtype: object
+Harmonized adata_batch shape: (462218, 983)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 462218 × 983
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.Yellow', 'Max.Yellow', 'Mean.MembraneStain_B2M', 'Max.MembraneStain_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl57-2b_1p/CosMx_Human_FFPE_Liver_Cancer.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-15>
+Subject: Job 921400: <chl57-2b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <chl57-2b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Jan 20 08:57:26 2025
+Job was executed on host(s) <node-13-15>, in queue <normal>, as user <sb75> in cluster <farm22> at Mon Jan 20 08:57:28 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jan 20 08:57:28 2025
+Terminated at Mon Jan 20 08:59:16 2025
+Results reported at Mon Jan 20 08:59:16 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/chl57-2b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   88.15 sec.
+    Max Memory :                                 19043 MB
+    Average Memory :                             7604.27 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               32157.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   113 sec.
+    Turnaround time :                            110 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chl57-2b_1p/farm-job-outputs/bronze-to-silver/1_921400.err> for stderr output of this job.
+

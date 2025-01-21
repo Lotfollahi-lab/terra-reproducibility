@@ -1,0 +1,6 @@
+... storing 'version' as categorical
+... storing 'Run_name' as categorical
+... storing 'Run_Tissue_name' as categorical
+... storing 'tissue' as categorical
+... storing 'Panel' as categorical
+... storing 'assay_type' as categorical

@@ -1,0 +1,62 @@
+Experiment Name: chb56-1b_1p
+Experiment Description: chb56-1b_1p (dataset-id 56) | 1 batch | 1 panel
+Tokenizer: cell-graph-tokenizer
+Overwrite was set to False. Re-using previously created token dictionary...
+Loading data from /lustre/scratch126/cellgen/team361/DATASETS/silver/chb56-1b_1p/flatFiles.h5ad
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/cell-graph-tokenizer/human_cohort1_50m/token_dictionary.pkl
+Number of Gene Tokens: 9086.
+Number of Tokens: 9933.
+Batch Max Neighbors: 10
+Model Input Size: 1408
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph.
+Normalizing gene expression counts.
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/chb56-1b_1p/cProfiler/cell-graph-tokenizer/chb56-1b_1p_32_None_shifted_log_knn_10_1408_4_sequential.prof.
+Function: tokenize_data | Cumulative Time: 4786.540100971
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0203>
+Subject: Job 954865: <chb56-1b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <chb56-1b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Jan 20 16:27:52 2025
+Job was executed on host(s) <4*farm22-gpu0203>, in queue <gpu-basement>, as user <sb75> in cluster <farm22> at Mon Jan 20 16:37:09 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jan 20 16:37:09 2025
+Terminated at Mon Jan 20 17:57:53 2025
+Results reported at Mon Jan 20 17:57:53 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_chb56-1b_1p.yaml False
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   15613.00 sec.
+    Max Memory :                                 86696 MB
+    Average Memory :                             57974.33 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               175448.00 MB
+    Max Swap :                                   -
+    Max Processes :                              11
+    Max Threads :                                39
+    Run time :                                   4843 sec.
+    Turnaround time :                            5401 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chb56-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_954865.err> for stderr output of this job.
+

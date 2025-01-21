@@ -212,6 +212,18 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="gpu-basement"
         ;;
+    chb56-1b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
+        ;;
+    chc61-9b_1p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
+        ;;
     *)
         echo "Invalid dataset name"
         exit 1

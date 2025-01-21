@@ -1,0 +1,1162 @@
+Experiment Name: mhl80-8b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/mhl80-8b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is not split by batch. Splitting data by batch...
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/mhl80-8b_1p/adata_healthy_diseased_merfish.h5ad
+Harmonizing Sample ID: 0
+Raw adata shape: (38366, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3349800 stored elements and shape (38366, 317)>
+  Coords	Values
+  (0, 0)	4
+  (0, 1)	3
+  (0, 2)	1
+  (0, 5)	3
+  (0, 6)	1
+  (0, 8)	1
+  (0, 9)	1
+  (0, 13)	1
+  (0, 14)	44
+  (0, 15)	3
+  (0, 16)	1
+  (0, 17)	2
+  (0, 19)	1
+  (0, 21)	26
+  (0, 24)	1
+  (0, 25)	1
+  (0, 26)	5
+  (0, 28)	1
+  (0, 29)	7
+  (0, 30)	2
+  (0, 31)	26
+  (0, 32)	2
+  (0, 36)	1
+  (0, 38)	2
+  (0, 41)	1
+  :	:
+  (38364, 61)	1
+  (38364, 69)	1
+  (38364, 83)	1
+  (38364, 85)	1
+  (38364, 99)	1
+  (38364, 107)	1
+  (38364, 117)	1
+  (38364, 171)	1
+  (38364, 183)	1
+  (38364, 231)	1
+  (38364, 244)	1
+  (38364, 264)	1
+  (38364, 278)	1
+  (38364, 282)	1
+  (38365, 35)	1
+  (38365, 40)	1
+  (38365, 51)	2
+  (38365, 64)	1
+  (38365, 65)	1
+  (38365, 77)	6
+  (38365, 80)	1
+  (38365, 90)	1
+  (38365, 132)	1
+  (38365, 140)	2
+  (38365, 282)	1
+adata.X shape: (38366, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-1438.5139  -2973.2947 ]
+ [-1414.771   -2968.4895 ]
+ [-1423.5206  -2962.354  ]
+ ...
+ [ 1686.0044     83.29236]
+ [  521.3107  -2963.6882 ]
+ [ 1710.2859   -847.3425 ]]
+AnnData object with n_obs × n_vars = 38366 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+4-0            80_batch0_0
+9-0            80_batch0_1
+10-0           80_batch0_2
+11-0           80_batch0_3
+14-0           80_batch0_4
+                ...       
+64836-0    80_batch0_38047
+64858-0    80_batch0_38048
+64891-0    80_batch0_38049
+64970-0    80_batch0_38050
+65076-0    80_batch0_38051
+Name: cell_id, Length: 38052, dtype: object
+Harmonized adata_batch shape: (38052, 297)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 38052 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch0.h5ad
+
+Harmonizing Sample ID: 1
+Raw adata shape: (34066, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 2604446 stored elements and shape (34066, 317)>
+  Coords	Values
+  (0, 11)	1
+  (0, 20)	1
+  (0, 31)	3
+  (0, 63)	1
+  (0, 77)	1
+  (0, 82)	1
+  (0, 84)	1
+  (0, 105)	1
+  (0, 106)	1
+  (0, 112)	5
+  (0, 149)	1
+  (0, 190)	1
+  (0, 241)	1
+  (0, 259)	1
+  (0, 262)	15
+  (0, 273)	1
+  (1, 8)	1
+  (1, 12)	1
+  (1, 14)	5
+  (1, 21)	4
+  (1, 23)	1
+  (1, 27)	2
+  (1, 31)	27
+  (1, 32)	1
+  (1, 38)	1
+  :	:
+  (34063, 262)	8
+  (34063, 263)	1
+  (34063, 266)	1
+  (34064, 0)	1
+  (34064, 31)	1
+  (34064, 65)	2
+  (34064, 67)	1
+  (34064, 86)	1
+  (34064, 112)	1
+  (34064, 131)	1
+  (34064, 154)	1
+  (34064, 177)	2
+  (34064, 190)	2
+  (34064, 212)	1
+  (34064, 240)	1
+  (34064, 271)	1
+  (34065, 63)	2
+  (34065, 65)	8
+  (34065, 80)	1
+  (34065, 84)	4
+  (34065, 87)	1
+  (34065, 134)	1
+  (34065, 147)	1
+  (34065, 199)	2
+  (34065, 276)	1
+adata.X shape: (34066, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 1404.9633 -2215.9502]
+ [ 1414.068  -2196.6494]
+ [ 1432.1797 -2200.9897]
+ ...
+ [ 6504.19   -1140.9988]
+ [ 2873.394  -2175.3118]
+ [ 2015.0431 -1126.2888]]
+AnnData object with n_obs × n_vars = 34066 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+1-1            80_batch1_0
+2-1            80_batch1_1
+5-1            80_batch1_2
+7-1            80_batch1_3
+9-1            80_batch1_4
+                ...       
+48340-1    80_batch1_33373
+48424-1    80_batch1_33374
+48425-1    80_batch1_33375
+48437-1    80_batch1_33376
+48516-1    80_batch1_33377
+Name: cell_id, Length: 33378, dtype: object
+Harmonized adata_batch shape: (33378, 297)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 33378 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch1.h5ad
+
+Harmonizing Sample ID: 2
+Raw adata shape: (39188, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3304563 stored elements and shape (39188, 317)>
+  Coords	Values
+  (0, 12)	1
+  (0, 14)	1
+  (0, 31)	5
+  (0, 37)	1
+  (0, 54)	1
+  (0, 89)	2
+  (0, 101)	1
+  (0, 112)	1
+  (0, 181)	1
+  (0, 262)	1
+  (0, 288)	1
+  (1, 1)	1
+  (1, 12)	1
+  (1, 14)	3
+  (1, 19)	3
+  (1, 25)	1
+  (1, 31)	1
+  (1, 51)	1
+  (1, 67)	1
+  (1, 77)	17
+  (1, 89)	1
+  (1, 104)	1
+  (1, 180)	1
+  (1, 192)	1
+  (1, 194)	1
+  :	:
+  (39185, 50)	1
+  (39185, 64)	2
+  (39185, 65)	11
+  (39185, 85)	1
+  (39185, 112)	1
+  (39185, 153)	1
+  (39185, 259)	1
+  (39185, 273)	1
+  (39186, 17)	1
+  (39186, 65)	10
+  (39186, 73)	1
+  (39186, 154)	2
+  (39186, 188)	1
+  (39186, 192)	1
+  (39186, 206)	1
+  (39186, 226)	1
+  (39186, 232)	1
+  (39186, 262)	3
+  (39186, 316)	1
+  (39187, 62)	1
+  (39187, 77)	10
+  (39187, 131)	1
+  (39187, 226)	1
+  (39187, 262)	1
+  (39187, 293)	1
+adata.X shape: (39188, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ -263.94687 -2389.9326 ]
+ [ -278.07892 -2353.7231 ]
+ [ -266.54663 -2360.9492 ]
+ ...
+ [ 1568.9739  -1375.8602 ]
+ [ 1559.7289  -1720.8103 ]
+ [  249.46742 -1192.3524 ]]
+AnnData object with n_obs × n_vars = 39188 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch2
+adata_batch.obs['cell_id']:
+6-2            80_batch2_0
+14-2           80_batch2_1
+19-2           80_batch2_2
+25-2           80_batch2_3
+26-2           80_batch2_4
+                ...       
+54701-2    80_batch2_38237
+54920-2    80_batch2_38238
+54945-2    80_batch2_38239
+54990-2    80_batch2_38240
+55013-2    80_batch2_38241
+Name: cell_id, Length: 38242, dtype: object
+Harmonized adata_batch shape: (38242, 297)
+Final Harmonized Adata: Batch = 2
+AnnData object with n_obs × n_vars = 38242 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch2.h5ad
+
+Harmonizing Sample ID: 3
+Raw adata shape: (71056, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 2467201 stored elements and shape (71056, 317)>
+  Coords	Values
+  (0, 11)	1
+  (0, 14)	1
+  (0, 15)	1
+  (0, 16)	1
+  (0, 65)	1
+  (0, 80)	2
+  (0, 99)	1
+  (0, 100)	1
+  (0, 104)	1
+  (0, 112)	3
+  (0, 152)	1
+  (0, 190)	1
+  (0, 248)	1
+  (0, 262)	2
+  (0, 297)	1
+  (1, 14)	2
+  (1, 18)	1
+  (1, 21)	2
+  (1, 36)	1
+  (1, 51)	1
+  (1, 57)	1
+  (1, 66)	1
+  (1, 72)	2
+  (1, 74)	1
+  (1, 80)	1
+  :	:
+  (71053, 192)	1
+  (71053, 232)	1
+  (71053, 259)	4
+  (71053, 273)	1
+  (71053, 276)	1
+  (71054, 1)	1
+  (71054, 18)	1
+  (71054, 21)	1
+  (71054, 23)	1
+  (71054, 25)	1
+  (71054, 58)	1
+  (71054, 100)	1
+  (71054, 106)	1
+  (71054, 116)	1
+  (71054, 150)	1
+  (71054, 212)	1
+  (71054, 223)	2
+  (71054, 241)	1
+  (71054, 265)	1
+  (71055, 44)	1
+  (71055, 53)	1
+  (71055, 77)	12
+  (71055, 114)	1
+  (71055, 186)	1
+  (71055, 235)	1
+adata.X shape: (71056, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ -805.11115     15.632936]
+ [ -837.2254      43.902615]
+ [ -818.30945     41.46642 ]
+ ...
+ [ -248.98004    597.79156 ]
+ [ 1996.2815   -1980.0822  ]
+ [  218.04591    454.6821  ]]
+AnnData object with n_obs × n_vars = 71056 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch3
+adata_batch.obs['cell_id']:
+1-3             80_batch3_0
+2-3             80_batch3_1
+5-3             80_batch3_2
+6-3             80_batch3_3
+7-3             80_batch3_4
+                 ...       
+101326-3    80_batch3_70433
+101362-3    80_batch3_70434
+101422-3    80_batch3_70435
+101449-3    80_batch3_70436
+101484-3    80_batch3_70437
+Name: cell_id, Length: 70438, dtype: object
+Harmonized adata_batch shape: (70438, 297)
+Final Harmonized Adata: Batch = 3
+AnnData object with n_obs × n_vars = 70438 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch3.h5ad
+
+Harmonizing Sample ID: 4
+Raw adata shape: (120489, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 6807548 stored elements and shape (120489, 317)>
+  Coords	Values
+  (0, 19)	1
+  (0, 31)	1
+  (0, 36)	1
+  (0, 58)	1
+  (0, 61)	1
+  (0, 77)	10
+  (0, 80)	1
+  (0, 142)	1
+  (0, 167)	1
+  (0, 239)	1
+  (0, 262)	1
+  (0, 271)	1
+  (0, 276)	1
+  (0, 278)	1
+  (0, 294)	1
+  (0, 307)	1
+  (1, 18)	1
+  (1, 39)	1
+  (1, 40)	1
+  (1, 44)	1
+  (1, 77)	33
+  (1, 82)	1
+  (1, 106)	1
+  (1, 112)	1
+  (1, 157)	1
+  :	:
+  (120487, 80)	1
+  (120487, 84)	3
+  (120487, 111)	1
+  (120487, 112)	1
+  (120487, 158)	1
+  (120487, 199)	2
+  (120487, 233)	1
+  (120487, 248)	1
+  (120487, 281)	1
+  (120488, 1)	1
+  (120488, 16)	1
+  (120488, 47)	1
+  (120488, 58)	1
+  (120488, 71)	1
+  (120488, 81)	1
+  (120488, 88)	1
+  (120488, 94)	1
+  (120488, 112)	1
+  (120488, 154)	1
+  (120488, 192)	1
+  (120488, 195)	1
+  (120488, 243)	1
+  (120488, 276)	1
+  (120488, 288)	1
+  (120488, 289)	1
+adata.X shape: (120489, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-3933.296    -1046.361   ]
+ [-3823.142    -1150.1627  ]
+ [-3851.4343   -1107.8206  ]
+ ...
+ [ -483.51974   2191.352   ]
+ [  921.4237      10.715319]
+ [ -546.5257       4.936067]]
+AnnData object with n_obs × n_vars = 120489 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch4
+adata_batch.obs['cell_id']:
+11-4             80_batch4_0
+14-4             80_batch4_1
+18-4             80_batch4_2
+20-4             80_batch4_3
+28-4             80_batch4_4
+                  ...       
+162103-4    80_batch4_119782
+162557-4    80_batch4_119783
+162677-4    80_batch4_119784
+163384-4    80_batch4_119785
+163878-4    80_batch4_119786
+Name: cell_id, Length: 119787, dtype: object
+Harmonized adata_batch shape: (119787, 297)
+Final Harmonized Adata: Batch = 4
+AnnData object with n_obs × n_vars = 119787 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch4.h5ad
+
+Harmonizing Sample ID: 5
+Raw adata shape: (124202, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 6489769 stored elements and shape (124202, 317)>
+  Coords	Values
+  (0, 25)	1
+  (0, 55)	1
+  (0, 61)	1
+  (0, 100)	1
+  (0, 105)	1
+  (0, 112)	1
+  (0, 116)	1
+  (0, 201)	1
+  (0, 214)	1
+  (0, 228)	1
+  (0, 247)	1
+  (0, 273)	1
+  (0, 281)	1
+  (0, 291)	1
+  (0, 294)	1
+  (0, 316)	2
+  (1, 11)	1
+  (1, 15)	1
+  (1, 16)	1
+  (1, 20)	1
+  (1, 25)	1
+  (1, 30)	1
+  (1, 31)	3
+  (1, 40)	1
+  (1, 45)	1
+  :	:
+  (124200, 200)	1
+  (124200, 259)	1
+  (124200, 273)	1
+  (124200, 299)	1
+  (124200, 301)	1
+  (124201, 12)	1
+  (124201, 15)	1
+  (124201, 18)	1
+  (124201, 30)	1
+  (124201, 37)	1
+  (124201, 46)	1
+  (124201, 48)	1
+  (124201, 53)	1
+  (124201, 77)	4
+  (124201, 84)	1
+  (124201, 105)	1
+  (124201, 147)	1
+  (124201, 157)	1
+  (124201, 215)	2
+  (124201, 223)	1
+  (124201, 232)	1
+  (124201, 258)	1
+  (124201, 263)	1
+  (124201, 277)	1
+  (124201, 289)	1
+adata.X shape: (124202, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-3111.5437  -1514.599  ]
+ [-3279.6562  -1324.309  ]
+ [-3156.1277  -1439.7152 ]
+ ...
+ [ -362.91193  -425.1402 ]
+ [ 1256.8792   -121.42245]
+ [-1993.4147   2063.1501 ]]
+AnnData object with n_obs × n_vars = 124202 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch5
+adata_batch.obs['cell_id']:
+5-5              80_batch5_0
+6-5              80_batch5_1
+9-5              80_batch5_2
+10-5             80_batch5_3
+11-5             80_batch5_4
+                  ...       
+174609-5    80_batch5_123863
+174626-5    80_batch5_123864
+174658-5    80_batch5_123865
+175529-5    80_batch5_123866
+176005-5    80_batch5_123867
+Name: cell_id, Length: 123868, dtype: object
+Harmonized adata_batch shape: (123868, 297)
+Final Harmonized Adata: Batch = 5
+AnnData object with n_obs × n_vars = 123868 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch5.h5ad
+
+Harmonizing Sample ID: 6
+Raw adata shape: (65894, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 2493743 stored elements and shape (65894, 317)>
+  Coords	Values
+  (0, 1)	1
+  (0, 12)	1
+  (0, 31)	1
+  (0, 47)	2
+  (0, 77)	5
+  (0, 88)	1
+  (0, 105)	1
+  (0, 110)	1
+  (0, 112)	1
+  (0, 114)	1
+  (0, 140)	1
+  (0, 223)	1
+  (0, 259)	1
+  (0, 262)	1
+  (0, 266)	1
+  (1, 1)	2
+  (1, 10)	1
+  (1, 14)	3
+  (1, 16)	1
+  (1, 18)	1
+  (1, 19)	1
+  (1, 21)	2
+  (1, 25)	1
+  (1, 28)	2
+  (1, 31)	7
+  :	:
+  (65892, 36)	1
+  (65892, 48)	1
+  (65892, 62)	1
+  (65892, 65)	1
+  (65892, 99)	1
+  (65892, 131)	1
+  (65892, 132)	1
+  (65892, 164)	2
+  (65892, 226)	1
+  (65892, 268)	1
+  (65892, 276)	1
+  (65892, 281)	1
+  (65892, 285)	1
+  (65893, 16)	1
+  (65893, 28)	1
+  (65893, 65)	1
+  (65893, 69)	2
+  (65893, 89)	1
+  (65893, 112)	1
+  (65893, 119)	1
+  (65893, 157)	1
+  (65893, 177)	1
+  (65893, 198)	2
+  (65893, 262)	1
+  (65893, 276)	3
+adata.X shape: (65894, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-2855.9097  -2061.5803 ]
+ [-2847.1648  -2058.9553 ]
+ [-2992.0774  -1271.1453 ]
+ ...
+ [-1113.4882    -48.00262]
+ [ 1823.7128    559.7105 ]
+ [ 1727.0706  -1356.7837 ]]
+AnnData object with n_obs × n_vars = 65894 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch6
+adata_batch.obs['cell_id']:
+0-6             80_batch6_0
+1-6             80_batch6_1
+2-6             80_batch6_2
+3-6             80_batch6_3
+5-6             80_batch6_4
+                 ...       
+98877-6     80_batch6_65156
+99133-6     80_batch6_65157
+100114-6    80_batch6_65158
+100273-6    80_batch6_65159
+101573-6    80_batch6_65160
+Name: cell_id, Length: 65161, dtype: object
+Harmonized adata_batch shape: (65161, 297)
+Final Harmonized Adata: Batch = 6
+AnnData object with n_obs × n_vars = 65161 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch6.h5ad
+
+Harmonizing Sample ID: 7
+Raw adata shape: (82450, 317)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3529386 stored elements and shape (82450, 317)>
+  Coords	Values
+  (0, 48)	4
+  (0, 50)	1
+  (0, 80)	1
+  (0, 83)	1
+  (0, 86)	1
+  (0, 93)	1
+  (0, 112)	1
+  (0, 114)	2
+  (0, 125)	1
+  (0, 143)	1
+  (0, 153)	1
+  (0, 157)	1
+  (0, 232)	1
+  (0, 271)	1
+  (0, 295)	1
+  (1, 18)	1
+  (1, 20)	1
+  (1, 25)	1
+  (1, 28)	1
+  (1, 29)	1
+  (1, 30)	1
+  (1, 31)	1
+  (1, 46)	1
+  (1, 51)	1
+  (1, 61)	2
+  :	:
+  (82448, 45)	1
+  (82448, 88)	2
+  (82448, 147)	1
+  (82448, 153)	1
+  (82448, 232)	1
+  (82448, 244)	1
+  (82448, 273)	1
+  (82449, 12)	1
+  (82449, 14)	1
+  (82449, 25)	1
+  (82449, 28)	1
+  (82449, 46)	1
+  (82449, 71)	1
+  (82449, 80)	3
+  (82449, 92)	1
+  (82449, 93)	1
+  (82449, 112)	1
+  (82449, 146)	1
+  (82449, 154)	1
+  (82449, 166)	1
+  (82449, 214)	1
+  (82449, 223)	1
+  (82449, 281)	1
+  (82449, 290)	1
+  (82449, 307)	1
+adata.X shape: (82450, 317)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 317
+Number of genes with matching ensembl ids: 297
+Number of genes skipped: 20
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ABCA1      ENSG00000165029
+ABCA13     ENSG00000179869
+ABCB1      ENSG00000085563
+ABCB11     ENSG00000073734
+...                    ...
+VSIG4      ENSG00000155659
+XDH        ENSG00000158125
+ZC3H13     ENSG00000123200
+ZNF483     ENSG00000173258
+ZSWIM6     ENSG00000130449
+
+[297 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-5758.137     630.57245]
+ [-5773.783     646.427  ]
+ [-5673.254     637.4519 ]
+ ...
+ [-2462.4463   2358.3787 ]
+ [-1171.582    2918.047  ]
+ [-5109.9614   1281.4486 ]]
+AnnData object with n_obs × n_vars = 82450 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 80
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: merfish
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: liver
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch7
+adata_batch.obs['cell_id']:
+0-7             80_batch7_0
+1-7             80_batch7_1
+7-7             80_batch7_2
+8-7             80_batch7_3
+13-7            80_batch7_4
+                 ...       
+139810-7    80_batch7_82307
+140232-7    80_batch7_82308
+141623-7    80_batch7_82309
+142429-7    80_batch7_82310
+143006-7    80_batch7_82311
+Name: cell_id, Length: 82312, dtype: object
+Harmonized adata_batch shape: (82312, 297)
+Final Harmonized Adata: Batch = 7
+AnnData object with n_obs × n_vars = 82312 × 297
+    obs: 'sample_id', 'condition', 'cell', 'density', 'area', 'x', 'y', 'batch', 'n_counts', 'log_counts', 'n_genes', 'Cell_Type_final', 'organism_ontology_term_id', 'donor_id', 'development_stage_ontology_term_id', 'sex_ontology_term_id', 'self_reported_ethnicity_ontology_term_id', 'disease_ontology_term_id', 'tissue_type', 'tissue_ontology_term_id', 'cell_type_ontology_term_id', 'assay_ontology_term_id', 'suspension_type', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'batch_colors', 'batch_conditions', 'condition_colors', 'hvg', 'leiden', 'leiden_r0.7_colors', 'leiden_r0.8_colors', 'leiden_r0.9_colors', 'leiden_r1.1_colors', 'leiden_r1.2_colors', 'leiden_r1_colors', 'log1p', 'neighbors', 'pca', 'rank_genes_condition', 'rank_genes_leiden_r1', 'sample_id_colors', 'title', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'X_pca_harmony', 'X_spatial', 'X_umap', 'spatial'
+    varm: 'PCs'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/mhl80-8b_1p/adata_batch7.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-12>
+Subject: Job 548943: <mhl80-8b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <mhl80-8b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jan 18 17:51:55 2025
+Job was executed on host(s) <node-14-12>, in queue <normal>, as user <sb75> in cluster <farm22> at Sat Jan 18 17:51:57 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jan 18 17:51:57 2025
+Terminated at Sat Jan 18 17:52:47 2025
+Results reported at Sat Jan 18 17:52:47 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/mhl80-8b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   25.00 sec.
+    Max Memory :                                 5222 MB
+    Average Memory :                             1099.14 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               45978.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   48 sec.
+    Turnaround time :                            52 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhl80-8b_1p/farm-job-outputs/bronze-to-silver/1_548943.err> for stderr output of this job.
+

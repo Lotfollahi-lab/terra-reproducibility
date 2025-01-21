@@ -1,0 +1,199 @@
+Experiment Name: chp60-1b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/chp60-1b_1p
+No bronze (raw) .h5ad files found.
+Overwriting previously existing bronze (raw) .h5ad files...
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction
+[+] Input is a directory. Finding required files
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction/Pancreas_exprMat_file.csv
+[+] Reading metadata matrix /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction/Pancreas_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 48944 × 21731
+    obs: 'fov', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD68_CK8_18', 'Max.CD68_CK8_18', 'Mean.CD298_B2M', 'Max.CD298_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'X', 'version', 'Run_name', 'Run_Tissue_name', 'tissue', 'Panel', 'assay_type', 'slide_ID', 'CenterX_global_px', 'CenterY_global_px', 'cell_ID', 'unassignedTranscripts', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'Area.um2', 'cell'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction.h5ad
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (48944, 21731)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 24127215 stored elements and shape (48944, 21731)>
+  Coords	Values
+  (0, 46)	1
+  (0, 215)	1
+  (0, 273)	1
+  (0, 344)	1
+  (0, 442)	1
+  (0, 529)	1
+  (0, 530)	1
+  (0, 570)	2
+  (0, 591)	2
+  (0, 638)	1
+  (0, 800)	2
+  (0, 886)	1
+  (0, 899)	2
+  (0, 911)	1
+  (0, 1125)	2
+  (0, 1312)	1
+  (0, 1466)	1
+  (0, 1560)	1
+  (0, 1623)	1
+  (0, 1655)	2
+  (0, 1782)	1
+  (0, 1808)	2
+  (0, 1859)	1
+  (0, 1994)	2
+  (0, 2023)	2
+  :	:
+  (48943, 15567)	1
+  (48943, 15674)	2
+  (48943, 15864)	2
+  (48943, 16105)	1
+  (48943, 16106)	1
+  (48943, 16258)	1
+  (48943, 16557)	1
+  (48943, 16778)	1
+  (48943, 16801)	1
+  (48943, 16822)	1
+  (48943, 17047)	1
+  (48943, 17265)	1
+  (48943, 17411)	2
+  (48943, 17431)	1
+  (48943, 17651)	1
+  (48943, 17667)	2
+  (48943, 18004)	1
+  (48943, 18024)	2
+  (48943, 18113)	1
+  (48943, 18358)	1
+  (48943, 18798)	2
+  (48943, 18874)	2
+  (48943, 18952)	1
+  (48943, 20281)	1
+  (48943, 21550)	1
+adata.X shape: (48944, 21731)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['A1BG', 'A1CF', 'A2M', 'A2ML1', 'A3GALT2', 'A4GALT', 'A4GNT', 'AAAS',
+       'AACS', 'AADAC',
+       ...
+       'SystemControl990', 'SystemControl991', 'SystemControl992',
+       'SystemControl993', 'SystemControl994', 'SystemControl995',
+       'SystemControl996', 'SystemControl997', 'SystemControl998',
+       'SystemControl999'],
+      dtype='object', length=21731)
+Number of genes in bronze data: 21731
+Number of genes with matching ensembl ids: 18893
+Number of genes skipped: 2838
+adata.var:
+                ensembl_id
+gene_name                 
+A1BG       ENSG00000121410
+A1CF       ENSG00000148584
+A2M        ENSG00000175899
+A2ML1      ENSG00000166535
+A3GALT2    ENSG00000184389
+...                    ...
+ZYG11A     ENSG00000203995
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+ZZEF1      ENSG00000074755
+ZZZ3       ENSG00000036549
+
+[18893 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[52580.035 41889.406]
+ [52711.035 41908.406]
+ [52802.035 41899.406]
+ ...
+ [63819.63  -4237.   ]
+ [63552.63  -4236.   ]
+ [63902.63  -4241.   ]]
+AnnData object with n_obs × n_vars = 48944 × 18893
+    obs: 'fov', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD68_CK8_18', 'Max.CD68_CK8_18', 'Mean.CD298_B2M', 'Max.CD298_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'X', 'version', 'Run_name', 'Run_Tissue_name', 'tissue', 'Panel', 'assay_type', 'slide_ID', 'CenterX_global_px', 'CenterY_global_px', 'cell_ID', 'unassignedTranscripts', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'Area.um2', 'cell'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 60
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: pancreas
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+51_1           60_batch0_0
+51_2           60_batch0_1
+51_3           60_batch0_2
+51_4           60_batch0_3
+51_5           60_batch0_4
+                ...       
+68_2743    60_batch0_48929
+68_2744    60_batch0_48930
+68_2745    60_batch0_48931
+68_2746    60_batch0_48932
+68_2747    60_batch0_48933
+Name: cell_id, Length: 48934, dtype: object
+Harmonized adata_batch shape: (48934, 18893)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 48934 × 18893
+    obs: 'fov', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'Width', 'Height', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD68_CK8_18', 'Max.CD68_CK8_18', 'Mean.CD298_B2M', 'Max.CD298_B2M', 'Mean.CD45', 'Max.CD45', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'X', 'version', 'Run_name', 'Run_Tissue_name', 'tissue', 'Panel', 'assay_type', 'slide_ID', 'CenterX_global_px', 'CenterY_global_px', 'cell_ID', 'unassignedTranscripts', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'Area.um2', 'cell', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chp60-1b_1p/Pancreas-CosMx-WTx-FlatFiles_manual_extraction.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-13>
+Subject: Job 154320: <chp60-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <chp60-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Jan 16 10:37:29 2025
+Job was executed on host(s) <node-14-13>, in queue <normal>, as user <sb75> in cluster <farm22> at Thu Jan 16 10:37:30 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Jan 16 10:37:30 2025
+Terminated at Thu Jan 16 10:46:25 2025
+Results reported at Thu Jan 16 10:46:25 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/chp60-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   508.29 sec.
+    Max Memory :                                 27095 MB
+    Average Memory :                             10257.52 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               24105.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   533 sec.
+    Turnaround time :                            536 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chp60-1b_1p/farm-job-outputs/bronze-to-silver/1_154320.err> for stderr output of this job.
+

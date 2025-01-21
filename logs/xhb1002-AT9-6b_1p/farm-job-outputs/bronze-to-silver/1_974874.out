@@ -1,0 +1,889 @@
+Experiment Name: xhb1002-AT9-6b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-2-S38__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (243461, 349)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 22879324 stored elements and shape (243461, 349)>
+  Coords	Values
+  (0, 0)	8
+  (0, 14)	1
+  (0, 19)	1
+  (0, 34)	3
+  (0, 46)	2
+  (0, 47)	1
+  (0, 52)	1
+  (0, 60)	1
+  (0, 71)	8
+  (0, 75)	1
+  (0, 88)	9
+  (0, 100)	2
+  (0, 109)	1
+  (0, 119)	2
+  (0, 124)	1
+  (0, 127)	1
+  (0, 141)	1
+  (0, 147)	1
+  (0, 148)	1
+  (0, 149)	1
+  (0, 157)	1
+  (0, 173)	1
+  (0, 180)	1
+  (0, 182)	1
+  (0, 193)	1
+  :	:
+  (243460, 282)	2
+  (243460, 287)	1
+  (243460, 294)	1
+  (243460, 295)	15
+  (243460, 296)	9
+  (243460, 297)	14
+  (243460, 300)	1
+  (243460, 302)	1
+  (243460, 305)	3
+  (243460, 306)	1
+  (243460, 307)	1
+  (243460, 310)	3
+  (243460, 314)	2
+  (243460, 325)	2
+  (243460, 326)	2
+  (243460, 327)	4
+  (243460, 328)	1
+  (243460, 333)	1
+  (243460, 335)	1
+  (243460, 339)	5
+  (243460, 340)	2
+  (243460, 341)	2
+  (243460, 343)	2
+  (243460, 346)	9
+  (243460, 347)	1
+adata.X shape: (243461, 349)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 349
+Number of genes with matching ensembl ids: 341
+Number of genes skipped: 8
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ACAP1      ENSG00000072818
+ACSBG1     ENSG00000103740
+ADAMTS9    ENSG00000163638
+ADGRB3     ENSG00000135298
+...                    ...
+WWTR1      ENSG00000018408
+XCL1       ENSG00000143184
+XPOT       ENSG00000184575
+YPEL5      ENSG00000119801
+ZNF385D    ENSG00000151789
+
+[341 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 1226.6912  1712.6249]
+ [ 1276.2256  1696.1252]
+ [ 1238.5107  1708.196 ]
+ ...
+ [10778.464  11056.235 ]
+ [10760.954  11056.568 ]
+ [10743.314  11057.407 ]]
+AnnData object with n_obs × n_vars = 243461 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch3
+adata_batch.obs['cell_id']:
+aaaacgda-1         1002_batch3_0
+aaaafnic-1         1002_batch3_1
+aaaakbki-1         1002_batch3_2
+aaabbjgg-1         1002_batch3_3
+aaabgdlp-1         1002_batch3_4
+                     ...        
+oikffida-1    1002_batch3_243411
+oikfjkpg-1    1002_batch3_243412
+oikfkhlk-1    1002_batch3_243413
+oikflbeg-1    1002_batch3_243414
+oikfljej-1    1002_batch3_243415
+Name: cell_id, Length: 243416, dtype: object
+Harmonized adata_batch shape: (243416, 341)
+Final Harmonized Adata: Batch = 3
+AnnData object with n_obs × n_vars = 243416 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-2-S38__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S45-i__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (422355, 349)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 38560959 stored elements and shape (422355, 349)>
+  Coords	Values
+  (0, 0)	2
+  (0, 4)	1
+  (0, 9)	2
+  (0, 11)	1
+  (0, 14)	13
+  (0, 17)	3
+  (0, 19)	4
+  (0, 22)	3
+  (0, 24)	1
+  (0, 25)	18
+  (0, 29)	1
+  (0, 30)	3
+  (0, 31)	1
+  (0, 32)	1
+  (0, 34)	1
+  (0, 38)	7
+  (0, 46)	9
+  (0, 47)	7
+  (0, 52)	10
+  (0, 60)	4
+  (0, 71)	38
+  (0, 72)	3
+  (0, 73)	1
+  (0, 74)	1
+  (0, 75)	2
+  :	:
+  (422354, 278)	2
+  (422354, 282)	1
+  (422354, 287)	3
+  (422354, 294)	2
+  (422354, 295)	11
+  (422354, 296)	2
+  (422354, 297)	12
+  (422354, 301)	3
+  (422354, 306)	1
+  (422354, 307)	2
+  (422354, 310)	1
+  (422354, 312)	3
+  (422354, 316)	3
+  (422354, 319)	7
+  (422354, 321)	9
+  (422354, 322)	3
+  (422354, 325)	9
+  (422354, 326)	9
+  (422354, 332)	1
+  (422354, 334)	3
+  (422354, 335)	1
+  (422354, 339)	12
+  (422354, 343)	1
+  (422354, 346)	1
+  (422354, 347)	1
+adata.X shape: (422355, 349)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 349
+Number of genes with matching ensembl ids: 341
+Number of genes skipped: 8
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ACAP1      ENSG00000072818
+ACSBG1     ENSG00000103740
+ADAMTS9    ENSG00000163638
+ADGRB3     ENSG00000135298
+...                    ...
+WWTR1      ENSG00000018408
+XCL1       ENSG00000143184
+XPOT       ENSG00000184575
+YPEL5      ENSG00000119801
+ZNF385D    ENSG00000151789
+
+[341 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  545.0757   7604.005  ]
+ [  582.5291   7607.121  ]
+ [  475.87872  7613.9805 ]
+ ...
+ [11142.874    2490.502  ]
+ [11083.933    2519.6438 ]
+ [11130.293    2520.0125 ]]
+AnnData object with n_obs × n_vars = 422355 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch15
+adata_batch.obs['cell_id']:
+aaaaagii-1         1002_batch15_0
+aaaabgpm-1         1002_batch15_1
+aaaafffh-1         1002_batch15_2
+aaaafpdl-1         1002_batch15_3
+aaaaieke-1         1002_batch15_4
+                     ...         
+oipnkncg-1    1002_batch15_422290
+oipnmemc-1    1002_batch15_422291
+oipnnlco-1    1002_batch15_422292
+oipnofjb-1    1002_batch15_422293
+oipoecnb-1    1002_batch15_422294
+Name: cell_id, Length: 422295, dtype: object
+Harmonized adata_batch shape: (422295, 341)
+Final Harmonized Adata: Batch = 15
+AnnData object with n_obs × n_vars = 422295 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S45-i__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-5-FO-4-S52_ii__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (104634, 349)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 8567102 stored elements and shape (104634, 349)>
+  Coords	Values
+  (0, 0)	2
+  (0, 8)	11
+  (0, 10)	2
+  (0, 14)	2
+  (0, 19)	4
+  (0, 24)	1
+  (0, 25)	3
+  (0, 28)	1
+  (0, 30)	1
+  (0, 32)	1
+  (0, 35)	1
+  (0, 38)	1
+  (0, 46)	3
+  (0, 47)	6
+  (0, 60)	5
+  (0, 72)	1
+  (0, 73)	1
+  (0, 85)	5
+  (0, 88)	7
+  (0, 89)	1
+  (0, 97)	1
+  (0, 100)	16
+  (0, 104)	1
+  (0, 108)	1
+  (0, 110)	1
+  :	:
+  (104633, 293)	3
+  (104633, 294)	1
+  (104633, 296)	7
+  (104633, 297)	2
+  (104633, 298)	8
+  (104633, 299)	1
+  (104633, 301)	6
+  (104633, 304)	1
+  (104633, 306)	1
+  (104633, 310)	4
+  (104633, 317)	1
+  (104633, 319)	4
+  (104633, 321)	5
+  (104633, 322)	1
+  (104633, 324)	1
+  (104633, 325)	1
+  (104633, 327)	1
+  (104633, 329)	1
+  (104633, 332)	1
+  (104633, 335)	1
+  (104633, 339)	34
+  (104633, 340)	5
+  (104633, 341)	1
+  (104633, 343)	3
+  (104633, 347)	3
+adata.X shape: (104634, 349)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 349
+Number of genes with matching ensembl ids: 341
+Number of genes skipped: 8
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ACAP1      ENSG00000072818
+ACSBG1     ENSG00000103740
+ADAMTS9    ENSG00000163638
+ADGRB3     ENSG00000135298
+...                    ...
+WWTR1      ENSG00000018408
+XCL1       ENSG00000143184
+XPOT       ENSG00000184575
+YPEL5      ENSG00000119801
+ZNF385D    ENSG00000151789
+
+[341 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1668.4884 2049.347 ]
+ [1660.4423 2067.111 ]
+ [2414.5234 2534.3833]
+ ...
+ [5835.3076 3416.0566]
+ [5840.5317 3434.5059]
+ [5844.4966 3463.7532]]
+AnnData object with n_obs × n_vars = 104634 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'necrotic_is_removed', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch27
+adata_batch.obs['cell_id']:
+aaaafbma-1         1002_batch27_0
+aaaakala-1         1002_batch27_1
+aaabbinl-1         1002_batch27_2
+aaacakgp-1         1002_batch27_3
+aaacbegn-1         1002_batch27_4
+                     ...         
+oijipnpd-1    1002_batch27_103956
+oijmjeba-1    1002_batch27_103957
+oijmjioi-1    1002_batch27_103958
+oijngppl-1    1002_batch27_103959
+oijnielf-1    1002_batch27_103960
+Name: cell_id, Length: 103961, dtype: object
+Harmonized adata_batch shape: (103961, 341)
+Final Harmonized Adata: Batch = 27
+AnnData object with n_obs × n_vars = 103961 × 341
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'necrotic_is_removed', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-5-FO-4-S52_ii__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-2__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (251553, 315)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 20685120 stored elements and shape (251553, 315)>
+  Coords	Values
+  (0, 0)	2
+  (0, 2)	2
+  (0, 4)	1
+  (0, 5)	2
+  (0, 14)	13
+  (0, 15)	83
+  (0, 16)	6
+  (0, 17)	31
+  (0, 18)	1
+  (0, 19)	1
+  (0, 23)	7
+  (0, 24)	1
+  (0, 25)	9
+  (0, 26)	5
+  (0, 27)	1
+  (0, 30)	2
+  (0, 48)	1
+  (0, 53)	3
+  (0, 55)	1
+  (0, 56)	1
+  (0, 59)	2
+  (0, 60)	1
+  (0, 61)	1
+  (0, 62)	5
+  (0, 66)	6
+  :	:
+  (251552, 225)	1
+  (251552, 227)	3
+  (251552, 230)	37
+  (251552, 234)	3
+  (251552, 236)	1
+  (251552, 238)	1
+  (251552, 247)	9
+  (251552, 250)	6
+  (251552, 256)	2
+  (251552, 260)	1
+  (251552, 264)	7
+  (251552, 265)	12
+  (251552, 266)	1
+  (251552, 267)	19
+  (251552, 268)	6
+  (251552, 272)	4
+  (251552, 287)	1
+  (251552, 292)	1
+  (251552, 294)	1
+  (251552, 295)	3
+  (251552, 296)	5
+  (251552, 305)	3
+  (251552, 306)	1
+  (251552, 308)	17
+  (251552, 309)	1
+adata.X shape: (251553, 315)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 315
+Number of genes with matching ensembl ids: 312
+Number of genes skipped: 3
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC3      ENSG00000108846
+ABCC9      ENSG00000069431
+ADAMTS12   ENSG00000151388
+ADAMTS16   ENSG00000145536
+ADAMTS3    ENSG00000156140
+...                    ...
+VIP        ENSG00000146469
+VWC2L      ENSG00000174453
+WIF1       ENSG00000156076
+ZBBX       ENSG00000169064
+ZDHHC23    ENSG00000184307
+
+[312 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 1654.3893  4227.733 ]
+ [ 1264.4181  4231.963 ]
+ [ 1268.4956  4243.4893]
+ ...
+ [10786.466   2583.9644]
+ [10729.361   2584.1206]
+ [10776.099   2582.0908]]
+AnnData object with n_obs × n_vars = 251553 × 312
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch39
+adata_batch.obs['cell_id']:
+aaaakkmf-1         1002_batch39_0
+aaaancgh-1         1002_batch39_1
+aaabeimm-1         1002_batch39_2
+aaabifke-1         1002_batch39_3
+aaablpea-1         1002_batch39_4
+                     ...         
+oimpgfjo-1    1002_batch39_251503
+oimpkpne-1    1002_batch39_251504
+oimpoacl-1    1002_batch39_251505
+oinabhnd-1    1002_batch39_251506
+oinachdi-1    1002_batch39_251507
+Name: cell_id, Length: 251508, dtype: object
+Harmonized adata_batch shape: (251508, 312)
+Final Harmonized Adata: Batch = 39
+AnnData object with n_obs × n_vars = 251508 × 312
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-2__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S49-B1__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (460827, 5001)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 334298152 stored elements and shape (460827, 5001)>
+  Coords	Values
+  (0, 5)	3
+  (0, 21)	1
+  (0, 55)	1
+  (0, 57)	1
+  (0, 66)	1
+  (0, 68)	1
+  (0, 70)	2
+  (0, 83)	1
+  (0, 93)	2
+  (0, 148)	1
+  (0, 151)	1
+  (0, 152)	1
+  (0, 164)	1
+  (0, 165)	1
+  (0, 177)	1
+  (0, 179)	1
+  (0, 186)	2
+  (0, 197)	1
+  (0, 217)	1
+  (0, 220)	1
+  (0, 221)	1
+  (0, 222)	1
+  (0, 224)	1
+  (0, 226)	2
+  (0, 231)	1
+  :	:
+  (460826, 4327)	1
+  (460826, 4328)	1
+  (460826, 4336)	1
+  (460826, 4376)	1
+  (460826, 4456)	8
+  (460826, 4544)	1
+  (460826, 4648)	1
+  (460826, 4674)	1
+  (460826, 4685)	2
+  (460826, 4686)	1
+  (460826, 4695)	1
+  (460826, 4716)	1
+  (460826, 4723)	1
+  (460826, 4749)	2
+  (460826, 4779)	2
+  (460826, 4785)	1
+  (460826, 4786)	1
+  (460826, 4812)	2
+  (460826, 4878)	1
+  (460826, 4900)	1
+  (460826, 4902)	1
+  (460826, 4956)	1
+  (460826, 4968)	1
+  (460826, 4981)	1
+  (460826, 5000)	2
+adata.X shape: (460827, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 3659.0393  2099.9224]
+ [ 3551.4143  2145.3953]
+ [ 3777.8936  2479.7058]
+ ...
+ [ 6874.396  11748.665 ]
+ [ 6962.533  12013.844 ]
+ [ 6859.329   9848.504 ]]
+AnnData object with n_obs × n_vars = 460827 × 4949
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donorName', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'necrotic_is_removed', 'neighbors', 'pca', 'regionName', 'run', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch45
+adata_batch.obs['cell_id']:
+aaaaecia-1         1002_batch45_0
+aaaaicpf-1         1002_batch45_1
+aaabagkc-1         1002_batch45_2
+aaabcmne-1         1002_batch45_3
+aaabdojo-1         1002_batch45_4
+                     ...         
+oinodogl-1    1002_batch45_460799
+oinofkpc-1    1002_batch45_460800
+oinogcnk-1    1002_batch45_460801
+oinojika-1    1002_batch45_460802
+oinokgni-1    1002_batch45_460803
+Name: cell_id, Length: 460804, dtype: object
+Harmonized adata_batch shape: (460804, 4949)
+Final Harmonized Adata: Batch = 45
+AnnData object with n_obs × n_vars = 460804 × 4949
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donorName', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'necrotic_is_removed', 'neighbors', 'pca', 'regionName', 'run', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S49-B1__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S37-ii__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (381187, 315)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 29340854 stored elements and shape (381187, 315)>
+  Coords	Values
+  (0, 7)	1
+  (0, 13)	1
+  (0, 16)	3
+  (0, 17)	1
+  (0, 20)	3
+  (0, 23)	5
+  (0, 25)	2
+  (0, 38)	1
+  (0, 53)	1
+  (0, 56)	3
+  (0, 61)	1
+  (0, 66)	2
+  (0, 84)	3
+  (0, 87)	1
+  (0, 91)	1
+  (0, 96)	1
+  (0, 98)	4
+  (0, 99)	1
+  (0, 100)	1
+  (0, 103)	2
+  (0, 110)	2
+  (0, 114)	1
+  (0, 119)	11
+  (0, 121)	1
+  (0, 127)	2
+  :	:
+  (381186, 138)	1
+  (381186, 140)	3
+  (381186, 150)	1
+  (381186, 151)	1
+  (381186, 176)	1
+  (381186, 179)	1
+  (381186, 189)	1
+  (381186, 195)	1
+  (381186, 202)	2
+  (381186, 203)	1
+  (381186, 213)	2
+  (381186, 224)	1
+  (381186, 230)	5
+  (381186, 238)	1
+  (381186, 247)	4
+  (381186, 249)	1
+  (381186, 250)	3
+  (381186, 265)	2
+  (381186, 266)	1
+  (381186, 267)	7
+  (381186, 272)	1
+  (381186, 277)	1
+  (381186, 283)	1
+  (381186, 286)	1
+  (381186, 309)	13
+adata.X shape: (381187, 315)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 315
+Number of genes with matching ensembl ids: 312
+Number of genes skipped: 3
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC3      ENSG00000108846
+ABCC9      ENSG00000069431
+ADAMTS12   ENSG00000151388
+ADAMTS16   ENSG00000145536
+ADAMTS3    ENSG00000156140
+...                    ...
+VIP        ENSG00000146469
+VWC2L      ENSG00000174453
+WIF1       ENSG00000156076
+ZBBX       ENSG00000169064
+ZDHHC23    ENSG00000184307
+
+[312 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 1642.6707  2881.5715]
+ [ 1649.4535  3145.1418]
+ [ 1647.4985  3160.18  ]
+ ...
+ [10123.783   6012.99  ]
+ [10133.66    6127.0684]
+ [10129.804   5951.6963]]
+AnnData object with n_obs × n_vars = 381187 × 312
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch26
+adata_batch.obs['cell_id']:
+aaaaaech-1         1002_batch26_0
+aaaadgon-1         1002_batch26_1
+aaaaedbi-1         1002_batch26_2
+aaaaeiej-1         1002_batch26_3
+aaaafajp-1         1002_batch26_4
+                     ...         
+oiobmmin-1    1002_batch26_381005
+oioboibb-1    1002_batch26_381006
+oiocaplh-1    1002_batch26_381007
+oiocbacp-1    1002_batch26_381008
+oiocbcjg-1    1002_batch26_381009
+Name: cell_id, Length: 381010, dtype: object
+Harmonized adata_batch shape: (381010, 312)
+Final Harmonized Adata: Batch = 26
+AnnData object with n_obs × n_vars = 381010 × 312
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes_by_counts', 'log1p_n_genes_by_counts', 'log1p_total_counts', 'pct_counts_in_top_10_genes', 'pct_counts_in_top_20_genes', 'pct_counts_in_top_50_genes', 'pct_counts_in_top_150_genes', 'transcript_density', 'nucleus_ratio', 'putative_necrotic', 'n_counts', 'leiden_log1pnorm_res-1', 'sample_id', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'cprobes', 'cwords', 'donor_id', 'instrumentSN', 'leiden_log1pnorm_res-1', 'log1p', 'necrosis_cutoff_genes', 'necrosis_cutoff_transcripts', 'neighbors', 'pca', 'region', 'regionName', 'runName', 'slideID', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_pca', 'spatial'
+    varm: 'PCs'
+    layers: 'counts', 'log1pnorm'
+    obsp: 'connectivities', 'distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhb1002-AT9-6b_1p/AT9-BRA-4-FO-4-S37-ii__filt_cells_filt_genes_raw_log1pnorm_counts.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-27>
+Subject: Job 974874: <xhb1002-AT9-6b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhb1002-AT9-6b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Jan 15 14:45:39 2025
+Job was executed on host(s) <node-14-27>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Jan 15 14:47:43 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Jan 15 14:47:43 2025
+Terminated at Wed Jan 15 14:57:17 2025
+Results reported at Wed Jan 15 14:57:17 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/xhb1002-AT9-6b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   114.55 sec.
+    Max Memory :                                 21443 MB
+    Average Memory :                             9550.78 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               29757.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                6
+    Run time :                                   664 sec.
+    Turnaround time :                            698 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT9-6b_1p/farm-job-outputs/bronze-to-silver/1_974874.err> for stderr output of this job.
+
