@@ -1,3 +1,5 @@
+import argparse
+
 import pandas as pd
 import datasets
 from pathlib import Path
@@ -14,43 +16,64 @@ n_neighs = 10
 hparam_prefix = '_'.join([str(s) for s in [num_shards, norm_factor, norm_method, "knn", n_neighs]])
 print(hparam_prefix)
 
-data_directory_path = Path('/lustre/scratch126/cellgen/team361/DATASETS')
-gold_data_path = data_directory_path / 'gold' / tokenizer
 
-ds_list = []
+def main(args):
+    gold_data_path = Path(args.data_directory_path) / 'gold' / tokenizer
 
-# Read metadata csv and filter out non-xenium datasets
-dataset_names_df = pd.read_csv('/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/analysis/tokenization/human_cohort1_50m_dataset_names.txt', index_col=0, header=None)
+    ds_list = []
 
-print(dataset_names_df)
+    # Read datasets
+    datasets_df = pd.read_csv(
+        args.cohort_dataset_names_file_path,
+        index_col=0,
+        header=None)
+    print(datasets_df)
 
-for dataset_name, _ in dataset_names_df.iterrows():
-    print('Processing: ', dataset_name)
+    for dataset_name, _ in datasets_df.iterrows():
+        print('Processing: ', dataset_name)
+        
+        gold_dataset_path = gold_data_path / dataset_name
+        dir_substring = f"{dataset_name}_{hparam_prefix}"
+        
+        gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and dir_substring in p.name][0]
+        
+        print(gold_dataset_dir)
+
+        ds = datasets.load_from_disk(str(gold_dataset_dir))
+        ds_list.append(ds)
+        
+    cohort_dir = gold_data_path / args.cohort_name
+    cohort_dataset_dir = cohort_dir / f"{args.cohort_name}_{hparam_prefix}"
+    output_path = str(
+        (Path(cohort_dir) / f"{args.cohort_name}_{hparam_prefix}").with_suffix(
+            '.dataset'))
+
+    os.makedirs(cohort_dir, exist_ok=True)
+
+    # Save the dataset
+    print("Concatenating datasets...")
+    tracemalloc.start()
+    concatenated_dataset = datasets.concatenate_datasets(ds_list)
+    concatenated_dataset.save_to_disk(output_path, num_shards=num_shards)
+    current, peak = tracemalloc.get_traced_memory()
+    print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Processing command line arguments...')
+    parser.add_argument('--data_directory_path',
+                        type=str,
+                        default="/lustre/scratch126/cellgen/team361/DATASETS",
+                        help='Data directory path.')
+    parser.add_argument('--cohort_name',
+                        type=str,
+                        default="human_cohort1_60m",
+                        help='Path to the file containing all datasets in the cohort.')
+    parser.add_argument('--cohort_dataset_names_file_path',
+                        type=str,
+                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",
+                        help='Path to the file containing all datasets in the cohort.')
+    args = parser.parse_args()
     
-    gold_dataset_path = gold_data_path / dataset_name
-    dir_substring = f"{dataset_name}_{hparam_prefix}"
-    
-    gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and dir_substring in p.name][0]
-    
-    print(gold_dataset_dir)
-
-    ds = datasets.load_from_disk(str(gold_dataset_dir))
-    ds_list.append(ds)
-    
-
-cohort_name = 'human_cohort1_50m'
-cohort_dir = gold_data_path / cohort_name
-cohort_dataset_dir = cohort_dir / f"{cohort_name}_{hparam_prefix}"
-output_path = str(
-    (Path(cohort_dir) / f"{cohort_name}_{hparam_prefix}").with_suffix(
-        '.dataset'))
-
-os.makedirs(cohort_dir, exist_ok=True)
-
-# Save the dataset
-print("Concatenating datasets...")
-tracemalloc.start()
-concatenated_dataset = datasets.concatenate_datasets(ds_list)
-concatenated_dataset.save_to_disk(output_path, num_shards=num_shards)
-current, peak = tracemalloc.get_traced_memory()
-print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB")
+    main(args)
