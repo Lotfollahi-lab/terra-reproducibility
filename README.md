@@ -2,6 +2,8 @@
 
 ## Datasets
 
+List of datasets: https://docs.google.com/spreadsheets/d/1bfdBZ1MZEVKz2-4Ge89zwe5jVT4qnXAndStmXmJehTo/edit?gid=1836124407#gid=1836124407
+
 `/lustre/scratch126/cellgen/team361/DATASETS/` houses all the data across experiments. An experiment is defined as a collection of anndata objects that may be from the same or different datasets, species, tissues, gene panels, and batches. 
 - `silver` -- contains preprocessed AnnData files
 - `gold` -- contains tokenized datasets
@@ -92,5 +94,6 @@ Execute the following to compute batchwise statistics of a collection of dataset
 ```
 python analysis/statistics/collect_cohort_statistics.py --cohort_name [COHORT_NAME]
 ```
+
 `COHORT_NAME` can be any folder in the `silver` directory (e.g. `human_cohort1_50m`, `sss2-1b_1p`, etc.). The output will be stored in `analysis/statistics/results/[COHORT_NAME]_statistics.csv`. 
 This can also be achieved by an LSF job using `./scripts/collect_cohort_statistics.sh [COHORT_NAME]`.
