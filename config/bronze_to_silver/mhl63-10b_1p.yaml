@@ -1,0 +1,49 @@
+experiment:
+  name: mhl63-10b_1p
+  description: MERFISH Human Liver (dataset-id 63) | 10 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Intratumoral dendritic cell-CD4+ T helper cell niches enable CD8+ T cell differentiation  following PD-1 blockade in hepatocellular carcinoma
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://zenodo.org/records/7758080/files/63_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/63_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/122_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/122_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/122_region_1_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/122_region_1_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1003_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1003_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1012_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1012_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1012_region_1_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1012_region_1_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1014_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1014_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1014_region_1_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1014_region_1_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1017_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1017_region_0_cell_metadata.csv?download=1
+      - https://zenodo.org/records/7758080/files/1029_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1029_region_0_cell_metadata.csv?download=1
+  file_names:
+    - 63_region_0
+    - 122_region_0
+    - 122_region_1
+    - 1003_region_0
+    - 1012_region_0
+    - 1012_region_1
+    - 1014_region_0
+    - 1014_region_1
+    - 1017_region_0
+    - 1029_region_0
+
+harmonization:
+  uns:
+    dataset_id: 63
+    assay: merfish
+    species: homo_sapiens
+    tissue: liver
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

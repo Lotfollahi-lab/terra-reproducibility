@@ -8,7 +8,7 @@ tokenization:
   tokens_per_cell: 64
   use_generator: True
   norm_method: "shifted_log"
-  norm_factor: "read_depth"
+  norm_factor: "gene_corrected_read_depth" # "read_depth"
   prenormalize: False
   processing_mode: "parallel"
   num_shards: 8

@@ -1,0 +1,343 @@
+Experiment Name: xhl82-2b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhl82-2b_1p
+Downloading files from https://cf.10xgenomics.com/samples/xenium/3.0.0/Xenium_V1_Human_Lung_Cancer_FFPE/Xenium_V1_Human_Lung_Cancer_FFPE_outs.zip...
+Downloading files from https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Human_Lung_Cancer_FFPE/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.zip...
+No bronze (raw) .h5ad files found.
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.zip...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.zip
+[+] Input is a zip file. Extracting required files to /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.zip
+[+] Reading cell-feature matrix /tmp/tmpcf80nvq8/cell_feature_matrix.h5
+[+] Reading observations /tmp/tmpcf80nvq8/cells.parquet
+[+] Reading experiment /tmp/tmpcf80nvq8/experiment.xenium
+[+] Reading gene panel /tmp/tmpcf80nvq8/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 278659 × 289
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.zip...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.zip
+[+] Input is a zip file. Extracting required files to /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.zip
+[+] Reading cell-feature matrix /tmp/tmpkkeany65/cell_feature_matrix.h5
+[+] Reading observations /tmp/tmpkkeany65/cells.parquet
+[+] Reading experiment /tmp/tmpkkeany65/experiment.xenium
+[+] Reading gene panel /tmp/tmpkkeany65/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 278328 × 5001
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.h5ad
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (278659, 289)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 9421992 stored elements and shape (278659, 289)>
+  Coords	Values
+  (0, 8)	2
+  (0, 11)	3
+  (0, 29)	1
+  (0, 45)	1
+  (0, 58)	1
+  (0, 60)	1
+  (0, 64)	1
+  (0, 65)	2
+  (0, 78)	1
+  (0, 84)	1
+  (0, 88)	1
+  (0, 95)	1
+  (0, 107)	1
+  (0, 132)	1
+  (0, 156)	1
+  (0, 166)	1
+  (0, 167)	1
+  (0, 173)	1
+  (0, 190)	7
+  (0, 202)	1
+  (0, 216)	1
+  (0, 225)	1
+  (0, 237)	1
+  (0, 279)	1
+  (0, 284)	1
+  :	:
+  (278658, 149)	1
+  (278658, 151)	1
+  (278658, 155)	8
+  (278658, 159)	15
+  (278658, 171)	2
+  (278658, 175)	1
+  (278658, 186)	4
+  (278658, 187)	10
+  (278658, 191)	14
+  (278658, 194)	2
+  (278658, 199)	3
+  (278658, 202)	1
+  (278658, 208)	1
+  (278658, 215)	1
+  (278658, 234)	1
+  (278658, 239)	1
+  (278658, 242)	2
+  (278658, 245)	2
+  (278658, 261)	5
+  (278658, 262)	5
+  (278658, 268)	2
+  (278658, 270)	17
+  (278658, 275)	1
+  (278658, 285)	1
+  (278658, 286)	3
+adata.X shape: (278659, 289)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 289
+Number of genes with matching ensembl ids: 289
+Number of genes skipped: 0
+adata.var:
+                ensembl_id
+gene_name                 
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+ACKR1      ENSG00000213088
+ADAM17     ENSG00000151694
+ADAM28     ENSG00000042980
+...                    ...
+VSIG4      ENSG00000155659
+VWF        ENSG00000110799
+WFS1       ENSG00000109501
+WNT2       ENSG00000105989
+WT1        ENSG00000184937
+
+[289 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 315.47958 4135.816  ]
+ [ 317.9202  4126.2725 ]
+ [ 318.43314 4109.978  ]
+ ...
+ [3653.6943  3904.6821 ]
+ [3655.694   3896.2964 ]
+ [3648.2957  3947.1938 ]]
+AnnData object with n_obs × n_vars = 278659 × 289
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 82
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaadcac-1         82_batch0_0
+aaaaieak-1         82_batch0_1
+aaaanbhm-1         82_batch0_2
+aaaankfe-1         82_batch0_3
+aaaankfi-1         82_batch0_4
+                    ...       
+oikpbgok-1    82_batch0_262258
+oikpdjia-1    82_batch0_262259
+oikpehhe-1    82_batch0_262260
+oikpjbjc-1    82_batch0_262261
+oikplfic-1    82_batch0_262262
+Name: cell_id, Length: 262263, dtype: object
+Harmonized adata_batch shape: (262263, 289)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 262263 × 289
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhl82-2b_1p/Xenium_V1_Human_Lung_Cancer_FFPE_outs.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (278328, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 78255023 stored elements and shape (278328, 5001)>
+  Coords	Values
+  (0, 12)	1
+  (0, 79)	1
+  (0, 93)	1
+  (0, 134)	2
+  (0, 142)	2
+  (0, 151)	1
+  (0, 195)	1
+  (0, 210)	1
+  (0, 220)	1
+  (0, 277)	1
+  (0, 287)	1
+  (0, 301)	1
+  (0, 321)	1
+  (0, 362)	1
+  (0, 365)	3
+  (0, 467)	1
+  (0, 627)	1
+  (0, 630)	2
+  (0, 631)	1
+  (0, 641)	1
+  (0, 669)	1
+  (0, 681)	3
+  (0, 684)	1
+  (0, 696)	1
+  (0, 700)	1
+  :	:
+  (278327, 1368)	1
+  (278327, 1418)	1
+  (278327, 1481)	1
+  (278327, 1849)	1
+  (278327, 2378)	1
+  (278327, 2505)	1
+  (278327, 2689)	1
+  (278327, 2831)	1
+  (278327, 2942)	1
+  (278327, 2989)	1
+  (278327, 3546)	1
+  (278327, 3635)	1
+  (278327, 3746)	1
+  (278327, 3853)	1
+  (278327, 3941)	1
+  (278327, 3957)	1
+  (278327, 4177)	1
+  (278327, 4186)	8
+  (278327, 4198)	1
+  (278327, 4203)	1
+  (278327, 4233)	1
+  (278327, 4498)	1
+  (278327, 4673)	1
+  (278327, 4805)	1
+  (278327, 4809)	1
+adata.X shape: (278328, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 822.46906 5111.5376 ]
+ [ 843.9014  5149.261  ]
+ [ 831.2194  5133.179  ]
+ ...
+ [7380.62     856.2453 ]
+ [7347.0684   859.2682 ]
+ [7361.04     848.9126 ]]
+AnnData object with n_obs × n_vars = 278328 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 82
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+aaaaadnb-1         82_batch1_0
+aaaabalp-1         82_batch1_1
+aaaadfei-1         82_batch1_2
+aaaadjia-1         82_batch1_3
+aaaafglb-1         82_batch1_4
+                    ...       
+oikijpja-1    82_batch1_275234
+oikioede-1    82_batch1_275235
+oikiokmm-1    82_batch1_275236
+oikjekcf-1    82_batch1_275237
+oikjhded-1    82_batch1_275238
+Name: cell_id, Length: 275239, dtype: object
+Harmonized adata_batch shape: (275239, 4949)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 275239 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhl82-2b_1p/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-27>
+Subject: Job 716964: <xhl82-2b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhl82-2b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Jan 19 10:02:09 2025
+Job was executed on host(s) <node-13-27>, in queue <normal>, as user <sb75> in cluster <farm22> at Sun Jan 19 10:02:10 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Jan 19 10:02:10 2025
+Terminated at Sun Jan 19 10:21:07 2025
+Results reported at Sun Jan 19 10:21:07 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/xhl82-2b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   160.00 sec.
+    Max Memory :                                 1598 MB
+    Average Memory :                             349.34 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               49602.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                23
+    Run time :                                   1135 sec.
+    Turnaround time :                            1138 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl82-2b_1p/farm-job-outputs/bronze-to-silver/1_716964.err> for stderr output of this job.
+

@@ -1,0 +1,33 @@
+experiment:
+  name: xhk79-4b_1p
+  description: Xenium Human Kidney internal (dataset-id 79) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Xenium Human Kidney 1 from Menna
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium-Ranger_AC19-K292-Control-Pre-HiP-CT_Run-XETG00155_output
+    - Xenium-Ranger_AC19-K292-HiRes_Run-XETG00155_output
+    - Xenium-Ranger_AC36-K310-CKD_Run-XETG00155_output
+    - Xenium-Ranger_AC42-K316-CKD_Run-XETG00155_output
+
+harmonization:
+  uns:
+    dataset_id: 79
+    assay: xenium
+    species: homo_sapiens
+    tissue: kidney
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

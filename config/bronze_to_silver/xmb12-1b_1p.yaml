@@ -1,0 +1,30 @@
+experiment:
+  name: xmb12-1b_1p
+  description: Xenium Mouse Brain (dataset-id 12) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Fresh Frozen Mouse Brain Hemisphere with 5K Mouse Pan Tissue and Pathways Panel
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: .nan
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_Prime_Mouse_Brain_Coronal_FF
+
+harmonization:
+  uns:
+    dataset_id: 12
+    assay: xenium
+    species: mus_musculus
+    tissue: brain
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

@@ -89,9 +89,11 @@ The corresponding wrapper script is available at `scripts/wrapper_create_cell_gr
 
 ## Analysis
 
-### Compute Dataset Statistics:
-Execute the following to compute batchwise statistics of a collection of `anndata` objects:
+### Compute Cohort Statistics:
+Execute the following to compute batchwise statistics of a collection of datasets comprising of one or more `anndata` objects:
 ```
-python analysis/statistics/compute_anndata_statistics.py --config_file [CONFIG-FILE] --override [OPTIONS]
+python analysis/statistics/collect_cohort_statistics.py --cohort_name [COHORT_NAME]
 ```
-Sample config file is available at `config/anndata_statistics_sim1_1105fts_10000locs.yaml`. The override flag allows you to override the number of processes parameter from the config file by using the `--override mode=[sequential | parallel] nproc=[NPROC]`. Other parameters from the config file remain unaffected.
+
+`COHORT_NAME` can be any folder in the `silver` directory (e.g. `human_cohort1_50m`, `sss2-1b_1p`, etc.). The output will be stored in `analysis/statistics/results/[COHORT_NAME]_statistics.csv`. 
+This can also be achieved by an LSF job using `./scripts/collect_cohort_statistics.sh [COHORT_NAME]`.

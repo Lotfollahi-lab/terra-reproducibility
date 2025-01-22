@@ -1,0 +1,31 @@
+experiment:
+  name: xhl46-1b_1p
+  description: Xenium Human Lymph Node (Prime)(dataset-id 46) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: 'Preview Data: FFPE Human Lymph Node with 5K Pan Tissue and Pathways Panel'
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Human_Lymph_Node_Reactive_FFPE/Xenium_Prime_Human_Lymph_Node_Reactive_FFPE_outs.zip
+  file_names:
+    - Xenium_Prime_Human_Lymph_Node_Reactive_FFPE
+
+harmonization:
+  uns:
+    dataset_id: 46
+    assay: xenium
+    species: homo_sapiens
+    tissue: lymph node
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

@@ -1,0 +1,1233 @@
+Experiment Name: chl59-8b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung6+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung12+SMI+Flat+data.tar.gz already exists. Skipping download...
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung13+SMI+Flat+data.tar.gz already exists. Skipping download...
+Overwriting previously existing bronze (raw) .h5ad files...
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmp5ffqdj5n
+[+] Reading cell-feature matrix /tmp/tmp5ffqdj5n/Lung5_Rep1/Lung5_Rep1-Flat_files_and_images/Lung5_Rep1_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmp5ffqdj5n/Lung5_Rep1/Lung5_Rep1-Flat_files_and_images/Lung5_Rep1_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 100292 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmpbtflo7dv
+[+] Reading cell-feature matrix /tmp/tmpbtflo7dv/Lung5_Rep2/Lung5_Rep2-Flat_files_and_images/Lung5_Rep2_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmpbtflo7dv/Lung5_Rep2/Lung5_Rep2-Flat_files_and_images/Lung5_Rep2_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 106660 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmp877_249e
+[+] Reading cell-feature matrix /tmp/tmp877_249e/Lung5_Rep3/Lung5_Rep3-Flat_files_and_images/Lung5_Rep3_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmp877_249e/Lung5_Rep3/Lung5_Rep3-Flat_files_and_images/Lung5_Rep3_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 100264 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung6+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung6+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmpzokyt642
+[+] Reading cell-feature matrix /tmp/tmpzokyt642/Lung6/Lung6-Flat_files_and_images/Lung6_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmpzokyt642/Lung6/Lung6-Flat_files_and_images/Lung6_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 93795 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung6+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmp4umv1qjj
+[+] Reading cell-feature matrix /tmp/tmp4umv1qjj/Lung9_Rep1/Lung9_Rep1-Flat_files_and_images/Lung9_Rep1_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmp4umv1qjj/Lung9_Rep1/Lung9_Rep1-Flat_files_and_images/Lung9_Rep1_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 91972 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmpgu1x4xif
+[+] Reading cell-feature matrix /tmp/tmpgu1x4xif/Lung9_Rep2/Lung9_Rep2-Flat_files_and_images/Lung9_Rep2_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmpgu1x4xif/Lung9_Rep2/Lung9_Rep2-Flat_files_and_images/Lung9_Rep2_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 150504 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung12+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung12+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmpiorwt89s
+[+] Reading cell-feature matrix /tmp/tmpiorwt89s/Lung12/Lung12-Flat_files_and_images/Lung12_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmpiorwt89s/Lung12/Lung12-Flat_files_and_images/Lung12_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 73997 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung12+SMI+Flat+data.tar.h5ad
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung13+SMI+Flat+data.tar.gz...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung13+SMI+Flat+data.tar.gz
+[+] Input is a tar.gz file. Extracting required files to /tmp/tmp06fv7ps2
+[+] Reading cell-feature matrix /tmp/tmp06fv7ps2/Lung13/Lung13-Flat_files_and_images/Lung13_exprMat_file.csv
+[+] Reading metadata matrix /tmp/tmp06fv7ps2/Lung13/Lung13-Flat_files_and_images/Lung13_metadata_file.csv
+Raw adata:
+AnnData object with n_obs × n_vars = 82843 × 980
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung13+SMI+Flat+data.tar.h5ad
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung12+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (73997, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 9661505 stored elements and shape (73997, 980)>
+  Coords	Values
+  (0, 17)	1
+  (0, 38)	1
+  (0, 40)	1
+  (0, 53)	1
+  (0, 66)	1
+  (0, 70)	1
+  (0, 72)	1
+  (0, 83)	1
+  (0, 84)	1
+  (0, 107)	1
+  (0, 119)	2
+  (0, 127)	1
+  (0, 132)	1
+  (0, 161)	1
+  (0, 162)	1
+  (0, 189)	1
+  (0, 214)	1
+  (0, 227)	1
+  (0, 231)	1
+  (0, 237)	1
+  (0, 272)	1
+  (0, 278)	2
+  (0, 286)	1
+  (0, 289)	2
+  (0, 293)	1
+  :	:
+  (73996, 783)	1
+  (73996, 795)	1
+  (73996, 796)	1
+  (73996, 798)	1
+  (73996, 808)	1
+  (73996, 816)	1
+  (73996, 822)	1
+  (73996, 843)	1
+  (73996, 852)	1
+  (73996, 856)	1
+  (73996, 857)	3
+  (73996, 858)	1
+  (73996, 862)	1
+  (73996, 869)	1
+  (73996, 873)	1
+  (73996, 879)	1
+  (73996, 889)	1
+  (73996, 912)	1
+  (73996, 913)	1
+  (73996, 920)	1
+  (73996, 925)	5
+  (73996, 933)	1
+  (73996, 938)	2
+  (73996, 965)	1
+  (73996, 973)	1
+adata.X shape: (73997, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  -4424.778  -156608.33  ]
+ [  -4158.778  -156607.33  ]
+ [  -3875.7778 -156617.33  ]
+ ...
+ [  12914.889  -138296.33  ]
+ [  14077.889  -138298.33  ]
+ [  14212.889  -138298.33  ]]
+AnnData object with n_obs × n_vars = 73997 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+1_1            59_batch0_0
+1_2            59_batch0_1
+1_3            59_batch0_2
+1_4            59_batch0_3
+1_5            59_batch0_4
+                ...       
+28_3144    59_batch0_72441
+28_3145    59_batch0_72442
+28_3146    59_batch0_72443
+28_3147    59_batch0_72444
+28_3148    59_batch0_72445
+Name: cell_id, Length: 72446, dtype: object
+Harmonized adata_batch shape: (72446, 946)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 72446 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung12+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (91972, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 11405026 stored elements and shape (91972, 980)>
+  Coords	Values
+  (0, 783)	1
+  (1, 87)	1
+  (1, 97)	1
+  (1, 112)	1
+  (1, 124)	1
+  (1, 145)	1
+  (1, 178)	1
+  (1, 204)	2
+  (1, 231)	1
+  (1, 274)	1
+  (1, 276)	1
+  (1, 299)	1
+  (1, 318)	1
+  (1, 330)	1
+  (1, 337)	1
+  (1, 339)	1
+  (1, 367)	1
+  (1, 374)	1
+  (1, 381)	1
+  (1, 407)	1
+  (1, 413)	1
+  (1, 430)	3
+  (1, 431)	1
+  (1, 446)	1
+  (1, 453)	1
+  :	:
+  (91971, 595)	2
+  (91971, 608)	1
+  (91971, 636)	2
+  (91971, 666)	4
+  (91971, 678)	1
+  (91971, 733)	1
+  (91971, 735)	1
+  (91971, 757)	1
+  (91971, 780)	2
+  (91971, 784)	1
+  (91971, 796)	1
+  (91971, 803)	1
+  (91971, 807)	2
+  (91971, 821)	1
+  (91971, 822)	1
+  (91971, 832)	2
+  (91971, 833)	1
+  (91971, 838)	1
+  (91971, 891)	1
+  (91971, 921)	1
+  (91971, 932)	1
+  (91971, 938)	1
+  (91971, 942)	1
+  (91971, 954)	2
+  (91971, 959)	2
+adata.X shape: (91972, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  1760.3334 140388.56  ]
+ [  1913.3334 140378.56  ]
+ [  2157.3333 140364.56  ]
+ ...
+ [ 22803.     151374.56  ]
+ [ 22157.     151371.56  ]
+ [ 21734.     151367.56  ]]
+AnnData object with n_obs × n_vars = 91972 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+1_2            59_batch1_0
+1_3            59_batch1_1
+1_4            59_batch1_2
+1_6            59_batch1_3
+1_7            59_batch1_4
+                ...       
+20_4048    59_batch1_89747
+20_4049    59_batch1_89748
+20_4050    59_batch1_89749
+20_4051    59_batch1_89750
+20_4052    59_batch1_89751
+Name: cell_id, Length: 89752, dtype: object
+Harmonized adata_batch shape: (89752, 946)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 89752 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung9_Rep1+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (100264, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 11371466 stored elements and shape (100264, 980)>
+  Coords	Values
+  (0, 285)	1
+  (0, 625)	1
+  (1, 403)	1
+  (2, 71)	1
+  (2, 133)	1
+  (2, 153)	1
+  (2, 307)	3
+  (2, 367)	2
+  (2, 404)	1
+  (2, 427)	2
+  (2, 447)	2
+  (2, 482)	8
+  (2, 485)	3
+  (2, 487)	1
+  (2, 541)	2
+  (2, 548)	1
+  (2, 566)	1
+  (2, 580)	1
+  (2, 625)	1
+  (2, 666)	1
+  (2, 710)	1
+  (2, 720)	1
+  (2, 730)	3
+  (2, 771)	1
+  (2, 803)	1
+  :	:
+  (100262, 412)	1
+  (100262, 429)	1
+  (100262, 463)	1
+  (100262, 481)	2
+  (100262, 781)	1
+  (100262, 782)	1
+  (100262, 857)	2
+  (100262, 881)	1
+  (100262, 912)	1
+  (100262, 925)	1
+  (100262, 928)	1
+  (100262, 938)	1
+  (100263, 71)	1
+  (100263, 386)	1
+  (100263, 398)	1
+  (100263, 404)	1
+  (100263, 406)	1
+  (100263, 664)	1
+  (100263, 795)	1
+  (100263, 803)	1
+  (100263, 807)	1
+  (100263, 864)	1
+  (100263, 927)	2
+  (100263, 938)	1
+  (100263, 959)	2
+adata.X shape: (100264, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-10174.223    1772.8889]
+ [ -8990.223    1774.8889]
+ [ -8733.223    1761.8889]
+ ...
+ [ 16229.667   16402.889 ]
+ [ 16930.666   16400.889 ]
+ [ 16277.667   16400.889 ]]
+AnnData object with n_obs × n_vars = 100264 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch2
+adata_batch.obs['cell_id']:
+1_3            59_batch2_0
+1_5            59_batch2_1
+1_6            59_batch2_2
+1_7            59_batch2_3
+1_8            59_batch2_4
+                ...       
+30_4632    59_batch2_98908
+30_4634    59_batch2_98909
+30_4635    59_batch2_98910
+30_4636    59_batch2_98911
+30_4637    59_batch2_98912
+Name: cell_id, Length: 98913, dtype: object
+Harmonized adata_batch shape: (98913, 946)
+Final Harmonized Adata: Batch = 2
+AnnData object with n_obs × n_vars = 98913 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung5_Rep3+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung13+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (82843, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 10908480 stored elements and shape (82843, 980)>
+  Coords	Values
+  (0, 57)	1
+  (0, 58)	1
+  (0, 62)	1
+  (0, 71)	3
+  (0, 132)	1
+  (0, 152)	1
+  (0, 157)	1
+  (0, 167)	1
+  (0, 178)	1
+  (0, 181)	1
+  (0, 185)	1
+  (0, 228)	1
+  (0, 238)	1
+  (0, 239)	1
+  (0, 241)	1
+  (0, 259)	1
+  (0, 277)	1
+  (0, 308)	1
+  (0, 309)	1
+  (0, 316)	1
+  (0, 327)	1
+  (0, 346)	1
+  (0, 351)	1
+  (0, 404)	1
+  (0, 406)	1
+  :	:
+  (82841, 630)	1
+  (82841, 740)	2
+  (82841, 747)	1
+  (82841, 783)	1
+  (82841, 808)	1
+  (82841, 815)	1
+  (82841, 837)	3
+  (82841, 843)	1
+  (82841, 851)	1
+  (82841, 893)	1
+  (82841, 938)	2
+  (82841, 966)	1
+  (82842, 107)	1
+  (82842, 113)	1
+  (82842, 227)	1
+  (82842, 231)	1
+  (82842, 370)	1
+  (82842, 389)	1
+  (82842, 430)	1
+  (82842, 511)	1
+  (82842, 650)	1
+  (82842, 767)	1
+  (82842, 870)	1
+  (82842, 913)	1
+  (82842, 938)	1
+adata.X shape: (82843, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-37826.668     -150.22223]
+ [-37507.668     -140.22223]
+ [-37310.668     -141.22223]
+ ...
+ [-19551.       10841.777  ]
+ [-17185.       10839.777  ]
+ [-17530.       10840.777  ]]
+AnnData object with n_obs × n_vars = 82843 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch3
+adata_batch.obs['cell_id']:
+1_1            59_batch3_0
+1_2            59_batch3_1
+1_3            59_batch3_2
+1_5            59_batch3_3
+1_6            59_batch3_4
+                ...       
+20_4001    59_batch3_82044
+20_4002    59_batch3_82045
+20_4003    59_batch3_82046
+20_4004    59_batch3_82047
+20_4005    59_batch3_82048
+Name: cell_id, Length: 82049, dtype: object
+Harmonized adata_batch shape: (82049, 946)
+Final Harmonized Adata: Batch = 3
+AnnData object with n_obs × n_vars = 82049 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung13+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung6+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (93795, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 12212320 stored elements and shape (93795, 980)>
+  Coords	Values
+  (0, 26)	1
+  (0, 71)	2
+  (0, 211)	1
+  (0, 239)	1
+  (0, 240)	1
+  (0, 343)	1
+  (0, 389)	1
+  (0, 446)	1
+  (0, 554)	1
+  (0, 558)	1
+  (0, 608)	1
+  (0, 644)	1
+  (0, 666)	1
+  (0, 760)	1
+  (0, 914)	1
+  (0, 925)	1
+  (0, 943)	1
+  (1, 113)	1
+  (1, 132)	1
+  (1, 239)	1
+  (1, 341)	1
+  (1, 447)	1
+  (1, 464)	1
+  (1, 495)	1
+  (1, 534)	2
+  :	:
+  (93791, 600)	1
+  (93791, 636)	1
+  (93791, 657)	1
+  (93791, 686)	1
+  (93791, 703)	1
+  (93791, 794)	1
+  (93791, 800)	1
+  (93791, 881)	1
+  (93791, 959)	1
+  (93792, 450)	1
+  (93793, 71)	3
+  (93793, 172)	3
+  (93793, 175)	1
+  (93793, 347)	1
+  (93793, 407)	1
+  (93793, 435)	1
+  (93793, 446)	1
+  (93793, 447)	1
+  (93793, 469)	1
+  (93793, 568)	1
+  (93793, 659)	1
+  (93793, 740)	1
+  (93793, 766)	1
+  (93793, 837)	2
+  (93793, 959)	1
+adata.X shape: (93795, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  -5450.5557 -181318.78  ]
+ [  -5329.5557 -181312.78  ]
+ [  -4968.5557 -181312.78  ]
+ ...
+ [  20896.334  -166664.78  ]
+ [  19064.334  -166665.78  ]
+ [  19895.334  -166666.78  ]]
+AnnData object with n_obs × n_vars = 93795 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch4
+adata_batch.obs['cell_id']:
+1_1            59_batch4_0
+1_2            59_batch4_1
+1_3            59_batch4_2
+1_4            59_batch4_3
+1_5            59_batch4_4
+                ...       
+30_2750    59_batch4_91730
+30_2752    59_batch4_91731
+30_2753    59_batch4_91732
+30_2754    59_batch4_91733
+30_2756    59_batch4_91734
+Name: cell_id, Length: 91735, dtype: object
+Harmonized adata_batch shape: (91735, 946)
+Final Harmonized Adata: Batch = 4
+AnnData object with n_obs × n_vars = 91735 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung6+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (150504, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 14866432 stored elements and shape (150504, 980)>
+  Coords	Values
+  (1, 37)	1
+  (1, 238)	1
+  (1, 551)	1
+  (1, 792)	1
+  (3, 539)	1
+  (3, 653)	1
+  (3, 666)	1
+  (4, 24)	1
+  (4, 170)	1
+  (4, 191)	1
+  (4, 223)	1
+  (4, 227)	1
+  (4, 228)	1
+  (4, 240)	1
+  (4, 276)	1
+  (4, 315)	1
+  (4, 451)	1
+  (4, 482)	1
+  (4, 504)	2
+  (4, 545)	1
+  (4, 580)	1
+  (4, 612)	1
+  (4, 616)	1
+  (4, 626)	1
+  (4, 648)	1
+  :	:
+  (150498, 778)	2
+  (150498, 796)	2
+  (150498, 837)	1
+  (150498, 906)	1
+  (150498, 921)	1
+  (150498, 930)	1
+  (150498, 934)	1
+  (150499, 128)	1
+  (150499, 919)	2
+  (150500, 20)	1
+  (150500, 35)	1
+  (150500, 686)	1
+  (150500, 943)	1
+  (150501, 75)	1
+  (150501, 90)	1
+  (150501, 410)	1
+  (150501, 655)	1
+  (150502, 155)	1
+  (150502, 499)	1
+  (150502, 957)	1
+  (150503, 71)	1
+  (150503, 349)	1
+  (150503, 430)	1
+  (150503, 681)	1
+  (150503, 747)	1
+adata.X shape: (150504, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[-18236.      -25242.777  ]
+ [-18197.      -25258.777  ]
+ [-17497.      -25246.777  ]
+ ...
+ [  3206.889      335.22223]
+ [  6480.8887     331.22223]
+ [  7800.8887     330.22223]]
+AnnData object with n_obs × n_vars = 150504 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch5
+adata_batch.obs['cell_id']:
+1_5             59_batch5_0
+1_7             59_batch5_1
+1_8             59_batch5_2
+1_9             59_batch5_3
+1_10            59_batch5_4
+                 ...       
+45_3035    59_batch5_144975
+45_3036    59_batch5_144976
+45_3037    59_batch5_144977
+45_3038    59_batch5_144978
+45_3039    59_batch5_144979
+Name: cell_id, Length: 144980, dtype: object
+Harmonized adata_batch shape: (144980, 946)
+Final Harmonized Adata: Batch = 5
+AnnData object with n_obs × n_vars = 144980 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung9_Rep2+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (100292, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 12744201 stored elements and shape (100292, 980)>
+  Coords	Values
+  (0, 175)	2
+  (0, 210)	1
+  (0, 379)	1
+  (0, 429)	1
+  (0, 430)	1
+  (0, 432)	1
+  (0, 434)	3
+  (0, 436)	1
+  (0, 437)	1
+  (0, 604)	1
+  (0, 656)	1
+  (0, 666)	2
+  (0, 774)	1
+  (0, 780)	1
+  (0, 783)	1
+  (0, 800)	1
+  (0, 940)	1
+  (0, 942)	1
+  (0, 957)	1
+  (1, 21)	1
+  (1, 49)	1
+  (1, 58)	2
+  (1, 120)	1
+  (1, 226)	1
+  (1, 243)	1
+  :	:
+  (100286, 307)	1
+  (100286, 312)	1
+  (100286, 370)	2
+  (100286, 405)	1
+  (100286, 439)	2
+  (100286, 445)	1
+  (100286, 447)	1
+  (100286, 464)	1
+  (100286, 568)	2
+  (100286, 625)	1
+  (100286, 644)	1
+  (100286, 651)	1
+  (100286, 657)	3
+  (100286, 666)	3
+  (100286, 925)	1
+  (100286, 933)	1
+  (100286, 940)	1
+  (100286, 959)	1
+  (100288, 782)	1
+  (100290, 227)	1
+  (100290, 228)	1
+  (100291, 20)	1
+  (100291, 398)	1
+  (100291, 446)	1
+  (100291, 914)	2
+adata.X shape: (100292, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  4215.8887 158847.67  ]
+ [  6092.8887 158834.67  ]
+ [  7214.8887 158843.67  ]
+ ...
+ [ 25093.777  173477.67  ]
+ [ 25236.777  173477.67  ]
+ [ 25908.777  173477.67  ]]
+AnnData object with n_obs × n_vars = 100292 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch6
+adata_batch.obs['cell_id']:
+1_1            59_batch6_0
+1_2            59_batch6_1
+1_3            59_batch6_2
+1_4            59_batch6_3
+1_5            59_batch6_4
+                ...       
+30_4750    59_batch6_98841
+30_4751    59_batch6_98842
+30_4752    59_batch6_98843
+30_4753    59_batch6_98844
+30_4755    59_batch6_98845
+Name: cell_id, Length: 98846, dtype: object
+Harmonized adata_batch shape: (98846, 946)
+Final Harmonized Adata: Batch = 6
+AnnData object with n_obs × n_vars = 98846 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung5_Rep1+SMI+Flat+data.tar.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (106660, 980)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 15022791 stored elements and shape (106660, 980)>
+  Coords	Values
+  (0, 54)	1
+  (0, 71)	1
+  (0, 77)	2
+  (0, 81)	1
+  (0, 82)	1
+  (0, 90)	1
+  (0, 108)	1
+  (0, 145)	3
+  (0, 153)	1
+  (0, 169)	1
+  (0, 178)	1
+  (0, 185)	1
+  (0, 188)	1
+  (0, 191)	6
+  (0, 218)	1
+  (0, 248)	1
+  (0, 249)	1
+  (0, 261)	1
+  (0, 262)	1
+  (0, 276)	5
+  (0, 293)	1
+  (0, 326)	1
+  (0, 345)	1
+  (0, 397)	1
+  (0, 404)	1
+  :	:
+  (106658, 742)	1
+  (106658, 746)	1
+  (106658, 780)	1
+  (106658, 781)	1
+  (106658, 848)	1
+  (106658, 857)	1
+  (106658, 873)	2
+  (106658, 889)	2
+  (106658, 921)	1
+  (106658, 925)	5
+  (106658, 954)	2
+  (106659, 96)	1
+  (106659, 231)	1
+  (106659, 245)	2
+  (106659, 254)	2
+  (106659, 336)	1
+  (106659, 415)	1
+  (106659, 664)	2
+  (106659, 666)	1
+  (106659, 764)	1
+  (106659, 797)	2
+  (106659, 840)	1
+  (106659, 843)	1
+  (106659, 925)	2
+  (106659, 979)	1
+adata.X shape: (106660, 980)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['AATK', 'ABL1', 'ABL2', 'ACE', 'ACE2', 'ACKR1', 'ACKR3', 'ACKR4',
+       'ACTA2', 'ACTG2',
+       ...
+       'NegPrb14', 'NegPrb15', 'NegPrb16', 'NegPrb17', 'NegPrb18', 'NegPrb19',
+       'NegPrb20', 'NegPrb21', 'NegPrb22', 'NegPrb23'],
+      dtype='object', length=980)
+Number of genes in bronze data: 980
+Number of genes with matching ensembl ids: 946
+Number of genes skipped: 34
+adata.var:
+                ensembl_id
+gene_name                 
+AATK       ENSG00000181409
+ABL1       ENSG00000097007
+ABL2       ENSG00000143322
+ACE        ENSG00000159640
+ACE2       ENSG00000130234
+...                    ...
+XCL1       ENSG00000143184
+XCL2       ENSG00000143185
+YBX3       ENSG00000060138
+YES1       ENSG00000176105
+ZFP36      ENSG00000128016
+
+[946 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  8156.    162800.22 ]
+ [  8330.    162802.22 ]
+ [  8987.    162779.22 ]
+ ...
+ [ 32318.889 177434.22 ]
+ [ 33351.89  177436.22 ]
+ [ 31178.889 177434.22 ]]
+AnnData object with n_obs × n_vars = 106660 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 59
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch7
+adata_batch.obs['cell_id']:
+1_1             59_batch7_0
+1_3             59_batch7_1
+1_4             59_batch7_2
+1_5             59_batch7_3
+1_6             59_batch7_4
+                 ...       
+30_4162    59_batch7_100821
+30_4163    59_batch7_100822
+30_4164    59_batch7_100823
+30_4165    59_batch7_100824
+30_4166    59_batch7_100825
+Name: cell_id, Length: 100826, dtype: object
+Harmonized adata_batch shape: (100826, 946)
+Final Harmonized Adata: Batch = 7
+AnnData object with n_obs × n_vars = 100826 × 946
+    obs: 'fov', 'cell_ID', 'Area', 'AspectRatio', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'Width', 'Height', 'Mean.MembraneStain', 'Max.MembraneStain', 'Mean.PanCK', 'Max.PanCK', 'Mean.CD45', 'Max.CD45', 'Mean.CD3', 'Max.CD3', 'Mean.DAPI', 'Max.DAPI', 'n_genes', 'cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chl59-8b_1p/Lung5_Rep2+SMI+Flat+data.tar.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-18>
+Subject: Job 977105: <chl59-8b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <chl59-8b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Jan 20 22:27:59 2025
+Job was executed on host(s) <node-13-18>, in queue <normal>, as user <sb75> in cluster <farm22> at Mon Jan 20 22:28:00 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jan 20 22:28:00 2025
+Terminated at Mon Jan 20 22:37:46 2025
+Results reported at Mon Jan 20 22:37:46 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/chl59-8b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   558.00 sec.
+    Max Memory :                                 4348 MB
+    Average Memory :                             2314.42 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               46852.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   583 sec.
+    Turnaround time :                            587 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chl59-8b_1p/farm-job-outputs/bronze-to-silver/1_977105.err> for stderr output of this job.
+

@@ -1,0 +1,198 @@
+Experiment Name: chb56-1b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/chb56-1b_1p
+/lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p/flatFiles.zip already exists. Skipping download...
+Overwriting previously existing bronze (raw) .h5ad files...
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p/flatFiles.zip...
+[+] Reading /lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p/flatFiles.zip
+[+] Input is a zip file. Extracting required files to /tmp/tmpc_s00xqm
+[+] Reading cell-feature matrix /tmp/tmpc_s00xqm/S3/S3_exprMat_file.csv.gz
+[+] Reading metadata matrix /tmp/tmpc_s00xqm/S3/S3_metadata_file.csv.gz
+Raw adata:
+AnnData object with n_obs × n_vars = 188686 × 6622
+    obs: 'cell_ID', 'cell', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'fov', 'Area', 'AspectRatio', 'Width', 'Height', 'Mean.Histone', 'Max.Histone', 'Mean.G', 'Max.G', 'Mean.rRNA', 'Max.rRNA', 'Mean.GFAP', 'Max.GFAP', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'assay_type', 'dualfiles', 'Run_name', 'ISH.concentration', 'Dash', 'tissue', 'slide_ID', 'Run_Tissue_name', 'Panel', 'assay_type.1', 'version', 'Area.um2', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'propNegative', 'complexity', 'errorCtEstimate', 'percOfDataFromError', 'qcFlagsRNACounts', 'qcFlagsCellCounts', 'qcFlagsCellPropNeg', 'qcFlagsCellComplex', 'qcFlagsCellArea', 'qcCellsFlagged', 'median_negprobes', 'negprobes_quantile_0.9', 'median_RNA', 'RNA_quantile_0.9', 'nCell', 'nCount', 'nCountPerCell', 'nFeaturePerCell', 'propNegativeCellAvg', 'complexityCellAvg', 'errorCtPerCellEstimate', 'percOfDataFromErrorPerCell', 'qcFlagsFOV', 'RefinedClusts_Final', 'prob', 'RNA_spatialClusteringNeighbours_astro.1', 'RNA_spatialClusteringNeighbours_astro.2', 'RNA_spatialClusteringNeighbours_endothelial', 'RNA_spatialClusteringNeighbours_Inh.1', 'RNA_spatialClusteringNeighbours_Inh.2', 'RNA_spatialClusteringNeighbours_Inh.3', 'RNA_spatialClusteringNeighbours_L2_3', 'RNA_spatialClusteringNeighbours_L4', 'RNA_spatialClusteringNeighbours_L6', 'RNA_spatialClusteringNeighbours_microglia.1', 'RNA_spatialClusteringNeighbours_microglia.2', 'RNA_spatialClusteringNeighbours_oligodendrocyte', 'RNA_spatialClusteringNeighbours_OPC', 'RNA_spatialClusteringNeighbours_unknown', 'spatialClusteringAssignments'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p/flatFiles.h5ad
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/chb56-1b_1p/flatFiles.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (188686, 6622)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 105763488 stored elements and shape (188686, 6622)>
+  Coords	Values
+  (0, 0)	1
+  (0, 5)	1
+  (0, 8)	1
+  (0, 33)	1
+  (0, 50)	1
+  (0, 98)	1
+  (0, 118)	1
+  (0, 138)	2
+  (0, 164)	1
+  (0, 265)	1
+  (0, 293)	1
+  (0, 301)	1
+  (0, 359)	1
+  (0, 381)	1
+  (0, 396)	1
+  (0, 442)	2
+  (0, 468)	1
+  (0, 470)	1
+  (0, 494)	1
+  (0, 495)	1
+  (0, 581)	1
+  (0, 609)	1
+  (0, 616)	1
+  (0, 629)	1
+  (0, 691)	1
+  :	:
+  (188685, 5936)	1
+  (188685, 5940)	1
+  (188685, 5945)	1
+  (188685, 5955)	1
+  (188685, 5972)	1
+  (188685, 5981)	1
+  (188685, 5984)	1
+  (188685, 5997)	1
+  (188685, 6026)	2
+  (188685, 6031)	2
+  (188685, 6056)	1
+  (188685, 6057)	1
+  (188685, 6081)	1
+  (188685, 6087)	2
+  (188685, 6096)	1
+  (188685, 6122)	1
+  (188685, 6137)	1
+  (188685, 6144)	1
+  (188685, 6167)	1
+  (188685, 6180)	1
+  (188685, 6203)	1
+  (188685, 6215)	1
+  (188685, 6221)	2
+  (188685, 6225)	2
+  (188685, 6226)	1
+adata.X shape: (188686, 6622)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['A1BG', 'A2M', 'AAAS', 'AAK1', 'AAMP', 'AARS1', 'AASS', 'AATK', 'ABAT',
+       'ABCA1',
+       ...
+       'FalseCode90', 'FalseCode91', 'FalseCode92', 'FalseCode93',
+       'FalseCode94', 'FalseCode95', 'FalseCode96', 'FalseCode97',
+       'FalseCode98', 'FalseCode99'],
+      dtype='object', length=6622)
+Number of genes in bronze data: 6622
+Number of genes with matching ensembl ids: 6016
+Number of genes skipped: 606
+adata.var:
+                ensembl_id
+gene_name                 
+A1BG       ENSG00000121410
+A2M        ENSG00000175899
+AAAS       ENSG00000094914
+AAK1       ENSG00000115977
+AAMP       ENSG00000127837
+...                    ...
+ZSWIM6     ENSG00000130449
+ZWINT      ENSG00000122952
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+ZZZ3       ENSG00000036549
+
+[6016 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[   492.07794  93597.99   ]
+ [   734.1163   93593.99   ]
+ [  2566.4065   93610.99   ]
+ ...
+ [102319.02     64029.35   ]
+ [102423.04     64036.35   ]
+ [102456.05     63973.344  ]]
+AnnData object with n_obs × n_vars = 188686 × 6016
+    obs: 'cell_ID', 'cell', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'fov', 'Area', 'AspectRatio', 'Width', 'Height', 'Mean.Histone', 'Max.Histone', 'Mean.G', 'Max.G', 'Mean.rRNA', 'Max.rRNA', 'Mean.GFAP', 'Max.GFAP', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'assay_type', 'dualfiles', 'Run_name', 'ISH.concentration', 'Dash', 'tissue', 'slide_ID', 'Run_Tissue_name', 'Panel', 'assay_type.1', 'version', 'Area.um2', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'propNegative', 'complexity', 'errorCtEstimate', 'percOfDataFromError', 'qcFlagsRNACounts', 'qcFlagsCellCounts', 'qcFlagsCellPropNeg', 'qcFlagsCellComplex', 'qcFlagsCellArea', 'qcCellsFlagged', 'median_negprobes', 'negprobes_quantile_0.9', 'median_RNA', 'RNA_quantile_0.9', 'nCell', 'nCount', 'nCountPerCell', 'nFeaturePerCell', 'propNegativeCellAvg', 'complexityCellAvg', 'errorCtPerCellEstimate', 'percOfDataFromErrorPerCell', 'qcFlagsFOV', 'RefinedClusts_Final', 'prob', 'RNA_spatialClusteringNeighbours_astro.1', 'RNA_spatialClusteringNeighbours_astro.2', 'RNA_spatialClusteringNeighbours_endothelial', 'RNA_spatialClusteringNeighbours_Inh.1', 'RNA_spatialClusteringNeighbours_Inh.2', 'RNA_spatialClusteringNeighbours_Inh.3', 'RNA_spatialClusteringNeighbours_L2_3', 'RNA_spatialClusteringNeighbours_L4', 'RNA_spatialClusteringNeighbours_L6', 'RNA_spatialClusteringNeighbours_microglia.1', 'RNA_spatialClusteringNeighbours_microglia.2', 'RNA_spatialClusteringNeighbours_oligodendrocyte', 'RNA_spatialClusteringNeighbours_OPC', 'RNA_spatialClusteringNeighbours_unknown', 'spatialClusteringAssignments'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 56
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: cosmx
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+1_2             56_batch0_0
+1_3             56_batch0_1
+1_4             56_batch0_2
+1_5             56_batch0_3
+1_6             56_batch0_4
+                 ...       
+392_272    56_batch0_188681
+392_273    56_batch0_188682
+392_274    56_batch0_188683
+392_275    56_batch0_188684
+392_276    56_batch0_188685
+Name: cell_id, Length: 188686, dtype: object
+Harmonized adata_batch shape: (188686, 6016)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 188686 × 6016
+    obs: 'cell_ID', 'cell', 'nCount_RNA', 'nFeature_RNA', 'nCount_negprobes', 'nFeature_negprobes', 'nCount_falsecode', 'nFeature_falsecode', 'fov', 'Area', 'AspectRatio', 'Width', 'Height', 'Mean.Histone', 'Max.Histone', 'Mean.G', 'Max.G', 'Mean.rRNA', 'Max.rRNA', 'Mean.GFAP', 'Max.GFAP', 'Mean.DAPI', 'Max.DAPI', 'cell_id', 'assay_type', 'dualfiles', 'Run_name', 'ISH.concentration', 'Dash', 'tissue', 'slide_ID', 'Run_Tissue_name', 'Panel', 'assay_type.1', 'version', 'Area.um2', 'CenterX_local_px', 'CenterY_local_px', 'CenterX_global_px', 'CenterY_global_px', 'propNegative', 'complexity', 'errorCtEstimate', 'percOfDataFromError', 'qcFlagsRNACounts', 'qcFlagsCellCounts', 'qcFlagsCellPropNeg', 'qcFlagsCellComplex', 'qcFlagsCellArea', 'qcCellsFlagged', 'median_negprobes', 'negprobes_quantile_0.9', 'median_RNA', 'RNA_quantile_0.9', 'nCell', 'nCount', 'nCountPerCell', 'nFeaturePerCell', 'propNegativeCellAvg', 'complexityCellAvg', 'errorCtPerCellEstimate', 'percOfDataFromErrorPerCell', 'qcFlagsFOV', 'RefinedClusts_Final', 'prob', 'RNA_spatialClusteringNeighbours_astro.1', 'RNA_spatialClusteringNeighbours_astro.2', 'RNA_spatialClusteringNeighbours_endothelial', 'RNA_spatialClusteringNeighbours_Inh.1', 'RNA_spatialClusteringNeighbours_Inh.2', 'RNA_spatialClusteringNeighbours_Inh.3', 'RNA_spatialClusteringNeighbours_L2_3', 'RNA_spatialClusteringNeighbours_L4', 'RNA_spatialClusteringNeighbours_L6', 'RNA_spatialClusteringNeighbours_microglia.1', 'RNA_spatialClusteringNeighbours_microglia.2', 'RNA_spatialClusteringNeighbours_oligodendrocyte', 'RNA_spatialClusteringNeighbours_OPC', 'RNA_spatialClusteringNeighbours_unknown', 'spatialClusteringAssignments', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/chb56-1b_1p/flatFiles.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-17>
+Subject: Job 98125: <chb56-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <chb56-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Jan 15 18:26:35 2025
+Job was executed on host(s) <node-13-17>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Jan 15 19:21:55 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Jan 15 19:21:55 2025
+Terminated at Wed Jan 15 19:28:50 2025
+Results reported at Wed Jan 15 19:28:50 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/chb56-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   196.00 sec.
+    Max Memory :                                 14960 MB
+    Average Memory :                             4553.00 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               36240.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   512 sec.
+    Turnaround time :                            3735 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chb56-1b_1p/farm-job-outputs/bronze-to-silver/1_98125.err> for stderr output of this job.
+

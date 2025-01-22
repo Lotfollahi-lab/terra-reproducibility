@@ -1,0 +1,37 @@
+experiment:
+  name: shp75-4b_1p
+  description: STARMAP Human Placenta W(dataset-id 75) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  study: Spatial multiomic landscape of the human placenta at molecular resolution
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: online
+  download_params:
+    redownload: false
+    urls:
+      - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W11_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W11_raw_expression.csv?download=1
+      - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W7_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W7_raw_expression.csv?download=1
+      - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_raw_expression.csv?download=1
+      - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_raw_expression.csv?download=1
+  file_names:
+    - STARmap-ISS_sample_W11
+    - STARmap-ISS_sample_W7
+    - STARmap-ISS_sample_W8-2
+    - STARmap-ISS_sample_W9
+
+harmonization:
+  uns:
+    dataset_id: 75
+    assay: starmap
+    species: homo_sapiens
+    tissue: placenta
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

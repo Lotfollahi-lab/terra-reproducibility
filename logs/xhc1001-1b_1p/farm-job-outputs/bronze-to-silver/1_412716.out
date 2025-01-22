@@ -1,0 +1,187 @@
+Experiment Name: xhc1001-1b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhc1001-1b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhc1001-1b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhc1001-1b_1p/NicheCompass_hs_XeniumAdultColon_AM_07112024_132853_raw.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (274037, 414)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 11520516 stored elements and shape (274037, 414)>
+  Coords	Values
+  (0, 0)	3
+  (0, 15)	3
+  (0, 38)	1
+  (0, 40)	4
+  (0, 43)	9
+  (0, 51)	13
+  (0, 52)	1
+  (0, 56)	1
+  (0, 69)	3
+  (0, 84)	1
+  (0, 89)	1
+  (0, 96)	24
+  (0, 102)	8
+  (0, 111)	8
+  (0, 112)	4
+  (0, 115)	1
+  (0, 119)	4
+  (0, 120)	12
+  (0, 128)	5
+  (0, 134)	1
+  (0, 135)	1
+  (0, 138)	4
+  (0, 143)	1
+  (0, 146)	4
+  (0, 170)	7
+  :	:
+  (274036, 337)	17
+  (274036, 338)	2
+  (274036, 339)	7
+  (274036, 340)	1
+  (274036, 343)	1
+  (274036, 351)	1
+  (274036, 353)	8
+  (274036, 354)	76
+  (274036, 355)	1
+  (274036, 356)	5
+  (274036, 358)	2
+  (274036, 364)	1
+  (274036, 365)	1
+  (274036, 368)	1
+  (274036, 372)	4
+  (274036, 379)	1
+  (274036, 382)	1
+  (274036, 386)	14
+  (274036, 388)	1
+  (274036, 394)	1
+  (274036, 399)	6
+  (274036, 400)	1
+  (274036, 405)	1
+  (274036, 412)	2
+  (274036, 413)	3
+adata.X shape: (274037, 414)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 414
+Number of genes with matching ensembl ids: 413
+Number of genes skipped: 1
+adata.var:
+                ensembl_id
+gene_name                 
+ABCA8      ENSG00000141338
+ABCC8      ENSG00000006071
+ACACB      ENSG00000076555
+ACKR1      ENSG00000213088
+ACTA2      ENSG00000107796
+...                    ...
+VWF        ENSG00000110799
+WFDC2      ENSG00000101443
+WNT5B      ENSG00000111186
+XCL2       ENSG00000143185
+ZEB2       ENSG00000169554
+
+[413 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 830.1472   836.5634 ]
+ [ 735.468    854.3893 ]
+ [ 847.42346  846.63324]
+ ...
+ [8260.334   3068.529  ]
+ [8281.4     3071.8494 ]
+ [8269.385   3080.892  ]]
+AnnData object with n_obs × n_vars = 274037 × 413
+    obs: 'Study_name', 'Donor_ID', 'Library_Preparation_Protocol', 'dataset', '_scvi_batch', '_scvi_labels', 'seed_labels', 'C_scANVI', 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_counts', 'latent_leiden_0.4', 'ANPEP_ligand_receptor_target_gene_GP', 'CXCL14_ligand_receptor_target_gene_GP', 'SLPI_ligand_receptor_target_gene_GP', 'TNFSF13B_ligand_receptor_target_gene_GP', 'IL1B_ligand_receptor_target_gene_GP', 'S100A12_ligand_receptor_target_gene_GP', 'CTSG_ligand_receptor_target_gene_GP', 'TNXB_ligand_receptor_target_gene_GP', 'CCL11_ligand_receptor_target_gene_GP', 'CEACAM7_ligand_receptor_target_gene_GP', 'TIMP3_ligand_receptor_target_gene_GP', 'COL5A2_ligand_receptor_target_gene_GP', 'CD79B_ligand_receptor_target_gene_GP', 'IFNG_ligand_receptor_target_gene_GP', 'IGFBP7_ligand_receptor_target_gene_GP', 'CDH1_ligand_receptor_target_gene_GP', 'NID1_ligand_receptor_target_gene_GP', 'CD6_ligand_receptor_target_gene_GP', 'Add-on_51_GP', 'gamma-Aminobutyric acid_metabolite_enzyme_sensor_GP', 'TFF1_ligand_receptor_target_gene_GP', 'COL1A1_ligand_receptor_target_gene_GP', 'CXCL2_ligand_receptor_target_gene_GP', 'CCL20_ligand_receptor_target_gene_GP', 'C1QA_ligand_receptor_target_gene_GP', 'CD14_ligand_receptor_target_gene_GP', 'Add-on_49_GP', 'NPNT_ligand_receptor_target_gene_GP', 'Add-on_71_GP', 'UCN3_ligand_receptor_target_gene_GP', 'LTB_ligand_receptor_target_gene_GP', 'RSPO3_ligand_receptor_target_gene_GP', 'GCG_ligand_receptor_target_gene_GP', 'Add-on_47_GP', 'BMP4_ligand_receptor_target_gene_GP', 'VWF_ligand_receptor_target_gene_GP', 'CCL13_ligand_receptor_target_gene_GP', 'Add-on_29_GP', 'TTR_ligand_receptor_target_gene_GP', 'Add-on_99_GP', 'Add-on_96_GP', 'Add-on_20_GP', 'INSL5_ligand_receptor_target_gene_GP', 'BMP5_ligand_receptor_target_gene_GP', 'CLU_ligand_receptor_target_gene_GP', 'GZMB_ligand_receptor_target_gene_GP', 'NRXN1_ligand_receptor_target_gene_GP', 'Add-on_81_GP', 'FCER2_ligand_receptor_target_gene_GP', 'COL11A1_ligand_receptor_target_gene_GP', 'AREG_ligand_receptor_target_gene_GP', 'Add-on_33_GP', 'TNC_ligand_receptor_target_gene_GP', 'Add-on_78_GP', 'CXCL10_ligand_receptor_target_gene_GP', 'CXCL10_ligand_receptor_GP', 'THBS1_ligand_receptor_target_gene_GP', 'GUCA2B_ligand_receptor_target_gene_GP', 'HDC_ligand_receptor_target_gene_GP', 'CEACAM6_ligand_receptor_target_gene_GP', 'Add-on_28_GP', 'GREM1_ligand_receptor_target_gene_GP', 'Add-on_41_GP', 'MMP1_ligand_receptor_target_gene_GP', 'C1QB_ligand_receptor_target_gene_GP', 'CXCL13_ligand_receptor_target_gene_GP', 'Add-on_17_GP', 'Add-on_27_GP', 'CEACAM1_ligand_receptor_target_gene_GP', 'Add-on_6_GP', 'WNT5B_ligand_receptor_target_gene_GP', 'COL19A1_ligand_receptor_target_gene_GP', 'Add-on_10_GP', 'Add-on_62_GP', 'CEACAM5_ligand_receptor_target_gene_GP', 'GUCA2A_ligand_receptor_target_gene_GP', 'Add-on_87_GP', 'Add-on_80_GP', 'APOE_ligand_receptor_target_gene_GP', 'PAPLN_ligand_receptor_target_gene_GP', 'ANXA1_ligand_receptor_target_gene_GP', 'ROBO1_ligand_receptor_target_gene_GP', 'Add-on_12_GP', 'Add-on_21_GP', 'Add-on_15_GP', 'Add-on_73_GP', 'Add-on_93_GP', 'AZGP1_ligand_receptor_target_gene_GP', 'Add-on_74_GP', 'LCN2_ligand_receptor_target_gene_GP', 'Add-on_66_GP', 'Add-on_56_GP', 'XCL2_ligand_receptor_target_gene_GP', 'HHLA2_ligand_receptor_target_gene_GP', 'Add-on_94_GP', 'ADAM28_ligand_receptor_target_gene_GP', 'TIGIT_ligand_receptor_target_gene_GP', 'Add-on_31_GP', 'Add-on_69_GP', 'LAMA2_ligand_receptor_target_gene_GP', 'Add-on_36_GP', 'RARRES2_ligand_receptor_target_gene_GP', 'CXCL3_ligand_receptor_target_gene_GP', 'Norepinephrine_metabolite_enzyme_sensor_GP', 'NRG3_ligand_receptor_target_gene_GP', 'TPSG1_ligand_receptor_target_gene_GP', 'Add-on_65_GP', 'Add-on_35_GP', 'Add-on_26_GP', 'Add-on_52_GP', 'Add-on_63_GP', 'CD7_ligand_receptor_target_gene_GP', 'Add-on_45_GP', 'Add-on_60_GP', 'SFRP2_ligand_receptor_target_gene_GP', 'Add-on_67_GP', 'CCL13_ligand_receptor_GP', 'CXCL1_ligand_receptor_target_gene_GP', 'INHBA_ligand_receptor_target_gene_GP', 'Add-on_86_GP', 'Add-on_34_GP', 'SLC6A8_ligand_receptor_target_gene_GP', 'Add-on_37_GP', 'Add-on_38_GP', 'CD40LG_ligand_receptor_target_gene_GP', 'CADM2_ligand_receptor_target_gene_GP', 'Add-on_43_GP', 'Add-on_79_GP', 'Add-on_98_GP', 'Add-on_54_GP', 'Add-on_70_GP', 'Add-on_14_GP', 'THBS2_ligand_receptor_target_gene_GP', 'SELL_ligand_receptor_target_gene_GP', 'FCN1_ligand_receptor_target_gene_GP', 'APOB_ligand_receptor_target_gene_GP', 'EPCAM_ligand_receptor_target_gene_GP', 'MFAP5_ligand_receptor_target_gene_GP', 'Add-on_23_GP', 'LEFTY1_ligand_receptor_target_gene_GP', 'Add-on_76_GP', 'SERPINE1_ligand_receptor_target_gene_GP', 'IL22_ligand_receptor_target_gene_GP', 'RBP4_ligand_receptor_target_gene_GP', 'Add-on_16_GP', 'Add-on_1_GP', 'Add-on_3_GP', 'Add-on_61_GP', 'Add-on_88_GP', 'Add-on_50_GP', 'Add-on_2_GP', 'Add-on_57_GP', 'LGALS9_ligand_receptor_target_gene_GP', 'Add-on_89_GP', 'COL17A1_ligand_receptor_target_gene_GP', 'Add-on_64_GP', 'Add-on_77_GP', 'CD2_ligand_receptor_target_gene_GP', 'Add-on_59_GP', 'Add-on_42_GP', 'Add-on_18_GP', 'Add-on_7_GP', 'Add-on_55_GP', 'Add-on_90_GP', 'Add-on_0_GP', 'Add-on_32_GP', 'NRG1_ligand_receptor_target_gene_GP', 'Add-on_72_GP', 'Add-on_97_GP', 'IL32_ligand_receptor_target_gene_GP', 'Add-on_44_GP', 'Add-on_92_GP', 'Add-on_8_GP', 'Add-on_68_GP', 'Add-on_5_GP'
+    var: 'ensembl_id'
+    uns: 'C_scANVI_colors', 'Donor_ID_colors', 'Library_Preparation_Protocol_colors', 'Study_name_colors', '_scvi_manager_uuid', '_scvi_uuid', 'latent_leiden_0.4', 'latent_leiden_0.4_colors', 'neighbors', 'nichecompass_active_gp_names', 'nichecompass_differential_gp_test_results', 'nichecompass_genes_idx', 'nichecompass_gp_names', 'nichecompass_gp_summary', 'nichecompass_latent', 'nichecompass_source_genes_idx', 'nichecompass_sources_categories_label_encoder', 'nichecompass_target_genes_idx', 'nichecompass_targets_categories_label_encoder', 'processing_history', 'seed_labels_colors', 'spatial', 'spatial_neighbors', 'umap'
+    obsm: 'X_scANVI', 'X_scVI', 'X_umap', '_scvi_extra_categorical_covs', 'nichecompass_latent', 'spatial'
+    varm: 'nichecompass_gp_sources', 'nichecompass_gp_sources_categories', 'nichecompass_gp_targets', 'nichecompass_gp_targets_categories'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'nichecompass_latent_connectivities', 'nichecompass_latent_distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1001
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: colon
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaagkoa-1         1001_batch0_0
+aaablbol-1         1001_batch0_1
+aaabogma-1         1001_batch0_2
+aaabpdim-1         1001_batch0_3
+aaabpfoj-1         1001_batch0_4
+                     ...        
+oikabfkp-1    1001_batch0_272069
+oikalpjm-1    1001_batch0_272070
+oikamhom-1    1001_batch0_272071
+oikaoaef-1    1001_batch0_272072
+oikbglfb-1    1001_batch0_272073
+Name: cell_id, Length: 272074, dtype: object
+Harmonized adata_batch shape: (272074, 413)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 272074 × 413
+    obs: 'Study_name', 'Donor_ID', 'Library_Preparation_Protocol', 'dataset', '_scvi_batch', '_scvi_labels', 'seed_labels', 'C_scANVI', 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_counts', 'latent_leiden_0.4', 'ANPEP_ligand_receptor_target_gene_GP', 'CXCL14_ligand_receptor_target_gene_GP', 'SLPI_ligand_receptor_target_gene_GP', 'TNFSF13B_ligand_receptor_target_gene_GP', 'IL1B_ligand_receptor_target_gene_GP', 'S100A12_ligand_receptor_target_gene_GP', 'CTSG_ligand_receptor_target_gene_GP', 'TNXB_ligand_receptor_target_gene_GP', 'CCL11_ligand_receptor_target_gene_GP', 'CEACAM7_ligand_receptor_target_gene_GP', 'TIMP3_ligand_receptor_target_gene_GP', 'COL5A2_ligand_receptor_target_gene_GP', 'CD79B_ligand_receptor_target_gene_GP', 'IFNG_ligand_receptor_target_gene_GP', 'IGFBP7_ligand_receptor_target_gene_GP', 'CDH1_ligand_receptor_target_gene_GP', 'NID1_ligand_receptor_target_gene_GP', 'CD6_ligand_receptor_target_gene_GP', 'Add-on_51_GP', 'gamma-Aminobutyric acid_metabolite_enzyme_sensor_GP', 'TFF1_ligand_receptor_target_gene_GP', 'COL1A1_ligand_receptor_target_gene_GP', 'CXCL2_ligand_receptor_target_gene_GP', 'CCL20_ligand_receptor_target_gene_GP', 'C1QA_ligand_receptor_target_gene_GP', 'CD14_ligand_receptor_target_gene_GP', 'Add-on_49_GP', 'NPNT_ligand_receptor_target_gene_GP', 'Add-on_71_GP', 'UCN3_ligand_receptor_target_gene_GP', 'LTB_ligand_receptor_target_gene_GP', 'RSPO3_ligand_receptor_target_gene_GP', 'GCG_ligand_receptor_target_gene_GP', 'Add-on_47_GP', 'BMP4_ligand_receptor_target_gene_GP', 'VWF_ligand_receptor_target_gene_GP', 'CCL13_ligand_receptor_target_gene_GP', 'Add-on_29_GP', 'TTR_ligand_receptor_target_gene_GP', 'Add-on_99_GP', 'Add-on_96_GP', 'Add-on_20_GP', 'INSL5_ligand_receptor_target_gene_GP', 'BMP5_ligand_receptor_target_gene_GP', 'CLU_ligand_receptor_target_gene_GP', 'GZMB_ligand_receptor_target_gene_GP', 'NRXN1_ligand_receptor_target_gene_GP', 'Add-on_81_GP', 'FCER2_ligand_receptor_target_gene_GP', 'COL11A1_ligand_receptor_target_gene_GP', 'AREG_ligand_receptor_target_gene_GP', 'Add-on_33_GP', 'TNC_ligand_receptor_target_gene_GP', 'Add-on_78_GP', 'CXCL10_ligand_receptor_target_gene_GP', 'CXCL10_ligand_receptor_GP', 'THBS1_ligand_receptor_target_gene_GP', 'GUCA2B_ligand_receptor_target_gene_GP', 'HDC_ligand_receptor_target_gene_GP', 'CEACAM6_ligand_receptor_target_gene_GP', 'Add-on_28_GP', 'GREM1_ligand_receptor_target_gene_GP', 'Add-on_41_GP', 'MMP1_ligand_receptor_target_gene_GP', 'C1QB_ligand_receptor_target_gene_GP', 'CXCL13_ligand_receptor_target_gene_GP', 'Add-on_17_GP', 'Add-on_27_GP', 'CEACAM1_ligand_receptor_target_gene_GP', 'Add-on_6_GP', 'WNT5B_ligand_receptor_target_gene_GP', 'COL19A1_ligand_receptor_target_gene_GP', 'Add-on_10_GP', 'Add-on_62_GP', 'CEACAM5_ligand_receptor_target_gene_GP', 'GUCA2A_ligand_receptor_target_gene_GP', 'Add-on_87_GP', 'Add-on_80_GP', 'APOE_ligand_receptor_target_gene_GP', 'PAPLN_ligand_receptor_target_gene_GP', 'ANXA1_ligand_receptor_target_gene_GP', 'ROBO1_ligand_receptor_target_gene_GP', 'Add-on_12_GP', 'Add-on_21_GP', 'Add-on_15_GP', 'Add-on_73_GP', 'Add-on_93_GP', 'AZGP1_ligand_receptor_target_gene_GP', 'Add-on_74_GP', 'LCN2_ligand_receptor_target_gene_GP', 'Add-on_66_GP', 'Add-on_56_GP', 'XCL2_ligand_receptor_target_gene_GP', 'HHLA2_ligand_receptor_target_gene_GP', 'Add-on_94_GP', 'ADAM28_ligand_receptor_target_gene_GP', 'TIGIT_ligand_receptor_target_gene_GP', 'Add-on_31_GP', 'Add-on_69_GP', 'LAMA2_ligand_receptor_target_gene_GP', 'Add-on_36_GP', 'RARRES2_ligand_receptor_target_gene_GP', 'CXCL3_ligand_receptor_target_gene_GP', 'Norepinephrine_metabolite_enzyme_sensor_GP', 'NRG3_ligand_receptor_target_gene_GP', 'TPSG1_ligand_receptor_target_gene_GP', 'Add-on_65_GP', 'Add-on_35_GP', 'Add-on_26_GP', 'Add-on_52_GP', 'Add-on_63_GP', 'CD7_ligand_receptor_target_gene_GP', 'Add-on_45_GP', 'Add-on_60_GP', 'SFRP2_ligand_receptor_target_gene_GP', 'Add-on_67_GP', 'CCL13_ligand_receptor_GP', 'CXCL1_ligand_receptor_target_gene_GP', 'INHBA_ligand_receptor_target_gene_GP', 'Add-on_86_GP', 'Add-on_34_GP', 'SLC6A8_ligand_receptor_target_gene_GP', 'Add-on_37_GP', 'Add-on_38_GP', 'CD40LG_ligand_receptor_target_gene_GP', 'CADM2_ligand_receptor_target_gene_GP', 'Add-on_43_GP', 'Add-on_79_GP', 'Add-on_98_GP', 'Add-on_54_GP', 'Add-on_70_GP', 'Add-on_14_GP', 'THBS2_ligand_receptor_target_gene_GP', 'SELL_ligand_receptor_target_gene_GP', 'FCN1_ligand_receptor_target_gene_GP', 'APOB_ligand_receptor_target_gene_GP', 'EPCAM_ligand_receptor_target_gene_GP', 'MFAP5_ligand_receptor_target_gene_GP', 'Add-on_23_GP', 'LEFTY1_ligand_receptor_target_gene_GP', 'Add-on_76_GP', 'SERPINE1_ligand_receptor_target_gene_GP', 'IL22_ligand_receptor_target_gene_GP', 'RBP4_ligand_receptor_target_gene_GP', 'Add-on_16_GP', 'Add-on_1_GP', 'Add-on_3_GP', 'Add-on_61_GP', 'Add-on_88_GP', 'Add-on_50_GP', 'Add-on_2_GP', 'Add-on_57_GP', 'LGALS9_ligand_receptor_target_gene_GP', 'Add-on_89_GP', 'COL17A1_ligand_receptor_target_gene_GP', 'Add-on_64_GP', 'Add-on_77_GP', 'CD2_ligand_receptor_target_gene_GP', 'Add-on_59_GP', 'Add-on_42_GP', 'Add-on_18_GP', 'Add-on_7_GP', 'Add-on_55_GP', 'Add-on_90_GP', 'Add-on_0_GP', 'Add-on_32_GP', 'NRG1_ligand_receptor_target_gene_GP', 'Add-on_72_GP', 'Add-on_97_GP', 'IL32_ligand_receptor_target_gene_GP', 'Add-on_44_GP', 'Add-on_92_GP', 'Add-on_8_GP', 'Add-on_68_GP', 'Add-on_5_GP', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'C_scANVI_colors', 'Donor_ID_colors', 'Library_Preparation_Protocol_colors', 'Study_name_colors', '_scvi_manager_uuid', '_scvi_uuid', 'latent_leiden_0.4', 'latent_leiden_0.4_colors', 'neighbors', 'nichecompass_active_gp_names', 'nichecompass_differential_gp_test_results', 'nichecompass_genes_idx', 'nichecompass_gp_names', 'nichecompass_gp_summary', 'nichecompass_latent', 'nichecompass_source_genes_idx', 'nichecompass_sources_categories_label_encoder', 'nichecompass_target_genes_idx', 'nichecompass_targets_categories_label_encoder', 'processing_history', 'seed_labels_colors', 'spatial', 'spatial_neighbors', 'umap', 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'X_scANVI', 'X_scVI', 'X_umap', '_scvi_extra_categorical_covs', 'nichecompass_latent', 'spatial'
+    varm: 'nichecompass_gp_sources', 'nichecompass_gp_sources_categories', 'nichecompass_gp_targets', 'nichecompass_gp_targets_categories'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'nichecompass_latent_connectivities', 'nichecompass_latent_distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhc1001-1b_1p/NicheCompass_hs_XeniumAdultColon_AM_07112024_132853_raw.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-11-2-4>
+Subject: Job 412716: <xhc1001-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhc1001-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Jan 17 16:05:08 2025
+Job was executed on host(s) <node-11-2-4>, in queue <normal>, as user <sb75> in cluster <farm22> at Fri Jan 17 16:05:08 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Jan 17 16:05:08 2025
+Terminated at Fri Jan 17 16:07:54 2025
+Results reported at Fri Jan 17 16:07:54 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/xhc1001-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   30.22 sec.
+    Max Memory :                                 5609 MB
+    Average Memory :                             582.09 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               45591.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   167 sec.
+    Turnaround time :                            166 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhc1001-1b_1p/farm-job-outputs/bronze-to-silver/1_412716.err> for stderr output of this job.
+

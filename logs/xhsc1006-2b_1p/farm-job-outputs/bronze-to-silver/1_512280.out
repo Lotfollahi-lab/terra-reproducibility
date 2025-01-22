@@ -1,0 +1,325 @@
+Experiment Name: xhsc1006-2b_1p
+Input Directory: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhsc1006-2b_1p
+Output Directory: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhsc1006-2b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary for species = homo_sapiens...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhsc1006-2b_1p/human_spinal_chord_inactive.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (106134, 541)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 2752522 stored elements and shape (106134, 541)>
+  Coords	Values
+  (0, 0)	1
+  (0, 4)	1
+  (0, 7)	1
+  (0, 12)	3
+  (0, 13)	4
+  (0, 15)	12
+  (0, 46)	1
+  (0, 53)	1
+  (0, 56)	1
+  (0, 64)	1
+  (0, 69)	1
+  (0, 73)	5
+  (0, 75)	1
+  (0, 85)	3
+  (0, 86)	3
+  (0, 93)	14
+  (0, 99)	6
+  (0, 100)	1
+  (0, 101)	16
+  (0, 108)	1
+  (0, 109)	1
+  (0, 111)	6
+  (0, 114)	4
+  (0, 121)	1
+  (0, 126)	3
+  :	:
+  (106132, 223)	1
+  (106132, 229)	3
+  (106132, 231)	1
+  (106132, 241)	7
+  (106132, 245)	2
+  (106132, 248)	1
+  (106132, 256)	1
+  (106133, 12)	1
+  (106133, 14)	2
+  (106133, 49)	1
+  (106133, 53)	1
+  (106133, 77)	5
+  (106133, 92)	1
+  (106133, 101)	1
+  (106133, 126)	1
+  (106133, 137)	1
+  (106133, 158)	1
+  (106133, 178)	1
+  (106133, 185)	1
+  (106133, 190)	1
+  (106133, 193)	2
+  (106133, 209)	1
+  (106133, 218)	2
+  (106133, 229)	1
+  (106133, 405)	1
+adata.X shape: (106134, 541)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['ABCC9', 'ADAMTS12', 'ADAMTS16', 'ADAMTS3', 'ADRA1A', 'ADRA1B', 'AIF1',
+       'ALK', 'ANGPT1', 'ANK1',
+       ...
+       'BLANK_0490', 'BLANK_0491', 'BLANK_0492', 'BLANK_0493', 'BLANK_0494',
+       'BLANK_0495', 'BLANK_0496', 'BLANK_0497', 'BLANK_0498', 'BLANK_0499'],
+      dtype='object', name='gene_id', length=541)
+Number of genes in bronze data: 541
+Number of genes with matching ensembl ids: 264
+Number of genes skipped: 277
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC9      ENSG00000069431
+ADAMTS12   ENSG00000151388
+ADAMTS16   ENSG00000145536
+ADAMTS3    ENSG00000156140
+ADRA1A     ENSG00000120907
+...                    ...
+VIP        ENSG00000146469
+VWC2L      ENSG00000174453
+WIF1       ENSG00000156076
+ZBBX       ENSG00000169064
+ZDHHC23    ENSG00000184307
+
+[264 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1469.4918 3390.4438]
+ [1421.2996 3375.658 ]
+ [1679.1777 2740.5027]
+ ...
+ [6662.886  3076.919 ]
+ [6682.7334 3085.174 ]
+ [6655.913  3083.587 ]]
+AnnData object with n_obs × n_vars = 106134 × 264
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1006
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: spinal_cord
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+ind
+aaaaakpi-1        1006_batch0_0
+aaaabgmn-1        1006_batch0_1
+aaabdhjd-1        1006_batch0_2
+aaabemcd-1        1006_batch0_3
+aaablfkb-1        1006_batch0_4
+                    ...        
+oihfmdlh-1    1006_batch0_91465
+oihhfpgi-1    1006_batch0_91466
+oihhohgj-1    1006_batch0_91467
+oihjppeh-1    1006_batch0_91468
+oihkbfii-1    1006_batch0_91469
+Name: cell_id, Length: 91470, dtype: object
+Harmonized adata_batch shape: (91470, 264)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 91470 × 264
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhsc1006-2b_1p/human_spinal_chord_inactive.h5ad
+
+Harmonizing: /lustre/scratch126/cellgen/team361/DATASETS/bronze/xhsc1006-2b_1p/human_spinal_chord_active.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (135123, 541)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3925533 stored elements and shape (135123, 541)>
+  Coords	Values
+  (0, 15)	1
+  (0, 30)	1
+  (0, 70)	1
+  (0, 73)	1
+  (0, 81)	1
+  (0, 88)	1
+  (1, 1)	1
+  (1, 14)	3
+  (1, 53)	5
+  (1, 54)	1
+  (1, 55)	5
+  (1, 73)	1
+  (1, 74)	2
+  (1, 78)	7
+  (1, 85)	4
+  (1, 100)	2
+  (1, 106)	1
+  (1, 109)	2
+  (1, 124)	1
+  (1, 136)	1
+  (1, 137)	1
+  (1, 143)	2
+  (1, 144)	5
+  (1, 148)	3
+  (1, 151)	1
+  :	:
+  (135122, 6)	1
+  (135122, 13)	1
+  (135122, 21)	1
+  (135122, 38)	1
+  (135122, 41)	2
+  (135122, 43)	1
+  (135122, 64)	2
+  (135122, 67)	1
+  (135122, 93)	1
+  (135122, 95)	2
+  (135122, 97)	2
+  (135122, 102)	1
+  (135122, 117)	1
+  (135122, 118)	2
+  (135122, 122)	1
+  (135122, 130)	1
+  (135122, 145)	1
+  (135122, 169)	1
+  (135122, 170)	1
+  (135122, 172)	1
+  (135122, 177)	1
+  (135122, 185)	1
+  (135122, 198)	3
+  (135122, 259)	1
+  (135122, 380)	1
+adata.X shape: (135123, 541)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Index(['ABCC9', 'ADAMTS12', 'ADAMTS16', 'ADAMTS3', 'ADRA1A', 'ADRA1B', 'AIF1',
+       'ALK', 'ANGPT1', 'ANK1',
+       ...
+       'BLANK_0490', 'BLANK_0491', 'BLANK_0492', 'BLANK_0493', 'BLANK_0494',
+       'BLANK_0495', 'BLANK_0496', 'BLANK_0497', 'BLANK_0498', 'BLANK_0499'],
+      dtype='object', name='gene_id', length=541)
+Number of genes in bronze data: 541
+Number of genes with matching ensembl ids: 264
+Number of genes skipped: 277
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC9      ENSG00000069431
+ADAMTS12   ENSG00000151388
+ADAMTS16   ENSG00000145536
+ADAMTS3    ENSG00000156140
+ADRA1A     ENSG00000120907
+...                    ...
+VIP        ENSG00000146469
+VWC2L      ENSG00000174453
+WIF1       ENSG00000156076
+ZBBX       ENSG00000169064
+ZDHHC23    ENSG00000184307
+
+[264 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 1665.719   5669.063 ]
+ [ 1660.5223  5501.279 ]
+ [ 1672.3837  5523.0034]
+ ...
+ [10034.15    6652.1245]
+ [10037.955   6598.4404]
+ [10037.205   6688.4937]]
+AnnData object with n_obs × n_vars = 135123 × 264
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1006
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: spinal_cord
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+ind
+aaaaemoe-1         1006_batch1_0
+aaacbeae-1         1006_batch1_1
+aaachoja-1         1006_batch1_2
+aaackdoj-1         1006_batch1_3
+aaadaima-1         1006_batch1_4
+                     ...        
+ojajemae-1    1006_batch1_120781
+ojajkojp-1    1006_batch1_120782
+ojakhikl-1    1006_batch1_120783
+ojaldgjf-1    1006_batch1_120784
+ojaldhlb-1    1006_batch1_120785
+Name: cell_id, Length: 120786, dtype: object
+Harmonized adata_batch shape: (120786, 264)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 120786 × 264
+    obs: 'cell_id', 'x_centroid', 'y_centroid', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'dataset_id', 'assay', 'species', 'tissue', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/team361/DATASETS/silver/xhsc1006-2b_1p/human_spinal_chord_active.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-25>
+Subject: Job 512280: <xhsc1006-2b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhsc1006-2b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jan 18 09:54:03 2025
+Job was executed on host(s) <node-14-25>, in queue <normal>, as user <sb75> in cluster <farm22> at Sat Jan 18 09:54:04 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jan 18 09:54:04 2025
+Terminated at Sat Jan 18 09:54:24 2025
+Results reported at Sat Jan 18 09:54:24 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_harmonized_data.sh config/bronze_to_silver/xhsc1006-2b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   11.00 sec.
+    Max Memory :                                 811 MB
+    Average Memory :                             481.25 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50389.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   18 sec.
+    Turnaround time :                            21 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhsc1006-2b_1p/farm-job-outputs/bronze-to-silver/1_512280.err> for stderr output of this job.
+

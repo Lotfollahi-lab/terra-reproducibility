@@ -1,0 +1,38 @@
+experiment:
+  name: chc61-9b_1p
+  description: CosMx Human Colon IBD Colonic Mucosa (dataset-id 61) | 9 batch | 1 panel | Preprocess to silver
+  study: IBD CosMx NanoString data from colonic mucosa - Garrido-Trigo23
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: true
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - GSM7473682
+    - GSM7473683
+    - GSM7473684
+    - GSM7473685
+    - GSM7473686
+    - GSM7473687
+    - GSM7473688
+    - GSM7473689
+    - GSM7473690
+
+harmonization:
+  uns:
+    dataset_id: 61
+    assay: cosmx
+    species: homo_sapiens
+    tissue: colon
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

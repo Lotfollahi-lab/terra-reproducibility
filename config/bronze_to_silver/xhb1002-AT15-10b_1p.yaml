@@ -1,0 +1,41 @@
+experiment:
+  name: "xhb1002-AT15-10b_1p"
+  description: "Xenium Human Brain  (dataset-id 1002, Donor AT15) | 10 batch | 1 panel"
+  study: "GBM Data by Koen from Omer's Lab"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+  'dataset_id': 1002,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'brain'
+  }
+  batch: {
+    'split_by_batch': False,
+    'batch_key': 'slideID',
+    'sample_batch_map': {
+      '0011079': 40,
+      '0027074': 4,
+      '0027082': 16,
+      '0010782': 18,
+      '0014337': 23,
+      '0014431': 31,
+      '0007866': 34,
+      '0037751': 53,
+      '0010710': 55,
+      '0011110': 46,
+    }    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

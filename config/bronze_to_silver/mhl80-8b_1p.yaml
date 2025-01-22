@@ -1,0 +1,44 @@
+experiment:
+  name: mhl80-8b_1p
+  description: MERFISH Healthy & Fibrotic Human Liver (dataset-id 80) | 575,711 cells | 8 batch | 1 panel
+  study: https://doi.org/10.1038/s41467-024-55325-4; manually added counts from adata.raw
+
+paths:
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - adata_healthy_diseased_merfish.h5ad
+
+harmonization:
+  uns:
+    dataset_id: 80
+    assay: merfish
+    species: homo_sapiens
+    tissue: liver
+  batch: {
+      'split_by_batch': True,
+      'batch_key': 'batch',
+      'sample_batch_map': {
+                          '0': 0,
+                          '1': 1,
+                          '2': 2,
+                          '3': 3,
+                          '4': 4,
+                          '5': 5,
+                          '6': 6,
+                          '7': 7,
+                          }
+    }
+  key_mappings: {
+    'X_coordinate': 'x',
+    'Y_coordinate': 'y',
+  }
+  misc:
+    min_genes: 10
+
