@@ -83,3 +83,4 @@ mhl80-8b_1p
 xhb81-1b_1p
 xhl82-2b_1p
 mhb83-1b_1p
+xhk1007-8b_1p

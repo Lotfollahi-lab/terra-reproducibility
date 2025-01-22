@@ -69,7 +69,7 @@ if __name__ == '__main__':
     parser.add_argument('--cohort_name',
                         type=str,
                         default="human_cohort1_60m",
-                        help='Path to the file containing all datasets in the cohort.')
+                        help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
                         default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",

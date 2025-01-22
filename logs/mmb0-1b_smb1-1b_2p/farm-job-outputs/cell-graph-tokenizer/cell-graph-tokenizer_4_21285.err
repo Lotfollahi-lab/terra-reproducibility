@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_cell_tokenized_dataset.py", line 776, in <module>
+    main(config)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_cell_tokenized_dataset.py", line 473, in main
+    n_neighs = config["tokenization"]["n_neighs"]
+KeyError: 'n_neighs'

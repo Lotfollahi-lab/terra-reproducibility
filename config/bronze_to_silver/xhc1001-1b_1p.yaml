@@ -1,7 +1,7 @@
 experiment:
   name: "xhc1001-1b_1p"
   description: "Xenium Human Colon (dataset-id 1001) | 1 batch | 1 panel"
-  study: "Dataset from Carlos"
+  study: "Dataset from Carlos Talavera-López"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
