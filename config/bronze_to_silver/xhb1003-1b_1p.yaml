@@ -1,6 +1,6 @@
 experiment:
   name: xhb1003-1b_1p
-  description: Xenium TCR (dataset-id 1003) | 1 batch | 1 panel
+  description: Xenium TCR (dataset-id 1003) | 1 batch | 1 panel | Preprocess to silver
   study: Mats & Sergio Xenium
 
 paths:
@@ -11,10 +11,7 @@ dataset:
   source: offline
   download_params:
     redownload: false
-    urls:
-      - .nan
-      - .nan
-      - .nan
+    urls: []
   file_names:
     - breast_Xenium_no_exp_qc.h5ad
 

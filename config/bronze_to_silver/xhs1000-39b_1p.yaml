@@ -1,6 +1,6 @@
 experiment:
   name: "xhs1000-39b_1p"
-  description: "Xenium Human Skin (dataset-id 1000) | 39 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver"
+  description: "Xenium Human Skin (dataset-id 1000) | 39 batch | 1 panel | Preprocess to silver"
   study: "Beacon Data from Lloyd Steele"
 
 paths:
