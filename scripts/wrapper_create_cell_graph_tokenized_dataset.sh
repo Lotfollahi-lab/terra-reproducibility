@@ -51,10 +51,10 @@ case $EXPERIMENT_NAME in
         QUEUE="parallel"
         ;;
     xhs1000-39b_1p)
-        RAM="256G"
-        TIME="48:00"
+        RAM="128G"
+        TIME="12:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="normal"
         ;;
     human_cohort1_2m)
         RAM="256G"
@@ -239,7 +239,6 @@ esac
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
-OVERWRITE="${4:-False}"
 
 # Set the configuration file
 CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
@@ -276,4 +275,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${CONFIG_FILE}" "${OVERWRITE}"
+    "${SCRIPT}" "${CONFIG_FILE}"
