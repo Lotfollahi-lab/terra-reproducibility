@@ -1,6 +1,6 @@
 experiment:
   name: xhb76-16b_1p
-  description: Xenium Human Caudate putamen(dataset-id 76) | 16 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Human Caudate putamen(dataset-id 76) | 16 batch | 1 panel | Preprocess to silver
   study: Mats & Sergio Xenium
 
 paths:

@@ -1,6 +1,6 @@
 experiment:
   name: xhk79-4b_1p
-  description: Xenium Human Kidney internal (dataset-id 79) | 4 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Human Kidney internal (dataset-id 79) | 4 batch | 1 panel | Preprocess to silver
   study: Xenium Human Kidney 1 from Menna
 
 paths:

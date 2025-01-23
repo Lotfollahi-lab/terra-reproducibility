@@ -1,6 +1,6 @@
 experiment:
   name: xmp11-1b_1p
-  description: Xenium Mouse Pup (dataset-id 11) |  | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Mouse Pup (dataset-id 11) |  | 1 batch | 1 panel | Preprocess to silver
   study: Whole Mouse Pup (FFPE) with 5K Mouse Pan Tissue and Pathways Panel and Snap25a/Snap25b Add-o
 
 paths:
@@ -8,7 +8,7 @@ paths:
 
 dataset:
   overwrite: false
-  source: .nan
+  source: directories
   download_params:
     redownload: false
     urls: []

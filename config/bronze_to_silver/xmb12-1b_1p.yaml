@@ -11,7 +11,8 @@ dataset:
   source: .nan
   download_params:
     redownload: false
-    urls: []
+    urls:
+      - https://cf.10xgenomics.com/samples/xenium/3.0.0/Xenium_Prime_Mouse_Brain_Coronal_FF/Xenium_Prime_Mouse_Brain_Coronal_FF_outs.zip
   file_names:
     - Xenium_Prime_Mouse_Brain_Coronal_FF
 

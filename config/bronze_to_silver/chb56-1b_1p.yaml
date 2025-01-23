@@ -1,6 +1,6 @@
 experiment:
   name: chb56-1b_1p
-  description: CosMx Human Brain (dataset-id 56) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: CosMx Human Brain (dataset-id 56) | 1 batch | 1 panel | Download from NanoString to Bronze and preprocess to silver
   study: Nanostring CosMx SMI Datasets
 
 paths:
