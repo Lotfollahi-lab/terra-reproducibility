@@ -1,0 +1,75 @@
+Experiment name: xhc55-3b_1p.
+Experiment description: xhc55-3b_1p (dataset-id 55) | 3 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+[1;34mwandb[0m:
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20250126_150219-eas10rvp[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20250126_150219-eas10rvp/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-12>
+Subject: Job 427235: <xhc55-3b_1p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhc55-3b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-gpu0203> by user <sb75> in cluster <farm22> at Sun Jan 26 15:01:31 2025
+Job was executed on host(s) <4*node-13-12>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Jan 26 15:01:32 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Jan 26 15:01:32 2025
+Terminated at Sun Jan 26 15:05:15 2025
+Results reported at Sun Jan 26 15:05:15 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhc55-3b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   490.20 sec.
+    Max Memory :                                 2981 MB
+    Average Memory :                             2065.41 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               259163.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                21
+    Run time :                                   222 sec.
+    Turnaround time :                            224 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhc55-3b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_427235.err> for stderr output of this job.
+

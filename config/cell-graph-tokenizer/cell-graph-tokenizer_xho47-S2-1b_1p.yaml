@@ -2,16 +2,17 @@ experiment:
   experiment_name: xho47-S2-1b_1p
   experiment_description: xho47-S2-1b_1p (dataset-id 47) | 1 batch | 1 panel
   tokenizer: cell-graph-tokenizer
-  overwrite: false
+  model_input_size: 2816
 
 tokenization:
-  token_dict_experiment_name: human_cohort1_50m
-  tokens_per_cell: 128
+  species: "homo_sapiens"
   use_generator: True
-  add_cls_tokens: False
-  norm_method: "shifted_log"
-  norm_factor: null
-  prenormalize: False
+  rank_cell_norm_method: null
+  rank_gene_norm_method: null
+  rank_count_norm_method: null
+  count_cell_norm_method: "gene_corrected_read_depth"
+  count_gene_norm_method: null
+  count_count_norm_method: "shifted_log"
   processing_mode: "parallel"
   num_shards: 32
   keep_in_memory: False
@@ -27,3 +28,5 @@ wandb:
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
+  token_dictionary_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl"
+  norm_factor_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/human_cohort1_60m_norm_factors.csv"

@@ -217,6 +217,12 @@ def build_token_dictionary(token_dictionary_file_path: str,
         batch_key: idx + curr_token_dict_size for
         idx, batch_key in enumerate(batch_key_list)})
 
+    # Add 1000 additional dummy tokens
+    curr_token_dict_size = len(token_dict)
+    token_dict.update({
+        f'dummy_{idx}': idx + curr_token_dict_size for
+        idx in range(1000)})
+
     with open(token_dictionary_file_path, "wb") as file:
         pickle.dump(token_dict, file)
 

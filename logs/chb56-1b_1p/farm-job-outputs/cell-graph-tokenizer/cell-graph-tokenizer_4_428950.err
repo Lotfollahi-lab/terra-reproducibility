@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 33, in <module>
+    from nichejepa.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/datasets/__init__.py", line 7, in <module>
+    from .utils import get_ensembl_ids, prepare_dataset
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/datasets/utils.py", line 10, in <module>
+    from ..utils.embedding import collect_adata_from_folder
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/utils/__init__.py", line 3, in <module>
+    from .embedding import *
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/utils/embedding.py", line 5, in <module>
+    import anndata as ad
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/__init__.py", line 24, in <module>
+    from ._core.anndata import AnnData
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/_core/anndata.py", line 25, in <module>
+    from .. import utils
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/utils.py", line 13, in <module>
+    from ._core.sparse_dataset import BaseCompressedSparseDataset
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/_core/sparse_dataset.py", line 29, in <module>
+    from anndata._core.index import _fix_slice_bounds
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/_core/index.py", line 13, in <module>
+    from ..compat import AwkArray, DaskArray
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/compat/__init__.py", line 116, in <module>
+    from dask.array import Array as DaskArray
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dask/__init__.py", line 15, in <module>
+    from dask.delayed import delayed
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dask/delayed.py", line 24, in <module>
+    from dask.highlevelgraph import HighLevelGraph
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dask/highlevelgraph.py", line 28, in <module>
+    from dask.widgets import get_template
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dask/widgets/__init__.py", line 4, in <module>
+    from dask.widgets.widgets import (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dask/widgets/widgets.py", line 7, in <module>
+    from jinja2 import Environment, FileSystemLoader, Template
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/jinja2/__init__.py", line 9, in <module>
+    from .environment import Environment as Environment
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/jinja2/environment.py", line 20, in <module>
+    from .defaults import BLOCK_END_STRING
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/jinja2/defaults.py", line 3, in <module>
+    from .filters import FILTERS as DEFAULT_FILTERS  # noqa: F401
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/jinja2/filters.py", line 21, in <module>
+    from .runtime import Undefined
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 879, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 975, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1073, in get_data
+KeyboardInterrupt

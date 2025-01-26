@@ -1,0 +1,108 @@
+Experiment name: chl59-8b_1p.
+Experiment description: chl59-8b_1p (dataset-id 58) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1408.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 22407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/chl59-8b_1p/cProfiler/cell-graph-tokenizer/chl59-8b_1p_32_gene_corrected_read_depth_nonzero_mean_None_gene_corrected_read_depth_None_shifted_log_knn_10_1408_2_parallel.prof.
+Function: tokenize_data | Cumulative Time: 5420.828121399
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-11>
+Subject: Job 169174: <chl59-8b_1p_cell-graph-tokenizer_2> in cluster <farm22> Done
+
+Job <chl59-8b_1p_cell-graph-tokenizer_2> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Jan 23 17:52:37 2025
+Job was executed on host(s) <2*node-13-11>, in queue <long>, as user <sb75> in cluster <farm22> at Thu Jan 23 17:52:38 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Jan 23 17:52:38 2025
+Terminated at Thu Jan 23 19:25:47 2025
+Results reported at Thu Jan 23 19:25:47 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_chl59-8b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   9790.46 sec.
+    Max Memory :                                 76220 MB
+    Average Memory :                             38962.91 MB
+    Total Requested Memory :                     307200.00 MB
+    Delta Memory :                               230980.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                26
+    Run time :                                   5590 sec.
+    Turnaround time :                            5590 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chl59-8b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_2_169174.err> for stderr output of this job.
+

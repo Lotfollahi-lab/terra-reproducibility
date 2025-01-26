@@ -1,0 +1,44 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-24>
+Subject: Job 334317: <xhb1002-AT16-15b_1p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhb1002-AT16-15b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Jan 24 15:47:11 2025
+Job was executed on host(s) <4*node-13-24>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Jan 24 15:48:03 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Jan 24 15:48:03 2025
+Terminated at Sun Jan 26 08:21:33 2025
+Results reported at Sun Jan 26 08:21:33 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT16-15b_1p.yaml
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   19428.00 sec.
+    Max Memory :                                 218901 MB
+    Average Memory :                             131720.91 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               43243.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                31
+    Run time :                                   146010 sec.
+    Turnaround time :                            146062 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT16-15b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_334317.err> for stderr output of this job.
+

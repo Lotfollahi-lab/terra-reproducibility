@@ -119,12 +119,11 @@ def main(config: dict):
     experiment_name = config["experiment"]["experiment_name"]
     experiment_description = config["experiment"]["experiment_description"]
     tokenizer = config["experiment"]["tokenizer"]
-    nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
     model_input_size = config["experiment"]["model_input_size"]
-    print(f"Experiment Name: {experiment_name}")
-    print(f"Experiment Description: {experiment_description}")
-    print(f"Tokenizer: {tokenizer}")
-    print(f"Model Input Size: {model_input_size}")
+    print(f"Experiment name: {experiment_name}.")
+    print(f"Experiment description: {experiment_description}.")
+    print(f"Tokenizer: {tokenizer}.")
+    print(f"Model input size: {model_input_size}.")
 
     # Retrieve tokenization config params
     species = config["tokenization"]["species"]
@@ -141,6 +140,12 @@ def main(config: dict):
     n_neighs = config["tokenization"]["n_neighs"]
     radius = config["tokenization"]["radius"]
     delaunay = config["tokenization"]["delaunay"]
+
+    nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
+
+    # Retrieve paths from config
+    token_dictionary_file_path = config["paths"]["token_dictionary_file_path"]
+    norm_factor_file_path = config["paths"]["norm_factor_file_path"]
         
     # Set data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
@@ -150,10 +155,6 @@ def main(config: dict):
     # Set cache path
     cache_directory_path = data_directory_path / "cache"
     os.makedirs(cache_directory_path, exist_ok=True)
-
-    # Retrieve paths from config
-    token_dictionary_file_path = config["paths"]["token_dictionary_file_path"]
-    norm_factor_file_path = config["paths"]["norm_factor_file_path"]
 
     # Set input and output directories
     input_directory = st_data_silver_folder_path / experiment_name

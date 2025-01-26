@@ -1,0 +1,286 @@
+Experiment name: xhs1000-39b_1p.
+Experiment description: xenium human skin (dataset-id = 1000) | 39-batch | 1-panel.
+Tokenizer: cell-neighborhood-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Profiling stats saved to: logs/xhs1000-39b_1p/cProfiler/cell-neighborhood-tokenizer/xhs1000-39b_1p_32_None_None_None_gene_corrected_read_depth_None_shifted_log_knn_10_2816_8_parallel.prof.
+Function: tokenize_data | Cumulative Time: 1071.3195089160001
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-23>
+Subject: Job 437253: <xhs1000-39b_1p_cell-neighborhood-tokenizer_8> in cluster <farm22> Done
+
+Job <xhs1000-39b_1p_cell-neighborhood-tokenizer_8> was submitted from host <farm22-gpu0203> by user <sb75> in cluster <farm22> at Sun Jan 26 17:55:28 2025
+Job was executed on host(s) <8*node-14-23>, in queue <normal>, as user <sb75> in cluster <farm22> at Sun Jan 26 17:56:15 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Jan 26 17:56:15 2025
+Terminated at Sun Jan 26 18:15:28 2025
+Results reported at Sun Jan 26 18:15:28 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_xhs1000-39b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3574.00 sec.
+    Max Memory :                                 42648 MB
+    Average Memory :                             29199.00 MB
+    Total Requested Memory :                     46080.00 MB
+    Delta Memory :                               3432.00 MB
+    Max Swap :                                   -
+    Max Processes :                              14
+    Max Threads :                                42
+    Run time :                                   1151 sec.
+    Turnaround time :                            1200 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhs1000-39b_1p/farm-job-outputs/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_8_437253.err> for stderr output of this job.
+

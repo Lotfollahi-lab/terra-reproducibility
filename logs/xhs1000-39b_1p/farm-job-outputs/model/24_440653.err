@@ -1,0 +1,61 @@
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/genericpath.py", line 19, in exists
+    os.stat(path)
+FileNotFoundError: [Errno 2] No such file or directory: '/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch_scatter-2.1.2+pt24cu124.dist-info/namespace_packages.txt'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 21, in <module>
+    from src.nichejepa.datasets.utils import prepare_dataset
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/preprocessors/__init__.py", line 1, in <module>
+    from .graph import construct_neighbor_graph
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/preprocessors/graph.py", line 4, in <module>
+    import squidpy as sq
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/squidpy/__init__.py", line 5, in <module>
+    from squidpy import datasets, gr, im, pl, read, tl
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/squidpy/gr/__init__.py", line 5, in <module>
+    from squidpy.gr._build import mask_graph, spatial_neighbors
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/squidpy/gr/_build.py", line 30, in <module>
+    from spatialdata import SpatialData
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/__init__.py", line 54, in <module>
+    from spatialdata import dataloader, datasets, models, transformations
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/dataloader/__init__.py", line 2, in <module>
+    from spatialdata.dataloader.datasets import ImageTilesDataset
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/dataloader/datasets.py", line 21, in <module>
+    from spatialdata._core.centroids import get_centroids
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/_core/centroids.py", line 15, in <module>
+    from spatialdata._core.operations.transform import transform
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/_core/operations/transform.py", line 18, in <module>
+    from spatialdata._core.spatialdata import SpatialData
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/_core/spatialdata.py", line 24, in <module>
+    from spatialdata._core._elements import Images, Labels, Points, Shapes, Tables
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/_core/_elements.py", line 15, in <module>
+    from spatialdata.models import (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/models/__init__.py", line 18, in <module>
+    from spatialdata.models.models import (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/spatialdata/models/models.py", line 29, in <module>
+    from xarray_schema.components import (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/xarray_schema/__init__.py", line 1, in <module>
+    from pkg_resources import DistributionNotFound, get_distribution
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3657, in <module>
+    def _initialize_master_working_set():
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3640, in _call_aside
+    f(*args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3681, in _initialize_master_working_set
+    tuple(dist.activate(replace=False) for dist in working_set)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3681, in <genexpr>
+    tuple(dist.activate(replace=False) for dist in working_set)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3136, in activate
+    for pkg in self._get_metadata('namespace_packages.txt'):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3122, in _get_metadata
+    if self.has_metadata(name):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 1679, in has_metadata
+    return self._has(path)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/pkg_resources/__init__.py", line 1887, in _has
+    return os.path.exists(path)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/genericpath.py", line 19, in exists
+    os.stat(path)
+KeyboardInterrupt
