@@ -1,6 +1,6 @@
 experiment:
   name: mhl80-8b_1p
-  description: MERFISH Healthy & Fibrotic Human Liver (dataset-id 80) | 575,711 cells | 8 batch | 1 panel
+  description: MERFISH Healthy & Fibrotic Human Liver (dataset-id 80) | 575,711 cells | 8 batch | 1 panel | Preprocess to silver
   study: https://doi.org/10.1038/s41467-024-55325-4; manually added counts from adata.raw
 
 paths:

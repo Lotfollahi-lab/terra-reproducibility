@@ -1,7 +1,7 @@
 experiment:
   name: mhp20-2b_1p
-  description: MERSCOPE Human Prostate Cancer (dataset-id 20) | 2 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  study: MERSCOPE_FFPE_Human_Immuno-Oncology
+  description: MERSCOPE Human Prostate Cancer (dataset-id 20) | 2 batch | 1 panel | Preprocess to silver
+  study: MERSCOPE_FFPE_Human_Immuno-Oncology (https://info.vizgen.com/ffpe-showcase?submissionGuid=d4f4d370-4578-40fe-99ca-4325d6e2dfd0)
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS

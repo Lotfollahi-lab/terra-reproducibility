@@ -1,6 +1,6 @@
 experiment:
   name: xhln1004-1b_1p
-  description: Xenium TCR (dataset-id 1004) | 1 batch | 1 panel
+  description: Xenium TCR (dataset-id 1004) | 1 batch | 1 panel | Preprocess to silver
   study: Mats & Sergio Xenium
 
 paths:

@@ -1,7 +1,7 @@
 experiment:
   name: mhh22-1b_1p
-  description: MERFISH Human Heart(dataset-id 22) | 1 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  study: Farah_et_al_2024
+  description: MERFISH Human Heart(dataset-id 22) | 1 batch | 1 panel | Preprocess to silver
+  study: Farah_et_al_2024 https://datadryad.org/stash/dataset/doi:10.5061/dryad.w0vt4b8vp
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS
@@ -22,8 +22,13 @@ harmonization:
     species: homo_sapiens
     tissue: heart
   batch:
-    split_by_batch: false
-    sample_batch_map: {}
+    split_by_batch: true
+    batch_key: batch
+    sample_batch_map: {
+                       'R77_4C4': 0, 
+                       'R78_4C12': 1, 
+                       'R78_4C15': 2
+                      }
   key_mappings: {}
   misc:
     min_genes: 10

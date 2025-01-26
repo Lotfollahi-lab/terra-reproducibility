@@ -1,7 +1,7 @@
 experiment:
   name: mhl63-10b_1p
-  description: MERFISH Human Liver (dataset-id 63) | 10 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
-  study: Intratumoral dendritic cell-CD4+ T helper cell niches enable CD8+ T cell differentiation  following PD-1 blockade in hepatocellular carcinoma
+  description: MERFISH Human Liver (dataset-id 63) | 10 batch | 1 panel | Download from Zenodo to Bronze and preprocess to silver
+  study: Intratumoral dendritic cell-CD4+ T helper cell niches enable CD8+ T cell differentiation following PD-1 blockade in hepatocellular carcinoma
 
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS

@@ -103,7 +103,6 @@ esac
 # If not provided, use the default value
 CORES="${2:-$CORES}"
 QUEUE="${3:-$QUEUE}"
-OVERWRITE="${4:-True}"
 
 # Set the configuration file
 CONFIG_FILE="config/${TOKENIZER_NAME}/${TOKENIZER_NAME}_${EXPERIMENT_NAME}.yaml"
@@ -128,4 +127,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${CONFIG_FILE}" "${OVERWRITE}"
+    "${SCRIPT}" "${CONFIG_FILE}"

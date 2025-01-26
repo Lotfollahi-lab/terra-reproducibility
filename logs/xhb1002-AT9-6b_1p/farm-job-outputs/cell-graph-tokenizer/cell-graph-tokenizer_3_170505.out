@@ -1,0 +1,94 @@
+Experiment name: xhb1002-AT9-6b_1p.
+Experiment description: xhb1002-AT9-6b_1p (dataset-id 1002) | 6 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1408.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 22407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhb1002-AT9-6b_1p/cProfiler/cell-graph-tokenizer/xhb1002-AT9-6b_1p_32_gene_corrected_read_depth_nonzero_mean_None_gene_corrected_read_depth_None_shifted_log_knn_10_1408_3_parallel.prof.
+Function: tokenize_data | Cumulative Time: 18154.313934732
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-12>
+Subject: Job 170505: <xhb1002-AT9-6b_1p_cell-graph-tokenizer_3> in cluster <farm22> Done
+
+Job <xhb1002-AT9-6b_1p_cell-graph-tokenizer_3> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Jan 23 18:01:29 2025
+Job was executed on host(s) <3*node-13-12>, in queue <long>, as user <sb75> in cluster <farm22> at Thu Jan 23 18:01:31 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Jan 23 18:01:31 2025
+Terminated at Thu Jan 23 23:05:41 2025
+Results reported at Thu Jan 23 23:05:41 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT9-6b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   30549.46 sec.
+    Max Memory :                                 360631 MB
+    Average Memory :                             197731.42 MB
+    Total Requested Memory :                     512000.00 MB
+    Delta Memory :                               151369.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                28
+    Run time :                                   18249 sec.
+    Turnaround time :                            18252 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT9-6b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_3_170505.err> for stderr output of this job.
+
