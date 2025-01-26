@@ -84,3 +84,7 @@ INFO:root:[1,   380] loss: 0.106 masks: 1330.5 276.3 [wd: 4.00e-02] [lr: 2.00e-0
 INFO:root:[1,   380] grad_stats: [4.76e-05 5.83e-05] (2.25e-08, 1.27e-04)
 INFO:root:[1,   400] loss: 0.103 masks: 1323.3 274.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 2.18e+04] (407.8 ms)
 INFO:root:[1,   400] grad_stats: [6.30e-05 6.09e-05] (3.60e-08, 1.31e-04)
+INFO:root:[1,   420] loss: 0.100 masks: 1316.1 273.4 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 2.18e+04] (404.2 ms)
+INFO:root:[1,   420] grad_stats: [4.76e-05 6.53e-05] (2.67e-08, 1.26e-04)
+INFO:root:[1,   440] loss: 0.098 masks: 1308.6 271.9 [wd: 4.00e-02] [lr: 2.00e-05] [mem: 2.18e+04] (400.6 ms)
+INFO:root:[1,   440] grad_stats: [5.43e-05 7.60e-05] (3.37e-08, 1.33e-04)
