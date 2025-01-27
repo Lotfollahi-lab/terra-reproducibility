@@ -57,7 +57,7 @@ case $EXPERIMENT_NAME in
         RAM="256G"
         TIME="72:00"
         CORES=24
-        QUEUE="gpu-lotfollahi"
+        QUEUE="gpu-basement"
         N_GPU=1
         ;;
     human_cohort1_2m)

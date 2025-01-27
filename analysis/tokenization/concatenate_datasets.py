@@ -1,24 +1,26 @@
 import argparse
+import os
+import tracemalloc
+from pathlib import Path
 
 import pandas as pd
 import datasets
-from pathlib import Path
-import os
-import tracemalloc
-
-
-tokenizer='cell-graph-tokenizer'
-
-num_shards = 32
-norm_factor = "None"
-norm_method = "shifted_log"
-n_neighs = 10
-hparam_prefix = '_'.join([str(s) for s in [num_shards, norm_factor, norm_method, "knn", n_neighs]])
-print(hparam_prefix)
 
 
 def main(args):
-    gold_data_path = Path(args.data_directory_path) / 'gold' / tokenizer
+    gold_data_path = Path(args.data_directory_path) / 'gold' / args.tokenizer
+
+    hparam_prefix = '_'.join([str(s) for s in [
+        args.num_shards,
+        args.rank_cell_norm_method,
+        args.rank_gene_norm_method,
+        args.rank_count_norm_method,
+        args.count_cell_norm_method,
+        args.count_gene_norm_method,
+        args.count_count_norm_method,
+        "knn",
+        args.n_neighs]])
+    print(hparam_prefix)
 
     ds_list = []
 
@@ -54,7 +56,7 @@ def main(args):
     print("Concatenating datasets...")
     tracemalloc.start()
     concatenated_dataset = datasets.concatenate_datasets(ds_list)
-    concatenated_dataset.save_to_disk(output_path, num_shards=num_shards)
+    concatenated_dataset.save_to_disk(output_path, num_shards=args.num_shards)
     current, peak = tracemalloc.get_traced_memory()
     print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
 
@@ -74,6 +76,42 @@ if __name__ == '__main__':
                         type=str,
                         default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
+    parser.add_argument('--tokenizer',
+                        type=str,
+                        default="cell-graph-tokenizer",
+                        help='Tokenizer.')
+    parser.add_argument('--num_shards',
+                        type=int,
+                        default="32",
+                        help='Number of shards.')
+    parser.add_argument('--rank_cell_norm_method',
+                        type=str,
+                        default=None,
+                        help='Rank cell norm method.')
+    parser.add_argument('--rank_gene_norm_method',
+                        type=str,
+                        default=None,
+                        help='Rank gene norm method.')
+    parser.add_argument('--rank_count_norm_method',
+                        type=str,
+                        default=None,
+                        help='Rank count norm method.')
+    parser.add_argument('--count_cell_norm_method',
+                        type=str,
+                        default="gene_corrected_read_depth",
+                        help='Count cell norm method.')
+    parser.add_argument('--count_gene_norm_method',
+                        type=str,
+                        default=None,
+                        help='Count gene norm method.')
+    parser.add_argument('--count_count_norm_method',
+                        type=str,
+                        default="shifted_log",
+                        help='Count count norm method.')
+    parser.add_argument('--n_neighs',
+                        type=int,
+                        default="10",
+                        help='Number of neighbors.')
     args = parser.parse_args()
     
     main(args)
