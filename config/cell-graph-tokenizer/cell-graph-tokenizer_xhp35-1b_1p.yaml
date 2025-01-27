@@ -1,6 +1,6 @@
 experiment:
-  experiment_name: xhp34-1b_1p
-  experiment_description: xhp34-1b_1p (dataset-id 34) | 1 batch | 1 panel
+  experiment_name: xhp35-1b_1p
+  experiment_description: xhp35-1b_1p (dataset-id 35) | 1 batch | 1 panel
   tokenizer: cell-graph-tokenizer
   model_input_size: 2816
 

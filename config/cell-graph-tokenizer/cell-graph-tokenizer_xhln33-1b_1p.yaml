@@ -2,13 +2,13 @@ experiment:
   experiment_name: xhln33-1b_1p
   experiment_description: xhln33-1b_1p (dataset-id 33) | 1 batch | 1 panel
   tokenizer: cell-graph-tokenizer
-  model_input_size: 1408 # 2816
+  model_input_size: 2816
 
 tokenization:
   species: "homo_sapiens"
   use_generator: True
-  rank_cell_norm_method: "gene_corrected_read_depth"
-  rank_gene_norm_method: "nonzero_mean"
+  rank_cell_norm_method: null
+  rank_gene_norm_method: null
   rank_count_norm_method: null
   count_cell_norm_method: "gene_corrected_read_depth"
   count_gene_norm_method: null
