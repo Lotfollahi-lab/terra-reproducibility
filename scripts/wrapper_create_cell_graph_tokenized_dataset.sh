@@ -63,7 +63,7 @@ case $EXPERIMENT_NAME in
         QUEUE="long"
         ;;
     xhb1002-AT5-1b_1p)
-        RAM="300G"
+        RAM="400G"
         TIME="36:00"
         CORES=4
         QUEUE="long"
@@ -181,6 +181,12 @@ case $EXPERIMENT_NAME in
         TIME="12:00"
         CORES=4
         QUEUE="long"
+        ;;
+    xhs49-1b_1p)
+        RAM="128G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="gpu-basement"
         ;;
     *)
         RAM="256G"
