@@ -8,3 +8,4 @@ wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
   with torch.cuda.amp.autocast(dtype=torch.bfloat16,
 /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
   self.gen = func(*args, **kwds)
+User defined signal 2

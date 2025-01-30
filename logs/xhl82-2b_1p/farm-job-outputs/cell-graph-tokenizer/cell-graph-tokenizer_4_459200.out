@@ -1,0 +1,66 @@
+Experiment name: xhl82-2b_1p.
+Experiment description: xhl82-2b_1p (dataset-id 82) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhl82-2b_1p/cProfiler/cell-graph-tokenizer/xhl82-2b_1p_32_gene_corrected_read_depth_nonzero_mean_None_gene_corrected_read_depth_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 5272.219231741
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-11-4-1>
+Subject: Job 459200: <xhl82-2b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <xhl82-2b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Jan 27 11:06:41 2025
+Job was executed on host(s) <4*node-11-4-1>, in queue <long>, as user <sb75> in cluster <farm22> at Mon Jan 27 11:11:19 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jan 27 11:11:19 2025
+Terminated at Mon Jan 27 12:40:17 2025
+Results reported at Mon Jan 27 12:40:17 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl82-2b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   10960.00 sec.
+    Max Memory :                                 82375 MB
+    Average Memory :                             34641.63 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               179769.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                31
+    Run time :                                   5339 sec.
+    Turnaround time :                            5616 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl82-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_459200.err> for stderr output of this job.
+
