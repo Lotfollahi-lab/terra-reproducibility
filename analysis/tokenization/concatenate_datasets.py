@@ -42,8 +42,15 @@ def main(args):
         print(gold_dataset_dir)
 
         ds = datasets.load_from_disk(str(gold_dataset_dir))
+
+        # temp
+        ds = ds.remove_columns(['cell_total_counts', 'cell_n_probed_genes'])
+        #item = ds[0]
+        #if type(item['cell_total_counts']) != list:
+        #    print(item['cell_total_counts'])
+
         ds_list.append(ds)
-        
+
     cohort_dir = gold_data_path / args.cohort_name
     cohort_dataset_dir = cohort_dir / f"{args.cohort_name}_{hparam_prefix}"
     output_path = str(
