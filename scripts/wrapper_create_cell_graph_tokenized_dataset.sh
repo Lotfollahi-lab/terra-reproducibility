@@ -66,61 +66,61 @@ case $EXPERIMENT_NAME in
         RAM="400G"
         TIME="36:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT6-1-1b_1p)
         RAM="350G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT6-4-1b_1p)
         RAM="600G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT9-3b_1p)
         RAM="500G"
         TIME="24:00"
         CORES=6
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT9-6b_1p)
         RAM="500G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT10-7b_1p)
         RAM="600G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT15-10b_1p)
         RAM="500G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT23-9b_1p)
         RAM="300G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xho47-S1-1b_1p)
         RAM="512G"
         TIME="36:00"
         CORES=1
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xho47-S2-1b_1p)
         RAM="600G"
         TIME="36:00"
         CORES=1
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     mhh22-3b_1p)
         RAM="64G"
@@ -152,47 +152,11 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="long"
         ;;
-    mhl80-8b_1p)
-        RAM="256G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    xhl82-2b_1p)
-        RAM="256G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    mhb83-1b_1p)
-        RAM="256G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    chc61-9b_1p)
-        RAM="256G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    xhk1007-8b_1p)
-        RAM="256G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    xhs49-1b_1p)
-        RAM="128G"
-        TIME="12:00"
-        CORES=4
-        QUEUE="gpu-basement"
-        ;;
     *)
         RAM="256G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
 esac
 
