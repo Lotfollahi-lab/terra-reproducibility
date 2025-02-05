@@ -9,5 +9,5 @@ analysis/statistics/results/
 
 *__pycache__*
 .ipynb_checkpoints
-.pkl
+*.pkl
 analysis/data_analysis/logs
