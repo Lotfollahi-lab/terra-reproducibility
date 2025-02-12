@@ -45,11 +45,23 @@ JOB_NAME="${EXPERIMENT_NAME}_bronze-to-silver_${CORES}"
 echo "Log directory: ${LOG_DIR}"
 echo "Harmonizing ${EXPERIMENT_NAME} using ${CORES} cores..."
 
+# Initialize GPU parameter
+GPU_PARAM=""
+
+# Check if the queue name contains 'gpu'
+if [[ "$QUEUE" == *gpu* ]]; then
+    GPU_PARAM="-gpu num=1"
+    echo "Queue requires GPUs. Requesting 1 GPU(s)."
+fi
+
+echo $GPU_PARAM
+
 bsub \
     -G "${GROUP}" \
     -n "${CORES}" \
     -q "${QUEUE}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
+    ${GPU_PARAM} \
     -W "${TIME}" \
     -cwd "${CWD}" \
     -o "${OUTPUT_FILE}" \

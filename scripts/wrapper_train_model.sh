@@ -76,10 +76,10 @@ case $EXPERIMENT_NAME in
         ;;
     human_cohort2_60m)
         RAM="256G"
-        TIME="96:00"
+        TIME="480:00"
         CORES=24
-        QUEUE="gpu-basement"
-        N_GPU=4
+        QUEUE="gpu-lotfollahi"
+        N_GPU=1
         ;;
     *)
         echo "Invalid dataset name"

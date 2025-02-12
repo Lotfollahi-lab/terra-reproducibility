@@ -60,7 +60,7 @@ case $EXPERIMENT_NAME in
         RAM="300G"
         TIME="12:00"
         CORES=2
-        QUEUE="long"
+        QUEUE="gpu-basement"
         ;;
     xhb1002-AT5-1b_1p)
         RAM="400G"
@@ -152,11 +152,23 @@ case $EXPERIMENT_NAME in
         CORES=4
         QUEUE="long"
         ;;
+    xhe1008-6-20b_1p)
+        RAM="512G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
+        ;;
+    xhe1008-7-20b_1p)
+        RAM="512G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
+        ;;
     *)
         RAM="256G"
         TIME="48:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
 esac
 
