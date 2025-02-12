@@ -1,8 +1,8 @@
 experiment:
-  experiment_name: "xhk1007-8b_1p" 
-  experiment_description: "Xenium Human Kidney (dataset-id = 1007) | 8-batch | 1-panel"
+  experiment_name: "xhk1007-CV3-41b_1p" 
+  experiment_description: "Xenium Human Kidney (dataset-id = 1007) | 41-batch | 1-panel"
   tokenizer: "cell-graph-tokenizer"
-  model_input_size: 1792 # 1792, 2816
+  model_input_size: 2816 # 1792, 2816
 
 tokenization:
   species: "homo_sapiens"
@@ -16,7 +16,7 @@ tokenization:
   processing_mode: "parallel"
   num_shards: 32
   keep_in_memory: False
-  n_neighs: 6 # 6, 10
+  n_neighs: 10 # 6, 10
   radius: null
   delaunay: False
 
@@ -28,5 +28,5 @@ wandb:
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
-  token_dictionary_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl"
+  token_dictionary_file_path: "/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl"
   norm_factor_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/human_cohort1_60m_norm_factors.csv"

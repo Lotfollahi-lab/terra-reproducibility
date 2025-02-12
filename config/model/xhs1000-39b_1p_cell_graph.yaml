@@ -11,6 +11,9 @@ data:
   random_state: 0
   sample_subset: False
   split: 0
+  precomputed_split: False
+  precomputed_n_nonzero_tokens: False
+  split_val: 0
   test_batch_ids: ['1000_batch11', '1000_batch19', '1000_batch32']
   stratify: False
   seq_len_cell: 64 # 256, 64, 256
@@ -32,6 +35,7 @@ meta:
   seg_learnable: False
   use_bfloat16: True
   use_flash_attention: True
+  center_momentum: 0.99
 mask:
   n_contexts: 1
   n_targets: 5 # this is the number of blocks in block masking
@@ -39,14 +43,6 @@ mask:
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
   per_block_mask_ratio: 0.5 # [0.5, 0.8]
-  #controlled_attention_pattern:
-  #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
-  #  # 'Matrix', 'null'
-  #  - [0, 1, 0, 1] # cls
-  #  - [0, 1, 0, 1] # genes
-  controlled_attention_pattern: null
-  controlled_attention_type: '' # 'pred'
-  restrict_special_attention: True # True, False
 optimization:
   warmup: 3
   epochs: 100

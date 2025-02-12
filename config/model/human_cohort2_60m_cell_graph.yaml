@@ -1,84 +1,23 @@
 data:
   dataset_name: 'human_cohort2_60m'
-  raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/human_cohort2_60m'
+  raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/xhs1000-39b_1p'
   token_dict_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort2_60m/human_cohort2_60m_32_gene_corrected_read_depth_nonzero_mean_None_gene_corrected_read_depth_None_shifted_log_knn_10.dataset'
-  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort2_60m/human_cohort2_60m_32_None_None_None_gene_corrected_read_depth_None_shifted_log_knn_10.dataset'
+  #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort2_60m/human_cohort2_60m_32_None_None_None_gene_corrected_read_depth_None_shifted_log_knn_10.dataset'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort2_60m/human_cohort2_60m_32_None_None_None_None_None_shifted_log_knn_6.dataset'
   tokenizer_type: 'cell_graph'
   random_state: 0
   sample_subset: False
   split: 0
-  test_batch_ids: ['49_batch0',
-                   '59_batch0',
-                   '59_batch1',
-                   '59_batch2',
-                   '59_batch3',
-                   '59_batch4',
-                   '59_batch5',
-                   '59_batch6',
-                   '59_batch7',
-                   '78_batch0',
-                   '78_batch1',
-                   '78_batch2',
-                   '78_batch3',
-                   '78_batch4',
-                   '78_batch5',
-                   '78_batch6',
-                   '78_batch7',
-                   '78_batch8',
-                   '78_batch9',
-                   '78_batch10',
-                   '1000_batch4',
-                   '1000_batch6',
-                   '1000_batch11',
-                   '1000_batch12',
-                   '1000_batch18',
-                   '1000_batch19',
-                   '1000_batch20',
-                   '1000_batch21',
-                   '1000_batch22',
-                   '1000_batch23',
-                   '1000_batch24',
-                   '1000_batch25',
-                   '1000_batch26',
-                   '1000_batch27',
-                   '1000_batch28',
-                   '1000_batch29',
-                   '1000_batch32',
-                   '1000_batch34',
-                   '1000_batch36',
-                   '1000_batch38',
-                   '1002_batch3',
-                   '1002_batch4',
-                   '1002_batch16',
-                   '1002_batch18',
-                   '1002_batch31',
-                   '1002_batch34',
-                   '1002_batch23',
-                   '1002_batch26',
-                   '1002_batch27',
-                   '1002_batch27',
-                   '1002_batch39',
-                   '1002_batch40',
-                   '1002_batch45',
-                   '1002_batch46',
-                   '1002_batch53',
-                   '1002_batch55',
-                   '1007_batch0',
-                   '1007_batch1',
-                   '1007_batch2',
-                   '1007_batch3',
-                   '1007_batch4',
-                   '1007_batch5',
-                   '1007_batch6',
-                   '1007_batch7']
+  precomputed_split: '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/precomputed_split'
+  precomputed_n_nonzero_tokens: False
   stratify: False
   seq_len_cell: 64
-  seq_len_neighborhood: 640
-  n_segments: 11 # number of unique segment tokens (gene segments)
+  seq_len_neighborhood: 384 # 640
+  n_segments: 7 # 11; number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
   batch_size: 64
-  num_workers: 24 
+  num_workers: 24
   pin_memory: True
 meta:
   add_cls: False # False, True
@@ -92,6 +31,8 @@ meta:
   seg_learnable: False
   use_bfloat16: True
   use_flash_attention: True
+  centering: False
+  center_momentum: 0.99
 mask:
   n_contexts: 1
   n_targets: 5 # this is the number of blocks in block masking
@@ -99,14 +40,6 @@ mask:
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
   per_block_mask_ratio: 0.5 # [0.5, 0.8]
-  #controlled_attention_pattern:
-  #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
-  #  # 'Matrix', 'null'
-  #  - [0, 1, 0, 1] # cls
-  #  - [1, 1, 0, 0] # genes
-  controlled_attention_pattern: null
-  controlled_attention_type: '' # 'enc'
-  restrict_special_attention: False
 optimization:
   warmup: 0
   epochs: 100
@@ -121,8 +54,9 @@ optimization:
   ipe_scale: 1.0
 state:
   log_freq: 20
-  checkpoint_freq: 5
+  checkpoint_freq: 1
   write_tag: nichejepa
   read_timestamp: ''
+  folder_path: null
   load_checkpoint: False # true, false
   read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'

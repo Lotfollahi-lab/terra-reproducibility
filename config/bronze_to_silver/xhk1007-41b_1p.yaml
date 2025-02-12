@@ -1,0 +1,72 @@
+experiment:
+  name: "xhk1007-41b_1p"
+  description: "Xenium Human Kidney (dataset-id 1007) | 41 batch | 1 panel"
+  study: "Dataset from Daniyal Jafree"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+  'dataset_id': 1007,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'kidney'
+  }
+  batch: {
+    'split_by_batch': False,
+    'batch_key': 'batch',
+    'sample_batch_map': {
+      'CV1-KID-0-FO-1': 36,
+      'CV1-KID-0-FT-1': 14,
+      'CV1-KID-0-FT-2': 20,
+      'CV1-KID-0-FT-3': 1,
+      'CV2-KID-0-FO-1': 17,
+      'CV2-KID-0-FO-2': 33,
+      'CV2-KID-0-FT-1-s2': 4,
+      'CV2-KID-0-FT-2': 2,
+      'CV3-KID-0-FT-1-s3': 21,
+      'CV3-KID-0-FT-2-s3': 28,
+      'CV3-KID-0-FT-3-s3': 35,
+      'CV3-KID-0-FT-4-s3': 8,
+      'CV3-KID-0-FT-5': 16,
+      'CV4-KID-0-FO-1': 37,
+      'CV4-KID-0-FT-1-s3': 9,
+      'CV4-KID-0-FT-2-s3': 23,
+      'CV4-KID-0-FT-3-S3': 40,
+      'CV4-KID-0-FT-4-S3': 10,
+      'CV5-KID-0-FO-1': 31,
+      'CV5-KID-0-FT-1-s3': 38,
+      'CV5-KID-0-FT-2-s3': 5,
+      'CV5-KID-0-FT-4-S3': 7,
+      'CV6-KID-0-FO-1': 0,
+      'CV6-KID-0-FT-1': 27,
+      'CV6-KID-0-FT-2-s3': 3,
+      'CV6-KID-0-FT-3-s3': 12,
+      'CV6-KID-0-FT-4-S3': 19,
+      'CV6-KID-0-FT-5-S3': 24,
+      'CV7-KID-0-FO-1': 26,
+      'CV7-KID-0-FT-1-s3': 29,
+      'CV7-KID-0-FT-2-s3': 32,
+      'CV7-KID-0-FT-3-S3': 15,
+      'CV7-KID-0-FT-4-S3': 13,
+      'CV8-KID-0-FO-1': 18,
+      'CV8-KID-0-FT-1-s3': 11,
+      'CV9-KID-0-FO-1': 6,
+      'CV9-KID-0-FT-1-s3': 25,
+      'CV9-KID-0-FT-2-S3': 34,
+      'CV9-KID-0-FT-3-S3': 30,
+      'CV9-KID-0-FT-4-S3': 39,
+      'CV9-KID-0-FT-5-S4': 22,
+    }    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }
