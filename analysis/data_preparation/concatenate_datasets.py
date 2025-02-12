@@ -77,11 +77,11 @@ if __name__ == '__main__':
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="human_cohort1_60m",
+                        default="hst_corpus_70m",
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",
+                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -117,7 +117,7 @@ if __name__ == '__main__':
                         help='Count count norm method.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="10",
+                        default="6",
                         help='Number of neighbors.')
     args = parser.parse_args()
     
