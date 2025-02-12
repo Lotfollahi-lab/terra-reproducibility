@@ -1,0 +1,63 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Tracking run with wandb version 0.18.0
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:503: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:503: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:503: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:503: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+Process Process-4:
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, test_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 564, in train
+    log_stats()
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 535, in log_stats
+    csv_logger.log(epoch + 1,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/utils/logging.py", line 48, in log
+    with open(self.fname, '+a') as f:
+OSError: [Errno 122] Disk quota exceeded
+[rank1]:[E207 09:10:42.541802388 ProcessGroupNCCL.cpp:607] [Rank 1] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=208937, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600005 milliseconds before timing out.
+[rank2]:[E207 09:10:42.590950093 ProcessGroupNCCL.cpp:607] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=208937, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600058 milliseconds before timing out.
+[rank0]:[E207 09:10:42.602759002 ProcessGroupNCCL.cpp:607] [Rank 0] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=208937, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600069 milliseconds before timing out.
+[rank0]:[E207 09:10:43.974276917 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 0] Exception (either an error or timeout) detected by watchdog at work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank1]:[E207 09:10:43.974276972 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 1] Exception (either an error or timeout) detected by watchdog at work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank2]:[E207 09:10:43.974283241 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 2] Exception (either an error or timeout) detected by watchdog at work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank0]:[E207 09:10:43.974825991 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 0] Timeout at NCCL work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank1]:[E207 09:10:43.977466866 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 1] Timeout at NCCL work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank2]:[E207 09:10:43.977844849 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 2] Timeout at NCCL work: 208937, last enqueued NCCL work: 208953, last completed NCCL work: 208936.
+[rank0]:[E207 09:10:43.978204557 ProcessGroupNCCL.cpp:621] [Rank 0] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank1]:[E207 09:10:43.978540728 ProcessGroupNCCL.cpp:621] [Rank 1] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E207 09:10:43.978890381 ProcessGroupNCCL.cpp:621] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank0]:[E207 09:10:43.979252305 ProcessGroupNCCL.cpp:627] [Rank 0] To avoid data inconsistency, we are taking the entire process down.
+[rank1]:[E207 09:10:43.979601381 ProcessGroupNCCL.cpp:627] [Rank 1] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E207 09:10:43.979933803 ProcessGroupNCCL.cpp:627] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+terminate called after throwing an instance of 'c10::DistBackendErrorterminate called after throwing an instance of 'c10::DistBackendErrorterminate called after throwing an instance of '

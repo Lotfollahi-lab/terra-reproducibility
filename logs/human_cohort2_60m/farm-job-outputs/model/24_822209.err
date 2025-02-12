@@ -1,0 +1,234 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.18.0
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/helper.py:311: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_bfloat16 else None
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:506: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:506: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:506: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:506: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.bfloat16,
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+fatal error: concurrent map iteration and map write
+
+goroutine 47 [running]:
+github.com/wandb/wandb/core/pkg/monitor.(*GPUNvidia).Sample(0xc0003b6ae0)
+	/project/core/pkg/monitor/gpu_nvidia.go:165 +0x1ad
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc00001e100, {0xaf5160, 0xc0003b6ae0})
+	/project/core/pkg/monitor/monitor.go:301 +0x1cf
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 28
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 1 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Server).Serve(0xc000229620)
+	/project/core/pkg/server/server.go:127 +0xe5
+main.main()
+	/project/core/cmd/wandb-core/main.go:123 +0xaf2
+
+goroutine 6 [chan receive, 830 minutes]:
+github.com/getsentry/sentry-go.(*HTTPTransport).worker(0xc000267110)
+	/project/core/vendor/github.com/getsentry/sentry-go/transport.go:536 +0x13d
+created by github.com/getsentry/sentry-go.(*HTTPTransport).Configure.func1 in goroutine 1
+	/project/core/vendor/github.com/getsentry/sentry-go/transport.go:403 +0x56
+
+goroutine 7 [sleep]:
+time.Sleep(0x5f5e100)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/pkg/server.(*Server).exitWhenParentIsGone(0xc000229620)
+	/project/core/pkg/server/server.go:98 +0x9c
+created by github.com/wandb/wandb/core/pkg/server.(*Server).Serve in goroutine 1
+	/project/core/pkg/server/server.go:117 +0x65
+
+goroutine 8 [IO wait, 830 minutes]:
+internal/poll.runtime_pollWait(0x14d7dc8d3e80, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0x7?, 0x1?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0xc0001b5a00)
+	/usr/local/go/src/internal/poll/fd_unix.go:611 +0x2ac
+net.(*netFD).accept(0xc0001b5a00)
+	/usr/local/go/src/net/fd_unix.go:172 +0x29
+net.(*TCPListener).accept(0xc0002757a0)
+	/usr/local/go/src/net/tcpsock_posix.go:159 +0x1e
+net.(*TCPListener).Accept(0xc0002757a0)
+	/usr/local/go/src/net/tcpsock.go:327 +0x30
+github.com/wandb/wandb/core/pkg/server.(*Server).serve(0xc000229620)
+	/project/core/pkg/server/server.go:148 +0x10b
+github.com/wandb/wandb/core/pkg/server.(*Server).Serve.func1()
+	/project/core/pkg/server/server.go:123 +0x4f
+created by github.com/wandb/wandb/core/pkg/server.(*Server).Serve in goroutine 1
+	/project/core/pkg/server/server.go:121 +0xc7
+
+goroutine 9 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc0001b5b80)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 10 [IO wait, 830 minutes]:
+internal/poll.runtime_pollWait(0x14d7dc8d3d88, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0001b5a80?, 0xc0002942fb?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0001b5a80, {0xc0002942fb, 0xfbd05, 0xfbd05})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0001b5a80, {0xc0002942fb?, 0xaf3310?, 0xc0000dac90?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc0000aa648, {0xc0002942fb?, 0x24?, 0xfbd29?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000395f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc0001b5b80)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 11 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc0001b5b80)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 12 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc0001b5b80)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 42 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Writer).startStore.func1()
+	/project/core/pkg/server/writer.go:75 +0x47
+created by github.com/wandb/wandb/core/pkg/server.(*Writer).startStore in goroutine 29
+	/project/core/pkg/server/writer.go:74 +0x21b
+
+goroutine 26 [chan receive]:
+github.com/wandb/wandb/core/pkg/observability.NewPrinter.func1()
+	/project/core/pkg/observability/printer.go:30 +0x3c
+created by github.com/wandb/wandb/core/pkg/observability.NewPrinter in goroutine 11
+	/project/core/pkg/observability/printer.go:28 +0x96
+
+goroutine 27 [IO wait]:
+internal/poll.runtime_pollWait(0x14d7dc8d3aa0, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0003b6b40?, 0xc000572000?, 0x1)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0003b6b40, {0xc000572000, 0x1000, 0x1000})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+os.(*File).read(...)
+	/usr/local/go/src/os/file_posix.go:29
+os.(*File).Read(0xc0000aae38, {0xc000572000?, 0xc000757000?, 0xc0008a9df8?})
+	/usr/local/go/src/os/file.go:118 +0x52
+bufio.(*Scanner).Scan(0xc0008a9eb8)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/monitor.NewGPUNvidia.func1()
+	/project/core/pkg/monitor/gpu_nvidia.go:112 +0xa5
+created by github.com/wandb/wandb/core/pkg/monitor.NewGPUNvidia in goroutine 11
+	/project/core/pkg/monitor/gpu_nvidia.go:110 +0x539
+
+goroutine 28 [runnable]:
+log/slog.(*commonHandler).enabled(...)
+	/usr/local/go/src/log/slog/handler.go:220
+log/slog.(*JSONHandler).Enabled(0x0?, {0x0?, 0x216?}, 0xfffffffffffffffc)
+	/usr/local/go/src/log/slog/json_handler.go:47 +0x2d
+log/slog.(*Logger).Enabled(0xc00027e320?, {0xaf4cd8?, 0xefcf20?}, 0xfffffffffffffffc?)
+	/usr/local/go/src/log/slog/logger.go:169 +0x44
+log/slog.(*Logger).log(0xc00027e320, {0xaf4cd8, 0xefcf20}, 0xfffffffffffffffc, {0xa22f94, 0x11}, {0xc000154f10, 0x4, 0x4})
+	/usr/local/go/src/log/slog/logger.go:242 +0x6a
+log/slog.(*Logger).Debug(...)
+	/usr/local/go/src/log/slog/logger.go:200
+github.com/wandb/wandb/core/pkg/server.(*Handler).Do(0xc000662000, 0xc000034420)
+	/project/core/pkg/server/handler.go:166 +0x216
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func1()
+	/project/core/pkg/server/stream.go:278 +0x38
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:277 +0x7c
+
+goroutine 29 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Writer).Do(0xc000264bc0, 0xc0000345a0)
+	/project/core/pkg/server/writer.go:100 +0x128
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func2()
+	/project/core/pkg/server/stream.go:285 +0x28
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:284 +0xcd
+
+goroutine 30 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Sender).Do(0xc000160c00, 0xc0003b6cc0)
+	/project/core/pkg/server/sender.go:217 +0x1ba
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func3()
+	/project/core/pkg/server/stream.go:292 +0x28
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:291 +0x11e
+
+goroutine 31 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func4(0xc000034600)
+	/project/core/pkg/server/stream.go:300 +0x54
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:299 +0x165
+
+goroutine 32 [chan receive, 830 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func4(0xc0003b6d20)
+	/project/core/pkg/server/stream.go:300 +0x54
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:299 +0x165
+
+goroutine 43 [semacquire]:
+github.com/shirou/gopsutil/v4/process.(*Process).fillFromStatusWithContext(0xc000449d18, {0xaf4cd8, 0xefcf20})
+	/project/core/vendor/github.com/shirou/gopsutil/v4/process/process_linux.go:831 +0xe5
+github.com/shirou/gopsutil/v4/process.(*Process).NumThreadsWithContext(...)
+	/project/core/vendor/github.com/shirou/gopsutil/v4/process/process_linux.go:277
+github.com/shirou/gopsutil/v4/process.(*Process).NumThreads(0xc000449d18)
+	/project/core/vendor/github.com/shirou/gopsutil/v4/process/process.go:502 +0x26
+github.com/wandb/wandb/core/pkg/monitor.(*CPU).Sample(0xc000010270)
+	/project/core/pkg/monitor/cpu.go:47 +0x2c5
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc00001e100, {0xaf5080, 0xc000010270})
+	/project/core/pkg/monitor/monitor.go:301 +0x1cf
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 28
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 44 [running]:
+	goroutine running on other thread; stack unavailable
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 28
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 45 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc00001e100, {0xaf50f0, 0xc0000102b8})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 28
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 46 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc00001e100, {0xaf5128, 0xc00001d9a0})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 28
+	/project/core/pkg/monitor/monitor.go:227 +0x97

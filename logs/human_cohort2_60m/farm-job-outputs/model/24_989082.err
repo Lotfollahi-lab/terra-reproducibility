@@ -290,3 +290,119 @@ github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc0001fe200, {
 	/project/core/pkg/monitor/monitor.go:291 +0x19c
 created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 14
 	/project/core/pkg/monitor/monitor.go:227 +0x97
+Exception in thread Thread-7 (_pin_memory_loop):
+Exception in thread Thread-7 (_pin_memory_loop):
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+Exception in thread Thread-7 (_pin_memory_loop):
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    do_one_step()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
+    do_one_step()
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    do_one_step()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
+    return _ForkingPickler.loads(res)
+    return _ForkingPickler.loads(res)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+    return _ForkingPickler.loads(res)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+    fd = df.detach()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
+    fd = df.detach()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
+    fd = df.detach()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 502, in Client
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 502, in Client
+    c = SocketClient(address)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 630, in SocketClient
+    s.connect(address)
+    c = SocketClient(address)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 630, in SocketClient
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
+    s.connect(address)
+FileNotFoundError: [Errno 2] No such file or directory
+Exception in thread Thread-7 (_pin_memory_loop):
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+FileNotFoundError: [Errno 2] No such file or directory
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/threading.py", line 953, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 55, in _pin_memory_loop
+    do_one_step()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/utils/data/_utils/pin_memory.py", line 32, in do_one_step
+    r = in_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/queues.py", line 122, in get
+    return _ForkingPickler.loads(res)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/multiprocessing/reductions.py", line 496, in rebuild_storage_fd
+    fd = df.detach()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 57, in detach
+    with _resource_sharer.get_connection(self._id) as conn:
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/resource_sharer.py", line 86, in get_connection
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 502, in Client
+    c = SocketClient(address)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 630, in SocketClient
+    s.connect(address)
+FileNotFoundError: [Errno 2] No such file or directory
+    c = Client(address, authkey=process.current_process().authkey)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 502, in Client
+    c = SocketClient(address)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/connection.py", line 630, in SocketClient
+    s.connect(address)
+FileNotFoundError: [Errno 2] No such file or directory
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 166, in <module>
+    #'pos_learnable': {'values': [1,0]},
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 127, in sweep_func
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 149, in join
+    res = self._popen.wait(timeout)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/popen_fork.py", line 43, in wait
+    return self.poll(os.WNOHANG if timeout == 0.0 else 0)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/popen_fork.py", line 27, in poll
+    pid, sts = os.waitpid(self.pid, flag)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 166, in <module>
+    #'pos_learnable': {'values': [1,0]},
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 127, in sweep_func
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 149, in join
+    res = self._popen.wait(timeout)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/popen_fork.py", line 43, in wait
+    return self.poll(os.WNOHANG if timeout == 0.0 else 0)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/popen_fork.py", line 27, in poll
+    pid, sts = os.waitpid(self.pid, flag)
+KeyboardInterrupt
+wandb: Encountered an error while tearing down the service manager: [Errno 32] Broken pipe
+Terminated

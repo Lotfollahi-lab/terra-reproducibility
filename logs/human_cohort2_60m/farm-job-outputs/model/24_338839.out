@@ -1,0 +1,44 @@
+Finished script.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 338839: <human_cohort2_60m_cell_graph_24> in cluster <farm22> Done
+
+Job <human_cohort2_60m_cell_graph_24> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Feb  5 10:25:24 2025
+Job was executed on host(s) <24*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Wed Feb  5 10:25:25 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Feb  5 10:25:25 2025
+Terminated at Wed Feb  5 10:27:54 2025
+Results reported at Wed Feb  5 10:27:54 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/train_model.sh config/model/human_cohort2_60m_cell_graph.yaml "cuda:0 cuda:1 cuda:2 cuda:3"
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   19.24 sec.
+    Max Memory :                                 501 MB
+    Average Memory :                             250.57 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261643.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                54
+    Run time :                                   148 sec.
+    Turnaround time :                            150 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/human_cohort2_60m/farm-job-outputs/model/24_338839.err> for stderr output of this job.
+

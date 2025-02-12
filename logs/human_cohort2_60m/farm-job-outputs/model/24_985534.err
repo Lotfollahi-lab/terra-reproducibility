@@ -235,3 +235,4 @@ github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000660200, {
 	/project/core/pkg/monitor/monitor.go:291 +0x19c
 created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 34
 	/project/core/pkg/monitor/monitor.go:227 +0x97
+User defined signal 2
