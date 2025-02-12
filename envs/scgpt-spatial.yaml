@@ -1,0 +1,13 @@
+name: scgpt-spatial
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+dependencies:
+  - python=3.10
+  - pip
+  - jupyterlab
+  - pip:
+    #- torch==2.0.0+cu121
+    - scgpt
+    #- flash-attn
