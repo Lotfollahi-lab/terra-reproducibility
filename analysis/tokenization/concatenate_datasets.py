@@ -105,7 +105,7 @@ if __name__ == '__main__':
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
                         type=str,
-                        default="gene_corrected_read_depth",
+                        default=None,
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
                         type=str,
