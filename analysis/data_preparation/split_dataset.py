@@ -46,13 +46,13 @@ def main(args):
     print('done4')
 
     # Save the splits as pickle files
-    with open("precomputed_split_validation.pkl", "wb") as f:
+    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
         pickle.dump(validation_indices, f)
-    with open("precomputed_split_test.pkl", "wb") as f:
+    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
         pickle.dump(test_indices, f)
-    with open("precomputed_split_train.pkl", "wb") as f:
+    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
         pickle.dump(train_indices, f)
-    print("Splits saved as 'precomputed_split_validation.pkl', 'precomputed_split_test.pkl', and 'precomputed_split_train.pkl'.")
+    print("Saved train, validation, and test dataset splits.")
 
 
 if __name__ == '__main__':
@@ -60,8 +60,12 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/human_cohort2_60m/human_cohort2_60m_32_None_None_None_None_None_shifted_log_knn_6.dataset',
+                        default='/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6.dataset',
                         help='Tokenized data directory path.')
+    parser.add_argument('--cohort_name',
+                        type=str,
+                        default="hst_corpus_70m",
+                        help='Name of the cohort.')
     parser.add_argument('--val_batch_ids',
                         type=str,
                         nargs='+',
@@ -76,63 +80,75 @@ if __name__ == '__main__':
                         nargs='+',
                         default=['49_batch0',
                                  '59_batch0',
-                                 '59_batch1',
-                                 '59_batch2',
                                  '59_batch3',
-                                 '59_batch4',
-                                 '59_batch5',
                                  '59_batch6',
                                  '59_batch7',
-                                 '78_batch0',
-                                 '78_batch1',
-                                 '78_batch2',
+                                 '59_batch2',
+                                 '59_batch4',
+                                 '59_batch1',
+                                 '59_batch5',
                                  '78_batch3',
-                                 '78_batch4',
-                                 '78_batch5',
+                                 '78_batch10',
+                                 '78_batch1',
+                                 '78_batch0',
+                                 '78_batch2',
                                  '78_batch6',
                                  '78_batch7',
-                                 '78_batch8',
                                  '78_batch9',
-                                 '78_batch10',
+                                 '78_batch8',
+                                 '78_batch4',
+                                 '78_batch5',
                                  '1000_batch4',
                                  '1000_batch6',
                                  '1000_batch11',
                                  '1000_batch12',
                                  '1000_batch18',
                                  '1000_batch19',
-                                 '1000_batch20',
                                  '1000_batch21',
                                  '1000_batch22',
+                                 '1000_batch34',
+                                 '1000_batch38',
+                                 '1000_batch20',
                                  '1000_batch26',
                                  '1000_batch27',
                                  '1000_batch32',
-                                 '1000_batch34',
                                  '1000_batch36',
-                                 '1000_batch38',
                                  '1002_batch3',
-                                 '1002_batch4',
-                                 '1002_batch16',
-                                 '1002_batch18',
-                                 '1002_batch31',
-                                 '1002_batch34',
-                                 '1002_batch23',
-                                 '1002_batch26',
-                                 '1002_batch27',
+                                 '1002_batch15'
                                  '1002_batch27',
                                  '1002_batch39',
-                                 '1002_batch40',
                                  '1002_batch45',
-                                 '1002_batch46',
+                                 '1002_batch26',
+                                 '1002_batch4',
+                                 '1002_batch16'
+                                 '1002_batch18',
+                                 '1002_batch23',
+                                 '1002_batch31',
+                                 '1002_batch34',
                                  '1002_batch53',
                                  '1002_batch55',
-                                 '1007_batch0',
+                                 '1002_batch40',
+                                 '1002_batch46',
                                  '1007_batch1',
-                                 '1007_batch2',
-                                 '1007_batch3',
+                                 '1007_batch14',
+                                 '1007_batch20',
+                                 '1007_batch36',
+                                 '1007_batch17',
+                                 '1007_batch33',
                                  '1007_batch4',
-                                 '1007_batch5',
+                                 '1007_batch2',
+                                 '1007_batch0',
+                                 '1007_batch27',
+                                 '1007_batch3',
+                                 '1007_batch12',
+                                 '1007_batch19',
+                                 '1007_batch24',
                                  '1007_batch6',
-                                 '1007_batch7'],
+                                 '1007_batch25',
+                                 '1007_batch34',
+                                 '1007_batch30',
+                                 '1007_batch39',
+                                 '1007_batch22'],
                         help='Test batch IDs.')
     args = parser.parse_args()
     

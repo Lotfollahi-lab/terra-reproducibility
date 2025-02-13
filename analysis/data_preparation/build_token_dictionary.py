@@ -274,12 +274,12 @@ if __name__ == '__main__':
     parser.add_argument(
         '--cohort_dataset_names_file_path',
         type=str,
-        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",
+        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m_dataset_names.txt",
         help='Path to the file containing datasets of the cohort.')  
     parser.add_argument(
         '--token_dictionary_file_path',
         type=str,
-        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl",
+        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_homo_sapiens.pkl",
         help='Token dictionary file path.')
     parser.add_argument(
         '--ensembl_release',
