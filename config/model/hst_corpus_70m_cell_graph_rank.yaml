@@ -4,7 +4,7 @@ data:
   token_dict_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
   tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6.dataset'
   precomputed_split: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_precomputed_split'
-  precomputed_n_nonzero_tokens: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_n_nonzero_tokens'
+  precomputed_n_nonzero_tokens: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_n_nonzero_tokens'
   tokenizer_type: 'cell_graph'
   random_state: 0
   sample_subset: False
@@ -14,7 +14,7 @@ data:
   seq_len_neighborhood: 384 # 384, 640
   n_segments: 7 # 7, 11; number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 256
+  batch_size: 128 # 256
   num_workers: 24
   pin_memory: True
 meta:
@@ -24,7 +24,7 @@ meta:
   enc_emb_dim: 1024
   pred_depth: 2
   pred_emb_dim: 1024
-  special_tokens: ['assay', 'tissue', 'gene_panel', 'batch'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
+  special_tokens: ['assay', 'gene_panel', 'batch'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
   pos_learnable: False
   seg_learnable: False
   use_bfloat16: True
