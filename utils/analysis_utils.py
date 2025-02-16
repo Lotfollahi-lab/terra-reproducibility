@@ -140,12 +140,12 @@ custom_palette = {
     "15": "#9D88A2", # Mauve
     "16": "#FF4D4D", # Light Red
     "17": "#9B4DCA", # Lavender-Purple
-    "18": "#FF9CDA", # Bright Pink
-    "19": "#FF69B4", # Hot Pink
-    "20": "#FF00FF", # Magenta
+    "18": "#8B0000", # Dark Red
+    "19": "#228B22", # Forest Green
+    "20": "#8A2BE2", # Blue Violet
     "21": "#DA70D6", # Orchid
     "22": "#BA55D3", # Medium Orchid
-    "23": "#8A2BE2", # Blue Violet
+    "23": "#88A0A8", # Gray-Blue-Green
     "24": "#9370DB", # Medium Purple
     "25": "#7B68EE", # Medium Slate Blue
     "26": "#4169E1", # Royal Blue
@@ -157,12 +157,12 @@ custom_palette = {
     "32": "#7FFF00", # Chartreuse
     "33": "#ADFF2F", # Green Yellow
     "34": "#32CD32", # Lime Green
-    "35": "#228B22", # Forest Green
+    "35": "#FF69B4", # Hot Pink
     "36": "#FFD8B8", # Peach
     "37": "#008080", # Teal
     "38": "#20B2AA", # Light Sea Green
     "39": "#00FFFF", # Cyan
-    "40": "#00BFFF", # Deep Sky Blue
+    "40": "#FF00FF", # Magenta
     "41": "#4169E1", # Royal Blue
     "42": "#0000CD", # Medium Blue
     "43": "#00008B", # Dark Blue
@@ -174,8 +174,8 @@ custom_palette = {
     "49": "#FF7F50", # Coral
     "50": "#CD5C5C", # Indian Red
     "51": "#B22222", # Fire Brick
-    "52": "#FFB83F",  # Light Orange
-    "53": "#8B0000", # Dark Red
+    "52": "#FF9CDA", # Bright Pink
+    "53": "#FFB83F", # Light Orange
     "54": "#D2691E", # Chocolate
     "55": "#A0522D", # Sienna
     "56": "#800000", # Maroon
@@ -187,8 +187,8 @@ custom_palette = {
     "62": "#F17171", # Light Red
     "63": "#000000", # Black
     "64": "#FF8C42", # Tangerine
-    "65": "#F9A11F", # Bright Orange-Yellow
-    "66": "#FACC15", # Golden Yellow
+    "65": "#FACC15", # Golden Yellow
+    "66": "#00BFFF", # Deep Sky Blue
     "67": "#E2E062", # Pale Lime
     "68": "#BADE92", # Soft Lime
     "69": "#70C1B3", # Greenish-Blue
@@ -202,7 +202,7 @@ custom_palette = {
     "77": "#C38D9E", # Mauve-Pink
     "78": "#937D64", # Light Brown
     "79": "#B1C1CC", # Light Blue-Gray
-    "80": "#88A0A8", # Gray-Blue-Green
+    "80": "#F9A11F", # Bright Orange-Yellow
     "81": "#4E598C", # Dark Blue-Purple
     "82": "#4B4E6D", # Dark Gray-Blue
     "83": "#8E9AAF", # Light Blue-Grey
