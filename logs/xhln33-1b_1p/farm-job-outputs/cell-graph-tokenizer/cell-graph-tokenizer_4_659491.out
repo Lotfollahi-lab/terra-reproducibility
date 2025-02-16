@@ -1,0 +1,59 @@
+Experiment name: xhln33-1b_1p.
+Experiment description: xhln33-1b_1p (dataset-id 33) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhln33-1b_1p/cProfiler/cell-graph-tokenizer/xhln33-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 2612.6440659540003
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-12-8-4>
+Subject: Job 659491: <xhln33-1b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <xhln33-1b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Feb 15 18:29:35 2025
+Job was executed on host(s) <4*node-12-8-4>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Feb 15 18:29:35 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Feb 15 18:29:35 2025
+Terminated at Sat Feb 15 19:13:50 2025
+Results reported at Sat Feb 15 19:13:50 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhln33-1b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4059.00 sec.
+    Max Memory :                                 14337 MB
+    Average Memory :                             5142.48 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               247807.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                32
+    Run time :                                   2654 sec.
+    Turnaround time :                            2655 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhln33-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_659491.err> for stderr output of this job.
+
