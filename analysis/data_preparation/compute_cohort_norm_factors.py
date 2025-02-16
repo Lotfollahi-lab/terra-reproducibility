@@ -86,7 +86,7 @@ def main(args):
 
     # Compute overall nonzero means and means per gene and store cell numbers
     norm_factor_dict = {}
-    gene_ids = list(set([key.split('_')[0] for key in norm_factor_dict.keys()]))
+    gene_ids = list(set([key.split('_')[0] for key in batchwise_norm_factor_dict.keys()]))
     
     for gene_id in gene_ids:
         norm_factor_dict[gene_id] = {}

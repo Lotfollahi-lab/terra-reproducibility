@@ -1,54 +1,26 @@
+#!/bin/bash
+
 GROUP="team361"
 
 # Set the experiment parameters
 EXPERIMENT_NAME="${1:-sss2-1b_1p}"
-TOKENIZER_NAME="cell-graph-tokenizer"
+TOKENIZER_NAME="cell-neighborhood-tokenizer"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
-SCRIPT="scripts/create_tokenized_data.sh"
+SCRIPT="analysis/tokenization/create_tokenized_dataset.sh"
 
 case $EXPERIMENT_NAME in
-    mmb0-100k-1b_1p)
-        RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    mmb0-300k-2b_1p)
-        RAM="45G"
-        TIME="0:45"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    mmb0-300k-2b_2p)
-        RAM="45G"
-        TIME="0:45"
-        CORES=8
-        QUEUE="parallel"
-        ;;
-    mmb0-1b_smb1-1b_1p)
-        RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
-    mmb0-1b_smb1-1b_2p)
-        RAM="25G"
-        TIME="0:20"
-        CORES=4
-        QUEUE="parallel"
-        ;;
     sss2-1b_1p)
         RAM="2G"
         TIME="0:10"
         CORES=1
-        QUEUE="parallel"
+        QUEUE="normal"
         ;;
     sss3-1b_1p)
         RAM="25G"
         TIME="0:30"
         CORES=8
-        QUEUE="parallel"
+        QUEUE="normal"
         ;;
     xhs1000-39b_1p)
         RAM="128G"
@@ -60,67 +32,67 @@ case $EXPERIMENT_NAME in
         RAM="300G"
         TIME="12:00"
         CORES=2
-        QUEUE="gpu-basement"
+        QUEUE="normal"
         ;;
     xhb1002-AT5-1b_1p)
         RAM="400G"
         TIME="36:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT6-1-1b_1p)
         RAM="350G"
         TIME="48:00"
         CORES=3
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT6-4-1b_1p)
         RAM="600G"
         TIME="48:00"
         CORES=3
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT9-3b_1p)
         RAM="500G"
         TIME="24:00"
         CORES=6
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT9-6b_1p)
         RAM="500G"
         TIME="48:00"
         CORES=3
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT10-7b_1p)
         RAM="600G"
         TIME="48:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT15-10b_1p)
         RAM="500G"
         TIME="48:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhb1002-AT23-9b_1p)
         RAM="300G"
         TIME="48:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xho47-S1-1b_1p)
         RAM="512G"
         TIME="36:00"
         CORES=1
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xho47-S2-1b_1p)
         RAM="600G"
         TIME="36:00"
         CORES=1
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     mhh22-3b_1p)
         RAM="64G"
@@ -150,25 +122,43 @@ case $EXPERIMENT_NAME in
         RAM="64G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="normal"
         ;;
     xhe1008-6-20b_1p)
         RAM="512G"
         TIME="12:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
     xhe1008-7-20b_1p)
         RAM="512G"
         TIME="12:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
+        ;;
+    xhe1008-8-20b_1p)
+        RAM="512G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
+        ;;
+    xhe1008-9-20b_1p)
+        RAM="512G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
+        ;;
+    xhe1008-10-20b_1p)
+        RAM="512G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="long"
         ;;
     *)
         RAM="256G"
         TIME="48:00"
         CORES=4
-        QUEUE="gpu-basement"
+        QUEUE="long"
         ;;
 esac
 
@@ -189,23 +179,11 @@ JOB_NAME="${EXPERIMENT_NAME}_${TOKENIZER_NAME}_${CORES}"
 echo "Log directory: ${LOG_DIR}"
 echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 
-# Initialize GPU parameter
-GPU_PARAM=""
-
-# Check if the queue name contains 'gpu'
-if [[ "$QUEUE" == *gpu* ]]; then
-    GPU_PARAM="-gpu num=1"
-    echo "Queue requires GPUs. Requesting 1 GPU(s)."
-fi
-
-echo $GPU_PARAM
-
 bsub \
     -G "${GROUP}" \
     -n "${CORES}" \
     -q "${QUEUE}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
-    ${GPU_PARAM} \
     -W "${TIME}" \
     -cwd "${CWD}" \
     -o "${OUTPUT_FILE}" \

@@ -93,31 +93,31 @@ if __name__ == '__main__':
                         help='Number of shards.')
     parser.add_argument('--rank_cell_norm_method',
                         type=str,
-                        default=None,
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=str,
-                        default=None,
+                        default=None, # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=str,
-                        default=None,
+                        default=None, # None
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
                         type=str,
-                        default=None,
+                        default=None, # None
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
                         type=str,
-                        default=None,
+                        default=None, # None
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
                         type=str,
-                        default="shifted_log",
+                        default="shifted_log", # None
                         help='Count count norm method.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="6",
+                        default="10",
                         help='Number of neighbors.')
     args = parser.parse_args()
     

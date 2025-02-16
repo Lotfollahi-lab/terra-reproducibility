@@ -8,7 +8,7 @@ GT_TYPE="${2:-cell_graph}"
 DEVICES="${3:-cuda:0}"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/model"
 
-SCRIPT="scripts/train_model.sh"
+SCRIPT="analysis/model_training/train_model.sh"
 
 case $EXPERIMENT_NAME in
     mmb0-100k-1b_1p)
@@ -86,7 +86,7 @@ case $EXPERIMENT_NAME in
         TIME="240:00"
         CORES=24
         QUEUE="gpu-basement"
-        N_GPU=4
+        N_GPU=2
         ;;
     *)
         echo "Invalid dataset name"

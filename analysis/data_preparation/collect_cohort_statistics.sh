@@ -41,7 +41,7 @@ elif [ "$USER" == "sb75" ]; then
     conda activate nichejepa_new
 fi
 
-SCRIPT="python analysis/statistics/collect_cohort_statistics.py --cohort_name ${EXPERIMENT_NAME}"
+SCRIPT="python analysis/data_preparation/collect_cohort_statistics.py --cohort_name ${EXPERIMENT_NAME}"
 
 bsub \
     -G "${GROUP}" \
