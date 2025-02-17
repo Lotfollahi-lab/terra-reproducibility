@@ -88,9 +88,9 @@ case $EXPERIMENT_NAME in
         ;;
     xho47-S2-1b_1p)
         RAM="600G"
-        TIME="36:00"
+        TIME="48:00"
         CORES=1
-        QUEUE="long"
+        QUEUE="yesterday"
         ;;
     mhh22-3b_1p)
         RAM="64G"

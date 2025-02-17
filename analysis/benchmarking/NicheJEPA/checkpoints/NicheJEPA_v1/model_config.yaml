@@ -1,0 +1,31 @@
+data:
+  n_neighs: 6
+  n_segments: 7
+  seq_len_cell: 64
+  seq_len_neighborhood: 384
+  tokenizer_type: 'cell_graph'
+  model_input_size: 2816
+  rank_cell_norm_method: null
+  rank_gene_norm_method: null
+  rank_count_norm_method: null
+  count_cell_norm_method: null
+  count_gene_norm_method: null
+  count_count_norm_method: null
+mask:
+  per_block_mask_ratio: 0.5
+  n_contexts: 1
+  n_targets: 5
+meta:
+  gt_type: 'counts'
+  enc_depth: 6
+  enc_emb_dim: 1024
+  pred_depth: 2
+  pred_emb_dim: 1024
+  use_bfloat16: true
+  pos_learnable: false
+  seg_learnable: false
+  special_tokens:
+  - assay
+  - gene_panel
+  - batch
+  use_flash_attention: true

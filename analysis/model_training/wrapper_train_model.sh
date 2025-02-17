@@ -84,7 +84,7 @@ case $EXPERIMENT_NAME in
     hst_corpus_70m)
         RAM="256G"
         TIME="240:00"
-        CORES=24
+        CORES=12
         QUEUE="gpu-basement"
         N_GPU=2
         ;;
