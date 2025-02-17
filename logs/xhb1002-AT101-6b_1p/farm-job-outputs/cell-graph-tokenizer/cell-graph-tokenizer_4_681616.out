@@ -47,3 +47,48 @@ Normalizing gene expression counts...
 Retrieving gene tokens.
 Ranking gene tokens based on normalized counts.
 Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhb1002-AT101-6b_1p/cProfiler/cell-graph-tokenizer/xhb1002-AT101-6b_1p_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 3712.972979643
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-12-3-4>
+Subject: Job 681616: <xhb1002-AT101-6b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <xhb1002-AT101-6b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Feb 16 07:41:37 2025
+Job was executed on host(s) <4*node-12-3-4>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Feb 16 08:02:05 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Feb 16 08:02:05 2025
+Terminated at Sun Feb 16 09:04:42 2025
+Results reported at Sun Feb 16 09:04:42 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT101-6b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   10001.00 sec.
+    Max Memory :                                 42747 MB
+    Average Memory :                             20115.58 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               219397.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                31
+    Run time :                                   3755 sec.
+    Turnaround time :                            4985 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT101-6b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_681616.err> for stderr output of this job.
+

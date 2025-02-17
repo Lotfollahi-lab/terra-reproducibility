@@ -33,3 +33,48 @@ Normalizing gene expression counts...
 Retrieving gene tokens.
 Ranking gene tokens based on normalized counts.
 Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/mho19-4b_1p/cProfiler/cell-graph-tokenizer/mho19-4b_1p_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 5152.303293953
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-19>
+Subject: Job 681543: <mho19-4b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <mho19-4b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Feb 16 07:41:22 2025
+Job was executed on host(s) <4*node-13-19>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Feb 16 07:44:06 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Feb 16 07:44:06 2025
+Terminated at Sun Feb 16 09:11:39 2025
+Results reported at Sun Feb 16 09:11:39 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mho19-4b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   12010.00 sec.
+    Max Memory :                                 87364 MB
+    Average Memory :                             43481.45 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               174780.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                31
+    Run time :                                   5277 sec.
+    Turnaround time :                            5417 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mho19-4b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_681543.err> for stderr output of this job.
+
