@@ -1,0 +1,7 @@
+Experiment name: xhl40-2b_2p.
+Experiment description: xhl40-2b_2p (dataset-id 40) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.

@@ -1,0 +1,7 @@
+Experiment name: xhln33-1b_1p.
+Experiment description: xhln33-1b_1p (dataset-id 33) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
