@@ -81,11 +81,18 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-lotfollahi"
         N_GPU=1
         ;;
-    hst_corpus_70m)
-        RAM="256G"
-        TIME="240:00"
+    hst_corpus_70m_alt)
+        RAM="128G"
+        TIME="12:00"
         CORES=12
-        QUEUE="gpu-basement"
+        QUEUE="gpu-normal"
+        N_GPU=1
+        ;;
+    hst_corpus_70m)
+        RAM="350G"
+        TIME="480:00"
+        CORES=24
+        QUEUE="gpu-lotfollahi"
         N_GPU=2
         ;;
     *)
