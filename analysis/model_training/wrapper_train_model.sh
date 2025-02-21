@@ -81,19 +81,26 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-lotfollahi"
         N_GPU=1
         ;;
-    hst_corpus_70m_alt)
-        RAM="128G"
-        TIME="12:00"
+    hst_corpus_70m_alt2)
+        RAM="350G"
+        TIME="48:00"
         CORES=12
-        QUEUE="gpu-normal"
+        QUEUE="gpu-huge"
         N_GPU=1
         ;;
-    hst_corpus_70m)
+    hst_corpus_70m_alt)
         RAM="350G"
         TIME="480:00"
         CORES=24
         QUEUE="gpu-lotfollahi"
         N_GPU=2
+        ;;
+    hst_corpus_70m)
+        RAM="350G"
+        TIME="480:00"
+        CORES=24
+        QUEUE="gpu-cellgen-restricted"
+        N_GPU=4
         ;;
     *)
         echo "Invalid dataset name"
