@@ -10,12 +10,12 @@ data:
   sample_subset: False
   split: 0
   stratify: False
-  seq_len_cell: 64
-  seq_len_neighborhood: 384 # 384, 640
+  seq_len_cell: 64 # 64, 256
+  seq_len_neighborhood: 384 # 384, 2816
   n_segments: 7 # 7, 11; number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 256 # 256
-  num_workers: 24
+  batch_size: 256 # 32, 256
+  num_workers: 24 # 24
   pin_memory: True
 meta:
   add_cls: False
@@ -42,7 +42,7 @@ optimization:
   warmup: 0
   epochs: 100
   ema:
-  - 0.7
+  - 0.9 # 0.7
   - 1.0
   start_lr: 2.0e-05
   lr: 2.0e-05
