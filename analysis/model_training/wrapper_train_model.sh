@@ -88,14 +88,14 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-huge"
         N_GPU=1
         ;;
-    hst_corpus_70m_alt)
+    hst_corpus_70m)
         RAM="350G"
         TIME="480:00"
         CORES=24
         QUEUE="gpu-lotfollahi"
         N_GPU=2
         ;;
-    hst_corpus_70m)
+    hst_corpus_70m_alt)
         RAM="350G"
         TIME="480:00"
         CORES=24
