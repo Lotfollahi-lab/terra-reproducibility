@@ -81,17 +81,22 @@ def compute_similarity_stats(adata,
     return similarity_stats
 
 
-def plot_similarity_heatmaps(similarity_stats, title_mean='Mean Similarity Between Types', title_variance='Variance of Similarity Between Types'):
+def plot_similarity_heatmaps(similarity_stats, 
+                             title_mean='Mean Similarity Between Types', 
+                             title_variance='Variance of Similarity Between Types',
+                             save_file_path=None):
     """
     Function to create and display two heatmaps for Mean Similarity and Variance Similarity side by side.
     
     Parameters:
-    - similarity_stats: DataFrame containing the similarity statistics with 'Class 1', 'Class 2', 'Mean Similarity', and 'Variance Similarity'.
+    - similarity_stats: DataFrame containing the similarity statistics with 'Class 1', 'Class 2', 
+                        'Mean Similarity', and 'Variance Similarity'.
     - title_mean: Title for the mean similarity heatmap (default: 'Mean Similarity Between Types').
     - title_variance: Title for the variance similarity heatmap (default: 'Variance of Similarity Between Types').
+    - save_file_path: File path to save the figure. If None, the figure is not saved (default: None).
     
     Returns:
-    - Displays two heatmaps (Mean Similarity and Variance Similarity).
+    - Displays two heatmaps (Mean Similarity and Variance Similarity). If a file path is provided, the plot is also saved.
     """
     # Create pivot tables for mean similarity and variance similarity
     similarity_pivot_mean = similarity_stats.pivot(index='Class 1', columns='Class 2', values='Mean Similarity')
@@ -100,20 +105,38 @@ def plot_similarity_heatmaps(similarity_stats, title_mean='Mean Similarity Betwe
     # Create the figure and two subplots side by side
     fig, axes = plt.subplots(1, 2, figsize=(18, 8))
     
-    # Mean similarity heatmap
-    sns.heatmap(similarity_pivot_mean, annot=True, cmap="coolwarm", cbar=True, fmt=".2f", ax=axes[0])
-    axes[0].set_title(title_mean)
-    axes[0].set_xlabel('Class 2')
-    axes[0].set_ylabel('Class 1')
+    # Mean similarity heatmap without gridlines
+    ax0 = axes[0]
+    sns.heatmap(similarity_pivot_mean, annot=True, cmap="coolwarm", cbar=True, fmt=".2f",
+                ax=ax0, linewidths=0, linecolor='none')
+    ax0.set_title(title_mean)
+    ax0.set_xlabel('Class 2')
+    ax0.set_ylabel('Class 1')
     
-    # Variance similarity heatmap
-    sns.heatmap(similarity_pivot_variance, annot=True, cmap="coolwarm", cbar=True, fmt=".2f", ax=axes[1])
-    axes[1].set_title(title_variance)
-    axes[1].set_xlabel('Class 2')
-    axes[1].set_ylabel('Class 1')
+    # Remove axes spines for a cleaner look
+    for spine in ax0.spines.values():
+        spine.set_visible(False)
+    
+    # Variance similarity heatmap without gridlines
+    ax1 = axes[1]
+    sns.heatmap(similarity_pivot_variance, annot=True, cmap="coolwarm", cbar=True, fmt=".2f",
+                ax=ax1, linewidths=0, linecolor='none')
+    ax1.set_title(title_variance)
+    ax1.set_xlabel('Class 2')
+    ax1.set_ylabel('Class 1')
+    
+    # Remove axes spines for a cleaner look
+    for spine in ax1.spines.values():
+        spine.set_visible(False)
     
     # Adjust the layout
     plt.tight_layout()
+    
+    # Save the plot if a file path is provided
+    if save_file_path:
+        plt.savefig(save_file_path,
+                    dpi=300,
+                    bbox_inches='tight')
     
     # Display the heatmaps
     plt.show()

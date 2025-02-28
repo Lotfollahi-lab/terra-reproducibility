@@ -11,11 +11,11 @@ data:
   split: 0
   stratify: False
   seq_len_cell: 128 # 64, 128, 256
-  seq_len_neighborhood: 1408 # 384, 2816
+  seq_len_neighborhood: 1280 # 384/640, 2560
   n_segments: 11 # 7, 11; number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 64 # 32, 64, 256
-  num_workers: 12 # 24
+  batch_size: 112 # 32, 64, 128, 208, 224, 256
+  num_workers: 24 # 24
   pin_memory: True
 meta:
   add_cls: False
@@ -29,7 +29,7 @@ meta:
   seg_learnable: False
   use_bfloat16: True
   use_flash_attention: True
-  centering: False
+  centering: True
   center_momentum: 0.99
 mask:
   n_contexts: 1
@@ -37,12 +37,12 @@ mask:
   block_masking: True # this doesn't have meaning in block masking.
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
-  per_block_mask_ratio: 0.510087255825342 # [0.5, 0.8]
+  per_block_mask_ratio: 0.5 # [0.5, 0.8]
 optimization:
   warmup: 0
-  epochs: 100
+  epochs: 10
   ema:
-  - 0.6077449697983146
+  - 0.995
   - 1.0
   start_lr: 2.0e-05
   lr: 2.0e-05
@@ -58,3 +58,4 @@ state:
   folder_path: null
   load_checkpoint: False # true, false
   read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
+  checkpoint_freq_iter: 50000
