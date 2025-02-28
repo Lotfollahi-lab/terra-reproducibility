@@ -11,3 +11,4 @@ analysis/statistics/results/
 .ipynb_checkpoints
 *.pkl
 analysis/data_analysis/logs
+analysis/checkpoints

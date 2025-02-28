@@ -93,7 +93,7 @@ if __name__ == '__main__':
                         help='Number of shards.')
     parser.add_argument('--rank_cell_norm_method',
                         type=str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=str,
