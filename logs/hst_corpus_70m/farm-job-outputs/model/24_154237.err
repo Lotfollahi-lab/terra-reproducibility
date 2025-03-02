@@ -62,3 +62,5 @@ INFO:root:Saving checkpoint at epoch 0 iteration 0
 /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
   self.gen = func(*args, **kwds)
 INFO:root:Saving checkpoint at epoch 0 iteration 50000
+INFO:root:Saving checkpoint at epoch 0 iteration 100000
+User defined signal 2

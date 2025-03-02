@@ -1,8 +1,0 @@
-/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/_core/anndata.py:1754: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
-  utils.warn_names_duplicates("obs")
-Traceback (most recent call last):
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_umap.py", line 79, in <module>
-    main(args)
-  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_umap.py", line 62, in main
-    adata.write(f'{artifacts_folder_path}/temp1.h5ad')
-UnboundLocalError: local variable 'adata' referenced before assignment

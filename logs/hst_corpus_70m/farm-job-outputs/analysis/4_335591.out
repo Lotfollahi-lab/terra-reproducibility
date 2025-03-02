@@ -1,0 +1,46 @@
+Start time: 1740754144.0468092
+Intermediate time: 1740764766.5496871
+Elapsed time: 2:57:02.502878
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-01>
+Subject: Job 335591: <hst_corpus_70m_4> in cluster <farm22> Exited
+
+Job <hst_corpus_70m_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Feb 28 14:40:58 2025
+Job was executed on host(s) <4*b11-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Fri Feb 28 14:41:00 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Feb 28 14:41:00 2025
+Terminated at Sun Mar  2 05:05:24 2025
+Results reported at Sun Mar  2 05:05:24 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/compute_umap.sh
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   149539.38 sec.
+    Max Memory :                                 1164429 MB
+    Average Memory :                             870875.75 MB
+    Total Requested Memory :                     2048000.00 MB
+    Delta Memory :                               883571.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                19
+    Run time :                                   138268 sec.
+    Turnaround time :                            138266 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/hst_corpus_70m/farm-job-outputs/analysis/4_335591.err> for stderr output of this job.
+

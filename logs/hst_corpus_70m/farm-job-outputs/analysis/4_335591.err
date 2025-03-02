@@ -1,0 +1,35 @@
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/anndata/_core/anndata.py:1754: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_umap.py", line 79, in <module>
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_umap.py", line 64, in main
+    key_added='neighborhood')
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/scanpy/tools/_umap.py", line 193, in umap
+    X_umap = simplicial_set_embedding(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/scanpy/tools/_umap.py", line 147, in simplicial_set_embedding
+    X_umap, _ = simplicial_set_embedding(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/umap/umap_.py", line 1107, in simplicial_set_embedding
+    embedding = spectral_layout(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/umap/spectral.py", line 304, in spectral_layout
+    return _spectral_layout(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/umap/spectral.py", line 467, in _spectral_layout
+    return multi_component_layout(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/umap/spectral.py", line 212, in multi_component_layout
+    meta_embedding = component_layout(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/umap/spectral.py", line 131, in component_layout
+    distance_matrix = pairwise_distances(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/utils/_param_validation.py", line 213, in wrapper
+    return func(*args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/metrics/pairwise.py", line 2375, in pairwise_distances
+    return _parallel_pairwise(X, Y, func, n_jobs, **kwds)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/metrics/pairwise.py", line 1893, in _parallel_pairwise
+    return func(X, Y, **kwds)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/utils/_param_validation.py", line 186, in wrapper
+    return func(*args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/metrics/pairwise.py", line 372, in euclidean_distances
+    return _euclidean_distances(X, Y, X_norm_squared, Y_norm_squared, squared)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/metrics/pairwise.py", line 407, in _euclidean_distances
+    distances = -2 * safe_sparse_dot(X, Y.T, dense_output=True)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/sklearn/utils/extmath.py", line 205, in safe_sparse_dot
+    ret = a @ b
+numpy.core._exceptions._ArrayMemoryError: Unable to allocate 18.5 TiB for an array with shape (1594142, 1594142) and data type float64

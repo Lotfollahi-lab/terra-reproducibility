@@ -1,0 +1,44 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0302>
+Subject: Job 404622: <hst_corpus_70m_cell_graph_counts2_128> in cluster <farm22> Exited
+
+Job <hst_corpus_70m_cell_graph_counts2_128> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Mar  1 06:35:06 2025
+Job was executed on host(s) <128*farm22-gpu0302>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Sat Mar  1 06:35:07 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Mar  1 06:35:07 2025
+Terminated at Sat Mar  1 06:35:18 2025
+Results reported at Sat Mar  1 06:35:18 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/model_training/train_model.sh config/model/hst_corpus_70m_cell_graph_counts2.yaml "cuda:0 cuda:1 cuda:2 cuda:3"
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   2.02 sec.
+    Max Memory :                                 14 MB
+    Average Memory :                             12.67 MB
+    Total Requested Memory :                     358400.00 MB
+    Delta Memory :                               358386.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                7
+    Run time :                                   13 sec.
+    Turnaround time :                            12 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/hst_corpus_70m/farm-job-outputs/model/128_404622.err> for stderr output of this job.
+
