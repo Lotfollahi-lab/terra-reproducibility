@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xhe1008-2-20b_1p (dataset-id 1008) | 20 batch | 1 panel
   experiment_name: xhe1008-2-20b_1p
-  model_input_size: 2816
+  model_input_size: 1792
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS/
@@ -13,11 +13,11 @@ tokenization:
   count_gene_norm_method: null
   delaunay: false
   keep_in_memory: false
-  n_neighs: 10
+  n_neighs: 6
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: null
+  rank_cell_norm_method: gene_corrected_read_depth
   rank_count_norm_method: null
   rank_gene_norm_method: nonzero_mean
   species: homo_sapiens
