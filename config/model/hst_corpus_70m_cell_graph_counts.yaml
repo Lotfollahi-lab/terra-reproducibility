@@ -20,12 +20,12 @@ data:
 meta:
   add_cls: False
   gt_type: 'counts' # 'rank', 'counts'
-  n_value_bins: 10
+  n_value_bins: 100
   enc_depth: 6
   enc_emb_dim: 1024
   pred_depth: 2
   pred_emb_dim: 1024
-  special_tokens: ['assay', 'tissue', 'gene_panel', 'batch'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
+  special_tokens: [] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
   use_bfloat16: False
   use_flash_attention: True
 mask:
@@ -36,18 +36,18 @@ mask:
   target_mask_size: 50 # this doesn't have meaning in block masking.
   per_block_mask_ratio: 0.5 # 0.5, 
 optimization:
-  warmup: 2
-  epochs: 10
+  warmup: 3
+  epochs: 20
   ema:
-  - 0.98
+  - 0.996
   - 1.0
-  start_lr: 0.0002
-  lr: 0.0005
+  start_lr: 1.0e-05
+  lr: 1.0e-04
   final_lr: 1.0e-06
   weight_decay: 0.04
   final_weight_decay: 0.4
-  ipe_scale: 1.0
-  clip_grad: 5.0
+  ipe_scale: 1.25
+  clip_grad: 10.0
 state:
   log_freq: 20
   checkpoint_freq: 1
