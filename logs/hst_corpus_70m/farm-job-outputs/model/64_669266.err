@@ -1,0 +1,60 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Currently logged in as: sb75 (sb75sanger). Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.18.0
+wandb: Run data is saved locally in /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/wandb/run-20250311_183856-mlpcounttokenization_highlr
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run mlpcounttokenization_highlr
+wandb: ⭐️ View project at https://wandb.ai/sb75sanger/nichejepa-sweep
+wandb: 🚀 View run at https://wandb.ai/sb75sanger/nichejepa-sweep/runs/mlpcounttokenization_highlr
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from config/model/hst_corpus_70m_cell_graph_counts.yaml and wandb.
+INFO:root:Timestamp 11032025_183857_659.
+INFO:root:Running... (rank: 0/4)
+INFO:root:Training mode: True
+Process Process-1:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+TypeError: train() missing 1 required positional argument: 'test_dataset'
+Process Process-4:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+TypeError: train() missing 1 required positional argument: 'test_dataset'
+Process Process-3:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+TypeError: train() missing 1 required positional argument: 'test_dataset'
+Process Process-2:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+TypeError: train() missing 1 required positional argument: 'test_dataset'
+INFO:root:Running... (rank: 0/1)
+INFO:root:Training mode: True
+Process Process-5:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 59, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+TypeError: train() missing 1 required positional argument: 'test_dataset'

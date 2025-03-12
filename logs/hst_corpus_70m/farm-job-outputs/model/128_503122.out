@@ -1,0 +1,55 @@
+Timestamp: 09032025_090027_875
+Params: {'data': {'batch_size': 96, 'dataset_name': 'hst_corpus_70m', 'n_segments': 7, 'num_workers': 32, 'pin_memory': True, 'precomputed_n_nonzero_tokens': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10_n_nonzero_tokens_train.pkl', 'precomputed_split': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl', 'random_state': 0, 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'sample_subset': False, 'sampling_strategy': None, 'seq_len_cell': 256, 'seq_len_neighborhood': 1536, 'split': 0, 'stratify': False, 'token_dict_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', 'tokenizer_type': 'cell_graph'}, 'mask': {'block_masking': True, 'context_mask_size': 200, 'n_contexts': 1, 'n_targets': 5, 'per_block_mask_ratio': 0.5, 'target_mask_size': 50}, 'meta': {'add_cls': False, 'center_momentum': 0.99, 'centering': False, 'enc_depth': 6, 'enc_emb_dim': 1024, 'gt_type': 'counts', 'pos_learnable': False, 'pred_depth': 2, 'pred_emb_dim': 1024, 'seg_learnable': False, 'special_tokens': ['assay', 'tissue', 'gene_panel', 'batch'], 'use_bfloat16': True, 'use_flash_attention': True}, 'optimization': {'clip_grad': 10.0, 'ema': [0.98, 1.0], 'epochs': 10, 'final_lr': 1e-06, 'final_weight_decay': 0.4, 'ipe_scale': 1.0, 'lr': 2e-05, 'start_lr': 1e-05, 'warmup': 1, 'weight_decay': 0.04}, 'state': {'checkpoint_freq': 1, 'checkpoint_freq_iter': 10000, 'folder_path': '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_70m/06032025_160833_494', 'load_checkpoint': True, 'log_freq': 20, 'read_checkpoint': 'nichejepa-ep2.pth.tar', 'read_timestamp': '06032025_160833_494', 'write_tag': 'nichejepa'}}
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'loss', 'batch_size', 'world_size', 'lr']
+Finished script.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@dgx-b11>
+Subject: Job 503122: <hst_corpus_70m_cell_graph_counts5_128> in cluster <farm22> Done
+
+Job <hst_corpus_70m_cell_graph_counts5_128> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Mar  9 08:57:21 2025
+Job was executed on host(s) <128*dgx-b11>, in queue <gpu-cellgen-restricted>, as user <sb75> in cluster <farm22> at Sun Mar  9 08:57:23 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Mar  9 08:57:23 2025
+Terminated at Mon Mar 10 00:41:19 2025
+Results reported at Mon Mar 10 00:41:19 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/model_training/train_model.sh config/model/hst_corpus_70m_cell_graph_counts5.yaml "cuda:0 cuda:1 cuda:2 cuda:3 cuda:4 cuda:5 cuda:6 cuda:7"
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2039308.00 sec.
+    Max Memory :                                 349200 MB
+    Average Memory :                             283577.00 MB
+    Total Requested Memory :                     458752.00 MB
+    Delta Memory :                               109552.00 MB
+    Max Swap :                                   11 MB
+    Max Processes :                              270
+    Max Threads :                                2415
+    Run time :                                   56634 sec.
+    Turnaround time :                            56638 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/hst_corpus_70m/farm-job-outputs/model/128_503122.err> for stderr output of this job.
+

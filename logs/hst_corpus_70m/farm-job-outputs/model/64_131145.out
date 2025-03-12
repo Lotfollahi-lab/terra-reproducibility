@@ -1,0 +1,48 @@
+Timestamp: 06032025_224928_305
+Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6.dataset', 'precomputed_split': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_precomputed_split_train.pkl', 'precomputed_n_nonzero_tokens': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_n_nonzero_tokens_train.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 1536, 'n_segments': 7, 'sampling_strategy': None, 'batch_size': 64, 'num_workers': 32, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'counts', 'enc_depth': 6, 'enc_emb_dim': 1024, 'pred_depth': 2, 'pred_emb_dim': 1024, 'special_tokens': ['assay', 'tissue', 'gene_panel', 'batch'], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': False, 'use_flash_attention': True, 'centering': False, 'center_momentum': 0.99}, 'mask': {'n_contexts': 1, 'n_targets': 5, 'block_masking': True, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.5}, 'optimization': {'warmup': 1, 'epochs': 10, 'ema': [0.98, 1.0], 'start_lr': 1e-05, 'lr': 2e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.0, 'clip_grad': 10.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 10000}}
+[1;34mwandb[0m: 🚀 View run [33mpleasant-plant-119[0m at: [34mhttps://wandb.ai/sb75sanger/nichejepa-sweep/runs/xnq3xh45[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250306_224927-xnq3xh45/logs[0m
+Finished script.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0301>
+Subject: Job 131145: <hst_corpus_70m_cell_graph_counts_64> in cluster <farm22> Done
+
+Job <hst_corpus_70m_cell_graph_counts_64> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Mar  6 22:49:13 2025
+Job was executed on host(s) <64*farm22-gpu0301>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Thu Mar  6 22:49:13 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Mar  6 22:49:13 2025
+Terminated at Thu Mar  6 22:55:03 2025
+Results reported at Thu Mar  6 22:55:03 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/model_training/train_model.sh config/model/hst_corpus_70m_cell_graph_counts.yaml "cuda:0 cuda:1 cuda:2 cuda:3"
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2343.00 sec.
+    Max Memory :                                 40294 MB
+    Average Memory :                             15332.81 MB
+    Total Requested Memory :                     458752.00 MB
+    Delta Memory :                               418458.00 MB
+    Max Swap :                                   -
+    Max Processes :                              138
+    Max Threads :                                926
+    Run time :                                   348 sec.
+    Turnaround time :                            350 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/hst_corpus_70m/farm-job-outputs/model/64_131145.err> for stderr output of this job.
+
