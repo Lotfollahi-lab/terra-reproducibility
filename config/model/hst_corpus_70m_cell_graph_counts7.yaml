@@ -1,0 +1,66 @@
+data:
+  batch_size: 48
+  dataset_name: hst_corpus_70m
+  n_segments: 7
+  num_workers: 32
+  pin_memory: true
+  precomputed_n_nonzero_tokens: /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_n_nonzero_tokens_train.pkl
+  precomputed_split: /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6_precomputed_split_train.pkl
+  random_state: 0
+  raw_data_folder_path: /lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m
+  sample_subset: false
+  sampling_strategy: null
+  seq_len_cell: 256
+  seq_len_neighborhood: 1536
+  split: 0
+  stratify: false
+  token_dict_folder_path: /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+  tokenized_data_folder_path: /lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_gene_corrected_read_depth_nonzero_mean_None_gene_corrected_read_depth_nonzero_mean_shifted_log_knn_6.dataset
+  tokenizer_type: cell_graph
+mask:
+  block_masking: true
+  context_mask_size: 200
+  n_contexts: 1
+  n_targets: 5
+  per_block_mask_ratio: 0.5
+  target_mask_size: 50
+meta:
+  add_cls: false
+  center_momentum: 0.99
+  centering: false
+  enc_depth: 6
+  enc_emb_dim: 1024
+  gt_type: counts
+  pos_learnable: false
+  pred_depth: 2
+  pred_emb_dim: 1024
+  seg_learnable: false
+  special_tokens:
+  - assay
+  - tissue
+  - gene_panel
+  - batch
+  use_bfloat16: false
+  use_flash_attention: true
+optimization:
+  clip_grad: 10.0
+  ema:
+  - 0.98
+  - 1.0
+  epochs: 10
+  final_lr: 1.0e-06
+  final_weight_decay: 0.4
+  ipe_scale: 1.0
+  lr: 2.0e-05
+  start_lr: 1.0e-05
+  warmup: 1
+  weight_decay: 0.04
+state:
+  log_freq: 20
+  checkpoint_freq: 1
+  write_tag: nichejepa
+  read_timestamp: ''
+  folder_path: null
+  load_checkpoint: False # true, false
+  read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
+  checkpoint_freq_iter: 10000
