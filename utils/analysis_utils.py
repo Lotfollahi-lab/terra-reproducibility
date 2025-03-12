@@ -243,4 +243,3 @@ custom_palette = {
     "-1" : "#E1D9D1",
     "None" : "#E1D9D1"
 }
-
