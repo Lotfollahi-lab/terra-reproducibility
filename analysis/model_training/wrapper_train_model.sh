@@ -102,19 +102,33 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-huge"
         N_GPU=1
         ;;
-    hst_corpus_70m_alt)
-        RAM="350G"
-        TIME="480:00"
-        CORES=24
-        QUEUE="gpu-lotfollahi"
-        N_GPU=2
-        ;;
     hst_corpus_70m)
-        RAM="350G"
+        RAM="448G"
         TIME="480:00"
-        CORES=24
-        QUEUE="gpu-cellgen-restricted"
+        CORES=64
+        QUEUE="gpu-lotfollahi"
         N_GPU=4
+        ;;
+    hst_corpus_70m_alt)
+        RAM="448G"
+        TIME="480:00"
+        CORES=96
+        QUEUE="gpu-lotfollahi"
+        N_GPU=8
+        ;;
+    hst_corpus_70m_alt)
+        RAM="100G"
+        TIME="12:00"
+        CORES=1
+        QUEUE="gpu-lotfollahi"
+        N_GPU=1
+        ;;
+    hst_corpus_70m_alt)
+        RAM="448G"
+        TIME="480:00"
+        CORES=128
+        QUEUE="gpu-cellgen-restricted"
+        N_GPU=8
         ;;
     *)
         echo "Invalid dataset name"
@@ -144,7 +158,7 @@ bsub \
     -G "${GROUP}" \
     -n "${CORES}" \
     -q "${QUEUE}" \
-    -gpu "mode=exclusive_process:num=${N_GPU}:block=yes" \
+    -gpu "mode=exclusive_process:num=${N_GPU}" \
     -M "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
     -W "${TIME}" \
     -cwd "${CWD}" \

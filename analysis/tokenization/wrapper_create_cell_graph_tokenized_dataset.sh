@@ -90,7 +90,7 @@ case $EXPERIMENT_NAME in
         RAM="600G"
         TIME="48:00"
         CORES=1
-        QUEUE="yesterday"
+        QUEUE="long"
         ;;
     mhh22-3b_1p)
         RAM="64G"

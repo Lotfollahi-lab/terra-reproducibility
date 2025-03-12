@@ -25,6 +25,8 @@ def main(args):
             dataset_config = yaml.safe_load(file)
             print(dataset_config)
 
+            dataset_config['experiment']['model_input_size'] = args.model_input_size
+
             dataset_config['tokenization']['rank_cell_norm_method'] = args.rank_cell_norm_method
             dataset_config['tokenization']['rank_gene_norm_method'] = args.rank_gene_norm_method
             dataset_config['tokenization']['rank_count_norm_method'] = args.rank_count_norm_method
@@ -50,9 +52,13 @@ if __name__ == '__main__':
                         type=str,
                         default="cell-graph-tokenizer",
                         help='Tokenizer.')
+    parser.add_argument('--model_input_size',
+                        type=int,
+                        default=1792, # 1792, 2816
+                        help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=str,
-                        default=None, # None, 'gene_corrected_read_depth'
+                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=str,
@@ -64,11 +70,11 @@ if __name__ == '__main__':
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
                         type=str,
-                        default=None, # None
+                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
                         type=str,
-                        default=None, # None
+                        default='nonzero_mean', # None, 'nonzero_mean'
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
                         type=str,
@@ -76,7 +82,7 @@ if __name__ == '__main__':
                         help='Count count norm method.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="10",
+                        default="6",
                         help='Number of neighbors.')
     args = parser.parse_args()
     
