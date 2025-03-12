@@ -6,6 +6,7 @@ GROUP="team361"
 EXPERIMENT_NAME="${1:-sss2-1b_1p}"
 GT_TYPE="${2:-cell_graph}"
 DEVICES="${3:-cuda:0}"
+RUN_ID="${4:-goodsalad-1}"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/model"
 
 SCRIPT="analysis/model_training/train_model.sh"
@@ -102,21 +103,28 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-huge"
         N_GPU=1
         ;;
-    hst_corpus_70m)
+    hst_corpus_70m_medium)
         RAM="448G"
         TIME="480:00"
         CORES=64
         QUEUE="gpu-lotfollahi"
         N_GPU=4
         ;;
-    hst_corpus_70m_alt)
+    hst_corpus_70m_large)
         RAM="448G"
         TIME="480:00"
         CORES=96
         QUEUE="gpu-lotfollahi"
         N_GPU=8
         ;;
-    hst_corpus_70m_alt)
+    hst_corpus_70m)
+        RAM="448G"
+        TIME="240:00"
+        CORES=64
+        QUEUE="gpu-parallel"
+        N_GPU=8
+        ;;
+    hst_corpus_70m_test)
         RAM="100G"
         TIME="12:00"
         CORES=1
@@ -137,8 +145,8 @@ case $EXPERIMENT_NAME in
 esac
 
 # If not provided, use the default value
-CORES="${4:-$CORES}"
-QUEUE="${5:-$QUEUE}"
+CORES="${5:-$CORES}"
+QUEUE="${6:-$QUEUE}"
 
 # Set the configuration file
 CONFIG_FILE="config/model/${EXPERIMENT_NAME}_${GT_TYPE}.yaml"
@@ -152,7 +160,7 @@ JOB_NAME="${EXPERIMENT_NAME}_${GT_TYPE}_${CORES}"
 
 echo "Log directory: ${LOG_DIR}"
 echo "Training ${GT_TYPE} model on ${EXPERIMENT_NAME} dataset using ${CORES} cores and ${N_GPU} GPUs..."
-echo "Running script ${SCRIPT} with config file ${CONFIG_FILE} and devices ${DEVICES}..."
+echo "Running script ${SCRIPT} with config file ${CONFIG_FILE}, devices ${DEVICES}, and run ID ${RUN_ID}..."
 
 bsub \
     -G "${GROUP}" \
@@ -165,4 +173,4 @@ bsub \
     -o "${OUTPUT_FILE}" \
     -e "${ERROR_FILE}" \
     -J "${JOB_NAME}" \
-    "${SCRIPT}" "${CONFIG_FILE}" "${DEVICES}"
+    "${SCRIPT}" "${CONFIG_FILE}" "${DEVICES}" "${RUN_ID}"

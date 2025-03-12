@@ -1,6 +1,7 @@
 #!/bin/bash
 CONFIG_FILE=$1 # path to the config file
 DEVICES=$2 # GPU devices
+RUN_ID=$3
 
 . /usr/share/modules/init/bash
 module load cuda-12.1.1
@@ -9,6 +10,7 @@ conda activate nichejepa_new
 
 python ../nichejepa/main.py \
     --fname ${CONFIG_FILE} \
-    --devices ${DEVICES}
+    --devices ${DEVICES} \
+    --run_id ${RUN_ID}
 
 echo "Finished script." 
