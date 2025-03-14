@@ -103,7 +103,7 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-huge"
         N_GPU=1
         ;;
-    hst_corpus_70m)
+    hst_corpus_70m_alt)
         RAM="448G"
         TIME="480:00"
         CORES=64
@@ -117,17 +117,17 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-lotfollahi"
         N_GPU=8
         ;;
-    hst_corpus_70m_prod)
+    hst_corpus_70m_alt)
         RAM="448G"
         TIME="240:00"
-        CORES=64
+        CORES=128
         QUEUE="gpu-parallel"
         N_GPU=8
         ;;
-    hst_corpus_70m_test)
-        RAM="100G"
-        TIME="12:00"
-        CORES=1
+    hst_corpus_70m)
+        RAM="200G"
+        TIME="24:00"
+        CORES=6
         QUEUE="gpu-lotfollahi"
         N_GPU=1
         ;;

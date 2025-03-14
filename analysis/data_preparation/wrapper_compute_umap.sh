@@ -5,7 +5,7 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/analysis"
 SCRIPT="analysis/data_preparation/compute_umap.sh"
 
 # Resource specifications
-RAM="2000G"
+RAM="1000G"
 TIME="96:00"
 CORES=4
 QUEUE="teramem"
