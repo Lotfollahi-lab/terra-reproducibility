@@ -1,8 +1,8 @@
 import argparse
-import numpy as np
 import time
 from datetime import timedelta
 
+import numpy as np
 import scanpy as sc
 
 
@@ -450,6 +450,7 @@ def main(args):
         # Plot (aggregated) neighborhood gene embeddings, colored by labels
         for label in args.plot_labels:
             if 'neighborhood_emb_layer_6' in args.emb_keys:
+                adata_full.obsm['X_umap'] = adata_full.obsm['neighborhood_umap']
                 sc.pl.umap(
                     adata_full,
                     neighbors_key='neighborhood',
@@ -460,7 +461,18 @@ def main(args):
                     f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{args.corpus_name}_{label}_neighborhood_umap.svg',
                     dpi=300,
                     bbox_inches='tight')
-            elif 
+            if 'cell_emb_layer_6' in args.emb_keys:
+                adata_full.obsm['X_umap'] = adata_full.obsm['cell_umap']
+                sc.pl.umap(
+                    adata_full,
+                    neighbors_key='cell',
+                    color=label,
+                    palette=(dataset_batch_palette if label == 'dataset_batch' else None),
+                    show=False)
+                plt.savefig(
+                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{args.corpus_name}_{label}_cell_umap.svg',
+                    dpi=300,
+                    bbox_inches='tight')
 
     end_time = time.time()
     print("End time:", end_time)
