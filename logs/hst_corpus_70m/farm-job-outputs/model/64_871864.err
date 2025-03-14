@@ -113,3 +113,1411 @@ INFO:root:Saving checkpoint at epoch 0 iteration 0
   with torch.cuda.amp.autocast(dtype=torch.bfloat16,
 /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
   self.gen = func(*args, **kwds)
+INFO:root:Saving checkpoint at epoch 0 iteration 10000
+fatal error: concurrent map iteration and map write
+
+goroutine 146 [running]:
+github.com/wandb/wandb/core/pkg/monitor.(*GPUNvidia).Sample(0xc0008036e0)
+	/project/core/pkg/monitor/gpu_nvidia.go:165 +0x1ad
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000665d00, {0xaf5160, 0xc0008036e0})
+	/project/core/pkg/monitor/monitor.go:301 +0x1cf
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 116
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 1 [chan receive, 554 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Server).Serve(0xc00027de00)
+	/project/core/pkg/server/server.go:127 +0xe5
+main.main()
+	/project/core/cmd/wandb-core/main.go:123 +0xaf2
+
+goroutine 6 [chan receive, 554 minutes]:
+github.com/getsentry/sentry-go.(*HTTPTransport).worker(0xc0002cb110)
+	/project/core/vendor/github.com/getsentry/sentry-go/transport.go:536 +0x13d
+created by github.com/getsentry/sentry-go.(*HTTPTransport).Configure.func1 in goroutine 1
+	/project/core/vendor/github.com/getsentry/sentry-go/transport.go:403 +0x56
+
+goroutine 7 [sleep]:
+time.Sleep(0x5f5e100)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/pkg/server.(*Server).exitWhenParentIsGone(0xc00027de00)
+	/project/core/pkg/server/server.go:98 +0x9c
+created by github.com/wandb/wandb/core/pkg/server.(*Server).Serve in goroutine 1
+	/project/core/pkg/server/server.go:117 +0x65
+
+goroutine 8 [IO wait, 550 minutes]:
+internal/poll.runtime_pollWait(0x147899be5e40, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0x7?, 0x1?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Accept(0xc000215a00)
+	/usr/local/go/src/internal/poll/fd_unix.go:611 +0x2ac
+net.(*netFD).accept(0xc000215a00)
+	/usr/local/go/src/net/fd_unix.go:172 +0x29
+net.(*TCPListener).accept(0xc0002e2240)
+	/usr/local/go/src/net/tcpsock_posix.go:159 +0x1e
+net.(*TCPListener).Accept(0xc0002e2240)
+	/usr/local/go/src/net/tcpsock.go:327 +0x30
+github.com/wandb/wandb/core/pkg/server.(*Server).serve(0xc00027de00)
+	/project/core/pkg/server/server.go:148 +0x10b
+github.com/wandb/wandb/core/pkg/server.(*Server).Serve.func1()
+	/project/core/pkg/server/server.go:123 +0x4f
+created by github.com/wandb/wandb/core/pkg/server.(*Server).Serve in goroutine 1
+	/project/core/pkg/server/server.go:121 +0xc7
+
+goroutine 9 [chan receive, 554 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000215b80)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 10 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5d48, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc000215a80?, 0xc00035914c?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc000215a80, {0xc00035914c, 0xa6eb4, 0xa6eb4})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc000215a80, {0xc00035914c?, 0xaf3310?, 0xc000142c90?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc000112648, {0xc00035914c?, 0x2b?, 0xa6edf?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000945f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000215b80)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 11 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000215b80)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 12 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000215b80)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 9
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 114 [chan receive, 1 minutes]:
+github.com/wandb/wandb/core/pkg/observability.NewPrinter.func1()
+	/project/core/pkg/observability/printer.go:30 +0x3c
+created by github.com/wandb/wandb/core/pkg/observability.NewPrinter in goroutine 11
+	/project/core/pkg/observability/printer.go:28 +0x96
+
+goroutine 115 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5c50, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc000803740?, 0xc000cfc000?, 0x1)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc000803740, {0xc000cfc000, 0x2000, 0x2000})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+os.(*File).read(...)
+	/usr/local/go/src/os/file_posix.go:29
+os.(*File).Read(0xc0004005a0, {0xc000cfc000?, 0xc0009fc000?, 0xc00205ddf8?})
+	/usr/local/go/src/os/file.go:118 +0x52
+bufio.(*Scanner).Scan(0xc00205deb8)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/monitor.NewGPUNvidia.func1()
+	/project/core/pkg/monitor/gpu_nvidia.go:112 +0xa5
+created by github.com/wandb/wandb/core/pkg/monitor.NewGPUNvidia in goroutine 11
+	/project/core/pkg/monitor/gpu_nvidia.go:110 +0x539
+
+goroutine 116 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Handler).Do(0xc00042c6c0, 0xc0008025a0)
+	/project/core/pkg/server/handler.go:165 +0x11c
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func1()
+	/project/core/pkg/server/stream.go:278 +0x38
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:277 +0x7c
+
+goroutine 117 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Writer).Do(0xc00040b300, 0xc000802840)
+	/project/core/pkg/server/writer.go:100 +0x128
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func2()
+	/project/core/pkg/server/stream.go:285 +0x28
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:284 +0xcd
+
+goroutine 118 [select]:
+net/http.(*http2ClientConn).RoundTrip(0xc00078c480, 0xc000c9c480)
+	/usr/local/go/src/net/http/h2_bundle.go:8362 +0x434
+net/http.(*http2Transport).RoundTripOpt(0xc0006bf290, 0xc000c9c480, {0x40?})
+	/usr/local/go/src/net/http/h2_bundle.go:7630 +0x1b1
+net/http.(*http2Transport).RoundTrip(...)
+	/usr/local/go/src/net/http/h2_bundle.go:7579
+net/http.http2noDialH2RoundTripper.RoundTrip({0xc00045e280?}, 0xc000c9c480?)
+	/usr/local/go/src/net/http/h2_bundle.go:10206 +0x1a
+net/http.(*Transport).roundTrip(0xc00045e280, 0xc000c9c360)
+	/usr/local/go/src/net/http/transport.go:553 +0x39c
+net/http.(*Transport).RoundTrip(0xc000138b90?, 0xaf4db8?)
+	/usr/local/go/src/net/http/roundtrip.go:17 +0x13
+github.com/wandb/wandb/core/internal/api.(*RateLimitedTransport).RoundTrip(0xc0002e23c0, 0xc000c9c360)
+	/project/core/internal/api/transport.go:52 +0x83
+github.com/wandb/wandb/core/internal/api.(*PeekingTransport).RoundTrip(0xc0002e23e0, 0xc000c9c360)
+	/project/core/internal/api/transportpeeker.go:33 +0x28
+net/http.send(0xc000c9c240, {0xaefb80, 0xc0002e23e0}, {0x1?, 0x48b393?, 0xe9bcc0?})
+	/usr/local/go/src/net/http/client.go:259 +0x5e4
+net/http.(*Client).send(0xc00019c930, 0xc000c9c240, {0x0?, 0x0?, 0xe9bcc0?})
+	/usr/local/go/src/net/http/client.go:180 +0x98
+net/http.(*Client).do(0xc00019c930, 0xc000c9c240)
+	/usr/local/go/src/net/http/client.go:724 +0x8dc
+net/http.(*Client).Do(...)
+	/usr/local/go/src/net/http/client.go:590
+github.com/hashicorp/go-retryablehttp.(*Client).Do(0xc000665b80, 0xc000804000)
+	/project/core/vendor/github.com/hashicorp/go-retryablehttp/client.go:702 +0x2aa
+github.com/wandb/wandb/core/internal/api.(*clientImpl).send(0xc0002e2400, 0xc000804000)
+	/project/core/internal/api/send.go:90 +0x2d
+github.com/wandb/wandb/core/internal/api.(*clientImpl).sendToWandbBackend(0xc0002e2400, 0xc000804000)
+	/project/core/internal/api/send.go:76 +0x3b
+github.com/wandb/wandb/core/internal/api.(*clientImpl).Do(0xc0002e2400, 0xc000c9c240)
+	/project/core/internal/api/send.go:57 +0xfe
+github.com/Khan/genqlient/graphql.(*client).MakeRequest(0xc00019c9c0, {0xaf4d48, 0xc000138a00}, 0xc002059cc8?, 0xc001bd2300)
+	/project/core/vendor/github.com/Khan/genqlient/graphql/client.go:155 +0x22c
+github.com/wandb/wandb/core/internal/gql.RunStoppedStatus({0xaf4d48, 0xc000138a00}, {0xaef180, 0xc00019c9c0}, 0xc000c9a2d0, 0xc000c9a2e0, {0xc000405e60, 0xb})
+	/project/core/internal/gql/gql_gen.go:2401 +0x176
+github.com/wandb/wandb/core/pkg/server.(*Sender).sendRequestStopStatus(0xc0002f8300, 0xc000a02960, 0x14789963eea8?)
+	/project/core/pkg/server/sender.go:1578 +0x16b
+github.com/wandb/wandb/core/pkg/server.(*Sender).sendRequest(0xc0002f8300, 0x4072cb?, 0xc000e08000?)
+	/project/core/pkg/server/sender.go:382 +0x186
+github.com/wandb/wandb/core/pkg/server.(*Sender).sendRecord(0xc0002f8300, 0x40ea25?)
+	/project/core/pkg/server/sender.go:346 +0x299
+github.com/wandb/wandb/core/internal/runwork.WorkRecord.Process({0xc000633a00?}, 0xaf4cd8?)
+	/project/core/internal/runwork/work.go:92 +0x16
+github.com/wandb/wandb/core/pkg/server.(*Sender).Do(0xc0002f8300, 0xc0008038c0)
+	/project/core/pkg/server/sender.go:224 +0x12a
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func3()
+	/project/core/pkg/server/stream.go:292 +0x28
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:291 +0x11e
+
+goroutine 119 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func4(0xc0008028a0)
+	/project/core/pkg/server/stream.go:300 +0x54
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:299 +0x165
+
+goroutine 120 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Stream).Start.func4(0xc000803920)
+	/project/core/pkg/server/stream.go:300 +0x54
+created by github.com/wandb/wandb/core/pkg/server.(*Stream).Start in goroutine 11
+	/project/core/pkg/server/stream.go:299 +0x165
+
+goroutine 85 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Writer).startStore.func1()
+	/project/core/pkg/server/writer.go:75 +0x47
+created by github.com/wandb/wandb/core/pkg/server.(*Writer).startStore in goroutine 117
+	/project/core/pkg/server/writer.go:74 +0x21b
+
+goroutine 126 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000665d00, {0xaf5080, 0xc000198ae0})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 116
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 127 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000665d00, {0xaf50b8, 0xc00040b140})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 116
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 128 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000665d00, {0xaf50f0, 0xc000198af8})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 116
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 86 [chan receive]:
+github.com/wandb/wandb/core/internal/filestream.(*fileStream).startProcessingUpdates.func1()
+	/project/core/internal/filestream/filestreamimpl.go:26 +0x134
+created by github.com/wandb/wandb/core/internal/filestream.(*fileStream).startProcessingUpdates in goroutine 118
+	/project/core/internal/filestream/filestreamimpl.go:21 +0x90
+
+goroutine 87 [select]:
+github.com/wandb/wandb/core/internal/filestream.CollectLoop.waitForRateLimit({0xc000138c30?, 0xc000173260?}, 0xc000172ee0, 0xc0007a4000)
+	/project/core/internal/filestream/collectloop.go:66 +0xed
+github.com/wandb/wandb/core/internal/filestream.CollectLoop.Start.func1()
+	/project/core/internal/filestream/collectloop.go:31 +0x85
+created by github.com/wandb/wandb/core/internal/filestream.CollectLoop.Start in goroutine 118
+	/project/core/internal/filestream/collectloop.go:24 +0xa5
+
+goroutine 88 [select]:
+github.com/wandb/wandb/core/internal/filestream.readWithHeartbeat(0xc0009aff58, 0xc0007a4060, {0xaf4430, 0xc000633ab0})
+	/project/core/internal/filestream/transmitloop.go:84 +0xd6
+github.com/wandb/wandb/core/internal/filestream.TransmitLoop.Start.func1()
+	/project/core/internal/filestream/transmitloop.go:42 +0x195
+created by github.com/wandb/wandb/core/internal/filestream.TransmitLoop.Start in goroutine 118
+	/project/core/internal/filestream/transmitloop.go:23 +0xf8
+
+goroutine 89 [chan receive]:
+github.com/wandb/wandb/core/internal/filestream.(*fileStream).startProcessingFeedback.func1()
+	/project/core/internal/filestream/filestreamimpl.go:95 +0x74
+created by github.com/wandb/wandb/core/internal/filestream.(*fileStream).startProcessingFeedback in goroutine 118
+	/project/core/internal/filestream/filestreamimpl.go:92 +0x73
+
+goroutine 145 [select]:
+github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Monitor(0xc000665d00, {0xaf5128, 0xc0002e2520})
+	/project/core/pkg/monitor/monitor.go:291 +0x19c
+created by github.com/wandb/wandb/core/pkg/monitor.(*SystemMonitor).Start in goroutine 116
+	/project/core/pkg/monitor/monitor.go:227 +0x97
+
+goroutine 445 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000a82000)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 558
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 446 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000a82000)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 558
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 512 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000c90000)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 30216 [sleep, 1 minutes]:
+time.Sleep(0x6fc236e13)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 276 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000c90000)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 512
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 393 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc0004e5100)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 564
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 274 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5778, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0002b2300?, 0xc0015fa3bb?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0002b2300, {0xc0015fa3bb, 0x87c45, 0x87c45})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0002b2300, {0xc0015fa3bb?, 0xaf3310?, 0xc0002abd38?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc000f82048, {0xc0015fa3bb?, 0xc0002abd98?, 0x406a93?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc0002abf20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000c90000)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 512
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 275 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000c90000)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 512
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 391 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5490, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0009de280?, 0xc0016fa3ae?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0009de280, {0xc0016fa3ae, 0x87c52, 0x87c52})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0009de280, {0xc0016fa3ae?, 0xaf3310?, 0xc002057d38?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc00089c230, {0xc0016fa3ae?, 0xc002057d98?, 0x406a93?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc002057f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc0004e5100)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 564
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 482 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5398, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0002b2100?, 0xc0018fa395?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0002b2100, {0xc0018fa395, 0x87c6b, 0x87c6b})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0002b2100, {0xc0018fa395?, 0xaf3310?, 0xc000257d38?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc00089c010, {0xc0018fa395?, 0xc000257d98?, 0x406a93?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000257f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc0006bd280)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 565
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 444 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5588, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0009de000?, 0xc0013fa3a2?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0009de000, {0xc0013fa3a2, 0x87c5e, 0x87c5e})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0009de000, {0xc0013fa3a2?, 0xaf3310?, 0xc00205bd38?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc00089c218, {0xc0013fa3a2?, 0xc00205bd98?, 0x406a93?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc00205bf20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000a82000)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 558
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 392 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc0004e5100)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 564
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 538 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000a82180)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 535
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 30813 [sleep, 1 minutes]:
+time.Sleep(0x6fc2331f4)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 558 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000a82000)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 537 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000a82180)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 535
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 536 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be52a0, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc000a82100?, 0xc0019fa479?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc000a82100, {0xc0019fa479, 0x87b87, 0x87b87})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc000a82100, {0xc0019fa479?, 0xaf3310?, 0xc000142c90?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc000f820e0, {0xc0019fa479?, 0xbf?, 0x87c46?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000943f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000a82180)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 535
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 559 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc0009de100)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 535 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000a82180)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 560 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5870, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0009de080?, 0xc0012fa48d?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0009de080, {0xc0012fa48d, 0x87b73, 0x87b73})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0009de080, {0xc0012fa48d?, 0xaf3310?, 0xc000142c90?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc00089c220, {0xc0012fa48d?, 0xc0?, 0x87c33?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc002053f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc0009de100)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 559
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 561 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc0009de100)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 559
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 562 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc0009de100)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 559
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 258 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000c16000)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 259 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5680, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc000b9a000?, 0xc0014fa3cd?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc000b9a000, {0xc0014fa3cd, 0x87c33, 0x87c33})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc000b9a000, {0xc0014fa3cd?, 0xaf3310?, 0xc000253d38?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc0007bc008, {0xc0014fa3cd?, 0xc000253d98?, 0x406a93?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000253f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000c16000)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 258
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 260 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000c16000)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 258
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 261 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000c16000)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 258
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 563 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc000f2e000)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 577 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5a60, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc0009de200?, 0xc0017fa3be?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc0009de200, {0xc0017fa3be, 0x87c42, 0x87c42})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc0009de200, {0xc0017fa3be?, 0xaf3310?, 0xc000142c90?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc00089c228, {0xc0017fa3be?, 0xc0?, 0x87d02?})
+	/usr/local/go/src/net/net.go:185 +0x45
+bufio.(*Scanner).Scan(0xc000255f20)
+	/usr/local/go/src/bufio/scan.go:219 +0x81e
+github.com/wandb/wandb/core/pkg/server.(*Connection).readConnection(0xc000f2e000)
+	/project/core/pkg/server/connection.go:155 +0x125
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func1()
+	/project/core/pkg/server/connection.go:102 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 563
+	/project/core/pkg/server/connection.go:101 +0x11f
+
+goroutine 578 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc000f2e000)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 563
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 579 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc000f2e000)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 563
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 564 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc0004e5100)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 565 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection(0xc0006bd280)
+	/project/core/pkg/server/connection.go:120 +0x214
+github.com/wandb/wandb/core/pkg/server.(*Server).serve.func1()
+	/project/core/pkg/server/server.go:167 +0x4a
+created by github.com/wandb/wandb/core/pkg/server.(*Server).serve in goroutine 8
+	/project/core/pkg/server/server.go:159 +0x1a8
+
+goroutine 483 [chan receive]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerRequest(0xc0006bd280)
+	/project/core/pkg/server/connection.go:235 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func2()
+	/project/core/pkg/server/connection.go:108 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 565
+	/project/core/pkg/server/connection.go:107 +0x18b
+
+goroutine 484 [chan receive, 550 minutes]:
+github.com/wandb/wandb/core/pkg/server.(*Connection).handleServerResponse(0xc0006bd280)
+	/project/core/pkg/server/connection.go:205 +0xf3
+github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection.func3()
+	/project/core/pkg/server/connection.go:114 +0x25
+created by github.com/wandb/wandb/core/pkg/server.(*Connection).HandleConnection in goroutine 565
+	/project/core/pkg/server/connection.go:113 +0x1f7
+
+goroutine 31590 [sleep]:
+time.Sleep(0x4563af474)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 24604 [sleep, 1 minutes]:
+time.Sleep(0x6fc2352b6)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31233 [sleep, 1 minutes]:
+time.Sleep(0x6fc23a635)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31186 [sleep, 1 minutes]:
+time.Sleep(0x6fc22ffff)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30952 [sleep, 1 minutes]:
+time.Sleep(0x6fc238db4)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30079 [sleep, 1 minutes]:
+time.Sleep(0x6fc22ebf7)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30953 [sleep, 1 minutes]:
+time.Sleep(0x6fc235abf)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31377 [sleep, 1 minutes]:
+time.Sleep(0x6fc232624)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31049 [sleep, 1 minutes]:
+time.Sleep(0x6fc23027d)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31533 [sleep, 1 minutes]:
+time.Sleep(0x6fc236263)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31534 [sleep, 1 minutes]:
+time.Sleep(0x6fc237d84)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31388 [sleep, 1 minutes]:
+time.Sleep(0x6fc23149e)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31137 [sleep, 1 minutes]:
+time.Sleep(0x6fc232128)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31301 [sleep, 1 minutes]:
+time.Sleep(0x6fc23239a)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31177 [sleep, 1 minutes]:
+time.Sleep(0x6fc23597e)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31336 [sleep, 1 minutes]:
+time.Sleep(0x6fc231b5d)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31080 [sleep, 1 minutes]:
+time.Sleep(0x6fc2356d3)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30970 [sleep, 1 minutes]:
+time.Sleep(0x6fc22db52)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31269 [sleep, 1 minutes]:
+time.Sleep(0x6fc22fd18)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31321 [sleep, 1 minutes]:
+time.Sleep(0x6fc23604f)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31190 [sleep, 1 minutes]:
+time.Sleep(0x6fc232b1c)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30650 [select]:
+net/http.(*http2clientStream).writeRequest(0xc000450180, 0xc000c9c480)
+	/usr/local/go/src/net/http/h2_bundle.go:8530 +0xacc
+net/http.(*http2clientStream).doRequest(0xc000450180, 0xc000749c30?)
+	/usr/local/go/src/net/http/h2_bundle.go:8392 +0x18
+created by net/http.(*http2ClientConn).RoundTrip in goroutine 118
+	/usr/local/go/src/net/http/h2_bundle.go:8298 +0x2ed
+
+goroutine 31619 [sleep]:
+time.Sleep(0x6e937fcbd)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 29904 [sleep, 1 minutes]:
+time.Sleep(0x6fc235ba9)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31140 [sleep, 1 minutes]:
+time.Sleep(0x6fc231496)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31391 [sleep, 1 minutes]:
+time.Sleep(0x6fc235717)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31055 [sleep, 1 minutes]:
+time.Sleep(0x6fc2324aa)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30796 [sleep, 1 minutes]:
+time.Sleep(0x6fc233554)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30780 [sleep, 1 minutes]:
+time.Sleep(0x6fc231abb)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31351 [sleep, 1 minutes]:
+time.Sleep(0x6fc22f857)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30649 [select]:
+net/http.setRequestCancel.func4()
+	/usr/local/go/src/net/http/client.go:405 +0x85
+created by net/http.setRequestCancel in goroutine 118
+	/usr/local/go/src/net/http/client.go:404 +0x3b5
+
+goroutine 31020 [sleep, 1 minutes]:
+time.Sleep(0x6fc236543)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31222 [sleep, 1 minutes]:
+time.Sleep(0x6f13c96e6)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31451 [sleep, 1 minutes]:
+time.Sleep(0x6fc23a960)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31040 [sleep, 1 minutes]:
+time.Sleep(0x6fc239126)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31329 [sleep, 1 minutes]:
+time.Sleep(0x6fc231854)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31119 [sleep, 1 minutes]:
+time.Sleep(0x6fc23286f)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30973 [sleep, 1 minutes]:
+time.Sleep(0x6fc235f29)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31519 [sleep]:
+time.Sleep(0x4563ea7f7)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 30965 [IO wait]:
+internal/poll.runtime_pollWait(0x147899be5b58, 0x72)
+	/usr/local/go/src/runtime/netpoll.go:345 +0x85
+internal/poll.(*pollDesc).wait(0xc000c16180?, 0xc000cdc000?, 0x0)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:84 +0x27
+internal/poll.(*pollDesc).waitRead(...)
+	/usr/local/go/src/internal/poll/fd_poll_runtime.go:89
+internal/poll.(*FD).Read(0xc000c16180, {0xc000cdc000, 0x1500, 0x1500})
+	/usr/local/go/src/internal/poll/fd_unix.go:164 +0x27a
+net.(*netFD).Read(0xc000c16180, {0xc000cdc000?, 0x1478e0677108?, 0xc000010e28?})
+	/usr/local/go/src/net/fd_posix.go:55 +0x25
+net.(*conn).Read(0xc0007bc018, {0xc000cdc000?, 0xc001021918?, 0x40e67b?})
+	/usr/local/go/src/net/net.go:185 +0x45
+crypto/tls.(*atLeastReader).Read(0xc000010e28, {0xc000cdc000?, 0x0?, 0xc000010e28?})
+	/usr/local/go/src/crypto/tls/conn.go:806 +0x3b
+bytes.(*Buffer).ReadFrom(0xc0009f02b0, {0xaf1be0, 0xc000010e28})
+	/usr/local/go/src/bytes/buffer.go:211 +0x98
+crypto/tls.(*Conn).readFromUntil(0xc0009f0008, {0xaf1320, 0xc0007bc018}, 0xc001021960?)
+	/usr/local/go/src/crypto/tls/conn.go:828 +0xde
+crypto/tls.(*Conn).readRecordOrCCS(0xc0009f0008, 0x0)
+	/usr/local/go/src/crypto/tls/conn.go:626 +0x3cf
+crypto/tls.(*Conn).readRecord(...)
+	/usr/local/go/src/crypto/tls/conn.go:588
+crypto/tls.(*Conn).Read(0xc0009f0008, {0xc000a1a000, 0x1000, 0x11?})
+	/usr/local/go/src/crypto/tls/conn.go:1370 +0x156
+bufio.(*Reader).Read(0xc001c3ea20, {0xc00054c040, 0x9, 0x69270e?})
+	/usr/local/go/src/bufio/bufio.go:241 +0x197
+io.ReadAtLeast({0xaef720, 0xc001c3ea20}, {0xc00054c040, 0x9, 0x9}, 0x9)
+	/usr/local/go/src/io/io.go:335 +0x90
+io.ReadFull(...)
+	/usr/local/go/src/io/io.go:354
+net/http.http2readFrameHeader({0xc00054c040, 0x9, 0x671912?}, {0xaef720?, 0xc001c3ea20?})
+	/usr/local/go/src/net/http/h2_bundle.go:1638 +0x65
+net/http.(*http2Framer).ReadFrame(0xc00054c000)
+	/usr/local/go/src/net/http/h2_bundle.go:1905 +0x85
+net/http.(*http2clientConnReadLoop).run(0xc001021fa8)
+	/usr/local/go/src/net/http/h2_bundle.go:9342 +0x12c
+net/http.(*http2ClientConn).readLoop(0xc00078c480)
+	/usr/local/go/src/net/http/h2_bundle.go:9237 +0x65
+created by net/http.(*http2Transport).newClientConn in goroutine 30964
+	/usr/local/go/src/net/http/h2_bundle.go:7887 +0xca6
+
+goroutine 31465 [sleep, 1 minutes]:
+time.Sleep(0x6fc231ddd)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 24603 [sleep, 1 minutes]:
+time.Sleep(0x6fc2393e0)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31553 [sleep, 1 minutes]:
+time.Sleep(0x6fc232e00)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+
+goroutine 31064 [sleep, 1 minutes]:
+time.Sleep(0x6fc23506f)
+	/usr/local/go/src/runtime/time.go:195 +0x115
+github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait.func1()
+	/project/core/internal/waiting/waiting.go:97 +0x10f
+created by github.com/wandb/wandb/core/internal/waiting.(*realStopwatch).Wait in goroutine 88
+	/project/core/internal/waiting/waiting.go:91 +0x78
+Process Process-8:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 394, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1933, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1652, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1524, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 647, in publish_partial_history
+    self._publish_partial_history(partial_history)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 89, in _publish_partial_history
+    self._publish(rec)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    self._sock_client.send_record_publish(record)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+    self.send_server_request(server_req)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self._send_message(msg)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+Process Process-1:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 394, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1933, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1652, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1524, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 647, in publish_partial_history
+    self._publish_partial_history(partial_history)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 89, in _publish_partial_history
+    self._publish(rec)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    self._sock_client.send_record_publish(record)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+    self.send_server_request(server_req)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self._send_message(msg)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+Process Process-2:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 394, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1933, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1652, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1524, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 647, in publish_partial_history
+    self._publish_partial_history(partial_history)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 89, in _publish_partial_history
+    self._publish(rec)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    self._sock_client.send_record_publish(record)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+    self.send_server_request(server_req)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self._send_message(msg)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+Process Process-7:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 394, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1933, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1652, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1524, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 647, in publish_partial_history
+    self._publish_partial_history(partial_history)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 89, in _publish_partial_history
+    self._publish(rec)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    self._sock_client.send_record_publish(record)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+    self.send_server_request(server_req)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self._send_message(msg)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+Process Process-5:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 394, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1933, in log
+    self._log(data=data, step=step, commit=commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1652, in _log
+    self._partial_history_callback(data, step, commit)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 1524, in _partial_history_callback
+    self._backend.interface.publish_partial_history(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface.py", line 647, in publish_partial_history
+    self._publish_partial_history(partial_history)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_shared.py", line 89, in _publish_partial_history
+    self._publish(rec)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/interface/interface_sock.py", line 51, in _publish
+    self._sock_client.send_record_publish(record)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 221, in send_record_publish
+    self.send_server_request(server_req)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 155, in send_server_request
+    self._send_message(msg)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 152, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+[rank5]:[E313 02:02:50.119540411 ProcessGroupNCCL.cpp:607] [Rank 5] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+[rank3]:[E313 02:02:50.119546432 ProcessGroupNCCL.cpp:607] [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+[rank2]:[E313 02:02:50.119701372 ProcessGroupNCCL.cpp:607] [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+[rank5]:[E313 02:02:51.451574856 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 5] Exception (either an error or timeout) detected by watchdog at work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank3]:[E313 02:02:51.451579954 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 3] Exception (either an error or timeout) detected by watchdog at work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank2]:[E313 02:02:51.451582971 ProcessGroupNCCL.cpp:1664] [PG 0 (default_pg) Rank 2] Exception (either an error or timeout) detected by watchdog at work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank5]:[E313 02:02:51.451604820 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 5] Timeout at NCCL work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank3]:[E313 02:02:51.451619583 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 3] Timeout at NCCL work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank2]:[E313 02:02:51.451637631 ProcessGroupNCCL.cpp:1709] [PG 0 (default_pg) Rank 2] Timeout at NCCL work: 287160, last enqueued NCCL work: 287160, last completed NCCL work: 287159.
+[rank5]:[E313 02:02:51.451648314 ProcessGroupNCCL.cpp:621] [Rank 5] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank3]:[E313 02:02:51.451654077 ProcessGroupNCCL.cpp:621] [Rank 3] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank2]:[E313 02:02:51.451662897 ProcessGroupNCCL.cpp:621] [Rank 2] Some NCCL operations have failed or timed out. Due to the asynchronous nature of CUDA kernels, subsequent GPU operations might run on corrupted/incomplete data.
+[rank5]:[E313 02:02:51.451672412 ProcessGroupNCCL.cpp:627] [Rank 5] To avoid data inconsistency, we are taking the entire process down.
+[rank3]:[E313 02:02:51.451676351 ProcessGroupNCCL.cpp:627] [Rank 3] To avoid data inconsistency, we are taking the entire process down.
+[rank2]:[E313 02:02:51.451685445 ProcessGroupNCCL.cpp:627] [Rank 2] To avoid data inconsistency, we are taking the entire process down.
+[rank3]:[E313 02:02:51.551676192 ProcessGroupNCCL.cpp:1515] [PG 0 (default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank5]:[E313 02:02:51.551676286 ProcessGroupNCCL.cpp:1515] [PG 0 (default_pg) Rank 5] Process group watchdog thread terminated with exception: [Rank 5] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank2]:[E313 02:02:51.551685662 ProcessGroupNCCL.cpp:1515] [PG 0 (default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+terminate called after throwing an instance of 'terminate called after throwing an instance of 'terminate called after throwing an instance of 'c10::DistBackendErrorc10::DistBackendErrorc10::DistBackendError'
+'
+'
+  what():    what():  [PG 0 (default_pg) Rank 5] Process group watchdog thread terminated with exception: [Rank 5] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1521 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe5aa84 (0x147ecac5ca84 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+  what():  [PG 0 (default_pg) Rank 3] Process group watchdog thread terminated with exception: [Rank 3] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1521 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe5aa84 (0x147ecac5ca84 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[PG 0 (default_pg) Rank 2] Process group watchdog thread terminated with exception: [Rank 2] Watchdog caught collective operation timeout: WorkNCCL(SeqNum=287160, OpType=ALLREDUCE, NumelIn=1, NumelOut=1, Timeout(ms)=600000) ran for 600039 milliseconds before timing out.
+Exception raised from checkTimeout at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:609 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: c10d::ProcessGroupNCCL::WorkNCCL::checkTimeout(std::optional<std::chrono::duration<long, std::ratio<1l, 1000l> > >) + 0x1d2 (0x147ecafca8f2 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: c10d::ProcessGroupNCCL::watchdogHandler() + 0x233 (0x147ecafd1333 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #3: c10d::ProcessGroupNCCL::ncclCommWatchdog() + 0x10c (0x147ecafd371c in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+Exception raised from ncclCommWatchdog at ../torch/csrc/distributed/c10d/ProcessGroupNCCL.cpp:1521 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::string) + 0x96 (0x147f18977f86 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0xe5aa84 (0x147ecac5ca84 in /lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/torch/lib/libtorch_cuda.so)
+frame #2: <unknown function> + 0xdc253 (0x147fb33ca253 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #3: <unknown function> + 0x94ac3 (0x148043bd5ac3 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #4: <unknown function> + 0x126850 (0x148043c67850 in /lib/x86_64-linux-gnu/libc.so.6)
+
+
+INFO:root:Running... (rank: 0/1)
+INFO:root:Training mode: True
+INFO:root:Initialized (rank/world-size) 0/1.
+INFO:root:GeneTransformerCountEncoder(
+  (token_embed): Embedding(23407, 1024, padding_idx=0)
+  (seg_embed): Embedding(8, 1024, padding_idx=0)
+  (blocks): ModuleList(
+    (0-5): 6 x Block(
+      (norm1): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+      (attn): Attention(
+        (qkv): Linear(in_features=1024, out_features=3072, bias=True)
+        (attn_drop): Dropout(p=0.0, inplace=False)
+        (proj): Linear(in_features=1024, out_features=1024, bias=True)
+        (proj_drop): Dropout(p=0.0, inplace=False)
+      )
+      (norm2): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+      (mlp): MLP(
+        (fc1): Linear(in_features=1024, out_features=4096, bias=True)
+        (act): GELU(approximate='none')
+        (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+        (drop): Dropout(p=0.0, inplace=False)
+      )
+    )
+  )
+  (norm): LayerNorm((1024,), eps=1e-06, elementwise_affine=True)
+  (special_value_embed): Embedding(1354, 1024, padding_idx=0)
+  (value_embed): MLP(
+    (fc1): Linear(in_features=1, out_features=512, bias=True)
+    (act): GELU(approximate='none')
+    (fc2): Linear(in_features=512, out_features=1024, bias=True)
+    (drop): Dropout(p=0.0, inplace=False)
+  )
+)
+INFO:root:Dataloader and -sampler created.
+INFO:root:Initializing optimizer: AdamW.
+INFO:root:Initializing learning rate scheduler: WarmupCosineSchedule.
+INFO:root:Initializing weight decay scheduler: CosineWDSchedule.
+INFO:root:Initializing automatic mixed precision training scaler: GradScaler.
+INFO:root:Epoch 1
+/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py:472: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  enabled=use_bfloat16):
+/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/contextlib.py:103: FutureWarning: `torch.backends.cuda.sdp_kernel()` is deprecated. In the future, this context manager will be removed. Please see `torch.nn.attention.sdpa_kernel()` for the new context manager, with updated signature.
+  self.gen = func(*args, **kwds)
+Process Process-9:
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_manager.py", line 115, in _service_connect
+    svc_iface._svc_connect(port=port)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/service/service_sock.py", line 30, in _svc_connect
+    self._sock_client.connect(port=port)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 102, in connect
+    s.connect(("localhost", port))
+ConnectionRefusedError: [Errno 111] Connection refused
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/../nichejepa/main.py", line 61, in process_main
+    train(params, train_dataset, save_folder_path=folder_path)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/train.py", line 549, in train
+    {"loss": loss,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 453, in wrapper
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 404, in wrapper_fn
+    return func(self, *args, **kwargs)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 392, in wrapper
+    raise e
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_run.py", line 387, in wrapper
+    wandb._attach(run=self)  # type: ignore
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 923, in _attach
+    _wl = wandb_setup._setup()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 321, in _setup
+    wl = _WandbSetup(settings=settings)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 306, in __init__
+    _WandbSetup._instance = _WandbSetup__WandbSetup(settings=settings, pid=pid)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 115, in __init__
+    self._setup()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 251, in _setup
+    self._setup_manager()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 286, in _setup_manager
+    self._manager = wandb_manager._Manager(settings=self._settings)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_manager.py", line 157, in __init__
+    wandb._sentry.reraise(e)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 155, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_manager.py", line 155, in __init__
+    self._service_connect()
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/wandb/sdk/wandb_manager.py", line 125, in _service_connect
+    raise ManagerConnectionRefusedError(message) from e
+wandb.sdk.wandb_manager.ManagerConnectionRefusedError: Connection to wandb service failed.
+wandb: Encountered an error while tearing down the service manager: [Errno 32] Broken pipe
