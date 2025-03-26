@@ -14,38 +14,42 @@ data:
   seq_len_neighborhood: 1536 # 384/640, 1536/2816
   n_segments: 7 # 7, 11; number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
-  batch_size: 512 # 304
-  num_workers: 32
+  batch_size: 96 # 128 # 192 # 96 (norm, no bfloat), 128 (dyt, bfloat), 144 (norm, bfloat)
+  num_workers: 24
   pin_memory: True
 meta:
   add_cls: False
   gt_type: 'counts' # 'rank', 'counts'
-  count_encoding: 'value_bins' # 'value_bins', 'mlp'
+  count_encoding: 'mlp' # 'value_bins', 'mlp'
   n_value_bins: 100
-  enc_depth: 6
-  enc_emb_dim: 1024
-  pred_depth: 2
+  enc_depth: 12
+  enc_emb_dim: 768
+  pred_depth: 6
   pred_emb_dim: 384
-  special_tokens: ['assay', 'tissue', 'gene_panel', 'batch'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
+  num_heads: 12
+  special_tokens: ['assay'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
   pos_learnable: False
   seg_learnable: False
-  use_bfloat16: False
+  use_bfloat16: True
   use_flash_attention: True
+  use_layer_norm: True
 mask:
-  n_contexts: 1
-  n_targets: 5 # this is the number of blocks in block masking
-  block_masking: True # this doesn't have meaning in block masking.
+  n_contexts: 1 # 1
+  n_targets: 1 # 1 =, this is the number of blocks in block masking
+  block_masking: True # True, False
+  cell_masking: False # True, False
+  targets_list: null
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
-  per_block_mask_ratio: 0.5 # 0.5, 
+  per_block_mask_ratio: 0.8 # 0.5, 
 optimization:
-  warmup: 3
-  epochs: 20
+  warmup: 4
+  epochs: 16
   ema:
-  - 0.996 # 0.996
+  - 0.98 # 0.996
   - 1.0
   start_lr: 2.0e-05 # 1.0e-0.5
-  lr: 1.0e-04 # 1.0e-0.4
+  lr: 6.0e-05 # 1.0e-0.4
   final_lr: 1.0e-06
   weight_decay: 0.04
   final_weight_decay: 0.4
@@ -59,5 +63,5 @@ state:
   folder_path: null
   load_checkpoint: False # true, false
   read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
-  checkpoint_freq_iter: 10000
+  checkpoint_freq_iter: 5000
 

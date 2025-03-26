@@ -2,66 +2,70 @@ data:
   dataset_name: 'xhs49-1b_1p'
   raw_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/silver/xhs49-1b_1p'
   token_dict_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
-  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_1792.dataset'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_4_2560.dataset'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_18_2432.dataset'
   #tokenized_data_folder_path: '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_gene_corrected_read_depth_None_shifted_log_knn_10_2816.dataset'
+  precomputed_split: null
+  precomputed_n_nonzero_tokens: null
+  test_batch_ids: ['49_batch0']
+  val_batch_ids: ['49_batch0']
   tokenizer_type: 'cell_graph'
   random_state: 0
   sample_subset: False
   split: 0
-  test_batch_ids: ['49_batch0']
   stratify: False
-  seq_len_cell: 256
-  seq_len_neighborhood: 1536 # 384, 640, 1152, 1536
-  n_segments: 7 # 7, 11, 19 number of unique segment tokens (gene segments)
+  seq_len_cell: 512
+  seq_len_neighborhood: 2048 # 384, 640, 1152, 1536
+  n_segments: 5 # 7, 11, 19 number of unique segment tokens (gene segments)
   sampling_strategy: null # null, 'rand_sampling', 'norm_count_rank_sampling', 'rand_sampling_rep', 'norm_count_rank_sampling_rep'
   batch_size: 32
-  num_workers: 24 
+  num_workers: 6 
   pin_memory: True
 meta:
-  add_cls: False # True, False
-  gt_type: 'rank' # 'rank', 'counts'
-  enc_depth: 3
+  add_cls: False
+  gt_type: 'counts' # 'rank', 'counts'
+  count_encoding: 'mlp' # 'value_bins', 'mlp'
+  n_value_bins: 100
+  enc_depth: 12
   enc_emb_dim: 768
-  pred_depth: 1
-  pred_emb_dim: 768
-  special_tokens: [] # ['batch']
+  pred_depth: 6
+  pred_emb_dim: 384
+  num_heads: 12
+  special_tokens: [] # ['assay'] # ['batch'], ['assay', 'tissue', 'gene_panel', 'batch']
   pos_learnable: False
   seg_learnable: False
   use_bfloat16: True
   use_flash_attention: True
+  use_layer_norm: True
 mask:
-  n_contexts: 1
-  n_targets: 5 # this is the number of blocks in block masking
-  block_masking: True # this doesn't have meaning in block masking.
+  n_contexts: 1 # 1
+  n_targets: 1 # 1 =, this is the number of blocks in block masking
+  block_masking: True # True, False
+  cell_masking: False # True, False
+  targets_list: null
   context_mask_size: 200 # this doesn't have meaning in block masking.
   target_mask_size: 50 # this doesn't have meaning in block masking.
-  per_block_mask_ratio: 0.5 # [0.5, 0.8]
-  #controlled_attention_pattern:
-  #  # Similarly, for the columns, we have the same order, and a 1 indicates attention get masked  between those two parts.
-  #  # 'Matrix', 'null'
-  #  - [0, 1, 0, 1] # cls
-  #  - [0, 1, 0, 1] # genes
-  controlled_attention_pattern: null
-  controlled_attention_type: '' # 'pred'
-  restrict_special_attention: True # True, False
+  per_block_mask_ratio: 0.8 # 0.5, 
 optimization:
-  warmup: 3
-  epochs: 100
+  warmup: 4
+  epochs: 16
   ema:
-  - 0.7
+  - 0.98 # 0.996
   - 1.0
-  start_lr: 2.0e-05
-  lr: 2.0e-05
-  final_lr: 2.0e-05
+  start_lr: 2.0e-05 # 1.0e-0.5
+  lr: 6.0e-05 # 1.0e-0.4
+  final_lr: 1.0e-06
   weight_decay: 0.04
   final_weight_decay: 0.4
-  ipe_scale: 1.0
+  ipe_scale: 1.25
+  clip_grad: 10.0
 state:
   log_freq: 20
-  checkpoint_freq: 5
+  checkpoint_freq: 1
   write_tag: nichejepa
   read_timestamp: ''
+  folder_path: null
   load_checkpoint: False # true, false
   read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
+  checkpoint_freq_iter: 5000
