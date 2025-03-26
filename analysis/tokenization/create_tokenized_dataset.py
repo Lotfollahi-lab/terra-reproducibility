@@ -137,6 +137,7 @@ def main(config: dict):
     processing_mode = config["tokenization"]["processing_mode"]
     num_shards = config["tokenization"]["num_shards"]
     keep_in_memory = config["tokenization"]["keep_in_memory"]
+    include_zero_expr_genes = config["tokenization"]["include_zero_expr_genes"]
     n_neighs = config["tokenization"]["n_neighs"]
     radius = config["tokenization"]["radius"]
     delaunay = config["tokenization"]["delaunay"]
@@ -179,7 +180,8 @@ def main(config: dict):
                           f"{rank_cell_norm_method}_{rank_gene_norm_method}_"
                           f"{rank_count_norm_method}_{count_cell_norm_method}_"
                           f"{count_gene_norm_method}_{count_count_norm_method}_"
-                          f"{neighborhood_graph}{model_input_size}")
+                          f"{neighborhood_graph}{model_input_size}"
+                          f"{'_incl_zero_expr' if include_zero_expr_genes else ''}")
 
     # Initialize wandb run
     wandb_tags = [experiment_name,
@@ -213,6 +215,7 @@ def main(config: dict):
             nproc=nproc,
             processing_mode=processing_mode,
             model_input_size=model_input_size,
+            include_zero_expr_genes=include_zero_expr_genes,
             n_neighs=n_neighs,
             radius=radius,
             delaunay=delaunay,
