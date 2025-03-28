@@ -124,17 +124,17 @@ case $EXPERIMENT_NAME in
         QUEUE="gpu-parallel"
         N_GPU=8
         ;;
-    hst_corpus_70m)
-        RAM="200G"
-        TIME="24:00"
-        CORES=6
-        QUEUE="gpu-lotfollahi"
-        N_GPU=1
-        ;;
     hst_corpus_70m_alt)
-        RAM="200G"
-        TIME="24:00"
-        CORES=16
+        RAM="224G"
+        TIME="48:00"
+        CORES=12
+        QUEUE="gpu-huge"
+        N_GPU=2
+        ;;
+    hst_corpus_70m)
+        RAM="128G"
+        TIME="48:00"
+        CORES=6
         QUEUE="gpu-huge"
         N_GPU=1
         ;;
