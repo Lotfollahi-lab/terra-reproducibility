@@ -6,6 +6,12 @@ import pandas as pd
 import yaml
 
 
+def none_or_str(value):
+    if value == 'None':
+        return None
+    return value
+
+
 def main(args):
     config_path = Path('/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/config') / args.tokenizer
 
@@ -33,6 +39,7 @@ def main(args):
             dataset_config['tokenization']['count_cell_norm_method'] = args.count_cell_norm_method
             dataset_config['tokenization']['count_gene_norm_method'] = args.count_gene_norm_method
             dataset_config['tokenization']['count_count_norm_method'] = args.count_count_norm_method
+            dataset_config['tokenization']['include_zero_expr_genes'] = args.include_zero_expr_genes
             dataset_config['tokenization']['n_neighs'] = args.n_neighs
 
         with open(config_dataset_path, 'w') as file:
@@ -57,29 +64,33 @@ if __name__ == '__main__':
                         default=1792, # 1792, 2816
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
-                        type=str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        type=none_or_str,
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
-                        type=str,
-                        default='nonzero_mean', # None, 'nonzero_mean'
+                        type=none_or_str,
+                        default=None, # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
-                        type=str,
+                        type=none_or_str,
                         default=None, # None
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
-                        type=str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        type=none_or_str,
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
-                        type=str,
-                        default='nonzero_mean', # None, 'nonzero_mean'
+                        type=none_or_str,
+                        default=None, # None, 'nonzero_mean'
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
-                        type=str,
-                        default="shifted_log", # None
+                        type=none_or_str,
+                        default='shifted_log', # None
                         help='Count count norm method.')
+    parser.add_argument('--include_zero_expr_genes',
+                        action=argparse.BooleanOptionalAction,
+                        default=True, # True, False
+                        help='If `True`, zero expression genes are included in the tokenization.')
     parser.add_argument('--n_neighs',
                         type=int,
                         default="6",

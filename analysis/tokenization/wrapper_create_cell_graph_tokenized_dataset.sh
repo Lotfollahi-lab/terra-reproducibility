@@ -21,34 +21,16 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     xhs1000-39b_1p)
-        RAM="128G"
+        RAM="1000G"
         TIME="12:00"
         CORES=12
-        QUEUE="normal"
-        ;;
-    chl59-8b_1p)
-        RAM="300G"
-        TIME="12:00"
-        CORES=2
-        QUEUE="normal"
-        ;;
-    xhb1002-AT5-1b_1p)
-        RAM="400G"
-        TIME="36:00"
-        CORES=4
-        QUEUE="long"
-        ;;
-    xhb1002-AT6-1-1b_1p)
-        RAM="350G"
-        TIME="48:00"
-        CORES=3
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xhb1002-AT6-4-1b_1p)
-        RAM="600G"
+        RAM="1500G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xhb1002-AT9-3b_1p)
         RAM="500G"
@@ -57,40 +39,40 @@ case $EXPERIMENT_NAME in
         QUEUE="long"
         ;;
     xhb1002-AT9-6b_1p)
-        RAM="500G"
+        RAM="1500G"
         TIME="48:00"
         CORES=3
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xhb1002-AT10-7b_1p)
-        RAM="600G"
+        RAM="1500G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
+        ;;
+    xhb1002-AT5-1b_1p)
+        RAM="1500G"
+        TIME="48:00"
+        CORES=4
+        QUEUE="teramem"
         ;;
     xhb1002-AT15-10b_1p)
-        RAM="500G"
+        RAM="1500G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
-        ;;
-    xhb1002-AT23-9b_1p)
-        RAM="300G"
-        TIME="48:00"
-        CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xho47-S1-1b_1p)
-        RAM="512G"
+        RAM="1200G"
         TIME="36:00"
         CORES=1
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xho47-S2-1b_1p)
-        RAM="600G"
+        RAM="1200G"
         TIME="48:00"
         CORES=1
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     mhh22-3b_1p)
         RAM="64G"
@@ -99,7 +81,7 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     chp60-1b_1p)
-        RAM="64G"
+        RAM="512G"
         TIME="12:00"
         CORES=4
         QUEUE="normal"
@@ -117,46 +99,76 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     xhc1001-1b_1p)
-        RAM="64G"
+        RAM="256G"
         TIME="12:00"
         CORES=4
         QUEUE="normal"
         ;;
-    xhe1008-6-20b_1p)
-        RAM="512G"
+    xhe1008-5-20b_1p)
+        RAM="1500G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
+        ;;
+    xhe1008-2-20b_1p)
+        RAM="1500G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="teramem"
+        ;;
+    xhe1008-3-20b_1p)
+        RAM="1500G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="teramem"
+        ;;
+    xhe1008-4-20b_1p)
+        RAM="1500G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="teramem"
+        ;;
+    xhe1008-6-20b_1p)
+        RAM="900G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="teramem"
         ;;
     xhe1008-7-20b_1p)
-        RAM="512G"
+        RAM="1500G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xhe1008-8-20b_1p)
-        RAM="512G"
+        RAM="2000G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xhe1008-9-20b_1p)
-        RAM="512G"
+        RAM="900G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
     xhe1008-10-20b_1p)
-        RAM="512G"
+        RAM="900G"
         TIME="12:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
+        ;;
+    mmb0-1b_smb1-1b_2p)
+        RAM="256G"
+        TIME="12:00"
+        CORES=4
+        QUEUE="normal"
         ;;
     *)
-        RAM="256G"
+        RAM="1500G"
         TIME="48:00"
         CORES=4
-        QUEUE="long"
+        QUEUE="teramem"
         ;;
 esac
 

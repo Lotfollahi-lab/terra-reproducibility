@@ -7,6 +7,8 @@ import numpy as np
 import scanpy as sc
 
 
+n_layer = 12
+
 # Define color palette
 custom_palette_300 = {
     "0": "#5E67F7",
@@ -320,19 +322,19 @@ def parse_arguments():
         description='Compute UMAP.')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='06032025_085433_744',
+                        default='06052025_160815_325',
                         help='Load timestamp of the model.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='ep2',
+                        default='ep9',
                         help='Read checkpoint of the model.')
-    parser.add_argument('--corpus_name',
+    parser.add_argument('--dataset_name',
                         type=str,
-                        default='1000-1007-1008', # hst_corpus_70m
+                        default='hst_corpus_70m', # '1000-1007-1008', 'hst_corpus_70m'
                         help='Name of the corpus.')
     parser.add_argument('--corpus_size',
                         type=int,
-                        default=11036633, # 72000000
+                        default=72000000, # 11036633, 72000000
                         help='Size of the entire corpus.')
     parser.add_argument('--step_size',
                         type=int,
@@ -340,7 +342,7 @@ def parse_arguments():
                         help='Step size during inference.')
     parser.add_argument('--subsample',
                         action=argparse.BooleanOptionalAction,
-                        default=False, # True
+                        default=True, # True, False
                         help='If `True`, subsample adata stratified by batch.')
     parser.add_argument('--sample_frac',
                         type=float,
@@ -354,7 +356,7 @@ def parse_arguments():
     parser.add_argument('--emb_keys',
                         type=str,
                         nargs='+',
-                        default=['neighborhood_emb_layer_6', 'cell_emb_layer_6'], # ['neighborhood_emb_layer_6', 'cell_emb_layer_6']
+                        default=[f'neighborhood_emb_layer_{n_layer}', f'cell_emb_layer_{n_layer}'], # [f'neighborhood_emb_layer_{n_layer}', f'cell_emb_layer_{n_layer}']
                         help='`adata.obsm` keys where embeddings are stored.')
     parser.add_argument('--n_pcs',
                         type=int,
@@ -367,7 +369,7 @@ def parse_arguments():
     parser.add_argument('--plot_labels',
                         type=str,
                         nargs='+',
-                        default=['tissue'], # ['assay', 'batch', 'tissue', 'gene_panel_size']
+                        default=['assay', 'tissue'], # ['assay', 'batch', 'tissue', 'gene_panel_size']
                         help='Labels to be plotted.')
     return parser.parse_args()
 
@@ -384,16 +386,16 @@ def main(args):
 
     for i in range(steps):
         try:
-            adata = sc.read_h5ad(f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}_{args.corpus_name}_{args.step_size}_{i}.h5ad')
-            if 'neighborhood_emb_layer_6' not in args.emb_keys:
-                del adata.obsm['neighborhood_emb_layer_6']
-            if 'cell_emb_layer_6' not in args.emb_keys:
-                del adata.obsm['cell_emb_layer_6']
+            adata = sc.read_h5ad(f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_{args.step_size}_{i}.h5ad')
+            if f'neighborhood_emb_layer_{n_layer}' not in args.emb_keys:
+                del adata.obsm[f'neighborhood_emb_layer_{n_layer}']
+            if f'cell_emb_layer_{n_layer}' not in args.emb_keys:
+                del adata.obsm[f'cell_emb_layer_{n_layer}']
             adata_list.append(adata)
             del adata
         except:
             raise ValueError(
-                f'Could not find file with file name adata_{args.read_checkpoint}_{args.corpus_name}_{args.step_size}_{i}.h5ad.')
+                f'Could not find file with file name adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_{args.step_size}_{i}.h5ad.')
 
     adata_full = sc.concat(adata_list, join='outer', index_unique=None)
 
@@ -402,7 +404,7 @@ def main(args):
     adata_full.obs['cell'] = adata_full.obs['cell'].astype(int)
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}_{args.corpus_name}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
 
     if args.subsample:
         # Perform stratified subsampling based on batch
@@ -412,16 +414,16 @@ def main(args):
         del(sampled_df)
 
     # Compute neighbors and UMAP 
-    if 'neighborhood_emb_layer_6' in args.emb_keys:
+    if f'neighborhood_emb_layer_{n_layer}' in args.emb_keys:
         sc.pp.neighbors(adata_full,
                         n_neighbors=15,
-                        use_rep='neighborhood_emb_layer_6',
+                        use_rep=f'neighborhood_emb_layer_{n_layer}',
                         n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
                         key_added='neighborhood')
-    if 'cell_emb_layer_6' in args.emb_keys:
+    if f'cell_emb_layer_{n_layer}' in args.emb_keys:
         sc.pp.neighbors(adata_full,
                         n_neighbors=15,
-                        use_rep='cell_emb_layer_6',
+                        use_rep=f'cell_emb_layer_{n_layer}',
                         n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
                         key_added='cell')    
 
@@ -432,20 +434,20 @@ def main(args):
     print("Elapsed time:", str(timedelta(seconds=elapsed_time)))
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}_{args.corpus_name}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
 
     if args.dim_red_method == 'umap':
-        if 'neighborhood_emb_layer_6' in args.emb_keys:
+        if f'neighborhood_emb_layer_{n_layer}' in args.emb_keys:
             sc.tl.umap(adata_full,
                        neighbors_key='neighborhood',
                        key_added='neighborhood_umap')
-        if 'cell_emb_layer_6' in args.emb_keys:
+        if f'cell_emb_layer_{n_layer}' in args.emb_keys:
             sc.tl.umap(adata_full,
                        neighbors_key='cell',
                        key_added='cell_umap')
 
         adata_full.write(
-                f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}_{args.corpus_name}_combined.h5ad')
+                f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
 
         dataset_batch_palette = {new_key: value for new_key, value in zip(
             adata_full.obs['dataset_batch'].unique().tolist(),
@@ -453,7 +455,7 @@ def main(args):
 
         # Plot (aggregated) neighborhood gene embeddings, colored by labels
         for label in args.plot_labels:
-            if 'neighborhood_emb_layer_6' in args.emb_keys:
+            if f'neighborhood_emb_layer_{n_layer}' in args.emb_keys:
                 adata_full.obsm['X_umap'] = adata_full.obsm['neighborhood_umap']
                 sc.pl.umap(
                     adata_full,
@@ -462,10 +464,10 @@ def main(args):
                     palette=(dataset_batch_palette if label == 'dataset_batch' else None),
                     show=False)
                 plt.savefig(
-                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{args.corpus_name}_{label}_neighborhood_umap.png',
+                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_70m" else ""}{label}_neighborhood_umap.png',
                     dpi=300,
                     bbox_inches='tight')
-            if 'cell_emb_layer_6' in args.emb_keys:
+            if f'cell_emb_layer_{n_layer}' in args.emb_keys:
                 adata_full.obsm['X_umap'] = adata_full.obsm['cell_umap']
                 sc.pl.umap(
                     adata_full,
@@ -474,7 +476,7 @@ def main(args):
                     palette=(dataset_batch_palette if label == 'dataset_batch' else None),
                     show=False)
                 plt.savefig(
-                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{args.corpus_name}_{label}_cell_umap.png',
+                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_70m" else ""}{label}_cell_umap.png',
                     dpi=300,
                     bbox_inches='tight')
 
@@ -485,7 +487,7 @@ def main(args):
     print("Elapsed time:", str(timedelta(seconds=elapsed_time)))
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}_{args.corpus_name}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
 
 
 if __name__ == '__main__':
