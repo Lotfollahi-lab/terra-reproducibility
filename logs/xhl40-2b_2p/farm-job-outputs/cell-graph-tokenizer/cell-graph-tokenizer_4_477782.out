@@ -1,0 +1,64 @@
+Experiment name: xhl40-2b_2p.
+Experiment description: xhl40-2b_2p (dataset-id 40) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+[1;34mwandb[0m:
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20250404_101102-kan7zxt1[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20250404_101102-kan7zxt1/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-26>
+Subject: Job 477782: <xhl40-2b_2p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhl40-2b_2p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Apr  4 10:08:40 2025
+Job was executed on host(s) <4*node-14-26>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Apr  4 10:10:41 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Apr  4 10:10:41 2025
+Terminated at Fri Apr  4 10:11:18 2025
+Results reported at Fri Apr  4 10:11:18 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl40-2b_2p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   23.00 sec.
+    Max Memory :                                 539 MB
+    Average Memory :                             418.67 MB
+    Total Requested Memory :                     393216.00 MB
+    Delta Memory :                               392677.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                12
+    Run time :                                   35 sec.
+    Turnaround time :                            158 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl40-2b_2p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_477782.err> for stderr output of this job.
+
