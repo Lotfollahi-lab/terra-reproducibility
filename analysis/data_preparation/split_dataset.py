@@ -46,11 +46,11 @@ def main(args):
     print('done4')
 
     # Save the splits as pickle files
-    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
+    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
         pickle.dump(validation_indices, f)
-    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
+    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
         pickle.dump(test_indices, f)
-    with open(f'/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
+    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
         pickle.dump(train_indices, f)
     print("Saved train, validation, and test dataset splits.")
 
@@ -58,9 +58,13 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Processing command line arguments...')
+    parser.add_argument('--tokenizer_folder_path',
+                        type=str,
+                        default='/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data',
+                        help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_6.dataset',
+                        default='/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
                         help='Tokenized data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
