@@ -4,6 +4,7 @@ scgpt
 
 wandb
 artifacts
+data
 #logs
 analysis/statistics/results/
 
