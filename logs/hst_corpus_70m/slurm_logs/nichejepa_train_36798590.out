@@ -1,0 +1,198 @@
+SLURM_JOB_GPUS: 2,3,5,6
+GPUs visible to this job: 0,1,2,3
+Sun Jun  1 22:09:45 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 560.35.03              Driver Version: 560.35.03      CUDA Version: 12.6     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA H100 80GB HBM3          Off |   00000000:4C:00.0 Off |                    0 |
+| N/A   30C    P0             70W /  700W |       1MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA H100 80GB HBM3          Off |   00000000:5D:00.0 Off |                    0 |
+| N/A   36C    P0             74W /  700W |       1MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA H100 80GB HBM3          Off |   00000000:BB:00.0 Off |                    0 |
+| N/A   36C    P0             69W /  700W |       1MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA H100 80GB HBM3          Off |   00000000:CB:00.0 Off |                    0 |
+| N/A   35C    P0             70W /  700W |       1MiB /  81559MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Using Python: /home/aih/sebastian.birk/miniconda3/bin/python
+Using Torchrun: /home/aih/sebastian.birk/miniconda3/bin/torchrun
+torch.__version__: 2.7.0+cu126
+torch.__version__: 2.7.0+cu126torch.version.cuda: 12.6
+
+torch.version.cuda: 12.6
+torch.__version__: 2.7.0+cu126torch.__version__: 2.7.0+cu126
+
+torch.version.cuda: 12.6torch.version.cuda: 12.6
+
+torch.cuda.nccl.version(): (2, 26, 2)torch.cuda.nccl.version(): (2, 26, 2)
+
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES:CUDA_VISIBLE_DEVICES: 0,1,2,3torch.cuda.nccl.version(): (2, 26, 2) 
+0,1,2,3
+CUDA_VISIBLE_DEVICES:
+ CUDA_VISIBLE_DEVICES:0,1,2,3
+ 0,1,2,3
+torch.cuda.device_count(): 4
+Hello from rank 0 of 4 on supergpu15.scidom.de where there are 4 allocated GPUs per node.
+World rank: 1, Local rank: 1, World size: 4
+torch.cuda.device_count(): 4
+Hello from rank 0 of 4 on supergpu15.scidom.de where there are 4 allocated GPUs per node.
+World rank: 2, Local rank: 2, World size: 4
+torch.cuda.device_count(): 4
+Hello from rank 0 of 4 on supergpu15.scidom.de where there are 4 allocated GPUs per node.
+World rank: 3, Local rank: 3, World size: 4
+torch.cuda.device_count(): 4
+Hello from rank 0 of 4 on supergpu15.scidom.de where there are 4 allocated GPUs per node.
+World rank: 0, Local rank: 0, World size: 4
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from /home/aih/sebastian.birk/workspace/projects/nichejepa/configs/model/hst_corpus_70m_gt_small.yaml.
+INFO:root:Called with params from /home/aih/sebastian.birk/workspace/projects/nichejepa/configs/model/hst_corpus_70m_gt_small.yaml.
+INFO:root:Called with params from /home/aih/sebastian.birk/workspace/projects/nichejepa/configs/model/hst_corpus_70m_gt_small.yaml.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_epoch_splits': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_split_30.pkl', 'precomputed_epoch_n_nonzero_tokens': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_n_nonzero_tokens_30.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 144, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'combined', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 192, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_epoch_splits': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_split_30.pkl', 'precomputed_epoch_n_nonzero_tokens': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_n_nonzero_tokens_30.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 144, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'combined', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 192, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_epoch_splits': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_split_30.pkl', 'precomputed_epoch_n_nonzero_tokens': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_n_nonzero_tokens_30.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 144, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'combined', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 192, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+tcp://supergpu15.scidom.de:8215
+tcp://supergpu15.scidom.de:8215
+tcp://supergpu15.scidom.de:8215
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from /home/aih/sebastian.birk/workspace/projects/nichejepa/configs/model/hst_corpus_70m_gt_small.yaml.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_epoch_splits': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_split_30.pkl', 'precomputed_epoch_n_nonzero_tokens': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_n_nonzero_tokens_30.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 144, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'combined', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 192, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+Run timestamp: 01062025_221346_334.
+{'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_epoch_splits': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_split_30.pkl', 'precomputed_epoch_n_nonzero_tokens': '/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_epoch_n_nonzero_tokens_30.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 144, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'combined', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 192, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}
+tcp://supergpu15.scidom.de:8215
+INFO:root:Initialized (rank/world-size) 2/4.
+INFO:root:Initialized (rank/world-size) 1/4.
+INFO:root:Initialized (rank/world-size) 0/4.
+INFO:root:Initialized (rank/world-size) 3/4.
+INFO:root:EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (seg_embed): Embedding(12, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+INFO:root:PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (seg_embed): Embedding(12, 192, padding_idx=0)
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+INFO:root:Encoder number of parameters: 30357120
+INFO:root:Predictor number of parameters: 5560896
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Dataloader and -sampler created.
+INFO:root:Initializing optimizer: AdamW.
+INFO:root:Initializing learning rate scheduler: WarmupCosineSchedule.
+INFO:root:Initializing weight decay scheduler: CosineWDSchedule.
+INFO:root:Initializing automatic mixed precision training scaler: GradScaler.
+INFO:root:Using train loader and sampler from epoch 0.
+INFO:root:Epoch 0
+INFO:root:Saving checkpoint at epoch 0 iteration 0
+INFO:root:Saving checkpoint at epoch 0 iteration 5000
+INFO:root:Saving checkpoint at epoch 0 iteration 10000
+INFO:root:avg. loss 0.462
+INFO:root:Using train loader and sampler from epoch 1.
+INFO:root:Epoch 1
+INFO:root:Saving checkpoint at epoch 1 iteration 0
+INFO:root:Saving checkpoint at epoch 1 iteration 5000
+INFO:root:Saving checkpoint at epoch 1 iteration 10000
+INFO:root:avg. loss 0.383
+INFO:root:Using train loader and sampler from epoch 2.
+INFO:root:Epoch 2
+INFO:root:Saving checkpoint at epoch 2 iteration 0
+INFO:root:Saving checkpoint at epoch 2 iteration 5000

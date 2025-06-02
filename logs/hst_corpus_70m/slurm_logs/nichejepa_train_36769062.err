@@ -1,0 +1,102 @@
+W0531 02:04:05.722000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py:766] 
+W0531 02:04:05.722000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py:766] *****************************************
+W0531 02:04:05.722000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py:766] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0531 02:04:05.722000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py:766] *****************************************
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Currently logged in as: sb75 (sb75sanger) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.19.11
+wandb: Run data is saved locally in /ictstr01/home/aih/sebastian.birk/workspace/projects/nichejepa/src/app/wandb/run-20250531_020736-hst_corpus_70m_gtsmall_combined_1002
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run hst_corpus_70m_gtsmall_combined_1002
+wandb: ⭐️ View project at https://wandb.ai/sb75sanger/nichejepa-sweep
+wandb: 🚀 View run at https://wandb.ai/sb75sanger/nichejepa-sweep/runs/hst_corpus_70m_gtsmall_combined_1002
+[W531 02:07:38.740955495 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W531 02:07:38.740961789 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[W531 02:07:38.740957541 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank2]:[W531 02:07:39.972871196 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 2]  using GPU 2 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank3]:[W531 02:07:39.972867577 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 3]  using GPU 3 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank1]:[W531 02:07:39.972871691 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 1]  using GPU 1 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[W531 02:07:43.045421958 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank0]:[W531 02:07:43.214060777 ProcessGroupNCCL.cpp:4715] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank0]:[W531 02:10:33.421583814 Utils.hpp:112] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank2]:[W531 02:10:33.421587070 Utils.hpp:112] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank3]:[W531 02:10:33.421588955 Utils.hpp:112] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank1]:[W531 02:10:33.421589617 Utils.hpp:112] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+W0531 17:35:56.336000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 1499988 closing signal SIGTERM
+W0531 17:35:56.426000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 1499989 closing signal SIGTERM
+W0531 17:35:56.427000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py:900] Sending process 1499990 closing signal SIGTERM
+E0531 17:35:56.432000 1499526 /ictstr01/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -9) local_rank: 0 (pid: 1499987) of binary: /home/aih/sebastian.birk/miniconda3/bin/python3.10
+Traceback (most recent call last):
+  File "/home/aih/sebastian.birk/miniconda3/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/resource_sharer.py", line 138, in _serve
+[rank0]:     with self._listener.accept() as conn:
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 465, in accept
+[rank0]:     deliver_challenge(c, self._authkey)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 740, in deliver_challenge
+[rank0]:     response = connection.recv_bytes(256)        # reject large message
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 216, in recv_bytes
+[rank0]:     buf = self._recv_bytes(maxlength)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 414, in _recv_bytes
+[rank0]:     buf = self._recv(4)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 383, in _recv
+[rank0]:     raise EOFError
+[rank0]: EOFError
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/resource_sharer.py", line 138, in _serve
+[rank0]:     with self._listener.accept() as conn:
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 465, in accept
+[rank0]:     deliver_challenge(c, self._authkey)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 740, in deliver_challenge
+[rank0]:     response = connection.recv_bytes(256)        # reject large message
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 216, in recv_bytes
+[rank0]:     buf = self._recv_bytes(maxlength)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 414, in _recv_bytes
+[rank0]:     buf = self._recv(4)
+[rank0]:   File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/multiprocessing/connection.py", line 383, in _recv
+[rank0]:     raise EOFError
+[rank0]: EOFError
+    run(args)
+  File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/aih/sebastian.birk/miniconda3/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/aih/sebastian.birk/workspace/projects/nichejepa/src/app/main_dist.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-05-31_17:35:56
+  host      : supergpu17.scidom.de
+  rank      : 0 (local_rank: 0)
+  exitcode  : -9 (pid: 1499987)
+  error_file: <N/A>
+  traceback : Signal 9 (SIGKILL) received by PID 1499987
+============================================================
+slurmstepd: error: Detected 1 oom_kill event in StepId=36769062.0. Some of the step tasks have been OOM Killed.
+srun: error: supergpu17: task 0: Out Of Memory
