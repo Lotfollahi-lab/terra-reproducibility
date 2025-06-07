@@ -73,11 +73,11 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/DATASETS",
+                        default="/nfs/team361/DATASETS",
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_70m",
+                        default="hst_corpus_80m", # "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
