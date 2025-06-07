@@ -1,0 +1,33 @@
+experiment:
+  name: "xho1012-66b_1p"
+  description: "Xenium Human Ovary (dataset-id 1012) | 66 batch | 1 panel | Preprocess to silver"
+  study: "Pediatric Ovary Data from Roser Vento (477 Panel)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  #file_names:
+  #  - Xenium_V1_Human_Colon_Cancer_P1_CRC_Add_on_FFPE_outs
+  #  - Xenium_V1_Human_Colon_Cancer_P2_CRC_Add_on_FFPE_outs
+  #  - Xenium_V1_Human_Colon_Cancer_P5_CRC_Add_on_FFPE_outs
+
+harmonization:
+  uns: {
+  'dataset_id': 1012,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'ovary'
+  }
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

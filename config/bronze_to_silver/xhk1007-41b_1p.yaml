@@ -66,7 +66,9 @@ harmonization:
       'CV9-KID-0-FT-5-S4': 22,
     }    
   }
-  key_mappings: {}
+  key_mappings: {
+    #'cell_type': 'level_1_cell_type'
+  }
   misc: {
     'min_genes': 10,
   }

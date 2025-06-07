@@ -4,7 +4,7 @@ experiment:
   study: "Beacon Data from Lloyd Steele (256 Skin Panel)"
 
 paths:
-  data_directory_path: "/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data"
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
 
 dataset:
   source: "sanger"
