@@ -36,7 +36,7 @@ def main(args):
         
         gold_dataset_path = gold_data_path / dataset_name
         dir_substring = f"{dataset_name}_{hparam_prefix}"
-        
+
         gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and dir_substring in p.name][0]
         
         print(gold_dataset_dir)
@@ -44,7 +44,7 @@ def main(args):
         ds = datasets.load_from_disk(str(gold_dataset_dir))
 
         # temp
-        ds = ds.remove_columns(['cell_total_counts', 'cell_n_probed_genes'])
+        # ds = ds.remove_columns(['cell_total_counts', 'cell_n_probed_genes'])
         #item = ds[0]
         #if type(item['cell_total_counts']) != list:
         #    print(item['cell_total_counts'])
@@ -73,15 +73,15 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default="/nfs/team361/DATASETS",
+                        default="/nfs/team361/sb75/DATASETS",
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_80m", # "hst_corpus_70m"
+                        default="hst_corpus_80m", # "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -93,11 +93,11 @@ if __name__ == '__main__':
                         help='Number of shards.')
     parser.add_argument('--rank_cell_norm_method',
                         type=str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=str,
-                        default='nonzero_mean', # None, 'nonzero_mean'
+                        default=None, # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=str,
@@ -113,11 +113,11 @@ if __name__ == '__main__':
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
                         type=str,
-                        default="shifted_log", # None
+                        default='shifted_log', # 'shifted_log', None
                         help='Count count norm method.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="6",
+                        default='10', # '10', '6'
                         help='Number of neighbors.')
     args = parser.parse_args()
     

@@ -50,15 +50,15 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--tokenizer_folder_path',
                         type=str,
-                        default='/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data',
+                        default='/nfs/team361/sb75/DATASETS/tokenizer',
                         help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
+                        default='/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset', # '/nfs/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
                         help='Tokenized data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_70m",
+                        default="hst_corpus_80m", # "hst_corpus_70m"
                         help='Name of the cohort.')
     args = parser.parse_args()
     

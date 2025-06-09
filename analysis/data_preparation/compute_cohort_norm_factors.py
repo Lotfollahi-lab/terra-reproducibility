@@ -81,7 +81,7 @@ def main(args):
             print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
 
             # Write to disk
-            with open(f'/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_batchwise_norm_factors.pkl', 'wb') as file:
+            with open(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_batchwise_norm_factors.pkl', 'wb') as file:
                 pickle.dump(batchwise_norm_factor_dict, file)
 
     # Compute overall nonzero means and means per gene and store cell numbers
@@ -112,7 +112,7 @@ def main(args):
     norm_factor_df = norm_factor_df.rename(columns={'index': 'gene_id'})
 
     # Write to disk
-    norm_factor_df.to_csv(f'/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_norm_factors.csv',
+    norm_factor_df.to_csv(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_norm_factors.csv',
                         index=False)
 
 
@@ -121,23 +121,23 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/DATASETS",
+                        default="/nfs/team361/sb75/DATASETS",
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_70m",
+                        default="hst_corpus_80m", # "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", # "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing datasets of the cohort.')                        
     parser.add_argument('--basis_target_read_depth',
                         type=float,
-                        default=137.7060,
+                        default=150.6692,
                         help='Read depth independent of number of probed genes.')
     parser.add_argument('--target_read_depth_per_gene',
                         type=float,
-                        default=0.0901,
+                        default=0.0646,
                         help='Additional read depth increment per probed gene.')
     args = parser.parse_args()
     

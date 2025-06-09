@@ -13,7 +13,7 @@ def none_or_str(value):
 
 
 def main(args):
-    config_path = Path('/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/config') / args.tokenizer
+    config_path = Path('/nfs/team361/sb75/nichejepa-reproducibility/config') / args.tokenizer
 
     # Read datasets
     datasets_df = pd.read_csv(
@@ -32,6 +32,10 @@ def main(args):
             print(dataset_config)
 
             dataset_config['experiment']['model_input_size'] = args.model_input_size
+
+            dataset_config['paths']['data_directory_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/'
+            dataset_config['paths']['norm_factor_file_path'] = '/lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_80m_norm_factors.csv'
+            dataset_config['paths']['token_dictionary_file_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
 
             dataset_config['tokenization']['rank_cell_norm_method'] = args.rank_cell_norm_method
             dataset_config['tokenization']['rank_gene_norm_method'] = args.rank_gene_norm_method
@@ -53,7 +57,7 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt"
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -61,15 +65,15 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--model_input_size',
                         type=int,
-                        default=1792, # 1792, 2816
+                        default=2816, # 2816, 1792
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
-                        default=None, # None, 'gene_corrected_read_depth'
+                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=none_or_str,
-                        default=None, # None, 'nonzero_mean'
+                        default='nonzero_mean', # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=none_or_str,
@@ -89,11 +93,11 @@ if __name__ == '__main__':
                         help='Count count norm method.')
     parser.add_argument('--include_zero_expr_genes',
                         action=argparse.BooleanOptionalAction,
-                        default=True, # True, False
+                        default=False, # True, False
                         help='If `True`, zero expression genes are included in the tokenization.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="6",
+                        default="10", # "10", "6"
                         help='Number of neighbors.')
     args = parser.parse_args()
     
