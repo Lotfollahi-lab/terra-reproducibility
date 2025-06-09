@@ -1,0 +1,83 @@
+Experiment name: xhb1002-AT9-6b_1p.
+Experiment description: xhb1002-AT9-6b_1p (dataset-id 1002) | 6 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-28>
+Subject: Job 494996: <xhb1002-AT9-6b_1p_cell-graph-tokenizer_3> in cluster <farm22> Exited
+
+Job <xhb1002-AT9-6b_1p_cell-graph-tokenizer_3> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Apr  4 12:32:08 2025
+Job was executed on host(s) <3*node-13-28>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Apr  4 13:12:27 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Apr  4 13:12:27 2025
+Terminated at Fri Apr  4 14:13:06 2025
+Results reported at Fri Apr  4 14:13:06 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT9-6b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   7809.00 sec.
+    Max Memory :                                 512340 MB
+    Average Memory :                             213465.59 MB
+    Total Requested Memory :                     512000.00 MB
+    Delta Memory :                               -340.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                23
+    Run time :                                   3637 sec.
+    Turnaround time :                            6058 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT9-6b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_3_494996.err> for stderr output of this job.
+

@@ -1,0 +1,120 @@
+
+# >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+
+    Traceback (most recent call last):
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/exception_handler.py", line 18, in __call__
+        return func(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/main.py", line 61, in main_subshell
+        exit_code = do_call(args, parser)
+                    ^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/conda_argparse.py", line 205, in do_call
+        result = getattr(module, func_name)(args, parser)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/main_clean.py", line 412, in execute
+        json_result = _execute(args, parser)
+                      ^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/main_clean.py", line 385, in _execute
+        json_result["tarballs"] = tars = find_tarballs()
+                                         ^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/main_clean.py", line 159, in find_tarballs
+        _, _, tars = next(os.walk(pkgs_dir))
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+    StopIteration
+
+`$ /software/cellgen/cellgeni/conda/bin/conda clean -ty`
+
+  environment variables:
+                 CIO_TEST=<not set>
+                  CONDARC=/nfs/users/nfs_s/sb75/.condarc
+    CONDA_ALLOW_SOFTLINKS=false
+        CONDA_ALWAYS_COPY=true
+           CONDA_CHANNELS=conda-forge,bioconda,nodefaults
+   CONDA_CHANNEL_PRIORITY=strict
+  CONDA_DENYLIST_CHANNELS=defaults,anaconda,r,main,pro,msys2
+          CONDA_ENVS_PATH=/software/cellgen/team361/sb75/envs
+CONDA_NOTIFY_OUTDATED_CONDA=false
+          CONDA_PKGS_DIRS=/software/cellgen/team361/sb75/envs/.pkgs
+               CONDA_ROOT=/software/cellgen/cellgeni/conda
+             CONDA_SOLVER=libmamba
+                CONDA_YES=true
+           CURL_CA_BUNDLE=<not set>
+           IDS_SPACK_PATH=/software/spack_environments/default/00/share/spack/setup-env.sh
+      JUPYTER_CONFIG_PATH=/nfs/users/nfs_s/sb75/.jupyter
+          LD_LIBRARY_PATH=/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/lib:/usr/lib/oracle/19.6/client64/lib
+               LD_PRELOAD=<not set>
+                  MANPATH=/software/cellgen/cellgeni/conda/share/man:/software/cellgen/cellgeni/
+                          conda/man:/usr/local/lsf/10.1/man:::
+               MODULEPATH=/software/spack_environments/default/00/share/spack/modules/linux-
+                          ubuntu22.04-x86_64_v3:/software/modules:/etc/environment-modules/modul
+                          es:/usr/share/modules/versions:/usr/share/modules//modulefiles:/usr/sh
+                          are/modules/modulefiles
+                     PATH=/software/cellgen/cellgeni/conda/sbin:/software/cellgen/cellgeni/conda
+                          /bin:/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/bin:/nfs/users/nfs_s/sb75/.vscode-server/cli/servers/Stable-
+                          fabdb6a30b49f79a7aba0f2ad9df9b399473380f/server/bin/remote-cli:/softwa
+                          re/spack_environments/default/00/bin:/usr/lib/oracle/19.6/client64/bin
+                          :/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/etc:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bi
+                          n:/usr/games:/usr/local/games:/snap/bin:/bin:/software/bin
+          PKG_CONFIG_PATH=/software/cellgen/cellgeni/conda/lib/pkgconfig
+         PYTHONNOUSERSITE=true
+                 REF_PATH=/lustre/scratch125/core/sciops_repository/cram_cache/%2s/%2s/%s:/lustr
+                          e/scratch126/core/sciops_repository/cram_cache/%2s/%2s/%s:URL=http://r
+                          efcache.dnapipelines.sanger.ac.uk::8000/%s
+       REQUESTS_CA_BUNDLE=<not set>
+            SSL_CERT_FILE=/usr/lib/ssl/certs/ca-certificates.crt
+  __MODULES_SHARE_MANPATH=:1
+ __MODULES_SHARE_REF_PATH=:2
+
+     active environment : None
+       user config file : /nfs/users/nfs_s/sb75/.condarc
+ populated config files : /software/cellgen/cellgeni/conda/.condarc
+                          /nfs/users/nfs_s/sb75/.condarc
+          conda version : 24.11.0
+    conda-build version : not installed
+         python version : 3.12.6.final.0
+                 solver : libmamba (default)
+       virtual packages : __archspec=1=zen3
+                          __conda=24.11.0=0
+                          __glibc=2.35=0
+                          __linux=5.15.0=0
+                          __unix=0=0
+       base environment : /software/cellgen/cellgeni/conda  (read only)
+      conda av data dir : /software/cellgen/cellgeni/conda/etc/conda
+  conda av metadata url : None
+           channel URLs : https://conda.anaconda.org/conda-forge/linux-64
+                          https://conda.anaconda.org/conda-forge/noarch
+                          https://conda.anaconda.org/bioconda/linux-64
+                          https://conda.anaconda.org/bioconda/noarch
+                          https://conda.anaconda.org/nodefaults/linux-64
+                          https://conda.anaconda.org/nodefaults/noarch
+          package cache : /software/cellgen/team361/sb75/envs/.pkgs
+                          /lustre/scratch126/cellgen/team361/sb75/conda/pkgs
+                          /lustre/scratch126/cellgen/team205/sb75/conda/pkgs
+                          /lustre/scratch126/cellgen/team205/sb75/.conda/pkgs
+       envs directories : /software/cellgen/team361/sb75/envs
+                          /lustre/scratch126/cellgen/team361/sb75/conda/envs
+                          /lustre/scratch126/cellgen/team205/sb75/conda/envs
+                          /nfs/users/nfs_s/sb75/.conda/envs
+                          /software/cellgen/cellgeni/conda/envs
+               platform : linux-64
+             user-agent : conda/24.11.0 requests/2.32.3 CPython/3.12.6 Linux/5.15.0-131-generic ubuntu/22.04.5 glibc/2.35 solver/libmamba conda-libmamba-solver/24.7.0 libmambapy/1.5.10
+                UID:GID : 22161:15653
+             netrc file : /nfs/users/nfs_s/sb75/.netrc
+           offline mode : False
+
+
+An unexpected error has occurred. Conda has prepared the above report.
+If you suspect this error is being caused by a malfunctioning plugin,
+consider using the --no-plugins option to turn off plugins.
+
+Example: conda --no-plugins install <package>
+
+Alternatively, you can set the CONDA_NO_PLUGINS environment variable on
+the command line to run the command without plugins enabled.
+
+Example: CONDA_NO_PLUGINS=true conda install <package>
+
+Upload did not complete.

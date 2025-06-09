@@ -1,24 +1,26 @@
 import argparse
+import os
+import tracemalloc
+from pathlib import Path
 
 import pandas as pd
 import datasets
-from pathlib import Path
-import os
-import tracemalloc
-
-
-tokenizer='cell-graph-tokenizer'
-
-num_shards = 32
-norm_factor = "None"
-norm_method = "shifted_log"
-n_neighs = 10
-hparam_prefix = '_'.join([str(s) for s in [num_shards, norm_factor, norm_method, "knn", n_neighs]])
-print(hparam_prefix)
 
 
 def main(args):
-    gold_data_path = Path(args.data_directory_path) / 'gold' / tokenizer
+    gold_data_path = Path(args.data_directory_path) / 'gold' / args.tokenizer
+
+    hparam_prefix = '_'.join([str(s) for s in [
+        args.num_shards,
+        args.rank_cell_norm_method,
+        args.rank_gene_norm_method,
+        args.rank_count_norm_method,
+        args.count_cell_norm_method,
+        args.count_gene_norm_method,
+        args.count_count_norm_method,
+        "knn",
+        args.n_neighs]])
+    print(hparam_prefix)
 
     ds_list = []
 
@@ -34,14 +36,21 @@ def main(args):
         
         gold_dataset_path = gold_data_path / dataset_name
         dir_substring = f"{dataset_name}_{hparam_prefix}"
-        
+
         gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and dir_substring in p.name][0]
         
         print(gold_dataset_dir)
 
         ds = datasets.load_from_disk(str(gold_dataset_dir))
+
+        # temp
+        # ds = ds.remove_columns(['cell_total_counts', 'cell_n_probed_genes'])
+        #item = ds[0]
+        #if type(item['cell_total_counts']) != list:
+        #    print(item['cell_total_counts'])
+
         ds_list.append(ds)
-        
+
     cohort_dir = gold_data_path / args.cohort_name
     cohort_dataset_dir = cohort_dir / f"{args.cohort_name}_{hparam_prefix}"
     output_path = str(
@@ -54,7 +63,7 @@ def main(args):
     print("Concatenating datasets...")
     tracemalloc.start()
     concatenated_dataset = datasets.concatenate_datasets(ds_list)
-    concatenated_dataset.save_to_disk(output_path, num_shards=num_shards)
+    concatenated_dataset.save_to_disk(output_path, num_shards=args.num_shards)
     current, peak = tracemalloc.get_traced_memory()
     print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
 
@@ -64,16 +73,52 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/DATASETS",
+                        default="/nfs/team361/sb75/DATASETS",
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="human_cohort1_60m",
+                        default="hst_corpus_80m", # "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/human_cohort1_60m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
+    parser.add_argument('--tokenizer',
+                        type=str,
+                        default="cell-graph-tokenizer",
+                        help='Tokenizer.')
+    parser.add_argument('--num_shards',
+                        type=int,
+                        default="32",
+                        help='Number of shards.')
+    parser.add_argument('--rank_cell_norm_method',
+                        type=str,
+                        default=None, # None, 'gene_corrected_read_depth'
+                        help='Rank cell norm method.')
+    parser.add_argument('--rank_gene_norm_method',
+                        type=str,
+                        default=None, # None, 'nonzero_mean'
+                        help='Rank gene norm method.')
+    parser.add_argument('--rank_count_norm_method',
+                        type=str,
+                        default=None, # None
+                        help='Rank count norm method.')
+    parser.add_argument('--count_cell_norm_method',
+                        type=str,
+                        default=None, # None, 'gene_corrected_read_depth'
+                        help='Count cell norm method.')
+    parser.add_argument('--count_gene_norm_method',
+                        type=str,
+                        default=None, # None, 'nonzero_mean'
+                        help='Count gene norm method.')
+    parser.add_argument('--count_count_norm_method',
+                        type=str,
+                        default='shifted_log', # 'shifted_log', None
+                        help='Count count norm method.')
+    parser.add_argument('--n_neighs',
+                        type=int,
+                        default='10', # '10', '6'
+                        help='Number of neighbors.')
     args = parser.parse_args()
     
     main(args)

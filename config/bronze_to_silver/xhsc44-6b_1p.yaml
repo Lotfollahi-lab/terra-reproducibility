@@ -1,6 +1,6 @@
 experiment:
   name: xhsc44-6b_1p
-  description: Xenium Human Spinal Cord MS (dataset-id 44) | 6 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Human Spinal Cord MS (dataset-id 44) | 6 batch | 1 panel | Preprocess to silver
   study: Cellular architecture of evolving neuroinflammatory lesions and multiple sclerosis pathology
 
 paths:

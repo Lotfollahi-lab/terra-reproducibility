@@ -13,8 +13,8 @@ dataset:
     redownload: false
     urls:
       - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_mFemur_formic_acid_24hrdecal_section/Xenium_V1_mFemur_formic_acid_24hrdecal_section_outs.zip
-      - .nan
-      - .nan
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_mFemur_EDTA_3daydecal_section/Xenium_V1_mFemur_EDTA_3daydecal_section_outs.zip
+      - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_mFemur_EDTA_PFA_3daydecal_section/Xenium_V1_mFemur_EDTA_PFA_3daydecal_section_outs.zip
   file_names:
     - Xenium_V1_mFemur_formic_acid_24hrdecal_section
     - Xenium_V1_mFemur_EDTA_3daydecal_section

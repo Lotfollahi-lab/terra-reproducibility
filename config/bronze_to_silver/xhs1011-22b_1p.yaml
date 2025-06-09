@@ -1,0 +1,53 @@
+experiment:
+  name: "xhs1011-22b_1p"
+  description: "Xenium Human Skin (dataset-id 1011) | 22 batch | 1 panel | Preprocess to silver"
+  study: "Beacon Data from Lloyd Steele (5k Panel - 3rd round of samples (unlabelled))"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+  'dataset_id': 1011,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'skin'
+  }
+  batch: {
+    'split_by_batch': True,
+    'batch_key': 'sample_id',
+    'sample_batch_map': {
+                        'BK23_Day 14': 0,
+                        'BK22_Day 14': 1,
+                        'BK22_Day 3': 2,
+                        'BK23_Day 3': 3,
+                        'Baseline_resolved_CE6-SKI-28-FO-1-S22-B2': 4,
+                        'Lesional_CE5-SKI-28-FO-1-S22-A1': 5,
+                        'Baseline_resolved_CE3-SKI-28-FO-1-S22-B1': 6,
+                        'Baseline_resolved_CE4-SKI-27-FO-1-S22-B2': 7,
+                        'Lesional_CE6-SKI-28-FO-4-S22-A1': 8,
+                        'Baseline_never_CE5-SKI-27-FO-2-S22-C1': 9,
+                        'Week 8 (resolved)_CE5-SKI-27-FO-4-S22-E1': 10,
+                        'Lesional_CE3-SKI-24-FO-1-S22-A1': 11,
+                        'Week 8 (resolved)_CE4-SKI-27-FO-3-S22-E2': 12,
+                        'Week 8 (resolved)_CE3-SKI-28-FO-4-S22-E1': 13,
+                        'Week 4 (resolved)_CE6-SKI-28-FO-2-S22-D2': 14,
+                        'Week 4 (resolved)_CE5-SKI-27-FO-3-S22-D1': 15,
+                        'Week 8 (resolved)_CE6-SKI-28-FO-3-S22-E2': 16,
+                        'Baseline_never_CE4-SKI-21-FO-1-S22-C2': 17,
+                        'Baseline_resolved_CE5-SKI-27-FO-1-S22-B1': 18,
+                        'Baseline_never_CE3-SKI-28-FO-2-S22-C1': 19,
+                        'Lesional_CE4-SKI-27-FO-4-S22-A2': 20,
+                        'Baseline_resolved_CE6-SKI-20-FO-1-S22-C2': 21,
+                        }    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

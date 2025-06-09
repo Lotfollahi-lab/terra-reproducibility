@@ -1,0 +1,46 @@
+Timestamp: 27022025_225044_428
+Params: {'data': {'dataset_name': 'hst_corpus_70m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/silver/hst_corpus_70m', 'token_dict_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/lustre/scratch126/cellgen/team361/DATASETS/gold/cell-graph-tokenizer/hst_corpus_70m/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10.dataset', 'precomputed_split': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl', 'precomputed_n_nonzero_tokens': '/lustre/scratch126/cellgen/team361/DATASETS/tokenizer/hst_corpus_70m_32_None_None_None_None_None_shifted_log_knn_10_n_nonzero_tokens_train.pkl', 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 128, 'seq_len_neighborhood': 1280, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 112, 'num_workers': 24, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'counts', 'enc_depth': 6, 'enc_emb_dim': 1024, 'pred_depth': 2, 'pred_emb_dim': 1024, 'special_tokens': ['assay', 'tissue', 'gene_panel', 'batch'], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'centering': True, 'center_momentum': 0.99}, 'mask': {'n_contexts': 1, 'n_targets': 5, 'block_masking': True, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.5}, 'optimization': {'warmup': 0, 'epochs': 10, 'ema': [0.995, 1.0], 'start_lr': 2e-05, 'lr': 2e-05, 'final_lr': 2e-05, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 50000}}
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0301>
+Subject: Job 246987: <hst_corpus_70m_cell_graph_counts_24> in cluster <farm22> Exited
+
+Job <hst_corpus_70m_cell_graph_counts_24> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Feb 27 22:50:28 2025
+Job was executed on host(s) <24*farm22-gpu0301>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Thu Feb 27 22:50:28 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Feb 27 22:50:28 2025
+Terminated at Sat Mar  1 20:27:26 2025
+Results reported at Sat Mar  1 20:27:26 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/model_training/train_model.sh config/model/hst_corpus_70m_cell_graph_counts.yaml "cuda:0 cuda:1"
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   855548.00 sec.
+    Max Memory :                                 71021 MB
+    Average Memory :                             67918.65 MB
+    Total Requested Memory :                     358400.00 MB
+    Delta Memory :                               287379.00 MB
+    Max Swap :                                   -
+    Max Processes :                              56
+    Max Threads :                                332
+    Run time :                                   164216 sec.
+    Turnaround time :                            164218 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/hst_corpus_70m/farm-job-outputs/model/24_246987.err> for stderr output of this job.
+

@@ -1,0 +1,31 @@
+experiment:
+  name: "xhe1008-20b_1p"
+  description: "Xenium Human Whole Embryo (dataset-id 1008) | 20 batch | 1 panel"
+  study: "Dataset from Adam Boxall"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names: []
+
+harmonization:
+  uns: {
+  'dataset_id': 1008,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'embryo'
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

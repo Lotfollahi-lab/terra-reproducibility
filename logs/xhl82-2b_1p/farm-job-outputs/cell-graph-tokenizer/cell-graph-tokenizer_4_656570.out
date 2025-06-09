@@ -1,0 +1,59 @@
+Experiment name: xhl82-2b_1p.
+Experiment description: xhl82-2b_1p (dataset-id 82) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-24>
+Subject: Job 656570: <xhl82-2b_1p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhl82-2b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Apr  6 17:58:35 2025
+Job was executed on host(s) <4*node-13-24>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Apr  6 20:59:50 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Apr  6 20:59:50 2025
+Terminated at Sun Apr  6 21:26:10 2025
+Results reported at Sun Apr  6 21:26:10 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl82-2b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   2292.00 sec.
+    Max Memory :                                 531660 MB
+    Average Memory :                             168670.59 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               -7372.00 MB
+    Max Swap :                                   -
+    Max Processes :                              10
+    Max Threads :                                22
+    Run time :                                   1578 sec.
+    Turnaround time :                            12455 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl82-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_656570.err> for stderr output of this job.
+

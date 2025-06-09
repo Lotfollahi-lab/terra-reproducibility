@@ -1,0 +1,34 @@
+experiment:
+  name: "xhl1013-4b_1p"
+  description: "Xenium Human Liver (dataset-id 1013) | 4 batch | 1 panel | Preprocess to silver"
+  study: "Liver Data from Jonas Maaskola (5k Panel)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00335__0045536__DF3-LIV-0-FFPE-1-S1i__20250428__104112
+    - output-XETG00335__0045536__DF4-LIV-0-FFPE-1-S1ii__20250428__104113
+    - output-XETG00335__0045658__DF1-LIV-0-FFPE-1-S1i__20250428__104113
+    - output-XETG00335__0045658__DF2-LIV-0-FFPE-1-S1ii__20250428__104113
+
+harmonization:
+  uns: {
+  'dataset_id': 1013,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'liver'
+  }
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

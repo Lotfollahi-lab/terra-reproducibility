@@ -81,17 +81,22 @@ def compute_similarity_stats(adata,
     return similarity_stats
 
 
-def plot_similarity_heatmaps(similarity_stats, title_mean='Mean Similarity Between Types', title_variance='Variance of Similarity Between Types'):
+def plot_similarity_heatmaps(similarity_stats, 
+                             title_mean='Mean Similarity Between Types', 
+                             title_variance='Variance of Similarity Between Types',
+                             save_file_path=None):
     """
     Function to create and display two heatmaps for Mean Similarity and Variance Similarity side by side.
     
     Parameters:
-    - similarity_stats: DataFrame containing the similarity statistics with 'Class 1', 'Class 2', 'Mean Similarity', and 'Variance Similarity'.
+    - similarity_stats: DataFrame containing the similarity statistics with 'Class 1', 'Class 2', 
+                        'Mean Similarity', and 'Variance Similarity'.
     - title_mean: Title for the mean similarity heatmap (default: 'Mean Similarity Between Types').
     - title_variance: Title for the variance similarity heatmap (default: 'Variance of Similarity Between Types').
+    - save_file_path: File path to save the figure. If None, the figure is not saved (default: None).
     
     Returns:
-    - Displays two heatmaps (Mean Similarity and Variance Similarity).
+    - Displays two heatmaps (Mean Similarity and Variance Similarity). If a file path is provided, the plot is also saved.
     """
     # Create pivot tables for mean similarity and variance similarity
     similarity_pivot_mean = similarity_stats.pivot(index='Class 1', columns='Class 2', values='Mean Similarity')
@@ -100,20 +105,38 @@ def plot_similarity_heatmaps(similarity_stats, title_mean='Mean Similarity Betwe
     # Create the figure and two subplots side by side
     fig, axes = plt.subplots(1, 2, figsize=(18, 8))
     
-    # Mean similarity heatmap
-    sns.heatmap(similarity_pivot_mean, annot=True, cmap="coolwarm", cbar=True, fmt=".2f", ax=axes[0])
-    axes[0].set_title(title_mean)
-    axes[0].set_xlabel('Class 2')
-    axes[0].set_ylabel('Class 1')
+    # Mean similarity heatmap without gridlines
+    ax0 = axes[0]
+    sns.heatmap(similarity_pivot_mean, annot=True, cmap="coolwarm", cbar=True, fmt=".2f",
+                ax=ax0, linewidths=0, linecolor='none')
+    ax0.set_title(title_mean)
+    ax0.set_xlabel('Class 2')
+    ax0.set_ylabel('Class 1')
     
-    # Variance similarity heatmap
-    sns.heatmap(similarity_pivot_variance, annot=True, cmap="coolwarm", cbar=True, fmt=".2f", ax=axes[1])
-    axes[1].set_title(title_variance)
-    axes[1].set_xlabel('Class 2')
-    axes[1].set_ylabel('Class 1')
+    # Remove axes spines for a cleaner look
+    for spine in ax0.spines.values():
+        spine.set_visible(False)
+    
+    # Variance similarity heatmap without gridlines
+    ax1 = axes[1]
+    sns.heatmap(similarity_pivot_variance, annot=True, cmap="coolwarm", cbar=True, fmt=".2f",
+                ax=ax1, linewidths=0, linecolor='none')
+    ax1.set_title(title_variance)
+    ax1.set_xlabel('Class 2')
+    ax1.set_ylabel('Class 1')
+    
+    # Remove axes spines for a cleaner look
+    for spine in ax1.spines.values():
+        spine.set_visible(False)
     
     # Adjust the layout
     plt.tight_layout()
+    
+    # Save the plot if a file path is provided
+    if save_file_path:
+        plt.savefig(save_file_path,
+                    dpi=300,
+                    bbox_inches='tight')
     
     # Display the heatmaps
     plt.show()
@@ -140,12 +163,12 @@ custom_palette = {
     "15": "#9D88A2", # Mauve
     "16": "#FF4D4D", # Light Red
     "17": "#9B4DCA", # Lavender-Purple
-    "18": "#FF9CDA", # Bright Pink
-    "19": "#FF69B4", # Hot Pink
-    "20": "#FF00FF", # Magenta
+    "18": "#8B0000", # Dark Red
+    "19": "#228B22", # Forest Green
+    "20": "#8A2BE2", # Blue Violet
     "21": "#DA70D6", # Orchid
     "22": "#BA55D3", # Medium Orchid
-    "23": "#8A2BE2", # Blue Violet
+    "23": "#88A0A8", # Gray-Blue-Green
     "24": "#9370DB", # Medium Purple
     "25": "#7B68EE", # Medium Slate Blue
     "26": "#4169E1", # Royal Blue
@@ -157,12 +180,12 @@ custom_palette = {
     "32": "#7FFF00", # Chartreuse
     "33": "#ADFF2F", # Green Yellow
     "34": "#32CD32", # Lime Green
-    "35": "#228B22", # Forest Green
+    "35": "#FF69B4", # Hot Pink
     "36": "#FFD8B8", # Peach
     "37": "#008080", # Teal
     "38": "#20B2AA", # Light Sea Green
     "39": "#00FFFF", # Cyan
-    "40": "#00BFFF", # Deep Sky Blue
+    "40": "#FF00FF", # Magenta
     "41": "#4169E1", # Royal Blue
     "42": "#0000CD", # Medium Blue
     "43": "#00008B", # Dark Blue
@@ -174,8 +197,8 @@ custom_palette = {
     "49": "#FF7F50", # Coral
     "50": "#CD5C5C", # Indian Red
     "51": "#B22222", # Fire Brick
-    "52": "#FFB83F",  # Light Orange
-    "53": "#8B0000", # Dark Red
+    "52": "#FF9CDA", # Bright Pink
+    "53": "#FFB83F", # Light Orange
     "54": "#D2691E", # Chocolate
     "55": "#A0522D", # Sienna
     "56": "#800000", # Maroon
@@ -187,8 +210,8 @@ custom_palette = {
     "62": "#F17171", # Light Red
     "63": "#000000", # Black
     "64": "#FF8C42", # Tangerine
-    "65": "#F9A11F", # Bright Orange-Yellow
-    "66": "#FACC15", # Golden Yellow
+    "65": "#FACC15", # Golden Yellow
+    "66": "#00BFFF", # Deep Sky Blue
     "67": "#E2E062", # Pale Lime
     "68": "#BADE92", # Soft Lime
     "69": "#70C1B3", # Greenish-Blue
@@ -202,7 +225,7 @@ custom_palette = {
     "77": "#C38D9E", # Mauve-Pink
     "78": "#937D64", # Light Brown
     "79": "#B1C1CC", # Light Blue-Gray
-    "80": "#88A0A8", # Gray-Blue-Green
+    "80": "#F9A11F", # Bright Orange-Yellow
     "81": "#4E598C", # Dark Blue-Purple
     "82": "#4B4E6D", # Dark Gray-Blue
     "83": "#8E9AAF", # Light Blue-Grey
@@ -220,4 +243,3 @@ custom_palette = {
     "-1" : "#E1D9D1",
     "None" : "#E1D9D1"
 }
-

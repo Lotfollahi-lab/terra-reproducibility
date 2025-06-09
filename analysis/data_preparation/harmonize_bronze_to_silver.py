@@ -14,28 +14,34 @@ from extract_utils import pre_process
 
 
 def create_gene_ensembl_map_dict(
+        data_directory_path: Path,
         species: str, 
-        release: int = 111
+        release: int=111
     ) -> dict:
     """
     Create a dictionary of gene symbol names to ensembl id obtained from Ensembl Release.
     
     Parameters:
     ----------
-    - species (str): The species of the dataset.
-    - release (int): The release version of the Ensembl database.
+    data_directory_path:
+        The path to the data directory.
+    species:
+        The species of the dataset.
+    release:
+        The release version of the Ensembl database.
     
     Returns:
     ----------
-    - Dict: A dictionary of gene symbol names to ensembl id.
+    gene_name_to_ensembl_id_dict:
+        A dictionary of gene symbol names to ensembl id.
     """
-    fname = Path("/lustre/scratch126/cellgen/team361/DATASETS/genes") / f"{species}_gene_name_to_ensembl_id_dict.pkl"
+    fname = data_directory_path / "genes" / f"{species}_gene_name_to_ensembl_id_dict.pkl"
     if os.path.exists(fname):
-        print(f"Loading gene name to ensembl id dictionary for species = {species}...")
+        print(f"Loading gene name to ensembl id dictionary from {fname}...")
         with open(fname, 'rb') as f:
             gene_name_to_ensembl_id_dict = pickle.load(f)
     else:
-        print(f"Creating gene name to ensembl id dictionary for species = {species}...")
+        print(f"Creating gene name to ensembl id dictionary at {fname}...")
         # Extract Ensembl IDs of protein coding and miRNA mouse genes
         ensembl = EnsemblRelease(release=release, species=species)
         ensembl.download()
@@ -239,6 +245,7 @@ def harmonize_batch(
 
 
 def harmonize_bronze_data_to_silver_data(
+        data_directory_path,
         input_directory,
         uns_params,
         batch_params,
@@ -249,7 +256,8 @@ def harmonize_bronze_data_to_silver_data(
 
     # save or load gene_name_to_ensembl_id_dict
     gene_ensembl_map_dict = create_gene_ensembl_map_dict(
-                                uns_params["species"]
+                                data_directory_path=data_directory_path,
+                                species=uns_params["species"],
                             )
     
     files = list(input_directory.glob("**/*.h5ad"))
@@ -440,6 +448,7 @@ def main(config: Dict):
     # ------------------ Harmonize --------------------------
 
     harmonize_bronze_data_to_silver_data(
+        data_directory_path,
         input_directory,
         uns_params,
         batch_params,

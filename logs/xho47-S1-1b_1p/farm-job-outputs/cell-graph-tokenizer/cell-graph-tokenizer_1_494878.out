@@ -1,0 +1,51 @@
+Experiment name: xho47-S1-1b_1p.
+Experiment description: xho47-S1-1b_1p (dataset-id 47) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-28>
+Subject: Job 494878: <xho47-S1-1b_1p_cell-graph-tokenizer_1> in cluster <farm22> Exited
+
+Job <xho47-S1-1b_1p_cell-graph-tokenizer_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Apr  4 12:31:48 2025
+Job was executed on host(s) <node-13-28>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Apr  4 12:31:57 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Apr  4 12:31:57 2025
+Terminated at Fri Apr  4 13:12:19 2025
+Results reported at Fri Apr  4 13:12:19 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xho47-S1-1b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   2330.00 sec.
+    Max Memory :                                 535918 MB
+    Average Memory :                             222200.06 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               -11630.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                15
+    Run time :                                   2423 sec.
+    Turnaround time :                            2431 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xho47-S1-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_1_494878.err> for stderr output of this job.
+

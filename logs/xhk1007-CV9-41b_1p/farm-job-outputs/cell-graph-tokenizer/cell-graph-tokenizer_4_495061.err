@@ -1,0 +1,10 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Tracking run with wandb version 0.18.0
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+Exception ignored in: <function _xla_gc_callback at 0x150db1a5a320>
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/jax/_src/lib/__init__.py", line 96, in _xla_gc_callback
+    def _xla_gc_callback(*args):
+KeyboardInterrupt: 
+Terminated

@@ -1,6 +1,6 @@
 experiment:
   name: mhb83-1b_1p
-  description: MERSCOPE Human Brain Alzheimer (dataset-id 83) | 137,627 cells | 1 batch | 1 panel
+  description: MERSCOPE Human Brain Alzheimer (dataset-id 83) | 137,627 cells | 1 batch | 1 panel | Preprocess to silver
   study: Vizgen MERSCOPE 1000 Plex Data Release, August 2024. https://console.cloud.google.com/storage/browser/vz-1k-showcase/human_brain_1k/202309251210_HuBrain-FF-SampleF-RC_VMSC000000/region_0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&inv=1&invt=AbnMVw&prefix=&forceOnObjectsSortingFiltering=false
 
 paths:

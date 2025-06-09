@@ -1,0 +1,51 @@
+Experiment name: xhb1002-AT6-4-1b_1p.
+Experiment description: xhb1002-AT6-4-1b_1p (dataset-id 1002) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 986348: <xhb1002-AT6-4-1b_1p_cell-graph-tokenizer_3> in cluster <farm22> Exited
+
+Job <xhb1002-AT6-4-1b_1p_cell-graph-tokenizer_3> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Apr 10 07:42:26 2025
+Job was executed on host(s) <3*b12-hm-02>, in queue <teramem>, as user <sb75> in cluster <farm22> at Fri Apr 11 00:47:20 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Apr 11 00:47:20 2025
+Terminated at Fri Apr 11 02:04:07 2025
+Results reported at Fri Apr 11 02:04:07 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT6-4-1b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   4789.00 sec.
+    Max Memory :                                 1230595 MB
+    Average Memory :                             462121.88 MB
+    Total Requested Memory :                     1228800.00 MB
+    Delta Memory :                               -1795.00 MB
+    Max Swap :                                   23050 MB
+    Max Processes :                              9
+    Max Threads :                                21
+    Run time :                                   4793 sec.
+    Turnaround time :                            66101 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT6-4-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_3_986348.err> for stderr output of this job.
+

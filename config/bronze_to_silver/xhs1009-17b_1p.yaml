@@ -1,0 +1,51 @@
+experiment:
+  name: "xhs1009-17b_1p"
+  description: "Xenium Human Skin (dataset-id 1009) | 17 batch | 1 panel | Preprocess to silver"
+  study: "Beacon Data from Lloyd Steele (256 Skin Panel)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+  'dataset_id': 1009,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'skin'
+  }
+  batch: {
+    'split_by_batch': True,
+    'batch_key': 'sample',
+    'sample_batch_map': {
+                        'BK21-SKI-24-FO-1-S4': 0,
+                        'BK18-SKI-28-FO-1-S4': 1,
+                        'BK21-SKI-28-FO-2-S4': 2,
+                        'BK18-SKI-27-FO-1-S4': 3,
+                        'BK21-SKI-27-FO-1-S4': 4,
+                        'BK21-SKI-28-FO-1-S4': 5,
+                        'BK20-SKI-28-FO-1-S4': 6,
+                        'BK20-SKI-27-FO-1-S4': 7,
+                        'BK27-SKI-27-FO-4-S4': 8,
+                        'BK27-SKI-27-FO-5-S4': 9,
+                        'BK27-SKI-27-FO-1-S4': 10,
+                        'BK27-SKI-27-FO-3-S4': 11,
+                        'BK18-SKI-27-FO-2-S4': 12,
+                        'BK18-SKI-27-FO-3-S4': 13,
+                        'BK18-SKI-27-FO-4-S4': 14,
+                        'BK20-SKI-27-FO-2-S4': 15,
+                        'BK27-SKI-27-FO-2-S4': 16,
+                        }    
+  }
+  key_mappings: {
+    'cell_type': 'Annotation',
+    'niche_type': 'NICHE_NAMES',
+  }
+  misc: {
+    'min_genes': 10,
+  }

@@ -1,29 +1,30 @@
 experiment:
-  experiment_name: "mhl80-8b_1p" 
-  experiment_description: "MERFISH Human Liver (dataset-id = 80) | 8-batch | 1-panel"
-  tokenizer: "cell-graph-tokenizer"
-  overwrite: True
-
-tokenization:
-  token_dict_experiment_name: human_cohort1_50m
-  tokens_per_cell: 128
-  use_generator: True
-  add_cls_tokens: False
-  norm_method: "shifted_log"
-  norm_factor: null
-  prenormalize: False
-  processing_mode: "parallel"
-  num_shards: 32
-  keep_in_memory: False
-  n_neighs: 10
-  radius: null
-  delaunay: False
-
-wandb:
-  project: "NicheJEPA"
-  job_type: "create-tokenized-dataset"
-  save_artifact: False
-  mode: "offline"
-
+  experiment_description: MERFISH Human Liver (dataset-id = 80) | 8-batch | 1-panel
+  experiment_name: mhl80-8b_1p
+  model_input_size: 1792
+  tokenizer: cell-graph-tokenizer
 paths:
-  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
+  data_directory_path: /lustre/scratch126/cellgen/team361/DATASETS/
+  norm_factor_file_path: /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_70m_norm_factors.csv
+  token_dictionary_file_path: /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+tokenization:
+  count_cell_norm_method: null
+  count_count_norm_method: shifted_log
+  count_gene_norm_method: null
+  delaunay: false
+  include_zero_expr_genes: true
+  keep_in_memory: false
+  n_neighs: 6
+  num_shards: 32
+  processing_mode: parallel
+  radius: null
+  rank_cell_norm_method: null
+  rank_count_norm_method: null
+  rank_gene_norm_method: null
+  species: homo_sapiens
+  use_generator: true
+wandb:
+  job_type: create-tokenized-dataset
+  mode: offline
+  project: NicheJEPA
+  save_artifact: false

@@ -1,0 +1,202 @@
+wandb: Using wandb-core as the SDK backend. Please refer to https://wandb.me/wandb-core for more information.
+wandb: Tracking run with wandb version 0.18.0
+wandb: W&B syncing is set to `offline` in this directory.  
+wandb: Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 255, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 299, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1090, in from_generator
+    return GeneratorDatasetInputStream(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/io/generator.py", line 29, in __init__
+    self.builder = Generator(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 342, in __init__
+    self.config, self.config_id = self._create_builder_config(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 603, in _create_builder_config
+    config_id = builder_config.create_config_id(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 186, in create_config_id
+    suffix = Hasher.hash(config_kwargs_to_add_to_suffix)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/fingerprint.py", line 188, in hash
+    return cls.hash_bytes(dumps(value))
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 109, in dumps
+    dump(obj, file)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 103, in dump
+    Pickler(file, recurse=True).dump(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 420, in dump
+    StockPickler.dump(self, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 487, in dump
+    self.save(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1985, in save_function
+    _save_with_postproc(pickler, (_create_function, (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1117, in _save_with_postproc
+    pickler.save_reduce(*reduction)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 932, in save_list
+    self._batch_appends(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 956, in _batch_appends
+    save(x)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 603, in save
+    self.save_reduce(obj=obj, *rv)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 691, in save_reduce
+    save(func)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 34, in save
+    if "regex" in sys.modules:
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 255, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/lustre/scratch126/cellgen/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 299, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1090, in from_generator
+    return GeneratorDatasetInputStream(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/io/generator.py", line 29, in __init__
+    self.builder = Generator(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 342, in __init__
+    self.config, self.config_id = self._create_builder_config(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 603, in _create_builder_config
+    config_id = builder_config.create_config_id(
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/builder.py", line 186, in create_config_id
+    suffix = Hasher.hash(config_kwargs_to_add_to_suffix)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/fingerprint.py", line 188, in hash
+    return cls.hash_bytes(dumps(value))
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 109, in dumps
+    dump(obj, file)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 103, in dump
+    Pickler(file, recurse=True).dump(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 420, in dump
+    StockPickler.dump(self, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 487, in dump
+    self.save(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1985, in save_function
+    _save_with_postproc(pickler, (_create_function, (
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1117, in _save_with_postproc
+    pickler.save_reduce(*reduction)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 932, in save_list
+    self._batch_appends(obj)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 956, in _batch_appends
+    save(x)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 603, in save
+    self.save_reduce(obj=obj, *rv)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/pickle.py", line 691, in save_reduce
+    save(func)
+  File "/lustre/scratch126/cellgen/team361/sb75/conda/envs/nichejepa_new/lib/python3.10/site-packages/datasets/utils/_dill.py", line 34, in save
+    if "regex" in sys.modules:
+KeyboardInterrupt
+wandb: Encountered an error while tearing down the service manager: [Errno 32] Broken pipe
+Terminated

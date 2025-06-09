@@ -1,0 +1,84 @@
+Experiment name: xhk1007-CV6-41b_1p.
+Experiment description: Xenium Human Kidney (dataset-id = 1007) | 41-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 1792.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+[1;34mwandb[0m:
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20250404_101306-e0x9802r[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20250404_101306-e0x9802r/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-26>
+Subject: Job 477894: <xhk1007-CV6-41b_1p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhk1007-CV6-41b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Apr  4 10:08:55 2025
+Job was executed on host(s) <4*node-14-26>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Apr  4 10:12:44 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Apr  4 10:12:44 2025
+Terminated at Fri Apr  4 10:13:15 2025
+Results reported at Fri Apr  4 10:13:15 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhk1007-CV6-41b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   35.00 sec.
+    Max Memory :                                 1450 MB
+    Average Memory :                             417.00 MB
+    Total Requested Memory :                     393216.00 MB
+    Delta Memory :                               391766.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                20
+    Run time :                                   30 sec.
+    Turnaround time :                            260 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1007-CV6-41b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_477894.err> for stderr output of this job.
+

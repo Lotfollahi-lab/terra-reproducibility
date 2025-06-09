@@ -1,6 +1,6 @@
 experiment:
   name: xhc55-3b_1p
-  description: Xenium Human Colon Cancer (dataset-id 55) | 3 batch | 1 panel | Download from 10x Genomics to Bronze and preprocess to silver
+  description: Xenium Human Colon Cancer (dataset-id 55) | 3 batch | 1 panel | Preprocess to silver
   study: Characterization of immune cell populations in the tumor microenvironment of colorectal cancer using high definition spatial profiling
 
 paths:

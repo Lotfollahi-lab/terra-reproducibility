@@ -4,9 +4,12 @@ scgpt
 
 wandb
 artifacts
+data
 #logs
 analysis/statistics/results/
 
 *__pycache__*
 .ipynb_checkpoints
+*.pkl
 analysis/data_analysis/logs
+analysis/checkpoints

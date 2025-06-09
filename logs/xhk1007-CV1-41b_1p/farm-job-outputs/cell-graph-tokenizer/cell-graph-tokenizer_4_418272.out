@@ -1,0 +1,80 @@
+Experiment name: xhk1007-CV1-41b_1p.
+Experiment description: Xenium Human Kidney (dataset-id = 1007) | 41-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/team361/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhk1007-CV1-41b_1p/cProfiler/cell-graph-tokenizer/xhk1007-CV1-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 9246.451349284001
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0102>
+Subject: Job 418272: <xhk1007-CV1-41b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <xhk1007-CV1-41b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Feb 13 08:52:03 2025
+Job was executed on host(s) <4*farm22-gpu0102>, in queue <gpu-basement>, as user <sb75> in cluster <farm22> at Thu Feb 13 08:52:03 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Feb 13 08:52:03 2025
+Terminated at Thu Feb 13 11:27:23 2025
+Results reported at Thu Feb 13 11:27:23 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+scripts/create_tokenized_data.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhk1007-CV1-41b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   19340.00 sec.
+    Max Memory :                                 169850 MB
+    Average Memory :                             105240.34 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               92294.00 MB
+    Max Swap :                                   -
+    Max Processes :                              11
+    Max Threads :                                41
+    Run time :                                   9322 sec.
+    Turnaround time :                            9320 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1007-CV1-41b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_418272.err> for stderr output of this job.
+
