@@ -1,0 +1,142 @@
+
+EnvironmentNameNotFound: Could not find conda environment: nichejepa_new
+You can list all discoverable environments with `conda info --envs`.
+
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 28, in <module>
+    import wandb
+ModuleNotFoundError: No module named 'wandb'
+/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/base/context.py:200: FutureWarning: Adding 'defaults' to channel list implicitly is deprecated and will be removed in 25.3. 
+
+To remove this warning, please choose a default channel explicitly with conda's regular configuration system, e.g. by adding 'defaults' to the list of channels:
+
+  conda config --add channels defaults
+
+For more information see https://docs.conda.io/projects/conda/en/stable/user-guide/configuration/use-condarc.html
+
+  deprecated.topic(
+
+# >>>>>>>>>>>>>>>>>>>>>> ERROR REPORT <<<<<<<<<<<<<<<<<<<<<<
+
+    Traceback (most recent call last):
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/exception_handler.py", line 18, in __call__
+        return func(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/cli/main.py", line 49, in main_subshell
+        context.__init__(argparse_args=pre_args)
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/base/context.py", line 516, in __init__
+        self._set_search_path(
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/common/configuration.py", line 1432, in _set_search_path
+        self._set_raw_data(dict(self._load_search_path(self._search_path)))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/common/configuration.py", line 1421, in _load_search_path
+        yield path, YamlRawParameter.make_raw_parameters_from_file(path)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/common/configuration.py", line 398, in make_raw_parameters_from_file
+        yaml_obj = yaml_round_trip_load(fh)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/conda/common/serialize.py", line 34, in yaml_round_trip_load
+        return _yaml_round_trip().load(string)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/ruamel/yaml/main.py", line 449, in load
+        constructor, parser = self.get_constructor_parser(stream)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/ruamel/yaml/main.py", line 500, in get_constructor_parser
+        self.reader.stream = stream
+        ^^^^^^^^^^^^^^^^^^
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/ruamel/yaml/reader.py", line 120, in stream
+        self.determine_encoding()
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/ruamel/yaml/reader.py", line 174, in determine_encoding
+        self.update_raw()
+      File "/software/cellgen/cellgeni/conda/lib/python3.12/site-packages/ruamel/yaml/reader.py", line 263, in update_raw
+        data = self.stream.read(size)
+               ^^^^^^^^^^^^^^^^^^^^^^
+    OSError: [Errno 116] Stale file handle
+
+`$ /software/cellgen/cellgeni/conda/bin/conda clean -ty`
+
+  environment variables:
+                 CIO_TEST=<not set>
+                  CONDARC=/nfs/users/nfs_s/sb75/.condarc
+    CONDA_ALLOW_SOFTLINKS=false
+        CONDA_ALWAYS_COPY=true
+           CONDA_CHANNELS=conda-forge,bioconda,nodefaults
+   CONDA_CHANNEL_PRIORITY=strict
+  CONDA_DENYLIST_CHANNELS=defaults,anaconda,r,main,pro,msys2
+          CONDA_ENVS_PATH=/software/cellgen/team361/sb75/envs
+CONDA_NOTIFY_OUTDATED_CONDA=false
+          CONDA_PKGS_DIRS=/software/cellgen/team361/sb75/envs/.pkgs
+               CONDA_ROOT=/software/cellgen/cellgeni/conda
+             CONDA_SOLVER=libmamba
+                CONDA_YES=true
+           CURL_CA_BUNDLE=<not set>
+           IDS_SPACK_PATH=/software/spack_environments/default/00/share/spack/setup-env.sh
+      JUPYTER_CONFIG_PATH=/nfs/users/nfs_s/sb75/.jupyter
+          LD_LIBRARY_PATH=/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/lib:/usr/lib/oracle/19.6/client64/lib
+               LD_PRELOAD=<not set>
+                  MANPATH=/software/cellgen/cellgeni/conda/share/man:/software/cellgen/cellgeni/
+                          conda/man:/usr/local/lsf/10.1/man:::
+               MODULEPATH=/software/spack_environments/default/00/share/spack/modules/linux-
+                          ubuntu22.04-x86_64_v3:/software/modules:/etc/environment-modules/modul
+                          es:/usr/share/modules/versions:/usr/share/modules//modulefiles:/usr/sh
+                          are/modules/modulefiles
+                     PATH=/software/cellgen/cellgeni/conda/sbin:/software/cellgen/cellgeni/conda
+                          /bin:/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/bin:/nfs/users/nfs_s/sb75/.venvs/nichejepa/bin:/nfs/users/nfs_s
+                          /sb75/.cursor-server/cli/servers/Stable-
+                          96e5b01ca25f8fbd4c4c10bc69b15f6228c80770/server/bin/remote-cli:/softwa
+                          re/spack_environments/default/00/bin:/usr/lib/oracle/19.6/client64/bin
+                          :/software/lsf-farm22/10.1/linux3.10-glibc2.17-
+                          x86_64/etc:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bi
+                          n:/usr/games:/usr/local/games:/snap/bin:/bin:/software/bin
+          PKG_CONFIG_PATH=/software/cellgen/cellgeni/conda/lib/pkgconfig
+         PYTHONNOUSERSITE=true
+                 REF_PATH=URL=http://refcache.dnapipelines.sanger.ac.uk::8001/%s
+       REQUESTS_CA_BUNDLE=<not set>
+            SSL_CERT_FILE=/usr/lib/ssl/certs/ca-certificates.crt
+  __MODULES_SHARE_MANPATH=:1
+ __MODULES_SHARE_REF_PATH=:2
+
+     active environment : None
+       user config file : /nfs/users/nfs_s/sb75/.condarc
+ populated config files : 
+          conda version : 24.11.0
+    conda-build version : not installed
+         python version : 3.12.6.final.0
+                 solver : libmamba (default)
+       virtual packages : __archspec=1=zen3
+                          __conda=24.11.0=0
+                          __glibc=2.35=0
+                          __linux=5.15.0=0
+                          __unix=0=0
+       base environment : /software/cellgen/cellgeni/conda  (read only)
+      conda av data dir : /software/cellgen/cellgeni/conda/etc/conda
+  conda av metadata url : None
+           channel URLs : https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /software/cellgen/cellgeni/conda/pkgs
+                          /nfs/users/nfs_s/sb75/.conda/pkgs
+       envs directories : /nfs/users/nfs_s/sb75/.conda/envs
+                          /software/cellgen/cellgeni/conda/envs
+               platform : linux-64
+             user-agent : conda/24.11.0 requests/2.32.3 CPython/3.12.6 Linux/5.15.0-141-generic ubuntu/22.04.5 glibc/2.35 solver/libmamba conda-libmamba-solver/24.7.0 libmambapy/1.5.10
+                UID:GID : 22161:15653
+             netrc file : /nfs/users/nfs_s/sb75/.netrc
+           offline mode : False
+
+
+An unexpected error has occurred. Conda has prepared the above report.
+If you suspect this error is being caused by a malfunctioning plugin,
+consider using the --no-plugins option to turn off plugins.
+
+Example: conda --no-plugins install <package>
+
+Alternatively, you can set the CONDA_NO_PLUGINS environment variable on
+the command line to run the command without plugins enabled.
+
+Example: CONDA_NO_PLUGINS=true conda install <package>
+

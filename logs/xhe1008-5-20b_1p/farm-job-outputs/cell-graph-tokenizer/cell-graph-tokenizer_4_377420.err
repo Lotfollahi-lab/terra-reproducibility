@@ -1,0 +1,10 @@
+sed: read error on /nfs/users/nfs_s/sb75/.condarc: Stale file handle
+
+EnvironmentNameNotFound: Could not find conda environment: nichejepa_new
+You can list all discoverable environments with `conda info --envs`.
+
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 28, in <module>
+    import wandb
+ModuleNotFoundError: No module named 'wandb'

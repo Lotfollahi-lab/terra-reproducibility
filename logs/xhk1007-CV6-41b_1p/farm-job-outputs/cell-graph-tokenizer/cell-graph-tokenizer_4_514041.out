@@ -1,0 +1,100 @@
+Experiment name: xhk1007-CV6-41b_1p.
+Experiment description: Xenium Human Kidney (dataset-id = 1007) | 41-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+No perturbations applied...
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhk1007-CV6-41b_1p/cProfiler/cell-graph-tokenizer/xhk1007-CV6-41b_1p_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10_2816_4_parallel.prof.
+Function: tokenize_data | Cumulative Time: 17310.930802401002
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-27>
+Subject: Job 514041: <xhk1007-CV6-41b_1p_cell-graph-tokenizer_4> in cluster <farm22> Done
+
+Job <xhk1007-CV6-41b_1p_cell-graph-tokenizer_4> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Thu Jun 12 07:41:58 2025
+Job was executed on host(s) <4*node-14-27>, in queue <long>, as user <sb75> in cluster <farm22> at Thu Jun 12 09:44:44 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Jun 12 09:44:44 2025
+Terminated at Thu Jun 12 14:33:59 2025
+Results reported at Thu Jun 12 14:33:59 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhk1007-CV6-41b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   17419.11 sec.
+    Max Memory :                                 207216 MB
+    Average Memory :                             129867.61 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               407184.00 MB
+    Max Swap :                                   -
+    Max Processes :                              11
+    Max Threads :                                38
+    Run time :                                   17353 sec.
+    Turnaround time :                            24721 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1007-CV6-41b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_514041.err> for stderr output of this job.
+

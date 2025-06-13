@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-24>
+Subject: Job 377364: <xhc55-3b_1p_cell-graph-tokenizer_4> in cluster <farm22> Exited
+
+Job <xhc55-3b_1p_cell-graph-tokenizer_4> was submitted from host <node-14-11> by user <sb75> in cluster <farm22> at Mon Jun  9 15:12:35 2025
+Job was executed on host(s) <4*node-13-24>, in queue <long>, as user <sb75> in cluster <farm22> at Mon Jun  9 15:12:48 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jun  9 15:12:48 2025
+Terminated at Mon Jun  9 15:13:03 2025
+Results reported at Mon Jun  9 15:13:03 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhc55-3b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   0.64 sec.
+    Max Memory :                                 40 MB
+    Average Memory :                             22.67 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               614360.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   9 sec.
+    Turnaround time :                            28 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhc55-3b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_4_377364.err> for stderr output of this job.
+
