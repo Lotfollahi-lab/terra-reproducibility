@@ -10,6 +10,7 @@ The `cohort_dataset_names_file_path` is the path to a file containing all datase
 """
 
 import argparse
+import os
 import pickle
 from pathlib import Path
 
@@ -93,9 +94,10 @@ def main(args):
         dataset_names=dataset_names)
 
     # Save statistics to disk
-    statistics_file = f"{args.results_directory_path}/{args.cohort_name}_statistics.csv"
-    counts_file = f"{args.results_directory_path}/{args.cohort_name}_counts.pkl"
-    genes_file = f"{args.results_directory_path}/{args.cohort_name}_genes.pkl"
+    os.makedirs(f"{args.results_directory_path}/{args.cohort_name}", exist_ok=True)
+    statistics_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_statistics.csv"
+    counts_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_counts.pkl"
+    genes_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_genes.pkl"
     cohort_stats_df.to_csv(
         statistics_file,
         index=False,
