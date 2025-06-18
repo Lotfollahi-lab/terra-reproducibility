@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lymph node
-    sample_condition_map: {
-      'Xenium_Prime_Human_Lymph_Node_Reactive_FFPE': 'pseudolymphoma',
-      }
+    condition: pseudolymphoma
   batch:
     split_by_batch: false
     sample_batch_map: {}

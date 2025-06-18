@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: prostate
-    sample_condition_map: {
-      'Xenium_Prime_Human_Prostate_FFPE': 'adenocarcinoma',
-      }
+    condition: adenocarcinoma
   batch:
     split_by_batch: false
     sample_batch_map: {}

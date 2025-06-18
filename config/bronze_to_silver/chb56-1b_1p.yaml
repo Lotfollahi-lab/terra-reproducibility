@@ -22,9 +22,7 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: brain
-    sample_condition_map: {
-      'CosMx_Human_FFPE_FrontalCortex': 'healthy'
-      }
+    condition: healthy
   batch:
     split_by_batch: false
     sample_batch_map: {}

@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lung
-    sample_condition_map: {
-      'Xenium_V1_Human_Lung_Cancer_Addon_FFPE': 'nonsmall_cell_lung_carcinoma',
-      }
+    condition: nonsmall_cell_lung_carcinoma
   batch:
     split_by_batch: false
     sample_batch_map: {}

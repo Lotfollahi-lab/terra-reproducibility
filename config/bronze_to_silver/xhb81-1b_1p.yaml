@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: breast
-    sample_condition_map: {
-      'Xenium_Prime_Breast_Cancer_FFPE': 'invasive_ductal_carcinoma' # 'breast_cancer',
-      }
+    condition: invasive_ductal_carcinoma' # 'breast_cancer'
   batch:
     split_by_batch: false
     sample_batch_map: {}

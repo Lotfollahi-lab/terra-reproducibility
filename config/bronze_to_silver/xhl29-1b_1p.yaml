@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lung
-    sample_condition_map: {
-      'Xenium_V1_hLung_cancer_section': 'adenocarcinoma' # 'lung_carcinoma',
-      }
+    condition: adenocarcinoma' # 'lung_carcinoma'
   batch:
     split_by_batch: false
     sample_batch_map: {}

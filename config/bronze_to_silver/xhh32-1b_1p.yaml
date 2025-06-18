@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: heart
-    sample_condition_map: {
-      'Xenium_V1_hHeart_nondiseased_section_FFPE': 'healthy',
-      }
+    condition: healthy
   batch:
     split_by_batch: false
     sample_batch_map: {}

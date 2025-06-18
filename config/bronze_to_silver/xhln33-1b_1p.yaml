@@ -22,9 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lymph node
-    sample_condition_map: {
-      'Xenium_V1_hLymphNode_nondiseased_section': 'healthy',
-      }
+    condition: healthy
   batch:
     split_by_batch: false
     sample_batch_map: {}
