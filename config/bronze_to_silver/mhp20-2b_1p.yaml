@@ -22,6 +22,10 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: prostate
+    file_name_condition_map: {
+      'MERSCOPE_Human_Prostate_Cancer_Patient1': 'prostate_cancer',
+      'MERSCOPE_Human_Prostate_Cancer_Patient2': 'prostate_cancer',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

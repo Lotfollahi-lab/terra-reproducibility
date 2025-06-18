@@ -18,6 +18,7 @@ harmonization:
   'assay': 'xenium',
   'species': 'homo_sapiens',
   'tissue': 'brain'
+  'condition': 'glioblastoma'
   }
   batch: {
     'split_by_batch': False,

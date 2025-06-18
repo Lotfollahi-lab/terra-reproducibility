@@ -17,7 +17,8 @@ harmonization:
   'dataset_id': 1002,
   'assay': 'xenium',
   'species': 'homo_sapiens',
-  'tissue': 'brain'
+  'tissue': 'brain',
+  'condition': 'glioblastoma'
   }
   batch: {
     'split_by_batch': False,

@@ -20,6 +20,14 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: spinal_cord
+    file_name_condition_map: {
+      'Active-C_2013-019': 'multiple_sclerosis',
+      'Active-C_2017-100': 'multiple_sclerosis',
+      'Ctrl-C_2012-071': 'healthy',
+      'Ctrl-C_2017-16': 'healthy',
+      'Inactive-C_2007-069': 'multiple_sclerosis',
+      'Inactive-C_2012-078': 'multiple_sclerosis'
+      }
   batch: {
   'split_by_batch': true,
   'batch_key': 'library_id',

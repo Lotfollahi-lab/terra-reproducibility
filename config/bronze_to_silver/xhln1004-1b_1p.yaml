@@ -21,6 +21,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lymph node
+    file_name_condition_map: {
+      'NSCLC_healthy_lymph_node': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

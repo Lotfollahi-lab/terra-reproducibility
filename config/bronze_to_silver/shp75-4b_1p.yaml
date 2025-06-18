@@ -28,6 +28,12 @@ harmonization:
     assay: starmap
     species: homo_sapiens
     tissue: placenta
+    file_name_condition_map: {
+      'STARmap-ISS_sample_W11': 'healthy',
+      'STARmap-ISS_sample_W7': 'healthy',
+      'STARmap-ISS_sample_W8-2': 'healthy',
+      'STARmap-ISS_sample_W9': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    file_name_condition_map: {
+      'Xenium_V1_hSkin_Melanoma_Base_FFPE': 'melanoma',
+      'Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE': 'melanoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

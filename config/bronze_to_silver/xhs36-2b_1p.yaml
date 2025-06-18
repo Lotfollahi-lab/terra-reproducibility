@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    file_name_condition_map: {
+      'Xenium_V1_hSkin_nondiseased_section_1_FFPE': 'healthy',
+      'Xenium_V1_hSkin_nondiseased_section_2_FFPE': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

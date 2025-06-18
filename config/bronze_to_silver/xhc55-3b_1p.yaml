@@ -23,6 +23,11 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: colon
+    file_name_condition_map: {
+      'Xenium_V1_Human_Colon_Cancer_P1_CRC_Add_on_FFPE_outs': 'colorectal_cancer',
+      'Xenium_V1_Human_Colon_Cancer_P2_CRC_Add_on_FFPE_outs': 'colorectal_cancer',
+      'Xenium_V1_Human_Colon_Cancer_P5_CRC_Add_on_FFPE_outs': 'colorectal_cancer',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

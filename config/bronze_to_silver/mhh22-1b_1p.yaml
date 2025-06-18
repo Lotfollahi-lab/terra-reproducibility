@@ -21,6 +21,9 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: heart
+    file_name_condition_map: {
+      'MERFISH_Human_Heart': 'healthy',
+      }
   batch:
     split_by_batch: true
     batch_key: batch

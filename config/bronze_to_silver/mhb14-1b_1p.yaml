@@ -21,6 +21,9 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: breast
+    file_name_condition_map: {
+      'MERSCOPE_Human_Breast_Cancer_Patient1': 'breast_cancer',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

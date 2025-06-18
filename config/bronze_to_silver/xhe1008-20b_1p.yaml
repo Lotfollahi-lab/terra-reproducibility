@@ -19,7 +19,8 @@ harmonization:
   'dataset_id': 1008,
   'assay': 'xenium',
   'species': 'homo_sapiens',
-  'tissue': 'embryo'
+  'tissue': 'embryo',
+  'condition': 'healthy'
   }
   batch: {
     'split_by_batch': False,

@@ -26,6 +26,11 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: bone
+    file_name_condition_map: {
+      'Xenium_V1_hBoneMarrow_acute_lymphoid_leukemia_section': 'adult_acute_lymphoblastic_leukemia',
+      'Xenium_V1_hBoneMarrow_nondiseased_section': 'healthy',
+      'Xenium_V1_hBone_nondiseased_section': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

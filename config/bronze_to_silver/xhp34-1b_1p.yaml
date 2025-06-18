@@ -22,6 +22,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: pancreas
+    file_name_condition_map: {
+      'Xenium_V1_human_Pancreas_FFPE': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

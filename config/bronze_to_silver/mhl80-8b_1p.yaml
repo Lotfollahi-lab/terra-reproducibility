@@ -21,6 +21,9 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: liver
+    file_name_condition_map: {
+      'adata_healthy_diseased_merfish': 'unknown',
+      }
   batch: {
       'split_by_batch': True,
       'batch_key': 'batch',

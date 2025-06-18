@@ -22,6 +22,10 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: lung
+    file_name_condition_map: {
+      'MERSCOPE_Human_Lung_Cancer_Patient1': 'lung_cancer',
+      'MERSCOPE_Human_Lung_Cancer_Patient2': 'lung_cancer',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

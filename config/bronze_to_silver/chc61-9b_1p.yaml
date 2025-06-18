@@ -29,6 +29,17 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: colon
+    file_name_condition_map: {
+      'GSM7473682': 'healthy',
+      'GSM7473683': 'healthy',
+      'GSM7473684': 'healthy',
+      'GSM7473685': 'ulcerative_colitis',
+      'GSM7473686': 'ulcerative_colitis',
+      'GSM7473687': 'ulcerative_colitis',
+      'GSM7473688': 'crohn_disease',
+      'GSM7473689': 'crohn_disease',
+      'GSM7473690': 'crohn_disease'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

@@ -22,7 +22,8 @@ harmonization:
   'dataset_id': 1012,
   'assay': 'xenium',
   'species': 'homo_sapiens',
-  'tissue': 'ovary'
+  'tissue': 'ovary',
+  'condition': 'healthy'
   }
   batch:
     split_by_batch: false

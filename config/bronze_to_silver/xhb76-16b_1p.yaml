@@ -36,6 +36,24 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: brain
+    file_name_condition_map: {
+      '1837C': 'healthy',
+      '1837P': 'healthy',
+      '1886C': 'healthy',
+      '1886P': 'healthy',
+      '1893C': 'healthy',
+      '1893P': 'healthy',
+      '5730C': 'healthy',
+      '5730P': 'healthy',
+      '1264C': 'parkinson_disease',
+      '1264P': 'parkinson_disease',
+      '1310C': 'parkinson_disease',
+      '1310P': 'parkinson_disease',
+      '1816C': 'parkinson_disease',
+      '1816P': 'parkinson_disease',
+      '5331C': 'parkinson_disease',
+      '5331P': 'parkinson_disease'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

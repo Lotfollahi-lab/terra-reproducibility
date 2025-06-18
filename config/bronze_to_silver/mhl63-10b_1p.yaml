@@ -40,6 +40,18 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: liver
+    file_name_condition_map: {
+      '63_region_0': 'hepatocellular_carcinoma',
+      '122_region_0': 'hepatocellular_carcinoma',
+      '122_region_1': 'hepatocellular_carcinoma',
+      '1003_region_0': 'hepatocellular_carcinoma',
+      '1012_region_0': 'hepatocellular_carcinoma',
+      '1012_region_1': 'hepatocellular_carcinoma',
+      '1014_region_0': 'hepatocellular_carcinoma',
+      '1014_region_1': 'hepatocellular_carcinoma',
+      '1017_region_0': 'hepatocellular_carcinoma',
+      '1029_region_0': 'hepatocellular_carcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

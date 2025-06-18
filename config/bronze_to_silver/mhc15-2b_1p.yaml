@@ -22,6 +22,10 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: colon
+    file_name_condition_map: {
+      'MERSCOPE_Human_Colon_Cancer_Patient1': 'colon_cancer',
+      'MERSCOPE_Human_Colon_Cancer_Patient2': 'colon_cancer',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

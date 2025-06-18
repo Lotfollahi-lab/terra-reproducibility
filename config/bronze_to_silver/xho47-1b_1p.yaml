@@ -22,6 +22,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: ovary
+    file_name_condition_map: {
+      'Xenium_Prime_Human_Ovary_FF': 'ovarian_adenocarcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

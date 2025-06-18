@@ -22,6 +22,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: brain
+    file_name_condition_map: {
+      'Xenium_V1_Human_Brain_GBM_FFPE': 'glioblastoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

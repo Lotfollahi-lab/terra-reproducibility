@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lung
+    file_name_condition_map: {
+      'Xenium_Preview_Human_Non_diseased_Lung_With_Add_on_FFPE': 'healthy',
+      'Xenium_Preview_Human_Lung_Cancer_With_Add_on_2_FFPE': 'lung_adenocarcinoma'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

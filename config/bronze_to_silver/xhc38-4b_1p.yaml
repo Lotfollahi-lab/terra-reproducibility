@@ -28,6 +28,12 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: colon
+    file_name_condition_map: {
+      'Xenium_V1_hColon_Non_diseased_Base_FFPE': 'healthy',
+      'Xenium_V1_hColon_Non_diseased_Add_on_FFPE': 'healthy',
+      'Xenium_V1_hColon_Cancer_Base_FFPE': 'colon_adenocarcinoma',
+      'Xenium_V1_hColon_Cancer_Add_on_FFPE': 'colon_adenocarcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

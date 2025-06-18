@@ -31,6 +31,19 @@ harmonization:
     assay: cartana
     species: homo_sapiens
     tissue: male_reproductive_system
+    file_name_condition_map: {
+      'CM008_annotated': 'healthy',
+      'CM013_annotated': 'healthy',
+      'CM015_annotated': 'healthy',
+      'CM016_annotated': 'healthy',
+      'CM018_annotated': 'healthy',
+      'CM017_annotated': 'healthy',
+      'CM019_annotated': 'healthy',
+      'CM007_annotated': 'healthy',
+      'CM009_annotated': 'healthy',
+      'CM011_annotated': 'healthy',
+      'CM020_annotated': 'healthy'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

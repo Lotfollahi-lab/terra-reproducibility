@@ -22,6 +22,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    file_name_condition_map: {
+      'Burn_Scar_MU_Interface_Section': 'skin_squamous_cell_carcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}
