@@ -17,10 +17,10 @@ dataset:
       - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W8-2_raw_expression.csv?download=1
       - https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_cell_metadata.csv?download=1|https://zenodo.org/records/10981713/files/STARmap-ISS_sample_W9_raw_expression.csv?download=1
   file_names:
-    - STARmap-ISS_sample_W11
-    - STARmap-ISS_sample_W7
-    - STARmap-ISS_sample_W8-2
-    - STARmap-ISS_sample_W9
+    - STARmap-ISS_sample_W11_
+    - STARmap-ISS_sample_W7_
+    - STARmap-ISS_sample_W8-2_
+    - STARmap-ISS_sample_W9_
 
 harmonization:
   uns:
@@ -29,10 +29,10 @@ harmonization:
     species: homo_sapiens
     tissue: placenta
     sample_condition_map: {
-      'STARmap-ISS_sample_W11': 'healthy',
-      'STARmap-ISS_sample_W7': 'healthy',
-      'STARmap-ISS_sample_W8-2': 'healthy',
-      'STARmap-ISS_sample_W9': 'healthy',
+      'STARmap-ISS_sample_W11_': 'healthy',
+      'STARmap-ISS_sample_W7_': 'healthy',
+      'STARmap-ISS_sample_W8-2_': 'healthy',
+      'STARmap-ISS_sample_W9_': 'healthy',
       }
   batch:
     split_by_batch: false

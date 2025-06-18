@@ -15,22 +15,22 @@ dataset:
             "https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hLiver_cancer_section_FFPE/Xenium_V1_hLiver_cancer_section_FFPE_outs.zip"
           ],
     file_names: [
-                "Xenium_V1_hLiver_nondiseased_section_FFPE",
-                "Xenium_V1_hLiver_cancer_section_FFPE"
+                "Xenium_V1_hLiver_nondiseased_section_FFPE_outs",
+                "Xenium_V1_hLiver_cancer_section_FFPE_outs"
               ],
   }
   overwrite: True
 
 harmonization:
   uns: {
-  'dataset_id': 40,
-  'assay': 'xenium',
-  'species': 'homo_sapiens',
-  'tissue': 'liver',
-  'sample_condition_map': {
-    'Xenium_V1_hLiver_nondiseased_section_FFPE': 'healthy',
-    'Xenium_V1_hLiver_cancer_section_FFPE': 'hepatocellular_carcinoma' # 'liver_cancer',
-    }
+    'dataset_id': 40,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'liver',
+    'sample_condition_map': {
+      'Xenium_V1_hLiver_nondiseased_section_FFPE_outs': 'healthy',
+      'Xenium_V1_hLiver_cancer_section_FFPE_outs': 'hepatocellular_carcinoma' # 'liver_cancer',
+      }
   }
   batch: {
     'split_by_batch': False,

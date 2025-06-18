@@ -15,8 +15,8 @@ dataset:
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.9.0/Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE/Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE_outs.zip
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.9.0/Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE/Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE_outs.zip
   file_names:
-    - Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE
-    - Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE
+    - Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE_outs
+    - Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE_outs
 
 harmonization:
   uns:
@@ -25,8 +25,8 @@ harmonization:
     species: homo_sapiens
     tissue: tonsil
     sample_condition_map: {
-      'Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE': 'pseudolymphoma',
-      'Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE': 'pseudolymphoma',
+      'Xenium_V1_hTonsil_follicular_lymphoid_hyperplasia_section_FFPE_outs': 'pseudolymphoma',
+      'Xenium_V1_hTonsil_reactive_follicular_hyperplasia_section_FFPE_outs': 'pseudolymphoma',
       }
   batch:
     split_by_batch: false

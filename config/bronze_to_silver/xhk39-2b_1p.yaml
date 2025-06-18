@@ -15,8 +15,8 @@ dataset:
       - https://cf.10xgenomics.com/samples/xenium/1.5.0/Xenium_V1_hKidney_cancer_section/Xenium_V1_hKidney_cancer_section_outs.zip
       - https://cf.10xgenomics.com/samples/xenium/1.5.0/Xenium_V1_hKidney_nondiseased_section/Xenium_V1_hKidney_nondiseased_section_outs.zip
   file_names:
-    - Xenium_V1_hKidney_cancer_section
-    - Xenium_V1_hKidney_nondiseased_section
+    - Xenium_V1_hKidney_cancer_section_outs
+    - Xenium_V1_hKidney_nondiseased_section_outs
 
 harmonization:
   uns:
@@ -25,8 +25,8 @@ harmonization:
     species: homo_sapiens
     tissue: kidney
     sample_condition_map: {
-      'Xenium_V1_hKidney_cancer_section': 'renal_cell_carcinoma', # 'papillary_renal_cell_carcinoma',
-      'Xenium_V1_hKidney_nondiseased_section': 'healthy',
+      'Xenium_V1_hKidney_cancer_section_outs': 'renal_cell_carcinoma', # 'papillary_renal_cell_carcinoma',
+      'Xenium_V1_hKidney_nondiseased_section_outs': 'healthy',
       }
   batch:
     split_by_batch: false
