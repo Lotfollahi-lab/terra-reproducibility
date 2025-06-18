@@ -23,10 +23,10 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: uterus
-    file_name_condition_map: {
-      'MERSCOPE_Human_Uterine_Cancer_Patient1': 'uterine_cancer',
-      'MERSCOPE_Human_Uterine_Cancer_Patient2_RACostain': 'uterine_cancer',
-      'MERSCOPE_Human_Uterine_Cancer_Patient2_ROCostain': 'uterine_cancer'
+    sample_condition_map: {
+      'MERSCOPE_Human_Uterine_Cancer_Patient1': 'adenocarcinoma' # 'uterine_cancer',
+      'MERSCOPE_Human_Uterine_Cancer_Patient2_RACostain': 'adenocarcinoma' # 'uterine_cancer',
+      'MERSCOPE_Human_Uterine_Cancer_Patient2_ROCostain': 'adenocarcinoma' # 'uterine_cancer'
       }
   batch:
     split_by_batch: false

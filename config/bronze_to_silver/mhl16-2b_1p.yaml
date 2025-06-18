@@ -22,9 +22,9 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: liver
-    file_name_condition_map: {
-      'MERSCOPE_Human_Liver_Cancer_Patient1': 'liver_cancer',
-      'MERSCOPE_Human_Liver_Cancer_Patient2': 'liver_cancer',
+    sample_condition_map: {
+      'MERSCOPE_Human_Liver_Cancer_Patient1': 'hepatocellular_carcinoma', # liver_cancer
+      'MERSCOPE_Human_Liver_Cancer_Patient2': 'hepatocellular_carcinoma', # liver_cancer
       }
   batch:
     split_by_batch: false

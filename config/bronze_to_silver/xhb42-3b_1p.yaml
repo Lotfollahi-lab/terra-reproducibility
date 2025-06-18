@@ -26,7 +26,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: brain
-    file_name_condition_map: {
+    sample_condition_map: {
       'Xenium_V1_FFPE_Human_Brain_Healthy_With_Addon': 'healthy',
       'Xenium_V1_FFPE_Human_Brain_Glioblastoma_With_Addon': 'glioblastoma',
       'Xenium_V1_FFPE_Human_Brain_Alzheimers_With_Addon': 'alzheimer_disease'

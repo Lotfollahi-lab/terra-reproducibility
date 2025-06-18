@@ -24,11 +24,11 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: ovary
-    file_name_condition_map: {
-      'MERSCOPE_Human_Ovarian_Cancer_Patient1': 'ovarian_cancer',
-      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice1': 'ovarian_cancer',
-      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice2': 'ovarian_cancer',
-      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice3': 'ovarian_cancer'
+    sample_condition_map: {
+      'MERSCOPE_Human_Ovarian_Cancer_Patient1': 'serous_carcinoma', # 'ovarian_cancer',
+      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice1': 'serous_carcinoma', # 'ovarian_cancer',
+      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice2': 'serous_carcinoma', # 'ovarian_cancer',
+      'MERSCOPE_Human_Ovarian_Cancer_Patient2_Slice3': 'serous_carcinoma' # 'ovarian_cancer'
       }
   batch:
     split_by_batch: false

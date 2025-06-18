@@ -16,11 +16,11 @@ dataset:
 
 harmonization:
   uns: {
-  'dataset_id': 1008,
-  'assay': 'xenium',
-  'species': 'homo_sapiens',
-  'tissue': 'embryo',
-  'condition': 'healthy'
+    'dataset_id': 1008,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'embryo',
+    'condition': 'healthy'
   }
   batch: {
     'split_by_batch': False,

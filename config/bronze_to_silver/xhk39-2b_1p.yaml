@@ -24,8 +24,8 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: kidney
-    file_name_condition_map: {
-      'Xenium_V1_hKidney_cancer_section': 'papillary_renal_cell_carcinoma',
+    sample_condition_map: {
+      'Xenium_V1_hKidney_cancer_section': 'renal_cell_carcinoma', # 'papillary_renal_cell_carcinoma',
       'Xenium_V1_hKidney_nondiseased_section': 'healthy',
       }
   batch:

@@ -21,7 +21,7 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: brain
-    file_name_condition_map: {
+    sample_condition_map: {
       '202309251210_HuBrain-FF-SampleF-RC_VMSC000000': 'alzheimer_disease',
       }
   batch:

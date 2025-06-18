@@ -29,7 +29,7 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: colon
-    file_name_condition_map: {
+    sample_condition_map: {
       'GSM7473682': 'healthy',
       'GSM7473683': 'healthy',
       'GSM7473684': 'healthy',

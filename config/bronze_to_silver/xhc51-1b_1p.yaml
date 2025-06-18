@@ -22,8 +22,8 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: colon
-    file_name_condition_map: {
-      'Xenium_V1_Human_Colorectal_Cancer_Addon_FFPE': 'colorectal_adenocarcinoma',
+    sample_condition_map: {
+      'Xenium_V1_Human_Colorectal_Cancer_Addon_FFPE': 'adenocarcinoma',
       }
   batch:
     split_by_batch: false

@@ -27,9 +27,9 @@ harmonization:
   'assay': 'xenium',
   'species': 'homo_sapiens',
   'tissue': 'liver',
-  'file_name_condition_map': {
+  'sample_condition_map': {
     'Xenium_V1_hLiver_nondiseased_section_FFPE': 'healthy',
-    'Xenium_V1_hLiver_cancer_section_FFPE': 'liver_cancer',
+    'Xenium_V1_hLiver_cancer_section_FFPE': 'hepatocellular_carcinoma' # 'liver_cancer',
     }
   }
   batch: {

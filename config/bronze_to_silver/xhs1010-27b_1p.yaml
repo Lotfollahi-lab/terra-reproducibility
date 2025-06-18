@@ -18,7 +18,7 @@ harmonization:
   'assay': 'xenium',
   'species': 'homo_sapiens',
   'tissue': 'skin',
-  'file_name_condition_map': {
+  'sample_condition_map': {
     'BK50_Past Lesional': 'eczema',
     'BK49_Past Lesional wk8 relaspe': 'eczema',
     'BK43_wk4 Relapse': 'eczema',

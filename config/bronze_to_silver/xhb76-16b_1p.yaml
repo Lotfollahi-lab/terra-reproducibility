@@ -36,7 +36,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: brain
-    file_name_condition_map: {
+    sample_condition_map: {
       '1837C': 'healthy',
       '1837P': 'healthy',
       '1886C': 'healthy',

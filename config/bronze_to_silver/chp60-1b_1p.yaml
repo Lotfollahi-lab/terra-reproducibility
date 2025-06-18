@@ -22,7 +22,7 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: pancreas
-    file_name_condition_map: {
+    sample_condition_map: {
       'CosMx_Human_FFPE_Pancreas': 'healthy'
       }
   batch:

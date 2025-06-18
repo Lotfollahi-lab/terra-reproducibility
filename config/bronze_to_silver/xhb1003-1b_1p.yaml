@@ -21,8 +21,8 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: breast
-    file_name_condition_map: {
-      'breast_Xenium_no_exp_qc': 'breast_cancer',
+    sample_condition_map: {
+      'breast_Xenium_no_exp_qc': 'invasive_ductal_carcinoma' # 'breast_cancer',
       }
   batch:
     split_by_batch: false

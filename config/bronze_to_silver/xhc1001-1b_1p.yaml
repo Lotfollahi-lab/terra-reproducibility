@@ -14,11 +14,11 @@ dataset:
 
 harmonization:
   uns: {
-  'dataset_id': 1001,
-  'assay': 'xenium',
-  'species': 'homo_sapiens',
-  'tissue': 'colon',
-  'condition': 'unknown'
+    'dataset_id': 1001,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'colon',
+    'condition': 'healthy' # 'unknown'
   }
   batch: {
     'split_by_batch': False,

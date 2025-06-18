@@ -22,8 +22,8 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: pancreas
-    file_name_condition_map: {
-      'Xenium_V1_Human_Ductal_Adenocarcinoma_FFPE': 'pancreatic_ductal_adenocarcinoma',
+    sample_condition_map: {
+      'Xenium_V1_Human_Ductal_Adenocarcinoma_FFPE': 'ductal_adenocarcinoma',
       }
   batch:
     split_by_batch: false

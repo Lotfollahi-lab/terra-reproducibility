@@ -24,7 +24,7 @@ harmonization:
   'assay': 'xenium',
   'species': 'homo_sapiens',
   'tissue': 'liver',
-  'file_name_condition_map': {
+  'sample_condition_map': {
     'output-XETG00335__0045536__DF3-LIV-0-FFPE-1-S1i__20250428__104112': 'cholangiopathies',
     'output-XETG00335__0045536__DF4-LIV-0-FFPE-1-S1ii__20250428__104113': 'cholangiopathies',
     'output-XETG00335__0045658__DF1-LIV-0-FFPE-1-S1i__20250428__104113': 'cholangiopathies',

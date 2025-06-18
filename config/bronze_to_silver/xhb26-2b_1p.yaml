@@ -24,9 +24,9 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: breast
-    file_name_condition_map: {
-      'Xenium_V1_FFPE_Human_Breast_IDC': 'invasive_ductal_breast_carcinoma',
-      'Xenium_V1_FFPE_Human_Breast_ILC': 'invasive_lobular_breast_carcinoma',
+    sample_condition_map: {
+      'Xenium_V1_FFPE_Human_Breast_IDC': 'invasive_ductal_carcinoma',
+      'Xenium_V1_FFPE_Human_Breast_ILC': 'invasive_lobular_carcinoma',
       }
   batch:
     split_by_batch: false

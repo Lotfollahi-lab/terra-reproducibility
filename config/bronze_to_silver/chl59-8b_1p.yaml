@@ -36,7 +36,7 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: lung
-    file_name_condition_map: {
+    sample_condition_map: {
       'CosMx_Human_FFPE_NSCLC_Lung5_Rep1': 'nonsmall_cell_lung_carcinoma',
       'CosMx_Human_FFPE_NSCLC_Lung5_Rep2': 'nonsmall_cell_lung_carcinoma',
       'CosMx_Human_FFPE_NSCLC_Lung5_Rep3': 'nonsmall_cell_lung_carcinoma',

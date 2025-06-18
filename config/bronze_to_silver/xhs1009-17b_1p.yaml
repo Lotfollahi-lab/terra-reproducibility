@@ -18,7 +18,7 @@ harmonization:
   'assay': 'xenium',
   'species': 'homo_sapiens',
   'tissue': 'skin',
-  'file_name_condition_map': {
+  'sample_condition_map': {
     'BK21-SKI-24-FO-1-S4': 'eczema',
     'BK18-SKI-28-FO-1-S4': 'eczema',
     'BK21-SKI-28-FO-2-S4': 'healthy',

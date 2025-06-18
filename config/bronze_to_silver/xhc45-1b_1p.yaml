@@ -22,8 +22,8 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: cervix
-    file_name_condition_map: {
-      'Xenium_Prime_Cervical_Cancer_FFPE': 'cervical_cancer',
+    sample_condition_map: {
+      'Xenium_Prime_Cervical_Cancer_FFPE': 'squamous_cell_carcinoma' # 'cervical_cancer',
       }
   batch:
     split_by_batch: false
