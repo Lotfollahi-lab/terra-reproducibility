@@ -379,14 +379,14 @@ def main(args):
     start_time = time.time()
     print("Start time:", start_time)
 
-    artifacts_folder_path = '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts' # '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts'
     steps = int(np.ceil(args.corpus_size / args.step_size))
 
     adata_list = []
 
     for i in range(steps):
         try:
-            adata = sc.read_h5ad(f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_{args.step_size}_{i}.h5ad')
+            adata = sc.read_h5ad(f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_{args.step_size}_{i}.h5ad')
             if f'neighborhood_emb_layer_{n_layer}' not in args.emb_keys:
                 del adata.obsm[f'neighborhood_emb_layer_{n_layer}']
             if f'cell_emb_layer_{n_layer}' not in args.emb_keys:
