@@ -1,6 +1,6 @@
 experiment:
-  name: mhh22-1b_1p
-  description: MERFISH Human Heart(dataset-id 22) | 1 batch | 1 panel | Preprocess to silver
+  name: mhh22-3b_1p
+  description: MERFISH Human Heart(dataset-id 22) | 3 batch | 1 panel | Preprocess to silver
   study: Farah_et_al_2024 https://datadryad.org/stash/dataset/doi:10.5061/dryad.w0vt4b8vp
 
 paths:
@@ -21,7 +21,7 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: heart
-    condition: 'healthy'
+    condition: healthy
   batch:
     split_by_batch: true
     batch_key: batch

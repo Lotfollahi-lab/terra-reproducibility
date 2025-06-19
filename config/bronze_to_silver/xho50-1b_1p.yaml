@@ -22,7 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: ovary
-    condition: serous_carcinoma' # 'papillary_serous_carcinoma'
+    condition: serous_carcinoma # 'papillary_serous_carcinoma'
   batch:
     split_by_batch: false
     sample_batch_map: {}
