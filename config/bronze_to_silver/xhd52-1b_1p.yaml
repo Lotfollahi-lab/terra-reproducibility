@@ -22,6 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: pancreas
+    condition: ductal_adenocarcinoma
   batch:
     split_by_batch: false
     sample_batch_map: {}

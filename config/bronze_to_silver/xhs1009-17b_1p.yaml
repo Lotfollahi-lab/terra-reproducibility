@@ -17,7 +17,26 @@ harmonization:
   'dataset_id': 1009,
   'assay': 'xenium',
   'species': 'homo_sapiens',
-  'tissue': 'skin'
+  'tissue': 'skin',
+  'sample_condition_map': {
+    'BK21-SKI-24-FO-1-S4': 'eczema',
+    'BK18-SKI-28-FO-1-S4': 'eczema',
+    'BK21-SKI-28-FO-2-S4': 'healthy',
+    'BK18-SKI-27-FO-1-S4': 'eczema',
+    'BK21-SKI-27-FO-1-S4': 'eczema',
+    'BK21-SKI-28-FO-1-S4': 'eczema',
+    'BK20-SKI-28-FO-1-S4': 'eczema',
+    'BK20-SKI-27-FO-1-S4': 'eczema',
+    'BK27-SKI-27-FO-4-S4': 'eczema',
+    'BK27-SKI-27-FO-5-S4': 'eczema',
+    'BK27-SKI-27-FO-1-S4': 'eczema',
+    'BK27-SKI-27-FO-3-S4': 'eczema',
+    'BK18-SKI-27-FO-2-S4': 'healthy',
+    'BK18-SKI-27-FO-3-S4': 'eczema',
+    'BK18-SKI-27-FO-4-S4': 'eczema',
+    'BK20-SKI-27-FO-2-S4': 'healthy',
+    'BK27-SKI-27-FO-2-S4': 'healthy'
+    }
   }
   batch: {
     'split_by_batch': True,

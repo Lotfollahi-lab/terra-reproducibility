@@ -17,10 +17,10 @@ dataset:
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.6.0/Xenium_V1_hColon_Cancer_Base_FFPE/Xenium_V1_hColon_Cancer_Base_FFPE_outs.zip
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.6.0/Xenium_V1_hColon_Cancer_Add_on_FFPE/Xenium_V1_hColon_Cancer_Add_on_FFPE_outs.zip
   file_names:
-    - Xenium_V1_hColon_Non_diseased_Base_FFPE
-    - Xenium_V1_hColon_Non_diseased_Add_on_FFPE
-    - Xenium_V1_hColon_Cancer_Base_FFPE
-    - Xenium_V1_hColon_Cancer_Add_on_FFPE
+    - Xenium_V1_hColon_Non_diseased_Base_FFPE_outs
+    - Xenium_V1_hColon_Non_diseased_Add_on_FFPE_outs
+    - Xenium_V1_hColon_Cancer_Base_FFPE_outs
+    - Xenium_V1_hColon_Cancer_Add_on_FFPE_outs
 
 harmonization:
   uns:
@@ -28,6 +28,12 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: colon
+    sample_condition_map: {
+      'Xenium_V1_hColon_Non_diseased_Base_FFPE_outs': 'healthy',
+      'Xenium_V1_hColon_Non_diseased_Add_on_FFPE_outs': 'healthy',
+      'Xenium_V1_hColon_Cancer_Base_FFPE_outs': 'adenocarcinoma',
+      'Xenium_V1_hColon_Cancer_Add_on_FFPE_outs': 'adenocarcinoma'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

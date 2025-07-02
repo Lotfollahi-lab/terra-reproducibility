@@ -21,14 +21,14 @@ dataset:
       - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung12/Lung12+SMI+Flat+data.tar.gz
       - https://nanostring-public-share.s3.us-west-2.amazonaws.com/SMI-Compressed/Lung13/Lung13+SMI+Flat+data.tar.gz
   file_names:
-    - CosMx_Human_FFPE_NSCLC_Lung5_Rep1
-    - CosMx_Human_FFPE_NSCLC_Lung5_Rep2
-    - CosMx_Human_FFPE_NSCLC_Lung5_Rep3
-    - CosMx_Human_FFPE_NSCLC_Lung6
-    - CosMx_Human_FFPE_NSCLC_Lung9_Rep1
-    - CosMx_Human_FFPE_NSCLC_Lung9_Rep2
-    - CosMx_Human_FFPE_NSCLC_Lung12
-    - CosMx_Human_FFPE_NSCLC_Lung13
+    - Lung5_Rep1+SMI+Flat+data
+    - Lung5_Rep2+SMI+Flat+data
+    - Lung5_Rep3+SMI+Flat+data
+    - Lung6+SMI+Flat+data
+    - Lung9_Rep1+SMI+Flat+data
+    - Lung9_Rep2+SMI+Flat+data
+    - Lung12+SMI+Flat+data
+    - Lung13+SMI+Flat+data
 
 harmonization:
   uns:
@@ -36,6 +36,16 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: lung
+    sample_condition_map: {
+      'Lung5_Rep1+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung5_Rep2+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung5_Rep3+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung6+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung9_Rep1+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung9_Rep2+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung12+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma',
+      'Lung13+SMI+Flat+data': 'nonsmall_cell_lung_carcinoma'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

@@ -21,6 +21,7 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: brain
+    condition: alzheimer_disease
   batch:
     split_by_batch: false
     sample_batch_map: {}

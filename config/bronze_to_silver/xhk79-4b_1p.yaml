@@ -24,6 +24,12 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: kidney
+    sample_condition_map: {
+      'Xenium-Ranger_AC19-K292-Control-Pre-HiP-CT_Run-XETG00155_output': 'healthy', # brainstem_death
+      'Xenium-Ranger_AC19-K292-HiRes_Run-XETG00155_output': 'healthy', # brainstem_death
+      'Xenium-Ranger_AC36-K310-CKD_Run-XETG00155_output': 'chronic_kidney_disease',
+      'Xenium-Ranger_AC42-K316-CKD_Run-XETG00155_output': 'chronic_kidney_disease',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

@@ -22,6 +22,10 @@ harmonization:
     assay: cosmx
     species: homo_sapiens
     tissue: liver
+    sample_condition_map: {
+      'CosMx_Human_FFPE_Liver_Normal': 'healthy',
+      'CosMx_Human_FFPE_Liver_Cancer': 'hepatocellular_carcinoma'
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

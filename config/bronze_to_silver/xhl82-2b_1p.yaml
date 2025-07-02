@@ -15,8 +15,8 @@ dataset:
       - https://cf.10xgenomics.com/samples/xenium/3.0.0/Xenium_V1_Human_Lung_Cancer_FFPE/Xenium_V1_Human_Lung_Cancer_FFPE_outs.zip
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/3.0.0/Xenium_Prime_Human_Lung_Cancer_FFPE/Xenium_Prime_Human_Lung_Cancer_FFPE_outs.zip
   file_names:
-    - Xenium_V1_Human_Lung_Cancer_FFPE
-    - Xenium_Prime_Human_Lung_Cancer_FFPE
+    - Xenium_V1_Human_Lung_Cancer_FFPE_outs
+    - Xenium_Prime_Human_Lung_Cancer_FFPE_outs
 
 harmonization:
   uns:
@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lung
+    sample_condition_map: {
+      'Xenium_V1_Human_Lung_Cancer_FFPE_outs': 'adenocarcinoma',
+      'Xenium_Prime_Human_Lung_Cancer_FFPE_outs': 'adenocarcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

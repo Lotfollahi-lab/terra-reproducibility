@@ -22,6 +22,10 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: skin
+    sample_condition_map: {
+      'MERSCOPE_Human_Melanoma_Patient1': 'melanoma',
+      'MERSCOPE_Human_Melanoma_Patient2': 'melanoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

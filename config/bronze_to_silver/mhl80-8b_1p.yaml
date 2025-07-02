@@ -21,20 +21,30 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: liver
+    sample_condition_map: {
+      '0': 'healthy',
+      '1': 'healthy',
+      '2': 'healthy',
+      '3': 'fibrosis',
+      '4': 'fibrosis',
+      '5': 'fibrosis',
+      '6': 'fibrosis',
+      '7': 'fibrosis',
+      }
   batch: {
-      'split_by_batch': True,
-      'batch_key': 'batch',
-      'sample_batch_map': {
-                          '0': 0,
-                          '1': 1,
-                          '2': 2,
-                          '3': 3,
-                          '4': 4,
-                          '5': 5,
-                          '6': 6,
-                          '7': 7,
-                          }
-    }
+    'split_by_batch': True,
+    'batch_key': 'batch',
+    'sample_batch_map': {
+      '0': 0,
+      '1': 1,
+      '2': 2,
+      '3': 3,
+      '4': 4,
+      '5': 5,
+      '6': 6,
+      '7': 7,
+      }
+  }
   key_mappings: {
     'X_coordinate': 'x',
     'Y_coordinate': 'y',

@@ -1,5 +1,5 @@
 """
-This script collects the basic statistics of all datasets in a cohort. A cohort is defined as a collection of one or more datasets which themselves are a collection of one or more samples/batches. The statistics collected include the number of cells, number of genes, counts per cell, genes per cell, dataset ID, batch ID, assay, species, tissue, and the path to the dataset. The statistics are saved in a CSV file and counts and genes per cell are saved in pickle files.
+This script collects the basic statistics of all datasets in a cohort. A cohort is defined as a collection of one or more datasets which themselves are a collection of one or more samples/batches. The statistics collected include the number of cells, number of genes, counts per cell, genes per cell, dataset ID, batch ID, assay, species, tissue, condition, and the path to the dataset. The statistics are saved in a CSV file and counts and genes per cell are saved in pickle files.
 
 Usage:
 ```bash
@@ -10,6 +10,7 @@ The `cohort_dataset_names_file_path` is the path to a file containing all datase
 """
 
 import argparse
+import os
 import pickle
 from pathlib import Path
 
@@ -44,6 +45,7 @@ def compute_batch_statistics(cohort_name: str,
                         'assay': adata_batch.uns['assay'],
                         'species': adata_batch.uns['species'],
                         'tissue': adata_batch.uns['tissue'],
+                        'condition': adata_batch.uns['condition'],
                         'adata_batch_path': str(adata_batch_path)}
 
     batch_counts_per_cell = adata_batch.obs['total_counts'].values.tolist()
@@ -93,9 +95,10 @@ def main(args):
         dataset_names=dataset_names)
 
     # Save statistics to disk
-    statistics_file = f"{args.results_directory_path}/{args.cohort_name}_statistics.csv"
-    counts_file = f"{args.results_directory_path}/{args.cohort_name}_counts.pkl"
-    genes_file = f"{args.results_directory_path}/{args.cohort_name}_genes.pkl"
+    os.makedirs(f"{args.results_directory_path}/{args.cohort_name}", exist_ok=True)
+    statistics_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_statistics.csv"
+    counts_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_counts.pkl"
+    genes_file = f"{args.results_directory_path}/{args.cohort_name}/{args.cohort_name}_genes.pkl"
     cohort_stats_df.to_csv(
         statistics_file,
         index=False,

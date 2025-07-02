@@ -15,8 +15,8 @@ dataset:
       - https://s3-us-west-2.amazonaws.com/10x.files/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_IDC/Xenium_V1_FFPE_Human_Breast_IDC_outs.zip
       - https://cf.10xgenomics.com/samples/xenium/1.0.2/Xenium_V1_FFPE_Human_Breast_ILC/Xenium_V1_FFPE_Human_Breast_ILC_outs.zip
   file_names:
-    - Xenium_V1_FFPE_Human_Breast_IDC
-    - Xenium_V1_FFPE_Human_Breast_ILC
+    - Xenium_V1_FFPE_Human_Breast_IDC_outs
+    - Xenium_V1_FFPE_Human_Breast_ILC_outs
 
 harmonization:
   uns:
@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: breast
+    sample_condition_map: {
+      'Xenium_V1_FFPE_Human_Breast_IDC_outs': 'invasive_ductal_carcinoma',
+      'Xenium_V1_FFPE_Human_Breast_ILC_outs': 'invasive_lobular_carcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

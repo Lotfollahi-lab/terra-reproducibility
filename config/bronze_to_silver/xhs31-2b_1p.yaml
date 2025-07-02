@@ -15,8 +15,8 @@ dataset:
       - https://cf.10xgenomics.com/samples/xenium/1.6.0/Xenium_V1_hSkin_Melanoma_Base_FFPE/Xenium_V1_hSkin_Melanoma_Base_FFPE_outs.zip
       - https://cf.10xgenomics.com/samples/xenium/1.7.0/Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE/Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE_outs.zip
   file_names:
-    - Xenium_V1_hSkin_Melanoma_Base_FFPE
-    - Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE
+    - Xenium_V1_hSkin_Melanoma_Base_FFPE_outs
+    - Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE_outs
 
 harmonization:
   uns:
@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    sample_condition_map: {
+      'Xenium_V1_hSkin_Melanoma_Base_FFPE_outs': 'melanoma',
+      'Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE_outs': 'melanoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

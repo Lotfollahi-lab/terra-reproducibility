@@ -23,16 +23,16 @@ dataset:
       - https://zenodo.org/records/7758080/files/1017_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1017_region_0_cell_metadata.csv?download=1
       - https://zenodo.org/records/7758080/files/1029_region_0_cell_by_gene.csv?download=1|https://zenodo.org/records/7758080/files/1029_region_0_cell_metadata.csv?download=1
   file_names:
-    - 63_region_0
-    - 122_region_0
-    - 122_region_1
-    - 1003_region_0
-    - 1012_region_0
-    - 1012_region_1
-    - 1014_region_0
-    - 1014_region_1
-    - 1017_region_0
-    - 1029_region_0
+    - 63_region_0_cell_
+    - 122_region_0_cell_
+    - 122_region_1_cell_
+    - 1003_region_0_cell_
+    - 1012_region_0_cell_
+    - 1012_region_1_cell_
+    - 1014_region_0_cell_
+    - 1014_region_1_cell_
+    - 1017_region_0_cell_
+    - 1029_region_0_cell_
 
 harmonization:
   uns:
@@ -40,6 +40,18 @@ harmonization:
     assay: merfish
     species: homo_sapiens
     tissue: liver
+    sample_condition_map: {
+      '63_region_0_cell_': 'hepatocellular_carcinoma',
+      '122_region_0_cell_': 'hepatocellular_carcinoma',
+      '122_region_1_cell_': 'hepatocellular_carcinoma',
+      '1003_region_0_cell_': 'hepatocellular_carcinoma',
+      '1012_region_0_cell_': 'hepatocellular_carcinoma',
+      '1012_region_1_cell_': 'hepatocellular_carcinoma',
+      '1014_region_0_cell_': 'hepatocellular_carcinoma',
+      '1014_region_1_cell_': 'hepatocellular_carcinoma',
+      '1017_region_0_cell_': 'hepatocellular_carcinoma',
+      '1029_region_0_cell_': 'hepatocellular_carcinoma',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

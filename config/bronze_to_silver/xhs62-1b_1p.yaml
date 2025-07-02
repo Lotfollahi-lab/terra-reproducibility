@@ -22,6 +22,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    condition: squamous_cell_carcinoma
   batch:
     split_by_batch: false
     sample_batch_map: {}

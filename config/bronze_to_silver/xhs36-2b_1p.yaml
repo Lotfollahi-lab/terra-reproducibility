@@ -15,8 +15,8 @@ dataset:
       - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hSkin_nondiseased_section_1_FFPE/Xenium_V1_hSkin_nondiseased_section_1_FFPE_outs.zip
       - https://cf.10xgenomics.com/samples/xenium/1.9.0/Xenium_V1_hSkin_nondiseased_section_2_FFPE/Xenium_V1_hSkin_nondiseased_section_2_FFPE_outs.zip
   file_names:
-    - Xenium_V1_hSkin_nondiseased_section_1_FFPE
-    - Xenium_V1_hSkin_nondiseased_section_2_FFPE
+    - Xenium_V1_hSkin_nondiseased_section_1_FFPE_outs
+    - Xenium_V1_hSkin_nondiseased_section_2_FFPE_outs
 
 harmonization:
   uns:
@@ -24,6 +24,10 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: skin
+    sample_condition_map: {
+      'Xenium_V1_hSkin_nondiseased_section_1_FFPE_outs': 'healthy',
+      'Xenium_V1_hSkin_nondiseased_section_2_FFPE_outs': 'healthy',
+      }
   batch:
     split_by_batch: false
     sample_batch_map: {}

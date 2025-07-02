@@ -21,6 +21,7 @@ harmonization:
     assay: xenium
     species: homo_sapiens
     tissue: lung
+    condition: nonsmall_cell_lung_carcinoma
   batch:
     split_by_batch: false
     sample_batch_map: {}
