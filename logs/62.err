@@ -1,0 +1,104 @@
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 6, in <module>
+    from app.train import train
+  File "/home/ubuntu/nichejepa/src/app/train.py", line 39, in <module>
+    from app.helper import init_model, init_opt, load_checkpoint
+  File "/home/ubuntu/nichejepa/src/app/helper.py", line 16, in <module>
+    import nichejepa.models.gene_transformers as gt
+  File "/home/ubuntu/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/home/ubuntu/nichejepa/src/nichejepa/utils/__init__.py", line 2, in <module>
+    from .distributed import *
+  File "/home/ubuntu/nichejepa/src/nichejepa/utils/distributed.py", line 85
+    return grads
+    ^^^^^^^^^^^^
+SyntaxError: 'return' outside function
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 6, in <module>
+    from app.train import train
+  File "/home/ubuntu/nichejepa/src/app/train.py", line 39, in <module>
+    from app.helper import init_model, init_opt, load_checkpoint
+  File "/home/ubuntu/nichejepa/src/app/helper.py", line 16, in <module>
+    import nichejepa.models.gene_transformers as gt
+  File "/home/ubuntu/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/home/ubuntu/nichejepa/src/nichejepa/utils/__init__.py", line 2, in <module>
+    from .distributed import *
+  File "/home/ubuntu/nichejepa/src/nichejepa/utils/distributed.py", line 85
+    return grads
+    ^^^^^^^^^^^^
+SyntaxError: 'return' outside function
+E0703 12:47:50.054000 29394 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 29398) of binary: /home/ubuntu/nichejepa_env/bin/python3
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+E0703 12:47:50.068000 29446 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 29460) of binary: /home/ubuntu/nichejepa_env/bin/python3
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/ubuntu/nichejepa/src/app/main_dist.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-03_12:47:50
+  host      : g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster
+  rank      : 1 (local_rank: 0)
+  exitcode  : 1 (pid: 29398)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/ubuntu/nichejepa/src/app/main_dist.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-03_12:47:50
+  host      : g6e-8xlarge-dy-g6e-8xlarge-1.mlgpu.pcluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 29460)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-2: task 1: Exited with exit code 1
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-1: task 0: Exited with exit code 1

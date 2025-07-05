@@ -1,0 +1,56 @@
+SLURM_JOB_GPUS: 0
+GPUs visible to this job: 0
+Tue Jul  1 16:39:47 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:36:00.0 Off |                    0 |
+| N/A   36C    P0             77W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+Using Python: /home/ubuntu/nichejepa_env/bin/python
+Using Torchrun: /home/ubuntu/nichejepa_env/bin/torchrun
+torch.__version__: 2.7.1+cu126torch.__version__: 2.7.1+cu126
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+torch.__version__: 2.7.1+cu126
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+torch.__version__: 2.7.1+cu126
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+torch.cuda.device_count(): 1
+Hello from rank 0 of 4 on g6e-8xlarge-dy-g6e-8xlarge-1 where there are 1 allocated GPUs per node.
+World rank: 3, Local rank: 3, World size: 4
+torch.cuda.device_count(): 1
+Hello from rank 0 of 4 on g6e-8xlarge-dy-g6e-8xlarge-1 where there are 1 allocated GPUs per node.
+World rank: 1, Local rank: 1, World size: 4
+ERROR:root:YAML configuration file '/home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gt_small_aws.yaml' not found.
+ERROR:root:YAML configuration file '/home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gt_small_aws.yaml' not found.
+torch.cuda.device_count(): 1
+Hello from rank 0 of 4 on g6e-8xlarge-dy-g6e-8xlarge-1 where there are 1 allocated GPUs per node.
+World rank: 2, Local rank: 2, World size: 4
+ERROR:root:YAML configuration file '/home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gt_small_aws.yaml' not found.
+torch.cuda.device_count(): 1
+Hello from rank 0 of 4 on g6e-8xlarge-dy-g6e-8xlarge-1 where there are 1 allocated GPUs per node.
+World rank: 0, Local rank: 0, World size: 4
+ERROR:root:YAML configuration file '/home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gt_small_aws.yaml' not found.

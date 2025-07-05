@@ -1,0 +1,8 @@
+slurmstepd: error: execve(): torchrun: No such file or directory
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-1: task 0: Exited with exit code 2
+slurmstepd: error: execve(): torchrun: No such file or directory
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-3: task 2: Exited with exit code 2
+slurmstepd: error: execve(): torchrun: No such file or directory
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-4: task 3: Exited with exit code 2
+slurmstepd: error: execve(): torchrun: No such file or directory
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-2: task 1: Exited with exit code 2

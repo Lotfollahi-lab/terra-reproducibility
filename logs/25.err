@@ -1,0 +1,592 @@
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 182, in <module>
+    main()
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 115, in main
+    wandb.init(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1623, in init
+    wandb._sentry.reraise(e)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/analytics/sentry.py", line 156, in reraise
+    raise exc.with_traceback(sys.exc_info()[2])
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 1551, in init
+    wi.maybe_login(init_settings)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/sdk/wandb_init.py", line 191, in maybe_login
+    wandb_login._login(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/sdk/wandb_login.py", line 315, in _login
+    key, key_status = wlogin.prompt_api_key(referrer=referrer)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/wandb/sdk/wandb_login.py", line 243, in prompt_api_key
+    raise UsageError("api_key not configured (no-tty). call " + directive)
+wandb.errors.errors.UsageError: api_key not configured (no-tty). call wandb.login(key=[your_api_key])
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 182, in <module>
+    main()
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 140, in main
+    torch.cuda.set_device(LOCAL_RANK)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/cuda/__init__.py", line 529, in set_device
+    torch._C._cuda_setDevice(device)
+RuntimeError: CUDA error: invalid device ordinal
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 182, in <module>
+    main()
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 140, in main
+    torch.cuda.set_device(LOCAL_RANK)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/cuda/__init__.py", line 529, in set_device
+    torch._C._cuda_setDevice(device)
+RuntimeError: CUDA error: invalid device ordinal
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 182, in <module>
+    main()
+  File "/home/ubuntu/nichejepa/src/app/main_dist.py", line 140, in main
+    torch.cuda.set_device(LOCAL_RANK)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/cuda/__init__.py", line 529, in set_device
+    torch._C._cuda_setDevice(device)
+RuntimeError: CUDA error: invalid device ordinal
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+W0701 17:14:57.788000 29123 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 29128 closing signal SIGTERM
+W0701 17:14:57.790000 29123 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 29129 closing signal SIGTERM
+W0701 17:14:57.790000 29123 torch/distributed/elastic/multiprocessing/api.py:900] Sending process 29130 closing signal SIGTERM
+E0701 17:14:58.241000 29123 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: 1) local_rank: 0 (pid: 29127) of binary: /home/ubuntu/nichejepa_env/bin/python3
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/home/ubuntu/nichejepa/src/app/main_dist.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-01_17:14:57
+  host      : g6e-8xlarge-dy-g6e-8xlarge-1.mlgpu.pcluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 29127)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+[W701 17:14:58.083821921 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-4.mlgpu.pcluster]:40688, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7c93c37785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x7c93aced5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x7c93aced7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x7c93aced8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x7c93aced2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x7c93aced2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x7c93aced408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x7c93bbd7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x7c93bb4df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x5620750a4e52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x56207509b77b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x5620750b2d50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyObject_FastCallDictTstate + 0xc4 (0x56207509a954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyObject_Call_Prepend + 0xc1 (0x5620750afa91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: <unknown function> + 0x29d854 (0x5620751b7854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: PyObject_Call + 0xbb (0x5620750b355b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: <unknown function> + 0x25a9d6 (0x5620751749d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: PyEval_EvalCode + 0x86 (0x5620751748a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: <unknown function> + 0x2812c8 (0x56207519b2c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x27bacf (0x562075195acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #48: <unknown function> + 0x281065 (0x56207519b065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #49: _PyRun_SimpleFileObject + 0x1a8 (0x56207519a648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #50: _PyRun_AnyFileObject + 0x47 (0x56207519a327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #51: Py_RunMain + 0x2be (0x56207518e7ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #52: Py_BytesMain + 0x2d (0x5620751688ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #53: <unknown function> + 0x29d90 (0x7c93c4829d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #54: __libc_start_main + 0x80 (0x7c93c4829e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #55: _start + 0x25 (0x5620751687e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.488000 29123 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-4.mlgpu.pcluster_29123_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+[W701 17:14:58.103368557 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-4.mlgpu.pcluster]:40688, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7c93c37785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x7c93aced5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x7c93aced7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x7c93aced8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x7c93aced2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x7c93aced2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x7c93aced408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x7c93bbd7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x7c93bb4df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x5620750a4e52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x56207509b77b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x5620750b2d50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x56207508fa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyObject_FastCallDictTstate + 0xc4 (0x56207509a954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyObject_Call_Prepend + 0xc1 (0x5620750afa91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: <unknown function> + 0x29d854 (0x5620751b7854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: PyObject_Call + 0xbb (0x5620750b355b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: _PyEval_EvalFrameDefault + 0x2a7b (0x562075091ceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: _PyFunction_Vectorcall + 0x7c (0x5620750a56ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x6c0 (0x56207508f930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: <unknown function> + 0x25a9d6 (0x5620751749d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: PyEval_EvalCode + 0x86 (0x5620751748a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: <unknown function> + 0x2812c8 (0x56207519b2c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: <unknown function> + 0x27bacf (0x562075195acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: <unknown function> + 0x281065 (0x56207519b065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyRun_SimpleFileObject + 0x1a8 (0x56207519a648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: _PyRun_AnyFileObject + 0x47 (0x56207519a327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: Py_RunMain + 0x2be (0x56207518e7ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: Py_BytesMain + 0x2d (0x5620751688ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x29d90 (0x7c93c4829d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #48: __libc_start_main + 0x80 (0x7c93c4829e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #49: _start + 0x25 (0x5620751687e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.495000 29123 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-4.mlgpu.pcluster_29123_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 117, in _call_store
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-1: task 0: Exited with exit code 1
+    return getattr(self._store, store_op)(*args, **kwargs)
+torch.distributed.DistNetworkError: failed to recv, got 0 bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 261, in launch_agent
+    result = agent.run()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 711, in run
+    result = self._invoke_run(role)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 864, in _invoke_run
+    self._initialize_workers(self._worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 683, in _initialize_workers
+    self._rendezvous(worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 500, in _rendezvous
+    rdzv_info = spec.rdzv_handler.next_rendezvous()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 1170, in next_rendezvous
+    self._op_executor.run(join_op, deadline, self._get_deadline)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 648, in run
+    has_set = self._state_holder.sync()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 437, in sync
+    get_response = self._backend.get_state()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 75, in get_state
+    base64_state: bytes = self._call_store("get", self._key)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 119, in _call_store
+    raise RendezvousConnectionError(
+torch.distributed.elastic.rendezvous.api.RendezvousConnectionError: The connection to the C10d store has failed. See inner exception for details.
+[W701 17:14:58.275247932 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-3.mlgpu.pcluster]:41998, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7d05acd785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x7d05960d5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x7d05960d7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x7d05960d8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x7d05960d2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x7d05960d2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x7d05960d408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x7d05a4f7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x7d05a46df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x64cc87780e52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x64cc8777777b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x64cc8778ed50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyObject_FastCallDictTstate + 0xc4 (0x64cc87776954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyObject_Call_Prepend + 0xc1 (0x64cc8778ba91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: <unknown function> + 0x29d854 (0x64cc87893854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: PyObject_Call + 0xbb (0x64cc8778f55b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: <unknown function> + 0x25a9d6 (0x64cc878509d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: PyEval_EvalCode + 0x86 (0x64cc878508a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: <unknown function> + 0x2812c8 (0x64cc878772c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x27bacf (0x64cc87871acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #48: <unknown function> + 0x281065 (0x64cc87877065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #49: _PyRun_SimpleFileObject + 0x1a8 (0x64cc87876648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #50: _PyRun_AnyFileObject + 0x47 (0x64cc87876327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #51: Py_RunMain + 0x2be (0x64cc8786a7ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #52: Py_BytesMain + 0x2d (0x64cc878448ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #53: <unknown function> + 0x29d90 (0x7d05adc29d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #54: __libc_start_main + 0x80 (0x7d05adc29e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #55: _start + 0x25 (0x64cc878447e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.680000 29111 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-3.mlgpu.pcluster_29111_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+[W701 17:14:58.293240239 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-3.mlgpu.pcluster]:41998, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7d05acd785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x7d05960d5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x7d05960d7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x7d05960d8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x7d05960d2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x7d05960d2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x7d05960d408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x7d05a4f7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x7d05a46df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x64cc87780e52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x64cc8777777b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x64cc8778ed50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x64cc8776ba77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyObject_FastCallDictTstate + 0xc4 (0x64cc87776954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyObject_Call_Prepend + 0xc1 (0x64cc8778ba91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: <unknown function> + 0x29d854 (0x64cc87893854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: PyObject_Call + 0xbb (0x64cc8778f55b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: _PyEval_EvalFrameDefault + 0x2a7b (0x64cc8776dceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: _PyFunction_Vectorcall + 0x7c (0x64cc877816ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x6c0 (0x64cc8776b930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: <unknown function> + 0x25a9d6 (0x64cc878509d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: PyEval_EvalCode + 0x86 (0x64cc878508a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: <unknown function> + 0x2812c8 (0x64cc878772c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: <unknown function> + 0x27bacf (0x64cc87871acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: <unknown function> + 0x281065 (0x64cc87877065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyRun_SimpleFileObject + 0x1a8 (0x64cc87876648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: _PyRun_AnyFileObject + 0x47 (0x64cc87876327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: Py_RunMain + 0x2be (0x64cc8786a7ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: Py_BytesMain + 0x2d (0x64cc878448ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x29d90 (0x7d05adc29d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #48: __libc_start_main + 0x80 (0x7d05adc29e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #49: _start + 0x25 (0x64cc878447e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.687000 29111 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-3.mlgpu.pcluster_29111_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 117, in _call_store
+    return getattr(self._store, store_op)(*args, **kwargs)
+torch.distributed.DistNetworkError: failed to recv, got 0 bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 261, in launch_agent
+    result = agent.run()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 711, in run
+    result = self._invoke_run(role)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 864, in _invoke_run
+    self._initialize_workers(self._worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 683, in _initialize_workers
+    self._rendezvous(worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 500, in _rendezvous
+    rdzv_info = spec.rdzv_handler.next_rendezvous()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 1170, in next_rendezvous
+    self._op_executor.run(join_op, deadline, self._get_deadline)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 648, in run
+    has_set = self._state_holder.sync()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 437, in sync
+    get_response = self._backend.get_state()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 75, in get_state
+    base64_state: bytes = self._call_store("get", self._key)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 119, in _call_store
+    raise RendezvousConnectionError(
+torch.distributed.elastic.rendezvous.api.RendezvousConnectionError: The connection to the C10d store has failed. See inner exception for details.
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-4: task 3: Exited with exit code 1
+[W701 17:14:58.476899372 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster]:51870, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x784e6a7785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x784e53ed5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x784e53ed7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x784e53ed8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x784e53ed2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x784e53ed2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x784e53ed408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x784e62d7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x784e624df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x5a1725e2fe52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x5a1725e2677b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x5a1725e3dd50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyObject_FastCallDictTstate + 0xc4 (0x5a1725e25954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyObject_Call_Prepend + 0xc1 (0x5a1725e3aa91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: <unknown function> + 0x29d854 (0x5a1725f42854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: PyObject_Call + 0xbb (0x5a1725e3e55b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: <unknown function> + 0x25a9d6 (0x5a1725eff9d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: PyEval_EvalCode + 0x86 (0x5a1725eff8a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: <unknown function> + 0x2812c8 (0x5a1725f262c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x27bacf (0x5a1725f20acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #48: <unknown function> + 0x281065 (0x5a1725f26065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #49: _PyRun_SimpleFileObject + 0x1a8 (0x5a1725f25648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #50: _PyRun_AnyFileObject + 0x47 (0x5a1725f25327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #51: Py_RunMain + 0x2be (0x5a1725f197ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #52: Py_BytesMain + 0x2d (0x5a1725ef38ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #53: <unknown function> + 0x29d90 (0x784e6b829d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #54: __libc_start_main + 0x80 (0x784e6b829e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #55: _start + 0x25 (0x5a1725ef37e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.886000 29144 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster_29144_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+[W701 17:14:58.487377295 TCPStore.cpp:106] [c10d] sendBytes failed on SocketImpl(fd=3, addr=[g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster]:51870, remote=[ip-10-1-103-212.us-west-2.compute.internal]:29400): Broken pipe
+Exception raised from sendBytes at /pytorch/torch/csrc/distributed/c10d/Utils.hpp:653 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x784e6a7785e8 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x5ba8bfe (0x784e53ed5bfe in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #2: <unknown function> + 0x5baa458 (0x784e53ed7458 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #3: <unknown function> + 0x5babc3e (0x784e53ed8c3e in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #4: c10d::TCPStore::doWait(c10::ArrayRef<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::chrono::duration<long, std::ratio<1l, 1000l> >) + 0x1a6 (0x784e53ed2bc6 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #5: c10d::TCPStore::doGet(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0x33 (0x784e53ed2fa3 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #6: c10d::TCPStore::get(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xab (0x784e53ed408b in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so)
+frame #7: <unknown function> + 0xc29aa0 (0x784e62d7faa0 in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #8: <unknown function> + 0x3896be (0x784e624df6be in /home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/lib/libtorch_python.so)
+frame #9: <unknown function> + 0x18ae52 (0x5a1725e2fe52 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #10: _PyObject_MakeTpCall + 0x25b (0x5a1725e2677b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #11: <unknown function> + 0x198d50 (0x5a1725e3dd50 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #12: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #13: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #14: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #15: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #16: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #17: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #18: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #19: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #20: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #21: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #22: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #23: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #24: _PyEval_EvalFrameDefault + 0x807 (0x5a1725e1aa77 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #25: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #26: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #27: _PyObject_FastCallDictTstate + 0xc4 (0x5a1725e25954 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #28: _PyObject_Call_Prepend + 0xc1 (0x5a1725e3aa91 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #29: <unknown function> + 0x29d854 (0x5a1725f42854 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #30: PyObject_Call + 0xbb (0x5a1725e3e55b in /home/ubuntu/nichejepa_env/bin/python3)
+frame #31: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #32: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #33: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #34: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #35: _PyEval_EvalFrameDefault + 0x2a7b (0x5a1725e1cceb in /home/ubuntu/nichejepa_env/bin/python3)
+frame #36: _PyFunction_Vectorcall + 0x7c (0x5a1725e306ac in /home/ubuntu/nichejepa_env/bin/python3)
+frame #37: _PyEval_EvalFrameDefault + 0x6c0 (0x5a1725e1a930 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #38: <unknown function> + 0x25a9d6 (0x5a1725eff9d6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #39: PyEval_EvalCode + 0x86 (0x5a1725eff8a6 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #40: <unknown function> + 0x2812c8 (0x5a1725f262c8 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #41: <unknown function> + 0x27bacf (0x5a1725f20acf in /home/ubuntu/nichejepa_env/bin/python3)
+frame #42: <unknown function> + 0x281065 (0x5a1725f26065 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #43: _PyRun_SimpleFileObject + 0x1a8 (0x5a1725f25648 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #44: _PyRun_AnyFileObject + 0x47 (0x5a1725f25327 in /home/ubuntu/nichejepa_env/bin/python3)
+frame #45: Py_RunMain + 0x2be (0x5a1725f197ae in /home/ubuntu/nichejepa_env/bin/python3)
+frame #46: Py_BytesMain + 0x2d (0x5a1725ef38ed in /home/ubuntu/nichejepa_env/bin/python3)
+frame #47: <unknown function> + 0x29d90 (0x784e6b829d90 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #48: __libc_start_main + 0x80 (0x784e6b829e40 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #49: _start + 0x25 (0x5a1725ef37e5 in /home/ubuntu/nichejepa_env/bin/python3)
+
+W0701 17:14:58.894000 29144 torch/distributed/elastic/rendezvous/dynamic_rendezvous.py:1292] The node 'g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster_29144_0' has failed to shutdown the rendezvous '25' due to an error of type RendezvousConnectionError.
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 117, in _call_store
+    return getattr(self._store, store_op)(*args, **kwargs)
+torch.distributed.DistNetworkError: failed to recv, got 0 bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 261, in launch_agent
+    result = agent.run()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 711, in run
+    result = self._invoke_run(role)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 864, in _invoke_run
+    self._initialize_workers(self._worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 683, in _initialize_workers
+    self._rendezvous(worker_group)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 138, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 500, in _rendezvous
+    rdzv_info = spec.rdzv_handler.next_rendezvous()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 1170, in next_rendezvous
+    self._op_executor.run(join_op, deadline, self._get_deadline)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 648, in run
+    has_set = self._state_holder.sync()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/dynamic_rendezvous.py", line 437, in sync
+    get_response = self._backend.get_state()
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 75, in get_state
+    base64_state: bytes = self._call_store("get", self._key)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/rendezvous/c10d_rendezvous_backend.py", line 119, in _call_store
+    raise RendezvousConnectionError(
+torch.distributed.elastic.rendezvous.api.RendezvousConnectionError: The connection to the C10d store has failed. See inner exception for details.
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-3: task 2: Exited with exit code 1
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-2: task 1: Exited with exit code 1

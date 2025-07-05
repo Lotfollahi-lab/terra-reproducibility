@@ -1,0 +1,85 @@
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/xarray_schema/__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, get_distribution
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Currently logged in as: sb75 (sb75sanger) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+[W702 21:55:54.468353082 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+wandb: Tracking run with wandb version 0.20.1
+wandb: Run data is saved locally in /home/ubuntu/nichejepa-reproducibility/wandb/run-20250702_215553-hst_corpus_80m_gtsmall_aws_test3
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run hst_corpus_80m_gtsmall_aws_test3
+wandb: ⭐️ View project at https://wandb.ai/sb75sanger/nichejepa-pretraining
+wandb: 🚀 View run at https://wandb.ai/sb75sanger/nichejepa-pretraining/runs/hst_corpus_80m_gtsmall_aws_test3
+[W702 21:55:56.031524846 Utils.hpp:137] Warning: Environment variable NCCL_ASYNC_ERROR_HANDLING is deprecated; use TORCH_NCCL_ASYNC_ERROR_HANDLING instead (function operator())
+[rank1]:[W702 21:55:56.209810595 ProcessGroupNCCL.cpp:4718] [PG ID 0 PG GUID 0 Rank 1]  using GPU 0 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+[rank0]:[W702 21:55:56.208430464 ProcessGroupNCCL.cpp:4718] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 as device used by this process is currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. You can pecify device_id in init_process_group() to force use of a particular device.
+E0702 22:34:38.848000 29124 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -7) local_rank: 0 (pid: 29142) of binary: /home/ubuntu/nichejepa_env/bin/python3
+E0702 22:34:38.859000 29071 torch/distributed/elastic/multiprocessing/api.py:874] failed (exitcode: -7) local_rank: 0 (pid: 29074) of binary: /home/ubuntu/nichejepa_env/bin/python3
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+Traceback (most recent call last):
+  File "/home/ubuntu/nichejepa_env/bin/torchrun", line 10, in <module>
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=========================================================
+/home/ubuntu/nichejepa/src/app/main_dist.py FAILED
+---------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+---------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-02_22:34:38
+  host      : g6e-8xlarge-dy-g6e-8xlarge-1.mlgpu.pcluster
+  rank      : 0 (local_rank: 0)
+  exitcode  : -7 (pid: 29142)
+  error_file: <N/A>
+  traceback : Signal 7 (SIGBUS) received by PID 29142
+=========================================================
+    sys.exit(main())
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 892, in main
+    run(args)
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/run.py", line 883, in run
+    elastic_launch(
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 139, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/ubuntu/nichejepa_env/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 270, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+=========================================================
+/home/ubuntu/nichejepa/src/app/main_dist.py FAILED
+---------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+---------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-07-02_22:34:38
+  host      : g6e-8xlarge-dy-g6e-8xlarge-2.mlgpu.pcluster
+  rank      : 1 (local_rank: 0)
+  exitcode  : -7 (pid: 29074)
+  error_file: <N/A>
+  traceback : Signal 7 (SIGBUS) received by PID 29074
+=========================================================
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-2: task 1: Exited with exit code 1
+srun: error: g6e-8xlarge-dy-g6e-8xlarge-1: task 0: Exited with exit code 1

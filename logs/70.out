@@ -1,0 +1,348 @@
+[+] SLURM_JOB_GPUS: 0
+[+] CUDA_VISIBLE_DEVICES: 0
+[+] SLURM_LOCALID: 0
+[+] SLURM_NODEID: 0
+Thu Jul  3 13:34:59 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.86.15              Driver Version: 570.86.15      CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:36:00.0 Off |                    0 |
+| N/A   38C    P0             80W /  350W |       1MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+[+] python: /home/ubuntu/nichejepa_env/bin/python
+[+] torchrun: /home/ubuntu/nichejepa_env/bin/torchrun
+    --nproc_per_node 1
+    --nnodes 2
+    --node_rank 0
+    --rdzv_endpoint g6e-8xlarge-dy-g6e-8xlarge-1:12345
+    --rdzv_backend c10d
+    --node_rank=0
+torch.__version__: 2.7.1+cu126
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+torch.cuda.device_count(): 1
+Hello from rank 1 of 2 on g6e-8xlarge-dy-g6e-8xlarge-2 where there are 1 allocated GPUs per node.
+World rank: 1, Local rank: 0, World size: 2
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from /home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gtsmall_aws.yaml.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_80m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_80m', 'token_dict_folder_path': '/fsx-shared/s3/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/fsx-shared/s3/hst_corpus_80m/hst_corpus_80m_1k_subset.dataset', 'precomputed_split': None, 'precomputed_n_nonzero_tokens': None, 'test_batch_ids': ['49_batch0'], 'val_batch_ids': ['49_batch0'], 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 16, 'num_workers': 0, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'counts', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 384, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6, 'sample_segments': True}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+tcp://g6e-8xlarge-dy-g6e-8xlarge-1.mlgpu.pcluster:40157
+torch.__version__: 2.7.1+cu126
+torch.version.cuda: 12.6
+torch.cuda.nccl.version(): (2, 26, 2)
+CUDA_VISIBLE_DEVICES: 0
+torch.cuda.device_count(): 1
+Hello from rank 0 of 2 on g6e-8xlarge-dy-g6e-8xlarge-1 where there are 1 allocated GPUs per node.
+World rank: 0, Local rank: 0, World size: 2
+INFO:root:Loaded parameters from YAML file.
+INFO:root:Called with params from /home/ubuntu/nichejepa/configs/model/hst_corpus_80m/hst_corpus_80m_gtsmall_aws.yaml.
+INFO:root:Params: {'data': {'dataset_name': 'hst_corpus_80m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_80m', 'token_dict_folder_path': '/fsx-shared/s3/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/fsx-shared/s3/hst_corpus_80m/hst_corpus_80m_1k_subset.dataset', 'precomputed_split': None, 'precomputed_n_nonzero_tokens': None, 'test_batch_ids': ['49_batch0'], 'val_batch_ids': ['49_batch0'], 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 16, 'num_workers': 0, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'counts', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 384, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6, 'sample_segments': True}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}.
+Run timestamp: 03072025_133544_128.
+{'data': {'dataset_name': 'hst_corpus_80m', 'raw_data_folder_path': '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_80m', 'token_dict_folder_path': '/fsx-shared/s3/tokenizer/token_dictionary_homo_sapiens.pkl', 'tokenized_data_folder_path': '/fsx-shared/s3/hst_corpus_80m/hst_corpus_80m_1k_subset.dataset', 'precomputed_split': None, 'precomputed_n_nonzero_tokens': None, 'test_batch_ids': ['49_batch0'], 'val_batch_ids': ['49_batch0'], 'tokenizer_type': 'cell_graph', 'random_state': 0, 'sample_subset': False, 'split': 0, 'stratify': False, 'seq_len_cell': 256, 'seq_len_neighborhood': 2560, 'n_segments': 11, 'sampling_strategy': None, 'batch_size': 16, 'num_workers': 0, 'pin_memory': True}, 'meta': {'add_cls': False, 'gt_type': 'counts', 'count_encoding': 'mlp', 'n_value_bins': 100, 'enc_depth': 12, 'enc_emb_dim': 384, 'pred_depth': 12, 'pred_emb_dim': 384, 'num_heads': 6, 'special_tokens': [], 'pos_learnable': False, 'seg_learnable': False, 'use_bfloat16': True, 'use_flash_attention': True, 'use_layer_norm': True}, 'mask': {'n_contexts': 1, 'n_targets': 1, 'block_masking': True, 'cell_masking': False, 'targets_list': None, 'context_mask_size': 200, 'target_mask_size': 50, 'per_block_mask_ratio': 0.6, 'sample_segments': True}, 'optimization': {'warmup': 3, 'epochs': 20, 'ema': [0.9995, 1.0], 'start_lr': 1e-06, 'lr': 6e-05, 'final_lr': 1e-06, 'weight_decay': 0.04, 'final_weight_decay': 0.4, 'ipe_scale': 1.25, 'clip_grad': 2.0}, 'state': {'log_freq': 20, 'checkpoint_freq': 1, 'write_tag': 'nichejepa', 'read_timestamp': '', 'folder_path': None, 'load_checkpoint': False, 'read_checkpoint': None, 'checkpoint_freq_iter': 5000}}
+tcp://g6e-8xlarge-dy-g6e-8xlarge-1.mlgpu.pcluster:40157
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31390 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to ^lo,docker
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31390 [0] NCCL INFO Bootstrap: Using enp39s0:10.1.104.174<0>
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31390 [0] NCCL INFO cudaDriverVersion 12080
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31390 [0] NCCL INFO NCCL version 2.26.2+cuda12.2
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31390 [0] NCCL INFO Comm config Blocking set to 1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31001 [0] NCCL INFO cudaDriverVersion 12080
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31001 [0] NCCL INFO NCCL_SOCKET_IFNAME set by environment to ^lo,docker
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31001 [0] NCCL INFO Bootstrap: Using enp39s0:10.1.61.133<0>
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31001 [0] NCCL INFO NCCL version 2.26.2+cuda12.2
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31001 [0] NCCL INFO Comm config Blocking set to 1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclNetPlugin_v10 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Loaded net plugin Libfabric (v9)
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v10 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v9 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v8 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v7 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v6 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Initializing aws-ofi-nccl 1.14.2
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Using Libfabric version 2.1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Using CUDA driver version 12080 with runtime 12060
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Configuring AWS-specific options
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting provider_filter to efa
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting FI_EFA_FORK_SAFE environment variable to 1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting NCCL_NVLSTREE_MAX_CHUNKSIZE to 512KiB
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting NCCL_NVLS_CHUNKSIZE to 512KiB
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Internode latency set at 75.0 us
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclNetPlugin_v10 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Loaded net plugin Libfabric (v9)
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v10 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v9 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v8 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v7 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/Plugin: Failed to find ncclCollNetPlugin_v6 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Initializing aws-ofi-nccl 1.14.2
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Using Libfabric version 2.1
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Using CUDA driver version 12080 with runtime 12060
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Configuring AWS-specific options
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting provider_filter to efa
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting FI_EFA_FORK_SAFE environment variable to 1
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting NCCL_NVLSTREE_MAX_CHUNKSIZE to 512KiB
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting NCCL_NVLS_CHUNKSIZE to 512KiB
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Internode latency set at 75.0 us
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Selected provider is efa, fabric is efa (found 1 nics)
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Selected provider is efa, fabric is efa (found 1 nics)
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI NIC group 0 device #0 0000:2f:00.0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Selected provider is efa, fabric is efa (found 1 nics)
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Using transport protocol SENDRECV
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Creating one domain per process
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Could not disable CUDA API usage for HMEM, disabling GDR
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting FI_OPT_EFA_SENDRECV_IN_ORDER_ALIGNED_128_BYTES not supported.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Setting NCCL_PROTO to "simple"
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Support for global registrations: false
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NET/OFI Support for DMA-BUF registrations: false
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI NIC group 0 device #0 0000:2f:00.0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Selected provider is efa, fabric is efa (found 1 nics)
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO Using network Libfabric
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO DMA-BUF is available on GPU device 0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO ncclCommInitRankConfig comm 0x5adee0a1a620 rank 1 nranks 2 cudaDev 0 nvmlDev 0 busId 36000 commId 0xbf895170584f7439 - Init START
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Using transport protocol SENDRECV
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Creating one domain per process
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Could not disable CUDA API usage for HMEM, disabling GDR
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting FI_OPT_EFA_SENDRECV_IN_ORDER_ALIGNED_128_BYTES not supported.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Setting NCCL_PROTO to "simple"
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Support for global registrations: false
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NET/OFI Support for DMA-BUF registrations: false
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO PROFILER/Plugin: Could not find: libnccl-profiler.so. 
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Using network Libfabric
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO DMA-BUF is available on GPU device 0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO ncclCommInitRankConfig comm 0x5b3c34625320 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 36000 commId 0xbf895170584f7439 - Init START
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO RAS client listening socket at 127.0.0.1<28028>
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO Bootstrap timings total 0.010211 (create 0.000029, send 0.000248, recv 0.009173, ring 0.000092, delay 0.000000)
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Bootstrap timings total 0.021538 (create 0.000025, send 0.000104, recv 0.002871, ring 0.000228, delay 0.000000)
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO Setting affinity for GPU 0 to 8000
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Setting affinity for GPU 0 to 8000
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO comm 0x5b3c34625320 rank 0 nRanks 2 nNodes 2 localRanks 1 localRank 0 MNNVL 0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO comm 0x5adee0a1a620 rank 1 nRanks 2 nNodes 2 localRanks 1 localRank 0 MNNVL 0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO Trees [0] -1/-1/-1->1->0 [1] 0/-1/-1->1->-1
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Channel 00/02 : 0 1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO P2P Chunksize set to 131072
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Channel 01/02 : 0 1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31031 [0] NCCL INFO [Proxy Service] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Trees [0] 1/-1/-1->0->-1 [1] -1/-1/-1->0->1
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31032 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO P2P Chunksize set to 131072
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Check P2P Type intraNodeP2pSupport 0 directMode 0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31439 [0] NCCL INFO [Proxy Service] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31440 [0] NCCL INFO [Proxy Service UDS] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO NCCL_PROTO set by environment to simple
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO NCCL_PROTO set by environment to simple
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Enabled NCCL Func/Proto/Algo Matrix:
+     Function |       LL     LL128    Simple   |          Tree           Ring  CollNetDirect   CollNetChain           NVLS       NVLSTree            PAT  
+    Broadcast |        0         0         1   |             1              1              1              1              1              1              1  
+       Reduce |        0         0         1   |             1              1              1              1              1              1              1  
+    AllGather |        0         0         1   |             1              1              1              1              1              1              1  
+ReduceScatter |        0         0         1   |             1              1              1              1              1              1              1  
+    AllReduce |        0         0         1   |             1              1              1              1              1              1              1  
+
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO threadThresholds 8/8/64 | 16/8/64 | 512 | 512
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO 2 coll channels, 2 collnet channels, 0 nvls channels, 2 p2p channels, 2 p2p channels per peer
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v4 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v3 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v2 symbol, using internal tuner instead.
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO ncclCommInitRankConfig comm 0x5adee0a1a620 rank 1 nranks 2 cudaDev 0 nvmlDev 0 busId 36000 commId 0xbf895170584f7439 - Init COMPLETE
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31028 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 1 nranks 2 total 0.22 (kernels 0.14, alloc 0.05, bootstrap 0.01, allgathers 0.02, topo 0.00, graphs 0.00, connections 0.00, rest 0.00)
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO CC Off, workFifoBytes 1048576
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO TUNER/Plugin: Could not find: libnccl-tuner.so. Using internal tuner plugin.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v4 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v3 symbol.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO TUNER/Plugin: Failed to find ncclTunerPlugin_v2 symbol, using internal tuner instead.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO ncclCommInitRankConfig comm 0x5b3c34625320 rank 0 nranks 2 cudaDev 0 nvmlDev 0 busId 36000 commId 0xbf895170584f7439 - Init COMPLETE
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31437 [0] NCCL INFO Init timings - ncclCommInitRankConfig: rank 0 nranks 2 total 0.22 (kernels 0.14, alloc 0.05, bootstrap 0.02, allgathers 0.00, topo 0.00, graphs 0.00, connections 0.00, rest 0.00)
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31443 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31034 [0] NCCL INFO [Proxy Progress] Device 0 CPU core 15
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31441 [0] NCCL INFO Channel 00/0 : 1[0] -> 0[0] [receive] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31441 [0] NCCL INFO Channel 01/0 : 1[0] -> 0[0] [receive] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31441 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [send] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31441 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [send] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31033 [0] NCCL INFO Channel 00/0 : 0[0] -> 1[0] [receive] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31033 [0] NCCL INFO Channel 01/0 : 0[0] -> 1[0] [receive] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31033 [0] NCCL INFO Channel 00/0 : 1[0] -> 0[0] [send] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31033 [0] NCCL INFO Channel 01/0 : 1[0] -> 0[0] [send] via NET/Libfabric/0
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31441 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31033 [0] NCCL INFO Connected all rings, use ring PXN 0 GDR 0
+INFO:root:Initialized (rank/world-size) 0/2.
+INFO:root:Initialized (rank/world-size) 1/2.
+INFO:root:EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCountEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (seg_embed): Embedding(12, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+INFO:root:PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCountPredictor(
+    (seg_embed): Embedding(12, 384, padding_idx=0)
+    (predictor_embed): Linear(in_features=384, out_features=384, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=384, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=384, out_features=384, bias=True)
+  )
+)
+INFO:root:Encoder number of parameters: 30357120
+INFO:root:Predictor number of parameters: 21738240
+INFO:root:Dataloader and -sampler created.
+INFO:root:Initializing optimizer: AdamW.
+INFO:root:Initializing learning rate scheduler: WarmupCosineSchedule.
+INFO:root:Initializing weight decay scheduler: CosineWDSchedule.
+INFO:root:Initializing automatic mixed precision training scaler: GradScaler.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31446 [0] NCCL INFO Connected binomial trees
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31037 [0] NCCL INFO Connected binomial trees
+INFO:root:Epoch 0
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31448 [0] NCCL INFO Connected all trees
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31039 [0] NCCL INFO Connected all trees
+INFO:root:Saving checkpoint at epoch 0 iteration 0
+INFO:root:Epoch 1
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 1 iteration 0
+INFO:root:Epoch 2
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 2 iteration 0
+INFO:root:Epoch 3
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 3 iteration 0
+INFO:root:Epoch 4
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 4 iteration 0
+INFO:root:Epoch 5
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 5 iteration 0
+INFO:root:Epoch 6
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 6 iteration 0
+INFO:root:Epoch 7
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 7 iteration 0
+INFO:root:Epoch 8
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 8 iteration 0
+INFO:root:Epoch 9
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 9 iteration 0
+INFO:root:Epoch 10
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 10 iteration 0
+INFO:root:Epoch 11
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 11 iteration 0
+INFO:root:Epoch 12
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 12 iteration 0
+INFO:root:Epoch 13
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 13 iteration 0
+INFO:root:Epoch 14
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 14 iteration 0
+INFO:root:Epoch 15
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 15 iteration 0
+INFO:root:Epoch 16
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 16 iteration 0
+INFO:root:Epoch 17
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 17 iteration 0
+INFO:root:Epoch 18
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 18 iteration 0
+INFO:root:Epoch 19
+INFO:root:Before iteration 0.
+INFO:root:Starting iteration 0.
+INFO:root:Saving checkpoint at epoch 19 iteration 0
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mhst_corpus_80m_gtsmall_aws_test11[0m at: [34mhttps://wandb.ai/sb75sanger/nichejepa-pretraining/runs/hst_corpus_80m_gtsmall_aws_test11[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20250703_133542-hst_corpus_80m_gtsmall_aws_test11/logs[0m
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31031 [0] NCCL INFO misc/socket.cc:881 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31168 [0] NCCL INFO misc/socket.cc:64 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31168 [0] NCCL INFO misc/socket.cc:80 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31168 [0] NCCL INFO misc/socket.cc:829 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-2:31001:31168 [0] NCCL INFO comm 0x5adee0a1a620 rank 1 nranks 2 cudaDev 0 busId 36000 - Abort COMPLETE
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31439 [0] NCCL INFO misc/socket.cc:881 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31582 [0] NCCL INFO misc/socket.cc:64 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31582 [0] NCCL INFO misc/socket.cc:80 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31582 [0] NCCL INFO misc/socket.cc:829 -> 3
+g6e-8xlarge-dy-g6e-8xlarge-1:31390:31582 [0] NCCL INFO comm 0x5b3c34625320 rank 0 nranks 2 cudaDev 0 busId 36000 - Abort COMPLETE
