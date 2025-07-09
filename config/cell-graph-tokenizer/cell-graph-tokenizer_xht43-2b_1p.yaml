@@ -18,9 +18,9 @@ tokenization:
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: gene_corrected_read_depth
+  rank_cell_norm_method: null
   rank_count_norm_method: null
-  rank_gene_norm_method: nonzero_mean
+  rank_gene_norm_method: null
   species: homo_sapiens
   use_generator: true
 wandb:
