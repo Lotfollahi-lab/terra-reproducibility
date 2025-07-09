@@ -69,11 +69,11 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        default='None', # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=none_or_str,
-                        default='nonzero_mean', # None, 'nonzero_mean'
+                        default='None', # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=none_or_str,
