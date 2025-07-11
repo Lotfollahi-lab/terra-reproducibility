@@ -17,7 +17,7 @@ case $EXPERIMENT_NAME in
     *)
         RAM="600G"
         TIME="48:00"
-        CORES=4
+        CORES=6
         QUEUE="long"
         ;;
 esac
