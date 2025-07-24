@@ -15,10 +15,10 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     *)
-        RAM="600G"
-        TIME="48:00"
-        CORES=6
-        QUEUE="long"
+        RAM="1200G"
+        TIME="96:00"
+        CORES=24
+        QUEUE="teramem"
         ;;
 esac
 
