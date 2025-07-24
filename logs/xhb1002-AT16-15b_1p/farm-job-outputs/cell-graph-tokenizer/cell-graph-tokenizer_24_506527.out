@@ -1,0 +1,7 @@
+Experiment name: xhb1002-AT16-15b_1p.
+Experiment description: xhb1002-AT16-15b_1p (dataset-id 1002) | 15 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.

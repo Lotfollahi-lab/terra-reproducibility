@@ -8,3 +8,4 @@ wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or 
   utils.warn_names_duplicates("obs")
 /nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:654: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
   coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+User defined signal 2

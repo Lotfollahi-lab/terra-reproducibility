@@ -1,0 +1,66 @@
+Experiment name: xhb24-2b_1p.
+Experiment description: xhb24-2b_1p (dataset-id 24) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhb24-2b_1p/cProfiler/cell-graph-tokenizer/xhb24-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 166944.297517705
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-01>
+Subject: Job 397717: <xhb24-2b_1p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <xhb24-2b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Tue Jul 15 16:58:47 2025
+Job was executed on host(s) <12*b12-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Wed Jul 16 07:08:07 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Jul 16 07:08:07 2025
+Terminated at Fri Jul 18 05:35:33 2025
+Results reported at Fri Jul 18 05:35:33 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb24-2b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   270671.00 sec.
+    Max Memory :                                 615665 MB
+    Average Memory :                             286497.00 MB
+    Total Requested Memory :                     819200.00 MB
+    Delta Memory :                               203535.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                70
+    Run time :                                   167227 sec.
+    Turnaround time :                            218206 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb24-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_397717.err> for stderr output of this job.
+
