@@ -1,0 +1,88 @@
+experiment:
+  name: "xhl1015-28b_1p"
+  description: "Xenium Human Liver (dataset-id 1015) | 28 batch | 1 panel | Preprocess to silver"
+  study: "SGP251 Liver Data from Jonas Maaskola (5k Panel)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00055__0045119__DF25-LIV-0-FFPE-1-S1-i__20250626__122157
+    - output-XETG00055__0045119__DF26-LIV-0-FFPE-1-S1-ii__20250626__122158
+    - output-XETG00055__0045258__DF27-LIV-0-FFPE-1-S1-i__20250626__122158
+    - output-XETG00055__0045258__DF28-LIV-0-FFPE-1-S1-ii__20250626__122158
+    - output-XETG00055__0045524__DF11-LIV-0-FFPE-1-S1-i__20250702__122839
+    - output-XETG00055__0045524__DF12-LIV-0-FFPE-1-S1-ii__20250702__122839
+    - output-XETG00055__0045525__DF10-LIV-0-FFPE-1-S1-ii__20250702__122839
+    - output-XETG00055__0045525__DF9-LIV-0-FFPE-1-S1-i__20250702__122839
+    - output-XETG00272__0045132__DF31-LIV-0-FFPE-1-S1-i__20250626__122204
+    - output-XETG00272__0045132__DF32-LIV-0-FFPE-1-S1-ii__20250626__122205
+    - output-XETG00272__0045239__DF29-LIV-0-FFPE-1-S1-i__20250626__122205
+    - output-XETG00272__0045239__DF30-LIV-0-FFPE-1-S1-ii__20250626__122205
+    - output-XETG00272__0045288__DF17-LIV-0-FFPE-1-S1-i__20250630__122509
+    - output-XETG00272__0045288__DF18-LIV-0-FFPE-1-S1-ii__20250630__122509
+    - output-XETG00272__0045301__DF19-LIV-0-FFPE-1-S1-i__20250630__122509
+    - output-XETG00272__0045301__DF20-LIV-0-FFPE-1-S1-ii__20250630__122509
+    - output-XETG00335__0044959__DF23-LIV-0-FFPE-1-S1-i__20250627__122337
+    - output-XETG00335__0044959__DF24-LIV-0-FFPE-1-S1-ii__20250627__122337
+    - output-XETG00335__0044961__DF21-LIV-0-FFPE-1-S1-i__20250627__122337
+    - output-XETG00335__0044961__DF22-LIV-0-FFPE-1-S1-ii__20250627__122337
+    - output-XETG00335__0045368__DF7-LIV-0-FFPE-1-S1-i__20250707__113608
+    - output-XETG00335__0045368__DF8-LIV-0-FFPE-1-S1-ii__20250707__113608
+    - output-XETG00335__0045369__DF5-LIV-0-FFPE-1-S1-i__20250707__113608
+    - output-XETG00335__0045369__DF6-LIV-0-FFPE-1-S1-ii__20250707__113608
+    - output-XETG00335__0045569__DF15-LIV-0-FFPE-1-S1-i__20250702__124001
+    - output-XETG00335__0045569__DF16-LIV-0-FFPE-1-S1-ii__20250702__124001
+    - output-XETG00335__0045570__DF13-LIV-0-FFPE-1-S1-i__20250702__124001
+    - output-XETG00335__0045570__DF14-LIV-0-FFPE-1-S1-ii__20250702__124001
+
+harmonization:
+  uns: {
+  'dataset_id': 1015,
+  'assay': 'xenium',
+  'species': 'homo_sapiens',
+  'tissue': 'liver',
+  'sample_condition_map': {
+    'output-XETG00055__0045119__DF25-LIV-0-FFPE-1-S1-i__20250626__122157': 'cholangiopathies',
+    'output-XETG00055__0045119__DF26-LIV-0-FFPE-1-S1-ii__20250626__122158': 'cholangiopathies',
+    'output-XETG00055__0045258__DF27-LIV-0-FFPE-1-S1-i__20250626__122158': 'cholangiopathies',
+    'output-XETG00055__0045258__DF28-LIV-0-FFPE-1-S1-ii__20250626__122158': 'cholangiopathies',
+    'output-XETG00055__0045524__DF11-LIV-0-FFPE-1-S1-i__20250702__122839': 'cholangiopathies',
+    'output-XETG00055__0045524__DF12-LIV-0-FFPE-1-S1-ii__20250702__122839': 'cholangiopathies',
+    'output-XETG00055__0045525__DF10-LIV-0-FFPE-1-S1-ii__20250702__122839': 'cholangiopathies',
+    'output-XETG00055__0045525__DF9-LIV-0-FFPE-1-S1-i__20250702__122839': 'cholangiopathies',
+    'output-XETG00272__0045132__DF31-LIV-0-FFPE-1-S1-i__20250626__122204': 'cholangiopathies',
+    'output-XETG00272__0045132__DF32-LIV-0-FFPE-1-S1-ii__20250626__122205': 'cholangiopathies',
+    'output-XETG00272__0045239__DF29-LIV-0-FFPE-1-S1-i__20250626__122205': 'cholangiopathies',
+    'output-XETG00272__0045239__DF30-LIV-0-FFPE-1-S1-ii__20250626__122205': 'cholangiopathies',
+    'output-XETG00272__0045288__DF17-LIV-0-FFPE-1-S1-i__20250630__122509': 'cholangiopathies',
+    'output-XETG00272__0045288__DF18-LIV-0-FFPE-1-S1-ii__20250630__122509': 'cholangiopathies',
+    'output-XETG00272__0045301__DF19-LIV-0-FFPE-1-S1-i__20250630__122509': 'cholangiopathies',
+    'output-XETG00272__0045301__DF20-LIV-0-FFPE-1-S1-ii__20250630__122509': 'cholangiopathies',
+    'output-XETG00335__0044959__DF23-LIV-0-FFPE-1-S1-i__20250627__122337': 'cholangiopathies',
+    'output-XETG00335__0044959__DF24-LIV-0-FFPE-1-S1-ii__20250627__122337': 'cholangiopathies',
+    'output-XETG00335__0044961__DF21-LIV-0-FFPE-1-S1-i__20250627__122337': 'cholangiopathies',
+    'output-XETG00335__0044961__DF22-LIV-0-FFPE-1-S1-ii__20250627__122337': 'cholangiopathies',
+    'output-XETG00335__0045368__DF7-LIV-0-FFPE-1-S1-i__20250707__113608': 'cholangiopathies',
+    'output-XETG00335__0045368__DF8-LIV-0-FFPE-1-S1-ii__20250707__113608': 'cholangiopathies',
+    'output-XETG00335__0045369__DF5-LIV-0-FFPE-1-S1-i__20250707__113608': 'cholangiopathies',
+    'output-XETG00335__0045369__DF6-LIV-0-FFPE-1-S1-ii__20250707__113608': 'cholangiopathies',
+    'output-XETG00335__0045569__DF15-LIV-0-FFPE-1-S1-i__20250702__124001': 'cholangiopathies',
+    'output-XETG00335__0045569__DF16-LIV-0-FFPE-1-S1-ii__20250702__124001': 'cholangiopathies',
+    'output-XETG00335__0045570__DF13-LIV-0-FFPE-1-S1-i__20250702__124001': 'cholangiopathies',
+    'output-XETG00335__0045570__DF14-LIV-0-FFPE-1-S1-ii__20250702__124001': 'cholangiopathies',
+    }
+  }
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }
