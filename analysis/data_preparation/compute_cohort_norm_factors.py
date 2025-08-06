@@ -125,19 +125,19 @@ if __name__ == '__main__':
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_80m", # "hst_corpus_70m"
+                        default="hst_corpus_90m", # "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", # "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing datasets of the cohort.')                        
     parser.add_argument('--basis_target_read_depth',
                         type=float,
-                        default=150.6692,
+                        default=154.01749299636748, # 150.6692 (hst_corpus_80m)
                         help='Read depth independent of number of probed genes.')
     parser.add_argument('--target_read_depth_per_gene',
                         type=float,
-                        default=0.0646,
+                        default=0.05644618485013678, # 0.0646 (hst_corpus_80m)
                         help='Additional read depth increment per probed gene.')
     args = parser.parse_args()
     
