@@ -1,7 +1,7 @@
 experiment:
   experiment_description: mhl16-2b_1p (dataset-id 16) | 1 batch | 1 panel
   experiment_name: mhl16-2b_1p
-  model_input_size: 2816
+  model_input_size: 3584
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
@@ -14,7 +14,7 @@ tokenization:
   delaunay: false
   include_zero_expr_genes: false
   keep_in_memory: false
-  n_neighs: 10
+  n_neighs: 6
   num_shards: 32
   processing_mode: parallel
   radius: null
