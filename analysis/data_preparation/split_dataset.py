@@ -64,11 +64,11 @@ if __name__ == '__main__':
                         help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', # '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset', # '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
                         help='Tokenized data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_80m", # "hst_corpus_70m"
+                        default="hst_corpus_90m", # "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--val_batch_ids',
                         type=str,
