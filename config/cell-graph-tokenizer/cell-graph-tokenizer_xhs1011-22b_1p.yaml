@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xenium human skin (dataset-id = 1011) | 22-batch | 1-panel
   experiment_name: xhs1011-22b_1p
-  model_input_size: 3584
+  model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

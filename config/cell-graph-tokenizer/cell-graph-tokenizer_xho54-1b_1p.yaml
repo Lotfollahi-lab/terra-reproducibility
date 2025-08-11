@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xho54-1b_1p (dataset-id 54) | 1 batch | 1 panel
   experiment_name: xho54-1b_1p
-  model_input_size: 3584
+  model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

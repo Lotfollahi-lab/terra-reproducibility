@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xhl40-2b_2p (dataset-id 40) | 2 batch | 1 panel
   experiment_name: xhl40-2b_2p
-  model_input_size: 3584
+  model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
