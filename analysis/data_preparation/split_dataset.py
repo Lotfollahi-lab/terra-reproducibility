@@ -34,16 +34,16 @@ def main(args):
     print('done3')
 
     # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
-    train_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
-    validation_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
-    test_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
-    print("Train unique identifiers:", train_unique)
-    print("Validation unique identifiers:", validation_unique)
-    print("Test unique identifiers:", test_unique)
-    print('done4')
+    #train_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
+    #validation_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
+    #test_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
+    #print("Train unique identifiers:", train_unique)
+    #print("Validation unique identifiers:", validation_unique)
+    #print("Test unique identifiers:", test_unique)
+    #print('done4')
 
     # Save the splits as pickle files
     with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:

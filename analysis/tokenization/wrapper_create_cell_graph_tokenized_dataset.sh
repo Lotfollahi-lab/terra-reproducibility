@@ -18,7 +18,7 @@ case $EXPERIMENT_NAME in
         RAM="600G" # "600G", "1500G"
         TIME="48:00" # "48:00", "120:00"
         CORES=24
-        QUEUE="long" # "long", "hugemem", "teramem"
+        QUEUE="hugemem" # "long", "hugemem", "teramem"
         ;;
 esac
 

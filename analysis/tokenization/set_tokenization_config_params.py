@@ -65,7 +65,7 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--model_input_size',
                         type=int,
-                        default=3584, # 3584, 2816, 1792
+                        default=7168, # 7168, 3584, 2816, 1792
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
