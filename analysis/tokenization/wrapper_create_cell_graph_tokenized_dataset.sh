@@ -15,10 +15,10 @@ case $EXPERIMENT_NAME in
         QUEUE="normal"
         ;;
     *)
-        RAM="600G" # "600G", "1500G"
+        RAM="600G" # "600G", "1000G", "1500G"
         TIME="48:00" # "48:00", "120:00"
         CORES=24
-        QUEUE="hugemem" # "long", "hugemem", "teramem"
+        QUEUE="long" # "long", "hugemem", "teramem"
         ;;
 esac
 
