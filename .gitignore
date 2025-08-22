@@ -13,3 +13,4 @@ analysis/statistics/results/
 *.pkl
 analysis/data_analysis/logs
 analysis/checkpoints
+analysis/benchmarking/scGPT
