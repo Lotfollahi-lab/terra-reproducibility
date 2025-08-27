@@ -1,0 +1,55 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Saving the dataset (0/32 shards):   0%|          | 0/776498 [00:00<?, ? examples/s]Saving the dataset (0/32 shards):   0%|          | 1000/776498 [00:52<11:14:00, 19.18 examples/s]Saving the dataset (0/32 shards):   0%|          | 2000/776498 [00:52<4:41:34, 45.84 examples/s] Saving the dataset (0/32 shards):   0%|          | 3000/776498 [00:53<2:36:08, 82.56 examples/s]Saving the dataset (0/32 shards):   1%|          | 4000/776498 [00:53<1:37:21, 132.24 examples/s]Saving the dataset (0/32 shards):   1%|          | 5000/776498 [00:54<1:04:57, 197.93 examples/s]Saving the dataset (0/32 shards):   1%|          | 6000/776498 [00:55<45:25, 282.67 examples/s]  Saving the dataset (0/32 shards):   1%|          | 7000/776498 [00:55<33:01, 388.40 examples/s]Saving the dataset (0/32 shards):   1%|          | 8000/776498 [00:56<24:53, 514.73 examples/s]Saving the dataset (0/32 shards):   1%|          | 9000/776498 [00:56<19:23, 659.70 examples/s]Saving the dataset (0/32 shards):   1%|▏         | 10000/776498 [00:57<15:41, 814.04 examples/s]Saving the dataset (0/32 shards):   1%|▏         | 11000/776498 [00:58<13:07, 971.70 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 12000/776498 [00:58<11:22, 1120.66 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 13000/776498 [00:59<10:10, 1251.06 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 14000/776498 [00:59<09:19, 1363.43 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 15000/776498 [01:00<08:41, 1459.51 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 16000/776498 [01:00<08:17, 1527.37 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 17000/776498 [01:01<08:08, 1554.97 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 18000/776498 [01:02<08:45, 1444.69 examples/s]Saving the dataset (0/32 shards):   2%|▏         | 19000/776498 [01:02<08:30, 1482.41 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 20000/776498 [01:03<08:18, 1518.87 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 21000/776498 [01:04<08:10, 1539.83 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 22000/776498 [01:04<08:05, 1555.40 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 23000/776498 [01:05<08:10, 1535.96 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 24000/776498 [01:06<08:15, 1519.62 examples/s]Saving the dataset (0/32 shards):   3%|▎         | 24266/776498 [01:06<09:26, 1327.79 examples/s]Saving the dataset (1/32 shards):   3%|▎         | 24266/776498 [01:06<09:26, 1327.79 examples/s]Saving the dataset (1/32 shards):   3%|▎         | 24266/776498 [01:19<09:26, 1327.79 examples/s]Saving the dataset (1/32 shards):   3%|▎         | 24266/776498 [03:37<1:52:14, 111.70 examples/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 269, in tokenize_data
+    tokenized_dataset.save_to_disk(output_path, num_shards=num_shards)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1626, in save_to_disk
+    for job_id, done, content in Dataset._save_to_disk_single(**kwargs):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1650, in _save_to_disk_single
+    writer = ArrowWriter(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 389, in __init__
+    self.stream = self._fs.open(path, "wb")
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/spec.py", line 1303, in open
+    f = self._open(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 191, in _open
+    return LocalFileOpener(path, mode, fs=self, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 355, in __init__
+    self._open()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 360, in _open
+    self.f = open(self.path, mode=self.mode)
+OSError: [Errno 5] Input/output error: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv162-2b_1p/xho1012-Hrv162-2b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset/data-00001-of-00032.arrow'
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 269, in tokenize_data
+    tokenized_dataset.save_to_disk(output_path, num_shards=num_shards)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1626, in save_to_disk
+    for job_id, done, content in Dataset._save_to_disk_single(**kwargs):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1650, in _save_to_disk_single
+    writer = ArrowWriter(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 389, in __init__
+    self.stream = self._fs.open(path, "wb")
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/spec.py", line 1303, in open
+    f = self._open(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 191, in _open
+    return LocalFileOpener(path, mode, fs=self, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 355, in __init__
+    self._open()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 360, in _open
+    self.f = open(self.path, mode=self.mode)
+OSError: [Errno 5] Input/output error: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv162-2b_1p/xho1012-Hrv162-2b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset/data-00001-of-00032.arrow'

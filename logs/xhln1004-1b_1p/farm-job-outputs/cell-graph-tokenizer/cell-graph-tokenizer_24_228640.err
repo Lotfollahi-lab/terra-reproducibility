@@ -1,0 +1,98 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Setting num_proc from 24 back to 1 for the train split to disable multiprocessing as it only contains one shard.
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1000 examples [01:49,  9.13 examples/s]Generating train split: 2000 examples [01:50, 21.86 examples/s]Generating train split: 3000 examples [01:51, 39.43 examples/s]Generating train split: 4000 examples [01:52, 63.36 examples/s]Generating train split: 5000 examples [01:53, 95.40 examples/s]Generating train split: 5000 examples [02:10, 95.40 examples/s]Generating train split: 6000 examples [04:20, 17.63 examples/s]Generating train split: 7000 examples [04:21, 25.95 examples/s]Generating train split: 8000 examples [04:22, 37.57 examples/s]Generating train split: 9000 examples [04:23, 53.65 examples/s]Generating train split: 10000 examples [04:24, 75.62 examples/s]Generating train split: 10000 examples [04:40, 75.62 examples/s]Generating train split: 11000 examples [07:01, 17.49 examples/s]Generating train split: 12000 examples [07:02, 24.92 examples/s]Generating train split: 13000 examples [07:03, 35.28 examples/s]Generating train split: 14000 examples [07:05, 49.57 examples/s]Generating train split: 15000 examples [07:06, 69.32 examples/s]Generating train split: 15000 examples [07:20, 69.32 examples/s]Generating train split: 16000 examples [09:39, 17.82 examples/s]Generating train split: 17000 examples [09:40, 25.26 examples/s]Generating train split: 18000 examples [09:41, 35.69 examples/s]Generating train split: 19000 examples [09:42, 50.12 examples/s]Generating train split: 20000 examples [09:43, 69.92 examples/s]Generating train split: 20001 examples [10:00, 69.92 examples/s]Generating train split: 21000 examples [12:17, 17.78 examples/s]Generating train split: 22000 examples [12:19, 25.18 examples/s]Generating train split: 23000 examples [12:20, 35.56 examples/s]Generating train split: 24000 examples [12:21, 49.97 examples/s]Generating train split: 25000 examples [12:22, 69.76 examples/s]Generating train split: 25817 examples [12:40, 69.76 examples/s]Generating train split: 26000 examples [14:55, 17.88 examples/s]Generating train split: 27000 examples [14:56, 25.33 examples/s]Generating train split: 28000 examples [14:57, 35.76 examples/s]Generating train split: 29000 examples [14:58, 50.23 examples/s]Generating train split: 30000 examples [14:59, 70.06 examples/s]Generating train split: 30001 examples [15:10, 70.06 examples/s]Generating train split: 31000 examples [17:34, 17.68 examples/s]Generating train split: 32000 examples [17:36, 25.04 examples/s]Generating train split: 33000 examples [17:37, 35.34 examples/s]Generating train split: 34000 examples [17:38, 49.66 examples/s]Generating train split: 35000 examples [17:39, 69.30 examples/s]Generating train split: 35000 examples [17:50, 69.30 examples/s]Generating train split: 35999 examples [20:11, 17.93 examples/s]Generating train split: 35999 examples [20:12, 29.68 examples/s]
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1586, in _prepare_split_single
+    writer.write(example, key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 553, in write
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 529, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 422, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 5] Input/output error
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 260, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 305, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1183, in from_generator
+    ).read()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 49, in read
+    self.builder.download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 894, in download_and_prepare
+    self._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1609, in _download_and_prepare
+    super()._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 970, in _download_and_prepare
+    self._prepare_split(split_generator, **prepare_split_kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1447, in _prepare_split
+    for job_id, done, content in self._prepare_split_single(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1604, in _prepare_split_single
+    raise DatasetGenerationError("An error occurred while generating the dataset") from e
+datasets.exceptions.DatasetGenerationError: An error occurred while generating the dataset
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1586, in _prepare_split_single
+    writer.write(example, key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 553, in write
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 529, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 422, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 5] Input/output error
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 260, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 305, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1183, in from_generator
+    ).read()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 49, in read
+    self.builder.download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 894, in download_and_prepare
+    self._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1609, in _download_and_prepare
+    super()._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 970, in _download_and_prepare
+    self._prepare_split(split_generator, **prepare_split_kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1447, in _prepare_split
+    for job_id, done, content in self._prepare_split_single(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1604, in _prepare_split_single
+    raise DatasetGenerationError("An error occurred while generating the dataset") from e
+datasets.exceptions.DatasetGenerationError: An error occurred while generating the dataset

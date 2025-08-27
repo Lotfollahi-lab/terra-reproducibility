@@ -1,0 +1,68 @@
+Experiment name: mhp20-2b_1p.
+Experiment description: mhp20-2b_1p (dataset-id 20) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20250824_101746-izijlv6g[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20250824_101746-izijlv6g/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-02>
+Subject: Job 229676: <mhp20-2b_1p_cell-graph-tokenizer_24> in cluster <farm22> Exited
+
+Job <mhp20-2b_1p_cell-graph-tokenizer_24> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Sat Aug 23 17:57:30 2025
+Job was executed on host(s) <24*b11-hm-02>, in queue <teramem>, as user <sb75> in cluster <farm22> at Sun Aug 24 10:17:18 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Aug 24 10:17:18 2025
+Terminated at Mon Aug 25 19:10:35 2025
+Results reported at Mon Aug 25 19:10:35 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mhp20-2b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   121327.29 sec.
+    Max Memory :                                 1172465 MB
+    Average Memory :                             946386.00 MB
+    Total Requested Memory :                     1228800.00 MB
+    Delta Memory :                               56335.00 MB
+    Max Swap :                                   -
+    Max Processes :                              30
+    Max Threads :                                88
+    Run time :                                   118400 sec.
+    Turnaround time :                            177185 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhp20-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_24_229676.err> for stderr output of this job.
+
