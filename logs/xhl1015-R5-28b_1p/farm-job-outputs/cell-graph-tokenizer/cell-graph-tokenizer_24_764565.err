@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 33, in <module>
+    from nichejepa.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/__init__.py", line 1, in <module>
+    from .gene_transformers import (GeneTransformerBaseEncoder,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 12
+    from typing import Dict, Literal, Mapping, Sequence, Tuple, 
+                                                                ^
+SyntaxError: trailing comma not allowed without surrounding parentheses

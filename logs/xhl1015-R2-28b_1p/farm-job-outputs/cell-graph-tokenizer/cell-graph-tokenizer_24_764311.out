@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-01>
+Subject: Job 764311: <xhl1015-R2-28b_1p_cell-graph-tokenizer_24> in cluster <farm22> Exited
+
+Job <xhl1015-R2-28b_1p_cell-graph-tokenizer_24> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Aug 27 10:51:30 2025
+Job was executed on host(s) <24*b12-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Wed Aug 27 12:13:07 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Aug 27 12:13:07 2025
+Terminated at Wed Aug 27 12:13:12 2025
+Results reported at Wed Aug 27 12:13:12 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1015-R2-28b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   6.91 sec.
+    Max Memory :                                 39 MB
+    Average Memory :                             39.00 MB
+    Total Requested Memory :                     1228800.00 MB
+    Delta Memory :                               1228761.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   5 sec.
+    Turnaround time :                            4902 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1015-R2-28b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_24_764311.err> for stderr output of this job.
+
