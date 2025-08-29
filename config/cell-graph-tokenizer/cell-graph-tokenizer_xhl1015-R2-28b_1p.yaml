@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xenium human liver (dataset-id = 1015) | 28-batch | 1-panel
   experiment_name: xhl1015-R2-28b_1p
-  model_input_size: 2816
+  model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
@@ -18,9 +18,9 @@ tokenization:
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: gene_corrected_read_depth
+  rank_cell_norm_method: null
   rank_count_norm_method: null
-  rank_gene_norm_method: nonzero_mean
+  rank_gene_norm_method: null
   species: homo_sapiens
   use_generator: true
 wandb:
