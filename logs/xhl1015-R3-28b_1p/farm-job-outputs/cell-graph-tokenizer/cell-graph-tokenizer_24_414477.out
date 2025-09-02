@@ -33,3 +33,48 @@ Normalizing gene expression counts...
 Retrieving gene tokens.
 Ranking gene tokens based on normalized counts.
 Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhl1015-R3-28b_1p/cProfiler/cell-graph-tokenizer/xhl1015-R3-28b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168_24_parallel.prof.
+Function: tokenize_data | Cumulative Time: 73702.937635213
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-01>
+Subject: Job 414477: <xhl1015-R3-28b_1p_cell-graph-tokenizer_24> in cluster <farm22> Done
+
+Job <xhl1015-R3-28b_1p_cell-graph-tokenizer_24> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Fri Aug 29 08:00:56 2025
+Job was executed on host(s) <24*b11-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Fri Aug 29 09:09:33 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Aug 29 09:09:33 2025
+Terminated at Sat Aug 30 05:47:29 2025
+Results reported at Sat Aug 30 05:47:29 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1015-R3-28b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   96457.50 sec.
+    Max Memory :                                 829689 MB
+    Average Memory :                             690215.19 MB
+    Total Requested Memory :                     1536000.00 MB
+    Delta Memory :                               706311.00 MB
+    Max Swap :                                   -
+    Max Processes :                              31
+    Max Threads :                                115
+    Run time :                                   74278 sec.
+    Turnaround time :                            78393 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1015-R3-28b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_24_414477.err> for stderr output of this job.
+
