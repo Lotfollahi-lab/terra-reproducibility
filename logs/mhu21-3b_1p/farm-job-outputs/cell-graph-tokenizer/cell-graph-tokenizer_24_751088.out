@@ -1,0 +1,72 @@
+Experiment name: mhu21-3b_1p.
+Experiment description: mhu21-3b_1p (dataset-id 21) | 3 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 751088: <mhu21-3b_1p_cell-graph-tokenizer_24> in cluster <farm22> Exited
+
+Job <mhu21-3b_1p_cell-graph-tokenizer_24> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Fri Sep  5 15:24:10 2025
+Job was executed on host(s) <24*b12-hm-02>, in queue <teramem>, as user <sb75> in cluster <farm22> at Wed Sep 17 09:23:52 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Sep 17 09:23:52 2025
+Terminated at Fri Sep 19 09:25:26 2025
+Results reported at Fri Sep 19 09:25:26 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mhu21-3b_1p.yaml
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   177995.00 sec.
+    Max Memory :                                 1641606 MB
+    Average Memory :                             1380019.12 MB
+    Total Requested Memory :                     2048000.00 MB
+    Delta Memory :                               406394.00 MB
+    Max Swap :                                   -
+    Max Processes :                              30
+    Max Threads :                                83
+    Run time :                                   172894 sec.
+    Turnaround time :                            1188076 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhu21-3b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_24_751088.err> for stderr output of this job.
+
