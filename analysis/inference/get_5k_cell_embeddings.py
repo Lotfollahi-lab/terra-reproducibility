@@ -96,7 +96,6 @@ def main(args):
         del(params['data']['val_batch_ids'])
 
     #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
-
     ###################
 
 
