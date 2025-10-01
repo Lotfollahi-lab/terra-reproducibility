@@ -1,0 +1,80 @@
+Experiment name: xhl1015-R7-28b_1p.
+Experiment description: xenium human liver (dataset-id = 1015) | 28-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhl1015-R7-28b_1p/cProfiler/cell-graph-tokenizer/xhl1015-R7-28b_1p_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_6_2816_24_parallel.prof.
+Function: tokenize_data | Cumulative Time: 31456.228574200002
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-01>
+Subject: Job 816556: <xhl1015-R7-28b_1p_cell-graph-tokenizer_24> in cluster <farm22> Done
+
+Job <xhl1015-R7-28b_1p_cell-graph-tokenizer_24> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Aug 27 13:23:37 2025
+Job was executed on host(s) <24*b12-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Thu Aug 28 05:44:15 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Aug 28 05:44:15 2025
+Terminated at Thu Aug 28 14:31:10 2025
+Results reported at Thu Aug 28 14:31:10 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1015-R7-28b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   33371.08 sec.
+    Max Memory :                                 381850 MB
+    Average Memory :                             309433.62 MB
+    Total Requested Memory :                     1536000.00 MB
+    Delta Memory :                               1154150.00 MB
+    Max Swap :                                   -
+    Max Processes :                              30
+    Max Threads :                                90
+    Run time :                                   31615 sec.
+    Turnaround time :                            90453 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1015-R7-28b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_24_816556.err> for stderr output of this job.
+

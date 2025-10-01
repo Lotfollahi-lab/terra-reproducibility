@@ -34,16 +34,16 @@ def main(args):
     print('done3')
 
     # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
-    train_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
-    validation_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
-    test_unique = {
-        f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
-    print("Train unique identifiers:", train_unique)
-    print("Validation unique identifiers:", validation_unique)
-    print("Test unique identifiers:", test_unique)
-    print('done4')
+    #train_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
+    #validation_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
+    #test_unique = {
+    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
+    #print("Train unique identifiers:", train_unique)
+    #print("Validation unique identifiers:", validation_unique)
+    #print("Test unique identifiers:", test_unique)
+    #print('done4')
 
     # Save the splits as pickle files
     with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
@@ -64,11 +64,11 @@ if __name__ == '__main__':
                         help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', # '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset', # '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
                         help='Tokenized data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_80m", # "hst_corpus_70m"
+                        default="hst_corpus_90m", # "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--val_batch_ids',
                         type=str,

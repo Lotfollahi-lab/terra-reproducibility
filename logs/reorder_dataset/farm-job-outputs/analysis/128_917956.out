@@ -1,0 +1,47 @@
+Start script.
+Start flattening.
+Flattening done.
+Saved to: /lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_ordered.dataset
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 917956: <reorder_dataset_128> in cluster <farm22> Done
+
+Job <reorder_dataset_128> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Thu Sep 18 14:00:36 2025
+Job was executed on host(s) <128*b12-hm-02>, in queue <teramem>, as user <sb75> in cluster <farm22> at Fri Sep 19 11:25:07 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Sep 19 11:25:07 2025
+Terminated at Sun Sep 21 16:37:20 2025
+Results reported at Sun Sep 21 16:37:20 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/reorder_dataset.sh
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   243591.00 sec.
+    Max Memory :                                 237105 MB
+    Average Memory :                             186213.28 MB
+    Total Requested Memory :                     1024000.00 MB
+    Delta Memory :                               786895.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              133
+    Max Threads :                                269
+    Run time :                                   191533 sec.
+    Turnaround time :                            268604 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/reorder_dataset/farm-job-outputs/analysis/128_917956.err> for stderr output of this job.
+

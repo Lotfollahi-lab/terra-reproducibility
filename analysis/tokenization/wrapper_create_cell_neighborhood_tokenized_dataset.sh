@@ -24,13 +24,13 @@ case $EXPERIMENT_NAME in
         ;;
     xhs1000-39b_1p)
         RAM="128G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=12
         QUEUE="normal"
         ;;
     chl59-8b_1p)
         RAM="300G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=2
         QUEUE="normal"
         ;;
@@ -96,61 +96,61 @@ case $EXPERIMENT_NAME in
         ;;
     mhh22-3b_1p)
         RAM="64G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="normal"
         ;;
     chp60-1b_1p)
         RAM="64G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="normal"
         ;;
     shp75-4b_1p)
         RAM="64G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="normal"
         ;;
     xhsc1006-2b_1p)
         RAM="64G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="normal"
         ;;
     xhc1001-1b_1p)
         RAM="64G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="normal"
         ;;
     xhe1008-6-20b_1p)
         RAM="512G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="long"
         ;;
     xhe1008-7-20b_1p)
         RAM="512G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="long"
         ;;
     xhe1008-8-20b_1p)
         RAM="512G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="long"
         ;;
     xhe1008-9-20b_1p)
         RAM="512G"
-        TIME="12:00"
+        TIME="24:00"
         CORES=4
         QUEUE="long"
         ;;
     xhe1008-10-20b_1p)
         RAM="512G"
-        TIME="12:00"
+        TIME="48:00"
         CORES=4
         QUEUE="long"
         ;;

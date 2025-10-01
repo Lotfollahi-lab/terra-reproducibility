@@ -57,7 +57,7 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt"
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt"
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -65,15 +65,15 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--model_input_size',
                         type=int,
-                        default=2816, # 2816, 1792
+                        default=7168, # 7168, 3584, 2816, 1792
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
-                        default='gene_corrected_read_depth', # None, 'gene_corrected_read_depth'
+                        default=None, # None, 'gene_corrected_read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=none_or_str,
-                        default='nonzero_mean', # None, 'nonzero_mean'
+                        default=None, # None, 'nonzero_mean'
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=none_or_str,
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                         help='If `True`, zero expression genes are included in the tokenization.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="10", # "10", "6"
+                        default="6", # "10", "6"
                         help='Number of neighbors.')
     args = parser.parse_args()
     

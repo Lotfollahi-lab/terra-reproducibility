@@ -1,0 +1,80 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:654: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:654: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Process ForkProcess-4:
+Process ForkProcess-6:
+Process ForkProcess-1:
+Process ForkProcess-5:
+Process ForkProcess-3:
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 103, in get
+    res = self._recv_bytes()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/connection.py", line 216, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/connection.py", line 414, in _recv_bytes
+    buf = self._recv(4)
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/connection.py", line 379, in _recv
+    chunk = read(handle, remaining)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+KeyboardInterrupt
+KeyboardInterrupt
+Terminated

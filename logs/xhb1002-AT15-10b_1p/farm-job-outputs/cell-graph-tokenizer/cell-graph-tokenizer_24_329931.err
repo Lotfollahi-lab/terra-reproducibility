@@ -1,0 +1,331 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:656: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Process ForkProcess-21:
+Process ForkProcess-5:
+Process ForkProcess-14:
+Process ForkProcess-15:
+Process ForkProcess-12:
+Process ForkProcess-17:
+Process ForkProcess-24:
+Process ForkProcess-19:
+Process ForkProcess-16:
+Exception ignored in: <function _xla_gc_callback at 0x14629d804040>
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/jax/_src/lib/__init__.py", line 128, in _xla_gc_callback
+Process ForkProcess-23:
+Process ForkProcess-13:
+Process ForkProcess-18:
+Process ForkProcess-11:
+Process ForkProcess-22:
+Process ForkProcess-20:
+Process ForkProcess-7:
+Process ForkProcess-6:
+Process ForkProcess-9:
+Exception ignored in: <function _xla_gc_callback at 0x14629d804040>
+Process ForkProcess-8:
+Process ForkProcess-1:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/jax/_src/lib/__init__.py", line 128, in _xla_gc_callback
+Process ForkProcess-10:
+    def _xla_gc_callback(*args):
+    def _xla_gc_callback(*args):
+KeyboardInterrupt: 
+KeyboardInterrupt: 
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 240, in _process_worker
+    call_item = call_queue.get(block=True)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/queues.py", line 102, in get
+    with self._rlock:
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/synchronize.py", line 95, in __enter__
+    return self._semlock.__enter__()
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 769, in _tokenize_adata
+    adata_neigh.obsp['spatial_distances'].getnnz(axis=1)[i]):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 423, in __get__
+    return self.construct(obj, store=getattr(obj, f"_{self.name}"))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 406, in construct
+    return self.cls(obj, axis=self.axis, store=store)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 366, in __init__
+    super().__init__(parent, store=store)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 208, in __init__
+    self._data[k] = self._validate_value(v, k)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 79, in _validate_value
+    if self.parent.shape[axis] == axis_len(val, i):
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 248, in _process_worker
+    exc = _ExceptionWithTraceback(e, e.__traceback__)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 126, in __init__
+    tb = traceback.format_exception(type(exc), exc, tb)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 135, in format_exception
+    te = TracebackException(type(value), value, tb, limit=limit, compact=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/exceptiongroup/_formatting.py", line 96, in __init__
+    self.stack = traceback.StackSummary.extract(
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 379, in extract
+    linecache.checkcache(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/linecache.py", line 72, in checkcache
+    stat = os.stat(fullname)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 800, in _tokenize_adata
+    adata_dict['seg_tokens_neighborhood'][i] = np.hstack(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/numpy/_core/shape_base.py", line 360, in hstack
+    arrs = atleast_1d(*tup)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/numpy/_core/shape_base.py", line 72, in atleast_1d
+    res.append(result)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 248, in _process_worker
+    exc = _ExceptionWithTraceback(e, e.__traceback__)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 126, in __init__
+    tb = traceback.format_exception(type(exc), exc, tb)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 135, in format_exception
+    te = TracebackException(type(value), value, tb, limit=limit, compact=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/exceptiongroup/_formatting.py", line 96, in __init__
+    self.stack = traceback.StackSummary.extract(
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 379, in extract
+    linecache.checkcache(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/linecache.py", line 72, in checkcache
+    stat = os.stat(fullname)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 768, in _tokenize_adata
+    if (adata_neigh.obsp['spatial_connectivities'].getnnz(axis=1)[i] !=
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 423, in __get__
+    return self.construct(obj, store=getattr(obj, f"_{self.name}"))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 406, in construct
+    return self.cls(obj, axis=self.axis, store=store)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 366, in __init__
+    super().__init__(parent, store=store)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 208, in __init__
+    self._data[k] = self._validate_value(v, k)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/aligned_mapping.py", line 99, in _validate_value
+    return coerce_array(val, name=name, allow_df=self._allow_df)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/storage.py", line 35, in coerce_array
+    array_data_structure_types = get_args(ArrayDataStructureType)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/typing.py", line 1940, in get_args
+    if isinstance(tp, _AnnotatedAlias):
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 248, in _process_worker
+    exc = _ExceptionWithTraceback(e, e.__traceback__)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 126, in __init__
+    tb = traceback.format_exception(type(exc), exc, tb)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 135, in format_exception
+    te = TracebackException(type(value), value, tb, limit=limit, compact=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/exceptiongroup/_formatting.py", line 96, in __init__
+    self.stack = traceback.StackSummary.extract(
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 379, in extract
+    linecache.checkcache(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/linecache.py", line 72, in checkcache
+    stat = os.stat(fullname)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 762, in _tokenize_adata
+    'spatial_connectivities'][i].nonzero()[1]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_base.py", line 905, in nonzero
+    A = self.tocoo()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_compressed.py", line 1158, in tocoo
+    return self._coo_container(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_coo.py", line 62, in __init__
+    self.data = getdata(obj, copy=copy, dtype=dtype)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_sputils.py", line 147, in getdata
+    data = np.array(obj, dtype=dtype, copy=copy)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 248, in _process_worker
+    exc = _ExceptionWithTraceback(e, e.__traceback__)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 126, in __init__
+    tb = traceback.format_exception(type(exc), exc, tb)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 135, in format_exception
+    te = TracebackException(type(value), value, tb, limit=limit, compact=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/exceptiongroup/_formatting.py", line 96, in __init__
+    self.stack = traceback.StackSummary.extract(
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 379, in extract
+    linecache.checkcache(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/linecache.py", line 72, in checkcache
+    stat = os.stat(fullname)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 769, in _tokenize_adata
+    adata_neigh.obsp['spatial_distances'].getnnz(axis=1)[i]):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_matrix.py", line 93, in getnnz
+    return self._getnnz(axis=axis)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/scipy/sparse/_compressed.py", line 132, in _getnnz
+    return np.diff(self.indptr)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/numpy/lib/_function_base_impl.py", line 1496, in diff
+    a = op(a[slice1], a[slice2])
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 248, in _process_worker
+    exc = _ExceptionWithTraceback(e, e.__traceback__)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 126, in __init__
+    tb = traceback.format_exception(type(exc), exc, tb)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 135, in format_exception
+    te = TracebackException(type(value), value, tb, limit=limit, compact=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/exceptiongroup/_formatting.py", line 96, in __init__
+    self.stack = traceback.StackSummary.extract(
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/traceback.py", line 379, in extract
+    linecache.checkcache(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/linecache.py", line 72, in checkcache
+    stat = os.stat(fullname)
+KeyboardInterrupt
+Terminated

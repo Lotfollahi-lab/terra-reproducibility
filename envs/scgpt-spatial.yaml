@@ -8,7 +8,7 @@ dependencies:
   - pip
   - jupyterlab
   - pip:
-    - scgpt==0.2.1
+    - scgpt==0.2.2
     - numpy==1.26.4
     #- pip install torch==2.0.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
     #- pip install torchtext==0.15.2

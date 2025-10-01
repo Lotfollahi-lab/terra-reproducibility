@@ -330,7 +330,7 @@ def parse_arguments():
                         help='Read checkpoint of the model.')
     parser.add_argument('--dataset_name',
                         type=str,
-                        default='hst_corpus_70m', # '1000-1007-1008', 'hst_corpus_70m'
+                        default='hst_corpus_80m', # '1000-1007-1008', 'hst_corpus_80m'
                         help='Name of the corpus.')
     parser.add_argument('--corpus_size',
                         type=int,
@@ -395,7 +395,7 @@ def main(args):
             del adata
         except:
             raise ValueError(
-                f'Could not find file with file name adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_{args.step_size}_{i}.h5ad.')
+                f'Could not find file with file name adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_{args.step_size}_{i}.h5ad.')
 
     adata_full = sc.concat(adata_list, join='outer', index_unique=None)
 
@@ -404,7 +404,7 @@ def main(args):
     adata_full.obs['cell'] = adata_full.obs['cell'].astype(int)
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_combined.h5ad')
 
     if args.subsample:
         # Perform stratified subsampling based on batch
@@ -434,7 +434,7 @@ def main(args):
     print("Elapsed time:", str(timedelta(seconds=elapsed_time)))
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_combined.h5ad')
 
     if args.dim_red_method == 'umap':
         if f'neighborhood_emb_layer_{n_layer}' in args.emb_keys:
@@ -447,7 +447,7 @@ def main(args):
                        key_added='cell_umap')
 
         adata_full.write(
-                f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
+                f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_combined.h5ad')
 
         dataset_batch_palette = {new_key: value for new_key, value in zip(
             adata_full.obs['dataset_batch'].unique().tolist(),
@@ -464,7 +464,7 @@ def main(args):
                     palette=(dataset_batch_palette if label == 'dataset_batch' else None),
                     show=False)
                 plt.savefig(
-                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_70m" else ""}{label}_neighborhood_umap.png',
+                    f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_80m" else ""}{label}_neighborhood_umap.png',
                     dpi=300,
                     bbox_inches='tight')
             if f'cell_emb_layer_{n_layer}' in args.emb_keys:
@@ -476,7 +476,7 @@ def main(args):
                     palette=(dataset_batch_palette if label == 'dataset_batch' else None),
                     show=False)
                 plt.savefig(
-                    f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_70m" else ""}{label}_cell_umap.png',
+                    f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/{f"{args.dataset_name}_" if args.dataset_name != "hst_corpus_80m" else ""}{label}_cell_umap.png',
                     dpi=300,
                     bbox_inches='tight')
 
@@ -487,7 +487,7 @@ def main(args):
     print("Elapsed time:", str(timedelta(seconds=elapsed_time)))
 
     adata_full.write(
-        f'{artifacts_folder_path}/hst_corpus_70m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_70m" else ""}_combined.h5ad')
+        f'{artifacts_folder_path}/hst_corpus_80m/{args.load_timestamp}/adata_{args.read_checkpoint}{f"_{args.dataset_name}" if args.dataset_name != "hst_corpus_80m" else ""}_combined.h5ad')
 
 
 if __name__ == '__main__':

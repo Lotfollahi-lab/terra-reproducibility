@@ -2,7 +2,7 @@ experiment:
   experiment_description: Xenium Human Breast Cancer (dataset-id = 81) | 1-batch |
     1-panel
   experiment_name: xhb81-1b_1p
-  model_input_size: 2816
+  model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
@@ -15,13 +15,13 @@ tokenization:
   delaunay: false
   include_zero_expr_genes: false
   keep_in_memory: false
-  n_neighs: 10
+  n_neighs: 6
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: gene_corrected_read_depth
+  rank_cell_norm_method: null
   rank_count_norm_method: null
-  rank_gene_norm_method: nonzero_mean
+  rank_gene_norm_method: null
   species: homo_sapiens
   use_generator: true
 wandb:

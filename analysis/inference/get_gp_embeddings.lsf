@@ -1,0 +1,17 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_gp_embeddings                                       # Job name
+#BSUB -o ../../logs/inference/get_gp_embeddings_%J.out           # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_gp_embeddings_%J.err           # Standard error
+#BSUB -q inference                                               # Queue name
+#BSUB -n 12                                                      # Number of CPU cores
+#BSUB -M 256GB                                                   # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"     #
+#BSUB -W 48:00                                                   # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                        # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_gp_embeddings.py
