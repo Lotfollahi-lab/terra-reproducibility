@@ -118,43 +118,61 @@ def main(args):
     dataset, _, _ = prepare_dataset(params)
     dataset # 88,626,282 cells
 
-    # Get gene panel values for 5k gene panel
-    min_gene_panel_size = 4948
-    max_gene_panel_size = 4949
 
-    # Perform index subtraction as in tokenizer
-    max_cls_tokens = 100
-    spv_dict = {
-        k: v for k, v in token_dict.items() if k.startswith('spv_')}
-    spv_start_idx = min(spv_dict.values())
-    spv_idx_subtract = spv_start_idx - 2 - max_cls_tokens
+    ###############################################
 
-    keep_gene_panel_values = torch.tensor([
-        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= min_gene_panel_size) and (int(k.split('panel')[1]) <= max_gene_panel_size)])
+    #### Create AnnData with tissue-specific gene embeddings ###
+    # Define params
+    all_5k_tissues = ['brain', 'embryo', 'kidney', 'liver', 'lung', 'ovary', 'skin']
+    all_emb_keys = ['cell', 'spatial_cell', 'neighborhood']
+    gene_count_thresh = 20
 
-    # Filter dataset
-    dataset.set_format(type=None) # for extreme speed-up
+    # Load one example AnnData just to get gene IDs/names
+    adata_tmp = sc.read_h5ad('/nfs/team361/sb75/DATASETS/silver/xhe1008-1-20b_1p/section020_SOB26.h5ad')
 
-    def keep_row(x):
-        return torch.isin(torch.tensor(x["gene_panel_value"]), keep_gene_panel_values)
+    # Build mapping: ensembl_id -> gene_name
+    gene_mapping_dict = {
+        ensembl_id: gene_name
+        for ensembl_id, gene_name in zip(
+            adata_tmp.var['ensembl_id'].tolist(),
+            adata_tmp.var.index.tolist()
+        )
+    }
+    gene_names = [gene_mapping_dict[gene] for gene in adata_tmp.var['ensembl_id'].tolist()]
 
-    filtered_dataset = dataset.filter(
-        keep_row,
-        batched=True,
-        batch_size=10000, 
-        num_proc=args.num_workers)
-    filtered_dataset # 26,621,953 cells
+    # Retrieve and save gene embeddings
+    for emb_key in all_emb_keys:
+        tissue_avg_gene_embed_list = []
+        filtered_genes_list = []
+        tissue_list = []
+        
+        for selected_tissue in all_5k_tissues:
+            tissue_avg_gene_embed_path = f'{artifacts_folder_path}/hst_corpus_80m/{load_timestamp}/{read_checkpoint.split("-")[1].split(".")[0]}_5k_{selected_tissue}_avg_gene_embed.pkl'
+            with open(tissue_avg_gene_embed_path, 'rb') as f:
+                tissue_avg_gene_embed = pickle.load(f)
+        
+            gene_mask = (
+                tissue_avg_gene_embed[f'{emb_key}_gene_emb_counts_per_data'] > gene_count_thresh).ravel()
+            tissue_avg_gene_embed = tissue_avg_gene_embed[f'{emb_key}_gene_emb_average_per_data'][gene_mask]
+            filtered_genes = [f'{selected_tissue}_{gene}' for gene in list(compress(gene_names, gene_mask))]
+            filtered_tissues = [selected_tissue] * len(filtered_genes)
+        
+            tissue_avg_gene_embed_list.append(tissue_avg_gene_embed)
+            filtered_genes_list.extend(filtered_genes)
+            tissue_list.extend(filtered_tissues)
+        
+        X = np.concatenate(tissue_avg_gene_embed_list, axis=0)
 
-    columns = list(filtered_dataset.features.keys())
-    columns.remove("cell_id")
-    filtered_dataset.set_format(
-        type="torch",
-        columns=columns,
-        output_all_columns=True)
-    filtered_dataset # 18,168,008 cells
-    filtered_dataset.save_to_disk(args.dataset_path)
-    ###############################
+        adata_tissue_avg_gene_embed = ad.AnnData(
+            X=X,
+            obs=pd.DataFrame(index=filtered_genes_list),
+            var=pd.DataFrame(index=[f"dim_{i}" for i in range(X.shape[1])])
+        )
+        adata_tissue_avg_gene_embed.obs['tissue'] = tissue_list
 
+        adata_tissue_avg_gene_embed_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_5k_{emb_key}_tissue_avg_gene_embed.h5ad'
+        adata_tissue_avg_gene_embed.write(adata_tissue_avg_gene_embed_path)
+    ############################################################
 
 
 if __name__ == '__main__':
@@ -171,15 +189,31 @@ if __name__ == '__main__':
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
                         default=True,
-                        help='Flag whether the model was trained on AWS.')
+                        help='Flag whether the model was trained on AWS.')    
+    parser.add_argument('--cohort_name',
+                        type=str,
+                        default='hst_corpus_80m',
+                        help='Name of data cohort.')
+    parser.add_argument('--inference_step_size',
+                        type=int,
+                        default=200000,
+                        help='Inference step size.')
+    parser.add_argument('--start_step',
+                        type=int,
+                        default=20,
+                        help='Inference start step.')
+    parser.add_argument('--end_step',
+                        type=int,
+                        default=40,
+                        help='Inference start step.')
     parser.add_argument('--num_workers',
                         type=int,
                         default=12,
                         help='Number of workers.')
-    parser.add_argument('--dataset_path',
-                        type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k.dataset',
-                        help='Path where the filtered Huggingface dataset will be stored.')    
+    parser.add_argument('--batch_size',
+                        type=int,
+                        default=128,
+                        help='Batch size.')
     args = parser.parse_args()
     
     main(args)

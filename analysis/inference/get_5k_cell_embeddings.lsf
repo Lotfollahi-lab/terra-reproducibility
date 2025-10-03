@@ -14,4 +14,4 @@
 source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
-python get_5k_cell_embeddings.py --start_step 121 --end_step 140
+python get_5k_cell_embeddings.py --start_step 131 --end_step 140

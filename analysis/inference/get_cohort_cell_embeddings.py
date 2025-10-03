@@ -92,8 +92,10 @@ def main(args):
         ).replace(
             'hst_corpus_80m', args.cohort_name
         )    
-        del(params['data']['test_batch_ids'])
-        del(params['data']['val_batch_ids'])
+        if 'test_batch_ids' in params['data']:
+            del(params['data']['test_batch_ids'])
+        if 'val_batch_ids' in params['data']:
+            del(params['data']['val_batch_ids'])
 
     #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
     ###################
@@ -202,11 +204,11 @@ if __name__ == '__main__':
                         help='Inference step size.')
     parser.add_argument('--start_step',
                         type=int,
-                        default=0,
+                        default=1,
                         help='Inference start step.')
     parser.add_argument('--end_step',
                         type=int,
-                        default=40,
+                        default=10,
                         help='Inference start step.')
     parser.add_argument('--num_workers',
                         type=int,

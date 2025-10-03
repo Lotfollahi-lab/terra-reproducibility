@@ -40,211 +40,35 @@ from nichejepa.utils.evaluation import clustering_metrics, classification_metric
 from analysis_utils import *
 
 
-### Define functions ###
-def run_inference(dataset_name,
-                  params,
-                  read_checkpoint,
-                  obs_cols,
-                  rerun_inference=False,
-                  write_to_disk=True):
-    # Load inference results if they exist
-    if os.path.exists(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad') and not rerun_inference:
-        adata = sc.read_h5ad(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
-    else:
-        # Load data
-        _, _, test_dataset = prepare_dataset(params)
-        test_dataset
-        
-        # Run model inference
-        adata = infer(params,
-                      test_dataset,
-                      load_folder_path=folder_path,
-                      dataset_ids=list(set([batch_id.split('_')[0] for batch_id in params['data']['test_batch_ids']])),
-                      obs_cols=obs_cols,
-                      agg_type='avg',
-                      masked_tokens=None,
-                      agg_excluded_tokens=None,
-                      cell_gene_ids=[],
-                      neighborhood_gene_ids=[])
-
-    # Extract batch from cell ID
-    adata.obs["batch"] = [cell_id.split('_')[1].replace('batch', '') for cell_id in adata.obs.index.tolist()]
-    
-    # Remove missing ground truth
-    for obs_col in obs_cols:
-        adata = adata[~adata.obs[obs_col].isna()]
-
-    if write_to_disk:
-        # Save adata
-        adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
-
-    return adata
-
-def compute_embedding_similarity(adata,
-                                 emb_keys=['cell', 'neighborhood'],
-                                 label='niche_type',
-                                 write_to_disk=True):
-    for emb_key in emb_keys:
-        similarity_stats = compute_similarity_stats(
-            adata,
-            n_samples=None,
-            type_key=label,
-            embedding_key=f'{emb_key}_emb_layer_{layer}')
-
-        avg_cos_sim = np.mean(similarity_stats["Mean Similarity"])
-    
-        cosine_df = pd.DataFrame({
-            'metric': [f'avg_{label}_cos_sim'],
-            'value': [avg_cos_sim]
-        })
-        print(f'Average {label} cosine similarity is {avg_cos_sim}.')
-        cosine_df.to_csv(f'{folder_path}/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_avg_{label}_cos_sim.csv',
-                         index=False)
-        
-        plot_similarity_heatmaps(
-            similarity_stats,
-            save_file_path=f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{emb_key}_emb_{label}_cos_sim.svg')
-
-def compute_neighborhood_umap(adata,
-                              write_to_disk=True):
-    if 'neighborhood_connectivities' not in adata.obsp.keys():
-        # Compute UMAP representation for (aggregated) neighborhood gene embeddings
-        sc.pp.neighbors(adata,
-                        n_neighbors=15,
-                        use_rep=f'neighborhood_emb_layer_{layer}',
-                        key_added='neighborhood')
-    if 'neighborhood_umap' not in adata.obsm.keys():
-        sc.tl.umap(adata,
-                   neighbors_key='neighborhood',
-                   key_added='neighborhood_umap')
-    
-        if write_to_disk:
-            # Save adata
-            adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
-    
-    if 'cell_connectivities' not in adata.obsp.keys():
-        # Compute UMAP representation for (aggregated) cell gene embeddings
-        sc.pp.neighbors(adata,
-                        n_neighbors=15,
-                        use_rep=f'cell_emb_layer_{layer}',
-                        key_added='cell')
-    if 'cell_umap' not in adata.obsm.keys():
-        sc.tl.umap(adata,
-                   neighbors_key='cell',
-                   key_added='cell_umap')
-
-        if write_to_disk:
-            # Save adata
-            adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
-
-    return adata
-
-def compute_latent_clusters(adata,
-                            emb_keys=['cell', 'neighborhood'],
-                            obs_col='niche_type',
-                            latent_leiden_resolution_cell=1.0,
-                            latent_leiden_resolution_neighborhood=0.4,
-                            write_to_disk=True):
-    for emb_key in emb_keys:
-        latent_leiden_resolutions = []
-        if emb_key == 'cell':
-            latent_leiden_resolution = latent_leiden_resolution_cell
-        elif emb_key == 'neighborhood':
-            latent_leiden_resolution = latent_leiden_resolution_neighborhood
-        adata.obsm['X_umap'] = adata.obsm[f'{emb_key}_umap']
-        # Perform clustering until number of ground truth niches is matched
-        i = 0
-        n_unique_vals = len(adata.obs[obs_col].value_counts() < 100)
-        print(f'Target number of unique values: {n_unique_vals}.')
-        n_latent_clusters = 0
-        while (n_latent_clusters != n_unique_vals):
-            if latent_leiden_resolution in latent_leiden_resolutions:
-                latent_leiden_resolution += random.uniform(0.0001, 0.001)
-            latent_leiden_resolutions.append(latent_leiden_resolution)
-            print(f'Leiden resolution: {latent_leiden_resolution}.')
-            latent_cluster_key = f'{emb_key}_emb_leiden_res{str(latent_leiden_resolution).replace(".", "_")}'
-            i += 1
-            sc.tl.leiden(adata,
-                         neighbors_key=emb_key,
-                         key_added=latent_cluster_key,
-                         resolution=latent_leiden_resolution)
-        
-            n_latent_clusters = len(adata.obs[latent_cluster_key].value_counts() < 100)
-            print(f"Number of latent clusters {n_latent_clusters}.")
-            if n_latent_clusters == n_unique_vals:
-                break
-            elif n_latent_clusters < (n_unique_vals - 8):
-                latent_leiden_resolution += 0.1
-            elif n_latent_clusters < (n_unique_vals - 5):
-                latent_leiden_resolution += 0.05
-            elif n_latent_clusters < (n_unique_vals - 3):
-                latent_leiden_resolution += 0.02
-            elif n_latent_clusters < n_unique_vals:
-                latent_leiden_resolution += 0.001
-            elif n_latent_clusters > (n_unique_vals + 8):
-                latent_leiden_resolution -= 0.1
-            elif n_latent_clusters > (n_unique_vals + 5):
-                latent_leiden_resolution -= 0.05
-            elif n_latent_clusters > (n_unique_vals + 3):
-                latent_leiden_resolution -= 0.02
-            else:
-                latent_leiden_resolution -= 0.001
-        
-        # Compute metrics and store to disk
-        labels = adata.obs[obs_col]
-        labels_pred = adata.obs[latent_cluster_key]
-        nmi = normalized_mutual_info_score(labels, labels_pred, average_method="arithmetic")
-        ari = adjusted_rand_score(labels, labels_pred)
-        print(f'NMI is {nmi}. ARI is {ari}.')
-        metrics_df = pd.DataFrame({
-            'metric': ['NMI', 'ARI'],
-            'value': [nmi, ari]
-        })
-        metrics_df.to_csv(f'{folder_path}/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_metrics.csv',
-                          index=False)
-        
-        # Plot UMAPs
-        os.makedirs(f'{folder_path}/figures', exist_ok=True)
-        labels = ['batch', obs_col, latent_cluster_key]
-        # Plot (aggregated) neighborhood gene embeddings, colored by labels
-        for label in labels:
-            if len(np.unique(adata.obs[label])) > 1:
-                sc.pl.umap(adata,
-                           neighbors_key=emb_key,
-                           title=(emb_key + "_emb_" + label if emb_key not in label else label),
-                           color=label,
-                           palette=(custom_palette if label == latent_cluster_key else None),
-                           show=False)
-                plt.savefig(f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}{"_" + emb_key + "_emb" if emb_key not in label else ""}_{label}_umap.svg',
-                            dpi=300,
-                            bbox_inches='tight')
-        
-        # Plot niches in tissue
-        batch_ids = adata.obs['batch'].unique().tolist()
-        for i, batch_id in enumerate(batch_ids):
-            adata_batch = adata[adata.obs['batch'] == batch_id]
-            sc.pl.spatial(adata_batch,
-                          color=latent_cluster_key,
-                          palette=custom_palette,
-                          spot_size=spot_sizes[i],
-                          save=f'{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg')
-            os.rename(f'{folder_path}/figures/show{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg',
-                      f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg'.replace("show", ""))
-    
-        if write_to_disk:
-            # Save adata
-            adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
-    
-    return adata
-
-
 def main(args):
     ### Define paths ###
+    global artifacts_folder_path
+    global folder_path
     artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
     ####################
+
+    ### Set up figure params ###
+    os.makedirs(f'{folder_path}/figures', exist_ok=True)
+    plt.rcParams['font.size'] = 5
+    plt.rcParams['text.usetex'] = False
+    plt.rcParams['svg.fonttype'] = 'none'
+
+    # Improve reproducibility of UMAP and Leiden
+    os.environ['NUMBA_CPU_NAME'] = 'generic'
+
+    sc.settings.figdir = f'{folder_path}/figures'
+
+    sc.settings.set_figure_params(
+        dpi=300,
+        dpi_save=300,
+        figsize=(6, 4),
+        facecolor='white',
+        fontsize=10
+    )
+    ############################
 
 
     ### Set up logger ###
@@ -290,10 +114,14 @@ def main(args):
         ).replace(
             'hst_corpus_80m', args.cohort_name
         )    
-        del(params['data']['test_batch_ids'])
-        del(params['data']['val_batch_ids'])
+        if 'test_batch_ids' in params['data']:
+            del(params['data']['test_batch_ids'])
+        if 'val_batch_ids' in params['data']:
+            del(params['data']['val_batch_ids'])
 
     #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    global layer
+    layer = params['meta']['enc_depth']
     ###################
 
 
@@ -311,8 +139,212 @@ def main(args):
     #######################
 
 
+    ### Define functions ###
+    def run_inference(dataset_name,
+                      params,
+                      read_checkpoint,
+                      obs_cols,
+                      rerun_inference=False,
+                      write_to_disk=True):
+        # Load inference results if they exist
+        if os.path.exists(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad') and not rerun_inference:
+            adata = sc.read_h5ad(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+        else:
+            # Load data
+            _, _, test_dataset = prepare_dataset(params)
+            test_dataset
+            
+            # Run model inference
+            adata = infer(params,
+                          test_dataset,
+                          load_folder_path=folder_path,
+                          dataset_ids=list(set([batch_id.split('_')[0] for batch_id in params['data']['test_batch_ids']])),
+                          obs_cols=obs_cols,
+                          agg_type='avg',
+                          masked_tokens=None,
+                          agg_excluded_tokens=None,
+                          cell_gene_ids=[],
+                          neighborhood_gene_ids=[])
+
+        # Extract batch from cell ID
+        adata.obs["batch"] = [cell_id.split('_')[1].replace('batch', '') for cell_id in adata.obs.index.tolist()]
+        
+        # Remove missing ground truth
+        for obs_col in obs_cols:
+            adata = adata[~adata.obs[obs_col].isna()]
+
+        if write_to_disk:
+            # Save adata
+            adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+
+        return adata
+
+    def compute_embedding_similarity(adata,
+                                    dataset_name,
+                                    read_checkpoint,
+                                    emb_keys=['cell', 'neighborhood'],
+                                    label='niche_type',
+                                    write_to_disk=True):
+        for emb_key in emb_keys:
+            similarity_stats = compute_similarity_stats(
+                adata,
+                n_samples=None,
+                type_key=label,
+                embedding_key=f'{emb_key}_emb_layer_{layer}')
+
+            avg_cos_sim = np.mean(similarity_stats["Mean Similarity"])
+        
+            cosine_df = pd.DataFrame({
+                'metric': [f'avg_{label}_cos_sim'],
+                'value': [avg_cos_sim]
+            })
+            print(f'Average {label} cosine similarity is {avg_cos_sim}.')
+            cosine_df.to_csv(f'{folder_path}/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_avg_{label}_cos_sim.csv',
+                            index=False)
+            
+            plot_similarity_heatmaps(
+                similarity_stats,
+                save_file_path=f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{emb_key}_emb_{label}_cos_sim.svg')
+
+    def compute_neighborhood_umap(adata,
+                                  dataset_name,
+                                  read_checkpoint,
+                                  write_to_disk=True):
+        if 'neighborhood_connectivities' not in adata.obsp.keys():
+            # Compute UMAP representation for (aggregated) neighborhood gene embeddings
+            sc.pp.neighbors(adata,
+                            n_neighbors=15,
+                            use_rep=f'neighborhood_emb_layer_{layer}',
+                            key_added='neighborhood')
+        if 'neighborhood_umap' not in adata.obsm.keys():
+            sc.tl.umap(adata,
+                    neighbors_key='neighborhood',
+                    key_added='neighborhood_umap')
+        
+            if write_to_disk:
+                # Save adata
+                adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+        
+        if 'cell_connectivities' not in adata.obsp.keys():
+            # Compute UMAP representation for (aggregated) cell gene embeddings
+            sc.pp.neighbors(adata,
+                            n_neighbors=15,
+                            use_rep=f'cell_emb_layer_{layer}',
+                            key_added='cell')
+        if 'cell_umap' not in adata.obsm.keys():
+            sc.tl.umap(adata,
+                    neighbors_key='cell',
+                    key_added='cell_umap')
+
+            if write_to_disk:
+                # Save adata
+                adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+
+        return adata
+
+    def compute_latent_clusters(adata,
+                                dataset_name,
+                                read_checkpoint,
+                                emb_keys=['cell', 'neighborhood'],
+                                obs_col='niche_type',
+                                latent_leiden_resolution_cell=1.0,
+                                latent_leiden_resolution_neighborhood=0.4,
+                                write_to_disk=True):
+        for emb_key in emb_keys:
+            latent_leiden_resolutions = []
+            if emb_key == 'cell':
+                latent_leiden_resolution = latent_leiden_resolution_cell
+            elif emb_key == 'neighborhood':
+                latent_leiden_resolution = latent_leiden_resolution_neighborhood
+            adata.obsm['X_umap'] = adata.obsm[f'{emb_key}_umap']
+            # Perform clustering until number of ground truth niches is matched
+            i = 0
+            n_unique_vals = len(adata.obs[obs_col].value_counts() < 100)
+            print(f'Target number of unique values: {n_unique_vals}.')
+            n_latent_clusters = 0
+            while (n_latent_clusters != n_unique_vals):
+                if latent_leiden_resolution in latent_leiden_resolutions:
+                    latent_leiden_resolution += random.uniform(0.0001, 0.001)
+                latent_leiden_resolutions.append(latent_leiden_resolution)
+                print(f'Leiden resolution: {latent_leiden_resolution}.')
+                latent_cluster_key = f'{emb_key}_emb_leiden_res{str(latent_leiden_resolution).replace(".", "_")}'
+                i += 1
+                sc.tl.leiden(adata,
+                            neighbors_key=emb_key,
+                            key_added=latent_cluster_key,
+                            resolution=latent_leiden_resolution)
+            
+                n_latent_clusters = len(adata.obs[latent_cluster_key].value_counts() < 100)
+                print(f"Number of latent clusters {n_latent_clusters}.")
+                if n_latent_clusters == n_unique_vals:
+                    break
+                elif n_latent_clusters < (n_unique_vals - 8):
+                    latent_leiden_resolution += 0.1
+                elif n_latent_clusters < (n_unique_vals - 5):
+                    latent_leiden_resolution += 0.05
+                elif n_latent_clusters < (n_unique_vals - 3):
+                    latent_leiden_resolution += 0.02
+                elif n_latent_clusters < n_unique_vals:
+                    latent_leiden_resolution += 0.001
+                elif n_latent_clusters > (n_unique_vals + 8):
+                    latent_leiden_resolution -= 0.1
+                elif n_latent_clusters > (n_unique_vals + 5):
+                    latent_leiden_resolution -= 0.05
+                elif n_latent_clusters > (n_unique_vals + 3):
+                    latent_leiden_resolution -= 0.02
+                else:
+                    latent_leiden_resolution -= 0.001
+            
+            # Compute metrics and store to disk
+            labels = adata.obs[obs_col]
+            labels_pred = adata.obs[latent_cluster_key]
+            nmi = normalized_mutual_info_score(labels, labels_pred, average_method="arithmetic")
+            ari = adjusted_rand_score(labels, labels_pred)
+            print(f'NMI is {nmi}. ARI is {ari}.')
+            metrics_df = pd.DataFrame({
+                'metric': ['NMI', 'ARI'],
+                'value': [nmi, ari]
+            })
+            metrics_df.to_csv(f'{folder_path}/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_metrics.csv',
+                            index=False)
+            
+            # Plot UMAPs
+            os.makedirs(f'{folder_path}/figures', exist_ok=True)
+            labels = ['batch', obs_col, latent_cluster_key]
+            # Plot (aggregated) neighborhood gene embeddings, colored by labels
+            for label in labels:
+                if len(np.unique(adata.obs[label])) > 1:
+                    sc.pl.umap(adata,
+                            neighbors_key=emb_key,
+                            title=(emb_key + "_emb_" + label if emb_key not in label else label),
+                            color=label,
+                            palette=(custom_palette if label == latent_cluster_key else None),
+                            show=False)
+                    plt.savefig(f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}{"_" + emb_key + "_emb" if emb_key not in label else ""}_{label}_umap.svg',
+                                dpi=300,
+                                bbox_inches='tight')
+            
+            # Plot niches in tissue
+            batch_ids = adata.obs['batch'].unique().tolist()
+            for i, batch_id in enumerate(batch_ids):
+                adata_batch = adata[adata.obs['batch'] == batch_id]
+                sc.pl.spatial(adata_batch,
+                            color=latent_cluster_key,
+                            palette=custom_palette,
+                            spot_size=spot_sizes[i],
+                            save=f'{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg')
+                os.rename(f'{folder_path}/figures/show{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg',
+                        f'{folder_path}/figures/{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}_{latent_cluster_key}_batch_{batch_id}.svg'.replace("show", ""))
+        
+            if write_to_disk:
+                # Save adata
+                adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+        
+        return adata
+
+
     ### Run inference for xhs49-1b_1p ###
-    if include_xhs49:
+    if args.include_xhs49:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -339,15 +371,21 @@ def main(args):
 
         # Plot embedding similiarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,
                                      emb_keys=['neighborhood'],
                                      label=niche_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['neighborhood'],
                                         obs_col=niche_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -357,7 +395,7 @@ def main(args):
 
 
     ### Run inference for xhs1000-39b_1p ###
-    if include_xhs1000:
+    if args.include_xhs1000:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -387,15 +425,21 @@ def main(args):
                             
         # Plot embedding similarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,    
                                      emb_keys=['neighborhood'],
                                      label=niche_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['neighborhood'],
                                         obs_col=niche_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -405,7 +449,7 @@ def main(args):
 
 
     ### Run inference for xhk1007-41b_1p ###
-    if include_xhk1007:
+    if args.include_xhk1007:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -435,15 +479,21 @@ def main(args):
 
         # Plot embedding similarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,
                                      emb_keys=['cell'],
                                      label=cell_type_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['cell'],
                                         obs_col=cell_type_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -453,7 +503,7 @@ def main(args):
 
 
     ### Run inference for xhb1002-75b_3p ###
-    if include_xhb1002:
+    if args.include_xhb1002:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -483,15 +533,21 @@ def main(args):
 
         # Plot embedding similarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,
                                      emb_keys=['cell'],
                                      label=cell_type_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['cell'],
                                         obs_col=cell_type_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -502,7 +558,7 @@ def main(args):
 
 
     ### Run inference for chl59-8b_1p ###
-    if include_chl59:
+    if args.include_chl59:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -537,15 +593,21 @@ def main(args):
 
         # Plot embedding similarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,
                                      emb_keys=['neighborhood'],
                                      label=niche_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['neighborhood'],
                                         obs_col=niche_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -555,7 +617,7 @@ def main(args):
 
 
     ### Run inference for chr78-11b_1p ###
-    if include_chr78:
+    if args.include_chr78:
         # Set test batch IDs
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
@@ -593,15 +655,21 @@ def main(args):
 
         # Plot embedding similarity stats
         compute_embedding_similarity(adata,
+                                     dataset_name,
+                                     args.read_checkpoint,
                                      emb_keys=['neighborhood'],
                                      label=niche_key,
                                      write_to_disk=True)
 
         # Identify niches & cell types
         adata = compute_neighborhood_umap(adata,
+                                          dataset_name,
+                                          args.read_checkpoint,
                                           write_to_disk=True)
 
         adata = compute_latent_clusters(adata,
+                                        dataset_name,
+                                        args.read_checkpoint,
                                         emb_keys=['neighborhood'],
                                         obs_col=niche_key,
                                         latent_leiden_resolution_cell=latent_leiden_resolution_cell,
@@ -615,11 +683,11 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='27092025_012758_922',
+                        default='28092025_173911_891',
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep2.pth.tar',
+                        default='nichejepa-ep3.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,

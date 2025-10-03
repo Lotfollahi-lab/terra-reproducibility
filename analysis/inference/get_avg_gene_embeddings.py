@@ -92,8 +92,10 @@ def main(args):
         ).replace(
             'hst_corpus_80m', args.cohort_name
         )    
-        del(params['data']['test_batch_ids'])
-        del(params['data']['val_batch_ids'])
+        if 'test_batch_ids' in params['data']:
+            del(params['data']['test_batch_ids'])
+        if 'val_batch_ids' in params['data']:
+            del(params['data']['val_batch_ids'])
 
     #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
     ###################
@@ -113,96 +115,42 @@ def main(args):
     #######################
 
 
-    ### Retrieve Huggingface dataset and keep only 5k gene panel cells ###
-    # Load full cohort
-    dataset, _, _ = prepare_dataset(params)
-    dataset # 88,626,282 cells
+    #### Create AnnData with tissue-specific gene embeddings ###
+    # Load Huggingface dataset
+    dataset = load_from_disk(args.dataset_path)
+    print(dataset)
 
-    # Get gene panel values for 5k gene panel
-    min_gene_panel_size = 4948
-    max_gene_panel_size = 4949
-
-    # Perform index subtraction as in tokenizer
-    max_cls_tokens = 100
-    spv_dict = {
-        k: v for k, v in token_dict.items() if k.startswith('spv_')}
-    spv_start_idx = min(spv_dict.values())
-    spv_idx_subtract = spv_start_idx - 2 - max_cls_tokens
-
-    keep_gene_panel_values = torch.tensor([
-        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= min_gene_panel_size) and (int(k.split('panel')[1]) <= max_gene_panel_size)])
-
-    # Filter dataset
-    dataset.set_format(type=None) # for extreme speed-up
-
-    def keep_row(x):
-        return torch.isin(torch.tensor(x["gene_panel_value"]), keep_gene_panel_values)
-
-    filtered_dataset = dataset.filter(
-        keep_row,
-        batched=True,
-        batch_size=10000, 
-        num_proc=args.num_workers)
-    filtered_dataset # 26,621,953 cells
-
-    columns = list(filtered_dataset.features.keys())
-    columns.remove("cell_id")
-    filtered_dataset.set_format(
-        type="torch",
-        columns=columns,
-        output_all_columns=True)
-    filtered_dataset # 18,168,008 cells
-    ###############################
-
-
-    ### Subset dataset based on step size ###
-    steps = int(np.ceil(len(filtered_dataset)/args.inference_step_size))
-
-    dataset_subsets = []
-
-    for i in range(steps):
-        if ((i+1)*args.inference_step_size) > len(filtered_dataset):
-            end_step = len(filtered_dataset)
-        else:
-            end_step = (i+1)*args.inference_step_size
-        dataset_subsets.append(
-            filtered_dataset.select(
-                np.arange(i*args.inference_step_size, end_step)))
-    #########################################
-
-
-    ### Run model inference for dataset subsets ###
-    for i, dataset_subset in enumerate(dataset_subsets):
-        if i < args.start_step:
-            continue
-        if i > args.end_step:
-            continue
-        print(f'Iteration: {i}')
+    for tissue in args.tissues:
+        # Get indices where the tissue is in the allowed list
+        keep_indices = [i for i, t in enumerate(tissue_values) if t in tissue]
         
-        # Get batches
-        batches = list(set([token_dict_reverse[int(batch_value[0] + spv_idx_subtract)] for batch_value in dataset_subset['batch_value']]))
-        print(f'Batches: {batches}')
-        
-        # Get dataset IDs
-        dataset_ids = list(set([batch.split('_')[1] for batch in batches]))
-        print(f'Dataset IDs: {dataset_ids}')
+        # Filter the HuggingFace dataset
+        tissue_dataset = dataset.select(keep_indices)
 
-        # Run model inference
-        adata = infer(params,
-                      dataset_subset,
-                      load_folder_path=folder_path,
-                      dataset_ids=dataset_ids,
-                      obs_cols=None,
-                      uns_cols=['assay', 'batch', 'donor_id', 'tissue'],
-                      agg_type='avg',
-                      masked_tokens=None,
-                      agg_excluded_tokens=None,
-                      include_spatial_cell_emb=True)
+        # Get all gene ensembl IDs
+        adata_tmp = sc.read_h5ad('/nfs/team361/sb75/DATASETS/silver/xhe1008-1-20b_1p/section020_SOB26.h5ad')        
+        cell_gene_ensembl_id = adata_tmp.var['ensembl_id'].tolist()
+        neighborhood_gene_ensembl_id = adata_tmp.var['ensembl_id'].tolist()
         
-        # Write adata to disk
-        adata.write(f'{folder_path}/adata_{args.read_checkpoint.split("-")[1].split(".")[0]}_5k_{args.inference_step_size}_{i}.h5ad')
-        del adata
-    ###############################################
+        # Get average gene embeddings
+        tissue_avg_gene_embed = get_average_gene_embed(
+            dataset=tissue_dataset,
+            model_folder_path=model_folder_path,
+            emb_layer=args.emb_layer,
+            batch_size=args.batch_size,
+            pin_memory=False,
+            num_workers=args.num_workers,
+            cell_gene_ensembl_id=cell_gene_ensembl_id,
+            neighborhood_gene_ensembl_id=neighborhood_gene_ensembl_id,
+            include_spatial_cell_emb=True,
+        )
+        
+        tissue_avg_gene_embed_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_5k_{tissue}_avg_gene_embed.pkl'
+        
+        # Write to disk
+        with open(tissue_avg_gene_embed_path, "wb") as f:
+            pickle.dump(tissue_avg_gene_embed, f)
+    ############################################################
 
 
 if __name__ == '__main__':
@@ -210,11 +158,11 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='27092025_012758_922',
+                        default='18062025_082526_412',
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep2.pth.tar',
+                        default='nichejepa-ep16_0.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
@@ -222,12 +170,17 @@ if __name__ == '__main__':
                         help='Flag whether the model was trained on AWS.')    
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_90m',
+                        default='hst_corpus_80m',
                         help='Name of data cohort.')
-    parser.add_argument('--inference_step_size',
-                        type=int,
-                        default=200000,
-                        help='Inference step size.')
+    parser.add_argument('--dataset_path',
+                        type=str,
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k.dataset',
+                        help='Path where the filtered Huggingface dataset will be stored.')   
+    parser.add_argument('--tissues',
+                        type=str,
+                        nargs='+',
+                        default=['embryo', 'kidney', 'liver', 'lung', 'ovary', 'skin'],
+                        help='List of tissues to get average gene embeddings for.')
     parser.add_argument('--start_step',
                         type=int,
                         default=20,
@@ -240,6 +193,10 @@ if __name__ == '__main__':
                         type=int,
                         default=12,
                         help='Number of workers.')
+    parser.add_argument('--emb_layer',
+                        type=int,
+                        default=None,
+                        help='Embedding layer.')
     parser.add_argument('--batch_size',
                         type=int,
                         default=128,

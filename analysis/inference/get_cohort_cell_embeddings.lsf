@@ -14,4 +14,4 @@
 source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
-python get_cohort_cell_embeddings.py --start_step 241 --end_step 280
+python get_cohort_cell_embeddings.py --start_step 441 --end_step 450

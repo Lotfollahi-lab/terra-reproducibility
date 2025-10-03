@@ -178,7 +178,7 @@ if __name__ == '__main__':
                         help='Path to the AnnData file with the annotated gene programs.')
     parser.add_argument('--gp_name',
                         type=str,
-                        default='VEGF signalling GP',
+                        default='Apelin signalling GP', # 'VEGF signalling GP',
                         help='Gene program name.')
     parser.add_argument('--save_suffix',
                         type=str,
