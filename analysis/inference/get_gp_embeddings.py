@@ -90,7 +90,7 @@ def main(args):
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
         ).replace(
-            'hst_corpus_80m', args.cohort_name
+            'hst_corpus_80m', 'hst_corpus_90m'
         )
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
@@ -178,7 +178,7 @@ if __name__ == '__main__':
                         help='Path to the AnnData file with the annotated gene programs.')
     parser.add_argument('--gp_name',
                         type=str,
-                        default='Apelin signalling GP', # 'VEGF signalling GP',
+                        default='VEGF signalling GP',
                         help='Gene program name.')
     parser.add_argument('--save_suffix',
                         type=str,

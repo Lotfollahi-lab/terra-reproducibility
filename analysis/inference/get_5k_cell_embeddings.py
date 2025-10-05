@@ -1,14 +1,12 @@
 import argparse
-import sys
-sys.path.append("../../utils")
-
 import logging
 import math
 import os
-import re
-import warnings
 import pickle
 import random
+import re
+import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain, compress
@@ -16,7 +14,6 @@ from pathlib import Path
 
 import anndata as ad
 import celltypist
-import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -24,18 +21,21 @@ import scanpy as sc
 import scib_metrics
 import seaborn as sns
 import squidpy as sq
+import torch
 from datasets import concatenate_datasets, load_from_disk
 from scipy.sparse import csr_matrix
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.model_selection import train_test_split
 
-from app.infer import get_gene_embed, get_average_gene_embed, infer
+from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
 from nichejepa.datasets import prepare_dataset
 from nichejepa.utils.config import create_params_from_YAML_wandb_config
 from nichejepa.utils.distributed import init_distributed
 from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
+
+sys.path.append("../../utils")
 
 from analysis_utils import *
 
@@ -61,11 +61,8 @@ def main(args):
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
 
-    params['data']['batch_size'] = args.batch_size
-
     if args.read_checkpoint:
         params['state']['read_checkpoint'] = args.read_checkpoint
-    if args.load_timestamp:
         params['state']['load_checkpoint'] = True
     if args.aws_run:
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
@@ -89,13 +86,24 @@ def main(args):
         )
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
-        ).replace(
-            'hst_corpus_80m', args.cohort_name
-        )    
-        del(params['data']['test_batch_ids'])
-        del(params['data']['val_batch_ids'])
+        )
 
-    #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    # Change config from hst_corpus_80m to hst_corpus_90m
+    for key in params['data'].keys():
+        if type(params['data'][key]) == str:
+            params['data'][key] = params['data'][key].replace('hst_corpus_80m', 'hst_corpus_90m')
+
+    # Load full corpus dataset (train, val and test)
+    params['data']['precomputed_epoch_splits'] = False
+    params['data']['precomputed_split'] = False
+    params['data']['test_batch_ids'] = False
+    params['data']['val_batch_ids'] = False
+    if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_epoch_n_nonzero_tokens'])
+    if 'precomputed_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_n_nonzero_tokens'])
+
+    params['data']['batch_size'] = args.batch_size
     ###################
 
 
@@ -116,7 +124,7 @@ def main(args):
     ### Retrieve Huggingface dataset and keep only 5k gene panel cells ###
     # Load full cohort
     dataset, _, _ = prepare_dataset(params)
-    dataset # 88,626,282 cells
+    print(dataset) # 88,626,282 cells
 
     # Get gene panel values for 5k gene panel
     min_gene_panel_size = 4948
@@ -143,7 +151,6 @@ def main(args):
         batched=True,
         batch_size=10000, 
         num_proc=args.num_workers)
-    filtered_dataset # 26,621,953 cells
 
     columns = list(filtered_dataset.features.keys())
     columns.remove("cell_id")
@@ -151,7 +158,7 @@ def main(args):
         type="torch",
         columns=columns,
         output_all_columns=True)
-    filtered_dataset # 18,168,008 cells
+    print(filtered_dataset)
     ###############################
 
 

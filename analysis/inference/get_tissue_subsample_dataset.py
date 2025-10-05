@@ -49,95 +49,43 @@ def main(args):
     ####################
 
 
+    ##### Subsample dataset and only keep 100k genes per tissue #####
+    rng_seed = 42
 
-    adata_myeloid_annotated_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_myeloid_annotated.h5ad"
-    if os.path.exists(adata_myeloid_annotated_path):
-        print("Load existing AnnData.")
-        adata_emb_myeloid = sc.read_h5ad(adata_myeloid_annotated_path)
-    else:
-        adata_annotated_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_annotated.h5ad"
-        adata_emb = sc.read_h5ad(adata_annotated_path)
-        brain_TAM_names = [
-            'Pro-inflammatory TAMs',
-            'Interferon TAMs',
-            'Astrocyte-like TAMs',
-            'Angiogenic TAMs',
-            'Anti-inflammatory TAMs',
-            'Resident BAM TAMs',
-            'Resident-TAMs ',
-            'RTN1+ TAMs',
-            'Monocytes',
-            'Proliferatve TAMs',
-            'Stress-response TAMs'
-        ]
-        brain_DC_names = [
-            'Plasma cells',
-            'Dendritic cells'
-        ]
-        skin_myeloid_cell_names = [
-            'LC',
-            'MigDC',
-            'cDC1',
-            'cDC2',
-            'Mac',
-            'pDC',
-            'LC/MigDC',
-            'Mast cell'
-        ]
-        celltypist_myeloid_cell_names = [
-            'Alveolar macrophages',
-            'Classical monocytes',
-            'DC',
-            'DC1',
-            'DC2',
-            'Hofbauer cells',
-            'Intestinal macrophages',
-            'Kupffer cells',
-            'Macrophages',
-            'Mast cells',
-            'Migratory DCs',
-            'Mono-mac',
-            'Monocytes',
-            'pDC'
-        ]
-        
-        adata_emb_myeloid = adata_emb[
-            (adata_emb.obs['brain_cell_type'] == 'Lymphocytes') & (adata_emb.obs['brain_sub_cell_type'].isin(brain_DC_names)) |
-            (adata_emb.obs['brain_cell_type'] == 'Macrophages') & (adata_emb.obs['brain_sub_cell_type'].isin(brain_TAM_names)) |
-            (adata_emb.obs['kidney_cell_type'] == 'Myeloid') |
-            (adata_emb.obs['skin_cell_type'].isin(skin_myeloid_cell_names)) |
-            (adata_emb.obs['brain_cell_type'].isna()) & (
-                adata_emb.obs['kidney_cell_type'].isna()) & (
-                adata_emb.obs['skin_cell_type'].isna()) & (
-                adata_emb.obs['majority_voting'].isin(celltypist_myeloid_cell_names))
-            ]
+    # Step 1: Shuffle the full dataset once
+    shuffled_dataset = filtered_dataset.shuffle(seed=rng_seed)
 
-        # Write AnnData to disk
-        adata_emb_myeloid.write(adata_myeloid_annotated_path)
-    adata_emb_myeloid
+    # Step 2: Extract the tissue_value column (this is fast and avoids full row loading)
+    tissue_values = shuffled_dataset["tissue_value"]
 
-    # Store myeloid cell IDs to disk
-    myeloid_cell_ids = adata_emb_myeloid.obs.index.tolist()
+    # Step 3: Collect sample indices efficiently
+    tissue_counts = defaultdict(int)
+    tissue_indices = defaultdict(list)
 
-    myeloid_cell_ids_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_5k_myeloid_idx.pkl'
-    with open(myeloid_cell_ids_path, "wb") as f:
-        pickle.dump(myeloid_cell_ids, f)
+    for idx, tissue in enumerate(tissue_values):
+        tissue = tissue[0]
 
+        if tissue_counts[tissue] < args.n_cells_per_tissue:
+            tissue_indices[tissue].append(idx)
+            tissue_counts[tissue] += 1
 
-myeloid_cell_ids_path = f'{artifacts_folder_path}/hst_corpus_80m/{load_timestamp}/{read_checkpoint.split("-")[1].split(".")[0]}_5k_myeloid_idx.pkl'
-with open(myeloid_cell_ids_path, 'rb') as f:
-    myeloid_cell_ids = pickle.load(f)
+    # Step 4: Build final dataset with select
+    final_samples = [
+        shuffled_dataset.select(indices) for indices in tissue_indices.values()
+    ]
+    final_dataset = concatenate_datasets(final_samples)
+    columns = list(final_dataset.features.keys())
+    columns.remove("cell_id")
+    final_dataset.set_format(
+        type="torch",
+        columns=columns,
+        output_all_columns=True)
+    final_dataset # 700,000 cells
 
-myeloid_cell_ids = np.array(list(myeloid_cell_ids), dtype=object)
-
-myeloid_dataset = filtered_dataset.filter(
-    lambda ids: np.isin(ids, myeloid_cell_ids).tolist(),
-    input_columns="cell_id",
-    batched=True,
-    batch_size=10000,
-    num_proc=args.num_workers,
-    desc="Filtering by cell_id"
-)
+    # Step 5: Write to disk
+    #final_dataset.save_to_disk(
+    #    "/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10_5k_subsample.dataset")
+    ######################################################################
 
 
 if __name__ == '__main__':
@@ -168,10 +116,10 @@ if __name__ == '__main__':
                         type=int,
                         default=12,
                         help='Number of workers.')
-    parser.add_argument('--n_neighbors',
+    parser.add_argument('--n_cells_per_tissue',
                         type=int,
-                        default=15,
-                        help='Number of neighbors.')
+                        default=100_000,
+                        help='Number of cells per tissue.')
     parser.add_argument('--latent_leiden_resolution',
                         type=float,
                         default=1.0,

@@ -61,11 +61,8 @@ def main(args):
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
 
-    params['data']['batch_size'] = args.batch_size
-
     if args.read_checkpoint:
         params['state']['read_checkpoint'] = args.read_checkpoint
-    if args.load_timestamp:
         params['state']['load_checkpoint'] = True
     if args.aws_run:
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
@@ -89,15 +86,24 @@ def main(args):
         )
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
-        ).replace(
-            'hst_corpus_80m', args.cohort_name
-        )    
-        if 'test_batch_ids' in params['data']:
-            del(params['data']['test_batch_ids'])
-        if 'val_batch_ids' in params['data']:
-            del(params['data']['val_batch_ids'])
+        )
 
-    #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    # Change config from hst_corpus_80m to hst_corpus_90m
+    for key in params['data'].keys():
+        if type(params['data'][key]) == str:
+            params['data'][key] = params['data'][key].replace('hst_corpus_80m', 'hst_corpus_90m')
+
+    # Load full corpus dataset (train, val and test)
+    params['data']['precomputed_epoch_splits'] = False
+    params['data']['precomputed_split'] = False
+    params['data']['test_batch_ids'] = False
+    params['data']['val_batch_ids'] = False
+    if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_epoch_n_nonzero_tokens'])
+    if 'precomputed_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_n_nonzero_tokens'])
+
+    params['data']['batch_size'] = args.batch_size
     ###################
 
 
@@ -126,7 +132,7 @@ def main(args):
         type="torch",
         columns=columns,
         output_all_columns=True)
-    dataset
+    print(dataset)
     ###############################
 
 
@@ -212,7 +218,7 @@ if __name__ == '__main__':
                         help='Inference start step.')
     parser.add_argument('--num_workers',
                         type=int,
-                        default=24,
+                        default=12,
                         help='Number of workers.')
     parser.add_argument('--batch_size',
                         type=int,

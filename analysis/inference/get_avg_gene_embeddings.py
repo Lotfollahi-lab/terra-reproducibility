@@ -1,14 +1,12 @@
 import argparse
-import sys
-sys.path.append("../../utils")
-
 import logging
 import math
 import os
-import re
-import warnings
 import pickle
 import random
+import re
+import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain, compress
@@ -16,7 +14,6 @@ from pathlib import Path
 
 import anndata as ad
 import celltypist
-import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -24,18 +21,21 @@ import scanpy as sc
 import scib_metrics
 import seaborn as sns
 import squidpy as sq
+import torch
 from datasets import concatenate_datasets, load_from_disk
 from scipy.sparse import csr_matrix
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.model_selection import train_test_split
 
-from app.infer import get_gene_embed, get_average_gene_embed, infer
+from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
 from nichejepa.datasets import prepare_dataset
 from nichejepa.utils.config import create_params_from_YAML_wandb_config
 from nichejepa.utils.distributed import init_distributed
 from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
+
+sys.path.append("../../utils")
 
 from analysis_utils import *
 
@@ -61,11 +61,8 @@ def main(args):
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
 
-    params['data']['batch_size'] = args.batch_size
-
     if args.read_checkpoint:
         params['state']['read_checkpoint'] = args.read_checkpoint
-    if args.load_timestamp:
         params['state']['load_checkpoint'] = True
     if args.aws_run:
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
@@ -89,15 +86,24 @@ def main(args):
         )
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
-        ).replace(
-            'hst_corpus_80m', args.cohort_name
-        )    
-        if 'test_batch_ids' in params['data']:
-            del(params['data']['test_batch_ids'])
-        if 'val_batch_ids' in params['data']:
-            del(params['data']['val_batch_ids'])
+        )
 
-    #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    # Change config from hst_corpus_80m to hst_corpus_90m
+    for key in params['data'].keys():
+        if type(params['data'][key]) == str:
+            params['data'][key] = params['data'][key].replace('hst_corpus_80m', 'hst_corpus_90m')
+
+    # Load full corpus dataset (train, val and test)
+    params['data']['precomputed_epoch_splits'] = False
+    params['data']['precomputed_split'] = False
+    params['data']['test_batch_ids'] = False
+    params['data']['val_batch_ids'] = False
+    if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_epoch_n_nonzero_tokens'])
+    if 'precomputed_n_nonzero_tokens' in params['data'].keys():
+        del(params['data']['precomputed_n_nonzero_tokens'])
+
+    params['data']['batch_size'] = args.batch_size
     ###################
 
 
@@ -145,7 +151,7 @@ def main(args):
             include_spatial_cell_emb=True,
         )
         
-        tissue_avg_gene_embed_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_5k_{tissue}_avg_gene_embed.pkl'
+        tissue_avg_gene_embed_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_{args.save_prefix}_{tissue}_avg_gene_embed.pkl'
         
         # Write to disk
         with open(tissue_avg_gene_embed_path, "wb") as f:
@@ -158,11 +164,11 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='18062025_082526_412',
+                        default='27092025_012758_922',
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep16_0.pth.tar',
+                        default='nichejepa-ep2.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
@@ -170,25 +176,21 @@ if __name__ == '__main__':
                         help='Flag whether the model was trained on AWS.')    
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_80m',
+                        default='hst_corpus_90m',
                         help='Name of data cohort.')
     parser.add_argument('--dataset_path',
                         type=str,
                         default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k.dataset',
-                        help='Path where the filtered Huggingface dataset will be stored.')   
+                        help='Path where the Huggingface dataset will be loaded from.')
+    parser.add_argument('--save_prefix',
+                        type=str,
+                        default='5k',
+                        help='Save prefix.')   
     parser.add_argument('--tissues',
                         type=str,
                         nargs='+',
                         default=['embryo', 'kidney', 'liver', 'lung', 'ovary', 'skin'],
                         help='List of tissues to get average gene embeddings for.')
-    parser.add_argument('--start_step',
-                        type=int,
-                        default=20,
-                        help='Inference start step.')
-    parser.add_argument('--end_step',
-                        type=int,
-                        default=40,
-                        help='Inference start step.')
     parser.add_argument('--num_workers',
                         type=int,
                         default=12,

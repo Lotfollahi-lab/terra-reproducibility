@@ -112,7 +112,7 @@ def main(args):
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
         ).replace(
-            'hst_corpus_80m', args.cohort_name
+            'hst_corpus_80m', 'hst_corpus_90m'
         )    
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
@@ -341,6 +341,10 @@ def main(args):
                 adata.write(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
         
         return adata
+
+
+    print(f'Load timestamp: {args.load_timestamp}.')
+    print(f'Read checkpoint: {args.read_checkpoint}.')
 
 
     ### Run inference for xhs49-1b_1p ###

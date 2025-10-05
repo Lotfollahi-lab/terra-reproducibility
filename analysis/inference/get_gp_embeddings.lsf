@@ -14,4 +14,7 @@
 source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
-python get_gp_embeddings.py
+python get_gp_embeddings.py \
+    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset' \
+    --gp_name 'Apelin signalling GP' \
+    --save_suffix 'myeloid_apelin_gp'

@@ -1,14 +1,12 @@
 import argparse
-import sys
-sys.path.append("../../utils")
-
 import logging
 import math
 import os
-import re
-import warnings
 import pickle
 import random
+import re
+import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime
 from itertools import chain, compress
@@ -16,7 +14,6 @@ from pathlib import Path
 
 import anndata as ad
 import celltypist
-import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -24,18 +21,21 @@ import scanpy as sc
 import scib_metrics
 import seaborn as sns
 import squidpy as sq
+import torch
 from datasets import concatenate_datasets, load_from_disk
 from scipy.sparse import csr_matrix
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.model_selection import train_test_split
 
-from app.infer import get_gene_embed, get_average_gene_embed, infer
+from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
 from nichejepa.datasets import prepare_dataset
 from nichejepa.utils.config import create_params_from_YAML_wandb_config
 from nichejepa.utils.distributed import init_distributed
 from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
+
+sys.path.append("../../utils")
 
 from analysis_utils import *
 
@@ -49,64 +49,66 @@ def main(args):
     ####################
 
 
-### Combine inferenced AnnData objects as "adata_5k_complete.h5ad" ###
-######################################################################
-adata_complete_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_complete.h5ad"
-if os.path.exists(adata_complete_path):
-    print("Load existing AnnData.")
-    adata_emb = sc.read_h5ad(adata_complete_path)
-else:
-    print("Combine new AnnData.")
-    adata_list = []
-    
-    for i in range(args.inference_max_step):
-        adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_{args.inference_step_size}_{i}.h5ad")
-        adata_list.append(adata_tmp)
-        del adata_tmp
-    
-    adata_emb = sc.concat(adata_list, join='outer', index_unique=None)
-    
-    adata_emb.obs[['dataset', 'batch', 'cell']] = [s.split('_') for s in adata_emb.obs.index]
-    adata_emb.obs['dataset_batch'] = adata_emb.obs['dataset'].astype(str) + adata_emb.obs['batch'].astype(str)
-    adata_emb.obs['cell'] = adata_emb.obs['cell'].astype(int)
+    ### Combine inferenced AnnData objects as "adata_5k_complete.h5ad" ###
+    ######################################################################
+    adata_complete_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_complete.h5ad"
+    adata_processed_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_complete_processed.h5ad"
 
-    adata_emb.write(adata_complete_path)
-adata_emb
-######################################################################
-
-
-### Get neighborhood graphs, UMAP coordinates, Leiden clusters, and store as "adata_5k_complete_processed.h5ad" ###
-adata_processed_path = f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_complete_processed.h5ad"
-if os.path.exists(adata_processed_path):
-    print("Load existing AnnData.")
-    adata_emb = sc.read_h5ad(adata_processed_path)
-else:
-    print("Process new AnnData.")
-    for emb_key in args.emb_keys:
-        sc.pp.neighbors(adata_emb,
-                        n_neighbors=args.n_neighbors,
-                        use_rep=f'{emb_key}_emb_layer_{args.n_layer}',
-                        n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
-                        key_added=emb_key)
-     
-        sc.tl.umap(adata_emb,
-                   neighbors_key=emb_key,
-                   key_added=f'{emb_key}_umap')
-    
-        adata_emb.write(adata_processed_path)
-
-    for emb_key in args.emb_keys:
-
-        latent_cluster_key = f"{emb_key}_clusters_res_{args.latent_leiden_resolution}"
+    if os.path.exists(adata_complete_path):
+        if not os.path.exists(adata_processed_path):
+            print("Load existing complete AnnData.")
+            adata_emb = sc.read_h5ad(adata_complete_path)
+        else:
+            print("Load existing processed AnnData.")
+            adata_emb = sc.read_h5ad(adata_processed_path)            
+    else:
+        print("Combine new AnnData.")
+        adata_list = []
         
-        sc.tl.leiden(adata_emb,
-                     neighbors_key=emb_key,
-                     key_added=latent_cluster_key,
-                     resolution=args.latent_leiden_resolution)
-    
-        adata_emb.write(adata_processed_path)
-adata_emb
-###################################################################################################################
+        for i in range(args.inference_max_step + 1):
+            adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_{args.inference_step_size}_{i}.h5ad")
+            adata_list.append(adata_tmp)
+            del adata_tmp
+        
+        adata_emb = sc.concat(adata_list, join='outer', index_unique=None)
+        
+        adata_emb.obs[['dataset', 'batch', 'cell']] = [s.split('_') for s in adata_emb.obs.index]
+        adata_emb.obs['dataset_batch'] = adata_emb.obs['dataset'].astype(str) + adata_emb.obs['batch'].astype(str)
+        adata_emb.obs['cell'] = adata_emb.obs['cell'].astype(int)
+
+        adata_emb.write(adata_complete_path)
+    print(adata_emb)
+    ######################################################################
+
+
+    ### Get neighborhood graphs, UMAP coordinates, Leiden clusters, and store as "adata_5k_complete_processed.h5ad" ###
+    if not os.path.exists(adata_processed_path):
+        print("Process new AnnData.")
+        for emb_key in args.emb_keys:
+            sc.pp.neighbors(adata_emb,
+                            n_neighbors=args.n_neighbors,
+                            use_rep=f'{emb_key}_emb_layer_{args.n_layer}',
+                            n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+                            key_added=emb_key)
+        
+            sc.tl.umap(adata_emb,
+                    neighbors_key=emb_key,
+                    key_added=f'{emb_key}_umap')
+        
+            adata_emb.write(adata_processed_path)
+
+        for emb_key in args.emb_keys:
+
+            latent_cluster_key = f"{emb_key}_clusters_res_{args.latent_leiden_resolution}"
+            
+            sc.tl.leiden(adata_emb,
+                        neighbors_key=emb_key,
+                        key_added=latent_cluster_key,
+                        resolution=args.latent_leiden_resolution)
+        
+            adata_emb.write(adata_processed_path)
+    print(adata_emb)
+    ###################################################################################################################
 
 
 if __name__ == '__main__':
@@ -128,6 +130,14 @@ if __name__ == '__main__':
                         type=str,
                         default='hst_corpus_90m',
                         help='Name of data cohort.')
+    parser.add_argument('--inference_step_size',
+                        type=int,
+                        default=200000,
+                        help='Inference step size.')
+    parser.add_argument('--inference_max_step',
+                        type=int,
+                        default=133,
+                        help='Maximum inference step.')
     parser.add_argument('--emb_keys',
                         type=str,
                         nargs='+',

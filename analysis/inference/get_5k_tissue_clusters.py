@@ -88,7 +88,7 @@ def main(args):
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
         ).replace(
-            'hst_corpus_80m', args.cohort_name
+            'hst_corpus_80m', 'hst_corpus_90m'
         )
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
@@ -135,6 +135,24 @@ def main(args):
             # Write to disk
             adata_emb_tissue.write(adata_tissue_path)
     ##############################
+
+
+    ### Combine per tissue clusters ###
+    for emb_key in args.emb_keys:
+        cols_to_combine = [tissue + f"_{emb_key}_clusters_res_{latent_leiden_resolution}" for tissue in all_5k_tissues]
+        adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"] = (
+            adata_emb.obs[cols_to_combine]
+            .bfill(axis=1) # fill NaN with next non-NaN to the right
+            .iloc[:, 0] # take the first filled column
+        )
+
+        # Remove NAN values
+        adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"] = adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"].astype(str)
+        adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"] = adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"].astype("category")
+        adata_emb = adata_emb[adata_emb.obs[f"tissue_specific_{emb_key}_clusters_res_{latent_leiden_resolution}"] != 'nan']
+
+    print(adata_emb.obs.head(1))
+    ###################################
 
 
 if __name__ == '__main__':
