@@ -4,13 +4,38 @@ experiment:
   study: "Dataset from Adam Boxall (/nfs/team361/data/data_platform/data/sanger_renal_cell_carcinoma/SGP267)"
 
 paths:
-  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
 
 dataset:
-  source: "sanger"
-  download_params: {}
-  file_names: []
-  overwrite: False
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304
+    - output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304
+    - output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304
+    - output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304
+    - output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304
+    - output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458
+    - output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458
+    - output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457
+    - output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458
+    - output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458
+    - output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458
+    - output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458
+    - output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903
+    - output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902
+    - output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903
+    - output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903
+    - output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903
 
 harmonization:
   uns: {
@@ -19,59 +44,34 @@ harmonization:
     'species': 'homo_sapiens',
     'tissue': 'kidney',
     'sample_condition_map': {
-      'DI2-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI4-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI4-KID-0-FFPE-2': 'renal_cell_carcinoma',
-      'DI5-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI6-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI7-KID-0-FFPE-2': 'renal_cell_carcinoma',
-      'DI7-KID-0-FFPE-3': 'renal_cell_carcinoma',
-      'DI3-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI7-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI9-KID-0-FFPE-1': 'renal_cell_carcinoma',
-      'DI9-KID-0-FFPE-3': 'renal_cell_carcinoma',
-      'DI3-KID-0-FFPE-3': 'renal_cell_carcinoma',
-      'DI6-KID-0-FFPE-2': 'renal_cell_carcinoma',
-      'DI5-KID-0-FFPE-3': 'renal_cell_carcinoma',
-      'DI8-KID-0-FFPE-2': 'renal_cell_carcinoma',
-      'DI9-KID-0-FFPE-2': 'renal_cell_carcinoma',
-      'DI2-KID-0-FFPE-2-S2': 'renal_cell_carcinoma',
-      'DI3-KID-0-FFPE-2-S2': 'renal_cell_carcinoma',
-      'DI6-KID-0-FFPE-3-S2': 'renal_cell_carcinoma',
-      'DI1-KID-0-FFPE-1-S2': 'renal_cell_carcinoma',
-      'DI1-KID-0-FFPE-2-S2': 'renal_cell_carcinoma',
-      'DI5-KID-0-FFPE-2-S2': 'renal_cell_carcinoma',
-      'DI8-KID-0-FFPE-3-S2': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma',
+      'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma',
+      'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma',
+      'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma',
+      'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma',
+      'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma',
+      'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma',
+      'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma',
     }
   }
   batch: {
     'split_by_batch': False,
-    'batch_key': 'batch',
-    'sample_batch_map': {
-      'DI2-KID-0-FFPE-1': 0,
-      'DI4-KID-0-FFPE-1': 1,
-      'DI4-KID-0-FFPE-2': 2,
-      'DI5-KID-0-FFPE-1': 3,
-      'DI6-KID-0-FFPE-1': 4,
-      'DI7-KID-0-FFPE-2': 5,
-      'DI7-KID-0-FFPE-3': 6,
-      'DI3-KID-0-FFPE-1': 7,
-      'DI7-KID-0-FFPE-1': 8,
-      'DI9-KID-0-FFPE-1': 9,
-      'DI9-KID-0-FFPE-3': 10,
-      'DI3-KID-0-FFPE-3': 11,
-      'DI6-KID-0-FFPE-2': 12,
-      'DI5-KID-0-FFPE-3': 13,
-      'DI8-KID-0-FFPE-2': 14,
-      'DI9-KID-0-FFPE-2': 15,
-      'DI2-KID-0-FFPE-2-S2': 16,
-      'DI3-KID-0-FFPE-2-S2': 17,
-      'DI6-KID-0-FFPE-3-S2': 18,
-      'DI1-KID-0-FFPE-1-S2': 19,
-      'DI1-KID-0-FFPE-2-S2': 20,
-      'DI5-KID-0-FFPE-2-S2': 21,
-      'DI8-KID-0-FFPE-3-S2': 22,
-    }    
+    'sample_batch_map': {}  
   }
   key_mappings: {}
   misc: {

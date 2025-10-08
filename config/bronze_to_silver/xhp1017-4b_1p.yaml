@@ -1,0 +1,41 @@
+experiment:
+  name: "xhp1017-4b_1p"
+  description: "Xenium Human Pancreas (dataset-id 1017) | 4 batch | 1 panel"
+  study: "Dataset from Marta Sallese (/nfs/team361/data/sanger_pancreas/nPOD)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00272__0059807__DJ1-PNC-0-FFPE-1-S1__20250717__122703
+    - output-XETG00272__0059807__DJ1-PNC-0-FFPE-2-S1__20250717__122702
+    - output-XETG00272__0059810__DJ2-PNC-0-FFPE-1-S1__20250717__122703
+    - output-XETG00272__0059810__DJ2-PNC-0-FFPE-2-S1__20250717__122703
+
+harmonization:
+  uns: {
+    'dataset_id': 1017,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'pancreas',
+    'sample_condition_map': {
+      'DJ1-PNC-0-FFPE-1-S1': 'healthy',
+      'DJ1-PNC-0-FFPE-2-S1': 'healthy',
+      'DJ2-PNC-0-FFPE-1-S1': 't1_diabetes',
+      'DJ2-PNC-0-FFPE-2-S1': 't1_diabetes',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }
