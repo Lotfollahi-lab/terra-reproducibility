@@ -15,5 +15,5 @@ source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
 python get_avg_gene_embeddings.py \
-    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset' \
-    --save_prefix '5k_myeloid'
+    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_fibroblasts.dataset' \
+    --save_prefix '5k_fibroblasts'

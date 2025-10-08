@@ -126,6 +126,18 @@ def main(args):
     dataset = load_from_disk(args.dataset_path)
     print(dataset)
 
+    # Get tissues for each cell
+    tissue_values = [
+        token_dict_reverse[tissue_value[0] + spv_idx_subtract].split('spv_')[1]
+        for tissue_value in dataset['tissue_value']]
+
+    # Convert format of dataset
+    columns = list(dataset.features.keys())
+    dataset.set_format(
+        type="torch",
+        columns=columns,
+        output_all_columns=True)
+
     for tissue in args.tissues:
         # Get indices where the tissue is in the allowed list
         keep_indices = [i for i, t in enumerate(tissue_values) if t in tissue]
