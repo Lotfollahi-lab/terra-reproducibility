@@ -36,9 +36,7 @@ if [ "$USER" == "am84" ]; then
     module load cellgen/conda
     conda activate nichejepa-reproducibility
 elif [ "$USER" == "sb75" ]; then
-    source /etc/profile.d/modules.sh
-    module load cellgen/conda
-    conda activate nichejepa_new
+    source ~/.venvs/nichejepa/bin/activate
 fi
 
 SCRIPT="python analysis/data_preparation/collect_cohort_statistics.py --cohort_name ${EXPERIMENT_NAME}"

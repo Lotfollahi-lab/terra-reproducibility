@@ -262,6 +262,9 @@ def harmonize_bronze_data_to_silver_data(
     
     files = list(input_directory.glob("**/*.h5ad"))
 
+    if uns_params['sample_condition_map']:
+        sample_condition_map = uns_params['sample_condition_map']
+
     if batch_params['split_by_batch']:
         print("Data is not split by batch. Splitting data by batch...")
 
@@ -295,6 +298,8 @@ def harmonize_bronze_data_to_silver_data(
             for sample_id, batch_id in batch_params['sample_batch_map'].items():
                 print(f"Harmonizing Sample ID: {sample_id}")
                 adata_batch = adata[adata.obs[batch_params['batch_key']] == sample_id]
+
+                adata_batch.uns['condition'] = sample_condition_map[sample_id]
 
                 uns_params['batch'] = f"batch{batch_id}"
 
@@ -330,6 +335,8 @@ def harmonize_bronze_data_to_silver_data(
 
             print(f"Harmonizing: {file}")
             adata_batch = sc.read_h5ad(file)
+
+            adata_batch.uns['condition'] = sample_condition_map[file.name.split(".")[0]]
 
             # NOTE: this is hardcoded that all batches within the same dataset have the same key for keys in key_mappings such as cell_type, niche_type, etc.
             for key in key_mappings.keys():
