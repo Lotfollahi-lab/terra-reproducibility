@@ -25,10 +25,10 @@ harmonization:
     'species': 'homo_sapiens',
     'tissue': 'pancreas',
     'sample_condition_map': {
-      'DJ1-PNC-0-FFPE-1-S1': 'healthy',
-      'DJ1-PNC-0-FFPE-2-S1': 'healthy',
-      'DJ2-PNC-0-FFPE-1-S1': 't1_diabetes',
-      'DJ2-PNC-0-FFPE-2-S1': 't1_diabetes',
+      'output-XETG00272__0059807__DJ1-PNC-0-FFPE-1-S1__20250717__122703': 'healthy',
+      'output-XETG00272__0059807__DJ1-PNC-0-FFPE-2-S1__20250717__122702': 'healthy',
+      'output-XETG00272__0059810__DJ2-PNC-0-FFPE-1-S1__20250717__122703': 't1_diabetes',
+      'output-XETG00272__0059810__DJ2-PNC-0-FFPE-2-S1__20250717__122703': 't1_diabetes',
     }
   }
   batch: {

@@ -1,0 +1,65 @@
+experiment:
+  name: "xhl1020-16b_1p"
+  description: "Xenium Human Lung (dataset-id 1020) | 16 batch | 1 panel"
+  study: "Dataset from Josie Bryant and Cecilia Kyanya (/nfs/team361/data/data_platform/data/sanger_lung/SGP222_PAM_Xenium)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00055__0043482__TB16-1337_LLL_C-S5__20250331__114617
+    - output-XETG00055__0043501__TB16-1337_RML_G-S5__20250331__114618
+    - output-XETG00055__0054367__TB18_0499_RML_D1-S4__20250324__181145
+    - output-XETG00055__0054377__TB18_0499_RLL_E1-S4__20250324__181146
+    - output-XETG00155__0043914__TB16-0266_LUL_I_s4__20250331__111345
+    - output-XETG00155__0043917__TB16-0266_RUL_M_s2__20250331__111345
+    - output-XETG00155__0051662__TB17_0628_RML_C_S6__20250416__122938
+    - output-XETG00155__0051665__TB16_0266_RML_O_S5__20250416__122939
+    - output-XETG00272__0043828__TB16-0507_RUL_I_S5__20250331__113803
+    - output-XETG00272__0043831__TB16-0507_LUL_E_S5__20250331__113803
+    - output-XETG00335__0044052__TB17_0361_LLL_P-s5__20250331__111533
+    - output-XETG00335__0044060__TB17_0361_RLL_C-S5__20250331__111534
+    - output-XETG00335__0051545__TB21_0089_RML_D1-S4__20250321__124949
+    - output-XETG00335__0051563__TB17-0628_RMI_C-S7__20250508__133102
+    - output-XETG00335__0051566__TB16-0266_RML_O-S6__20250508__133102
+    - output-XETG00335__0051612__TB21_0089_LUL_A1-S4__20250321__124949
+
+harmonization:
+  uns: {
+    'dataset_id': 1020,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'lung',
+    'sample_condition_map': {
+      'output-XETG00055__0043482__TB16-1337_LLL_C-S5__20250331__114617': 'cystic_fibrosis',
+      'output-XETG00055__0043501__TB16-1337_RML_G-S5__20250331__114618': 'cystic_fibrosis',
+      'output-XETG00055__0054367__TB18_0499_RML_D1-S4__20250324__181145': 'cystic_fibrosis',
+      'output-XETG00055__0054377__TB18_0499_RLL_E1-S4__20250324__181146': 'cystic_fibrosis',
+      'output-XETG00155__0043914__TB16-0266_LUL_I_s4__20250331__111345': 'cystic_fibrosis',
+      'output-XETG00155__0043917__TB16-0266_RUL_M_s2__20250331__111345': 'cystic_fibrosis',  
+      'output-XETG00155__0051662__TB17_0628_RML_C_S6__20250416__122938': 'COPD',
+      'output-XETG00155__0051665__TB16_0266_RML_O_S5__20250416__122939': 'cystic_fibrosis',
+      'output-XETG00272__0043828__TB16-0507_RUL_I_S5__20250331__113803': 'cystic_fibrosis',
+      'output-XETG00272__0043831__TB16-0507_LUL_E_S5__20250331__113803': 'cystic_fibrosis',
+      'output-XETG00335__0044052__TB17_0361_LLL_P-s5__20250331__111533': 'cystic_fibrosis',
+      'output-XETG00335__0044060__TB17_0361_RLL_C-S5__20250331__111534': 'cystic_fibrosis',
+      'output-XETG00335__0051545__TB21_0089_RML_D1-S4__20250321__124949': 'COPD',
+      'output-XETG00335__0051563__TB17-0628_RMI_C-S7__20250508__133102': 'cystic_fibrosis',
+      'output-XETG00335__0051566__TB16-0266_RML_O-S6__20250508__133102': 'cystic_fibrosis',
+      'output-XETG00335__0051612__TB21_0089_LUL_A1-S4__20250321__124949': 'cystic_fibrosis',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

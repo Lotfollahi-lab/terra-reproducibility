@@ -1,6 +1,6 @@
 experiment:
-  experiment_description: xhb1002-AT23-9b_1p (dataset-id 1002) | 9 batch | 1 panel
-  experiment_name: xhb1002-AT23-9b_1p
+  experiment_description: xhb1002-AT23-1-9b_1p (dataset-id 1002) | 9 batch | 1 panel | part1 (split only used for long seq len)
+  experiment_name: xhb1002-AT23-1-9b_1p
   model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
