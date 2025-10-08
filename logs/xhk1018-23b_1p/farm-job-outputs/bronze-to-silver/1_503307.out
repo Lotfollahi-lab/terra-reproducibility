@@ -1,0 +1,3154 @@
+Experiment Name: xhk1018-23b_1p
+Input Directory: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p
+Output Directory: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary from /nfs/team361/sb75/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (245105, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 27396298 stored elements and shape (245105, 5001)>
+  Coords	Values
+  (0, 142)	1
+  (0, 247)	1
+  (0, 544)	1
+  (0, 1582)	1
+  (0, 1857)	1
+  (0, 1872)	2
+  (0, 1947)	1
+  (0, 2064)	1
+  (0, 2084)	1
+  (0, 2363)	1
+  (0, 2486)	1
+  (0, 2645)	1
+  (0, 2797)	1
+  (0, 3500)	1
+  (0, 3539)	1
+  (0, 4001)	1
+  (0, 4159)	1
+  (0, 4217)	1
+  (0, 4259)	1
+  (0, 4303)	1
+  (0, 4363)	1
+  (0, 4604)	1
+  (0, 4685)	1
+  (0, 4707)	1
+  (0, 4726)	1
+  :	:
+  (245100, 3354)	1
+  (245100, 3376)	1
+  (245100, 4260)	1
+  (245101, 250)	1
+  (245101, 1532)	1
+  (245101, 1546)	1
+  (245101, 4236)	1
+  (245101, 4796)	1
+  (245102, 4085)	1
+  (245102, 4518)	1
+  (245103, 27)	1
+  (245103, 1771)	1
+  (245103, 2493)	1
+  (245103, 3933)	1
+  (245103, 4238)	1
+  (245103, 4392)	1
+  (245103, 4662)	1
+  (245104, 542)	1
+  (245104, 612)	1
+  (245104, 817)	1
+  (245104, 1546)	1
+  (245104, 2407)	1
+  (245104, 2877)	1
+  (245104, 3544)	1
+  (245104, 3934)	1
+adata.X shape: (245105, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 2232.0264  2461.7036]
+ [ 2236.2258  2488.4458]
+ [ 2242.314   2484.5369]
+ ...
+ [10605.288   6512.328 ]
+ [10918.515   6288.42  ]
+ [10801.571   6282.0693]]
+AnnData object with n_obs × n_vars = 245105 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaaampd-1         1018_batch0_0
+aaaadcld-1         1018_batch0_1
+aaaafnnd-1         1018_batch0_2
+aaaaopcd-1         1018_batch0_3
+aaablpgf-1         1018_batch0_4
+                     ...        
+oipmbmdp-1    1018_batch0_231602
+oipmcfij-1    1018_batch0_231603
+oipmmapk-1    1018_batch0_231604
+oipnigjc-1    1018_batch0_231605
+oipnijja-1    1018_batch0_231606
+Name: cell_id, Length: 231607, dtype: object
+Harmonized adata_batch shape: (231607, 4949)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 231607 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (31146, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3663598 stored elements and shape (31146, 5001)>
+  Coords	Values
+  (0, 7)	1
+  (0, 12)	1
+  (0, 24)	1
+  (0, 60)	1
+  (0, 69)	2
+  (0, 70)	1
+  (0, 79)	1
+  (0, 92)	2
+  (0, 99)	1
+  (0, 145)	1
+  (0, 149)	1
+  (0, 151)	1
+  (0, 167)	1
+  (0, 212)	3
+  (0, 214)	3
+  (0, 217)	1
+  (0, 221)	1
+  (0, 222)	1
+  (0, 233)	1
+  (0, 267)	1
+  (0, 280)	1
+  (0, 291)	1
+  (0, 306)	1
+  (0, 321)	1
+  (0, 327)	1
+  :	:
+  (31145, 3338)	1
+  (31145, 3386)	1
+  (31145, 3402)	1
+  (31145, 3405)	1
+  (31145, 3560)	1
+  (31145, 3671)	1
+  (31145, 3690)	1
+  (31145, 3717)	1
+  (31145, 3769)	1
+  (31145, 3845)	1
+  (31145, 4140)	1
+  (31145, 4177)	4
+  (31145, 4186)	2
+  (31145, 4268)	1
+  (31145, 4306)	1
+  (31145, 4397)	1
+  (31145, 4569)	1
+  (31145, 4574)	1
+  (31145, 4576)	1
+  (31145, 4707)	1
+  (31145, 4732)	1
+  (31145, 4782)	1
+  (31145, 4883)	1
+  (31145, 4914)	1
+  (31145, 4929)	1
+adata.X shape: (31146, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 549.3659  1335.3264 ]
+ [ 554.6093  1339.6865 ]
+ [ 528.47406 1339.0798 ]
+ ...
+ [ 738.6186  1936.9701 ]
+ [ 676.2222  2026.52   ]
+ [ 617.8218  2065.7244 ]]
+AnnData object with n_obs × n_vars = 31146 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+aaabjlem-1        1018_batch1_0
+aaaeoaof-1        1018_batch1_1
+aaaiijbn-1        1018_batch1_2
+aaakpbin-1        1018_batch1_3
+aaanliog-1        1018_batch1_4
+                    ...        
+oincgmnd-1    1018_batch1_26099
+oingceff-1    1018_batch1_26100
+oinidoif-1    1018_batch1_26101
+oinikeag-1    1018_batch1_26102
+oinlehgm-1    1018_batch1_26103
+Name: cell_id, Length: 26104, dtype: object
+Harmonized adata_batch shape: (26104, 4949)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 26104 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (408606, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 78454712 stored elements and shape (408606, 5001)>
+  Coords	Values
+  (0, 5)	1
+  (0, 12)	1
+  (0, 117)	1
+  (0, 122)	1
+  (0, 147)	1
+  (0, 159)	2
+  (0, 161)	1
+  (0, 281)	1
+  (0, 301)	1
+  (0, 344)	1
+  (0, 500)	2
+  (0, 512)	1
+  (0, 518)	1
+  (0, 544)	2
+  (0, 570)	1
+  (0, 583)	1
+  (0, 586)	1
+  (0, 626)	1
+  (0, 646)	1
+  (0, 678)	1
+  (0, 681)	1
+  (0, 687)	2
+  (0, 762)	2
+  (0, 780)	1
+  (0, 810)	1
+  :	:
+  (408605, 465)	2
+  (408605, 586)	1
+  (408605, 1306)	2
+  (408605, 1379)	1
+  (408605, 1594)	1
+  (408605, 1683)	1
+  (408605, 1692)	1
+  (408605, 1727)	1
+  (408605, 1875)	1
+  (408605, 2186)	1
+  (408605, 2363)	1
+  (408605, 2442)	2
+  (408605, 2571)	2
+  (408605, 3228)	1
+  (408605, 3345)	1
+  (408605, 3370)	1
+  (408605, 3438)	1
+  (408605, 3580)	2
+  (408605, 3599)	1
+  (408605, 3892)	1
+  (408605, 3930)	1
+  (408605, 4141)	2
+  (408605, 4528)	2
+  (408605, 4644)	1
+  (408605, 4808)	1
+adata.X shape: (408606, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 155.91148 1568.441  ]
+ [ 275.07147 1593.8092 ]
+ [ 269.4351  1589.5491 ]
+ ...
+ [2730.4365  9428.159  ]
+ [3206.0325  9675.416  ]
+ [3126.1174  8878.087  ]]
+AnnData object with n_obs × n_vars = 408606 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch2
+adata_batch.obs['cell_id']:
+aaaabjdp-1         1018_batch2_0
+aaaacfbi-1         1018_batch2_1
+aaaaedil-1         1018_batch2_2
+aaaaffok-1         1018_batch2_3
+aaaamlbf-1         1018_batch2_4
+                     ...        
+oimfeapi-1    1018_batch2_401110
+oimfhhdg-1    1018_batch2_401111
+oimgioog-1    1018_batch2_401112
+oimgopmm-1    1018_batch2_401113
+oimhadfp-1    1018_batch2_401114
+Name: cell_id, Length: 401115, dtype: object
+Harmonized adata_batch shape: (401115, 4949)
+Final Harmonized Adata: Batch = 2
+AnnData object with n_obs × n_vars = 401115 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (124445, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 16337164 stored elements and shape (124445, 5001)>
+  Coords	Values
+  (0, 15)	1
+  (0, 57)	2
+  (0, 70)	1
+  (0, 72)	5
+  (0, 75)	1
+  (0, 79)	1
+  (0, 101)	1
+  (0, 134)	3
+  (0, 139)	1
+  (0, 156)	2
+  (0, 212)	1
+  (0, 220)	1
+  (0, 222)	1
+  (0, 241)	1
+  (0, 248)	1
+  (0, 250)	5
+  (0, 260)	1
+  (0, 261)	1
+  (0, 287)	1
+  (0, 301)	1
+  (0, 318)	1
+  (0, 321)	1
+  (0, 328)	1
+  (0, 406)	1
+  (0, 429)	1
+  :	:
+  (124444, 3330)	1
+  (124444, 3470)	1
+  (124444, 3498)	1
+  (124444, 3528)	1
+  (124444, 3615)	1
+  (124444, 3618)	1
+  (124444, 3713)	1
+  (124444, 3721)	5
+  (124444, 3728)	1
+  (124444, 3770)	1
+  (124444, 3911)	1
+  (124444, 3962)	1
+  (124444, 4100)	1
+  (124444, 4109)	1
+  (124444, 4157)	1
+  (124444, 4169)	1
+  (124444, 4299)	1
+  (124444, 4478)	1
+  (124444, 4481)	1
+  (124444, 4491)	1
+  (124444, 4621)	1
+  (124444, 4684)	1
+  (124444, 4791)	1
+  (124444, 4938)	2
+  (124444, 4956)	1
+adata.X shape: (124445, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1362.2003 1631.5227]
+ [1225.2106 1657.208 ]
+ [1370.0729 1636.862 ]
+ ...
+ [6157.168  4229.4272]
+ [6296.4175 3941.0405]
+ [6171.504  4446.321 ]]
+AnnData object with n_obs × n_vars = 124445 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch3
+adata_batch.obs['cell_id']:
+aaaamhdi-1         1018_batch3_0
+aaabhnca-1         1018_batch3_1
+aaabindf-1         1018_batch3_2
+aaacholn-1         1018_batch3_3
+aaadblep-1         1018_batch3_4
+                     ...        
+ojbanlag-1    1018_batch3_118582
+ojbaocdj-1    1018_batch3_118583
+ojbaokej-1    1018_batch3_118584
+ojbbocna-1    1018_batch3_118585
+ojbcngga-1    1018_batch3_118586
+Name: cell_id, Length: 118587, dtype: object
+Harmonized adata_batch shape: (118587, 4949)
+Final Harmonized Adata: Batch = 3
+AnnData object with n_obs × n_vars = 118587 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (33360, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3840769 stored elements and shape (33360, 5001)>
+  Coords	Values
+  (0, 26)	1
+  (0, 30)	1
+  (0, 64)	1
+  (0, 101)	4
+  (0, 149)	1
+  (0, 222)	1
+  (0, 326)	1
+  (0, 330)	1
+  (0, 334)	1
+  (0, 374)	1
+  (0, 376)	1
+  (0, 389)	1
+  (0, 464)	1
+  (0, 465)	1
+  (0, 476)	1
+  (0, 622)	1
+  (0, 726)	1
+  (0, 739)	1
+  (0, 758)	1
+  (0, 884)	3
+  (0, 957)	1
+  (0, 968)	1
+  (0, 1016)	1
+  (0, 1039)	1
+  (0, 1050)	1
+  :	:
+  (33358, 2379)	1
+  (33358, 2551)	1
+  (33358, 2818)	1
+  (33358, 2914)	1
+  (33358, 2915)	2
+  (33358, 3407)	1
+  (33358, 3721)	1
+  (33358, 3785)	1
+  (33358, 3818)	1
+  (33358, 4063)	2
+  (33358, 4090)	1
+  (33358, 4196)	1
+  (33358, 4470)	1
+  (33358, 4635)	1
+  (33358, 4880)	1
+  (33358, 4932)	1
+  (33358, 4941)	1
+  (33358, 4956)	1
+  (33359, 222)	1
+  (33359, 1401)	1
+  (33359, 1710)	1
+  (33359, 2965)	1
+  (33359, 3262)	1
+  (33359, 3430)	1
+  (33359, 3902)	1
+adata.X shape: (33360, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 321.47482 1018.5172 ]
+ [ 329.82162 1026.0449 ]
+ [ 334.27252 1022.4266 ]
+ ...
+ [5658.108    570.2463 ]
+ [6279.317    654.52814]
+ [6163.7256   523.66547]]
+AnnData object with n_obs × n_vars = 33360 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch4
+adata_batch.obs['cell_id']:
+aaadngbi-1        1018_batch4_0
+aaaijhgd-1        1018_batch4_1
+aaaimdjn-1        1018_batch4_2
+aaaldnpf-1        1018_batch4_3
+aaamkjbd-1        1018_batch4_4
+                    ...        
+oipfhekg-1    1018_batch4_33077
+oipkaaje-1    1018_batch4_33078
+oiplckaf-1    1018_batch4_33079
+ojaceapk-1    1018_batch4_33080
+ojaemmpf-1    1018_batch4_33081
+Name: cell_id, Length: 33082, dtype: object
+Harmonized adata_batch shape: (33082, 4949)
+Final Harmonized Adata: Batch = 4
+AnnData object with n_obs × n_vars = 33082 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (66577, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 8076863 stored elements and shape (66577, 5001)>
+  Coords	Values
+  (0, 30)	1
+  (0, 51)	1
+  (0, 64)	1
+  (0, 69)	2
+  (0, 93)	1
+  (0, 150)	1
+  (0, 151)	1
+  (0, 286)	1
+  (0, 365)	1
+  (0, 438)	1
+  (0, 443)	1
+  (0, 621)	1
+  (0, 639)	1
+  (0, 684)	1
+  (0, 687)	1
+  (0, 711)	1
+  (0, 722)	1
+  (0, 757)	1
+  (0, 802)	1
+  (0, 815)	1
+  (0, 976)	1
+  (0, 999)	1
+  (0, 1065)	3
+  (0, 1150)	1
+  (0, 1176)	1
+  :	:
+  (66574, 3098)	1
+  (66574, 3336)	1
+  (66574, 3439)	1
+  (66574, 3686)	1
+  (66574, 3779)	1
+  (66574, 4561)	1
+  (66574, 4851)	1
+  (66575, 318)	1
+  (66575, 346)	1
+  (66575, 544)	1
+  (66575, 1027)	1
+  (66575, 1055)	1
+  (66575, 2172)	1
+  (66575, 2363)	1
+  (66575, 2581)	1
+  (66575, 2893)	1
+  (66575, 3694)	1
+  (66575, 3712)	1
+  (66575, 3923)	1
+  (66575, 4457)	1
+  (66575, 4852)	1
+  (66576, 57)	1
+  (66576, 1275)	1
+  (66576, 1975)	1
+  (66576, 4567)	1
+adata.X shape: (66577, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1488.3141 3235.0645]
+ [1530.074  3267.2434]
+ [1487.7429 3245.7769]
+ ...
+ [4840.6416 6069.016 ]
+ [4422.3076 6117.5825]
+ [4443.8423 6128.5747]]
+AnnData object with n_obs × n_vars = 66577 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch5
+adata_batch.obs['cell_id']:
+aaabjoao-1        1018_batch5_0
+aaacbkhe-1        1018_batch5_1
+aaacllje-1        1018_batch5_2
+aaaeikdh-1        1018_batch5_3
+aaafofgm-1        1018_batch5_4
+                    ...        
+oimhdfcl-1    1018_batch5_64472
+oimjljcm-1    1018_batch5_64473
+oimmpcpo-1    1018_batch5_64474
+oimoollk-1    1018_batch5_64475
+oimpgnbg-1    1018_batch5_64476
+Name: cell_id, Length: 64477, dtype: object
+Harmonized adata_batch shape: (64477, 4949)
+Final Harmonized Adata: Batch = 5
+AnnData object with n_obs × n_vars = 64477 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (95091, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 15725432 stored elements and shape (95091, 5001)>
+  Coords	Values
+  (0, 42)	1
+  (0, 432)	1
+  (0, 476)	1
+  (0, 641)	1
+  (0, 642)	1
+  (0, 668)	1
+  (0, 746)	1
+  (0, 755)	1
+  (0, 780)	1
+  (0, 1035)	1
+  (0, 1036)	1
+  (0, 1471)	1
+  (0, 1501)	1
+  (0, 1639)	1
+  (0, 1683)	1
+  (0, 1762)	1
+  (0, 2064)	1
+  (0, 2111)	1
+  (0, 2192)	1
+  (0, 2209)	1
+  (0, 2442)	1
+  (0, 2510)	1
+  (0, 2572)	1
+  (0, 2673)	1
+  (0, 2804)	1
+  :	:
+  (95088, 4456)	3
+  (95088, 4482)	1
+  (95088, 4516)	1
+  (95088, 4543)	1
+  (95088, 4578)	1
+  (95088, 4623)	1
+  (95088, 4675)	1
+  (95088, 4690)	1
+  (95088, 4707)	1
+  (95088, 4739)	1
+  (95088, 4744)	1
+  (95088, 4763)	1
+  (95088, 4779)	1
+  (95088, 4803)	1
+  (95088, 4805)	1
+  (95088, 4808)	1
+  (95088, 4823)	1
+  (95088, 4873)	1
+  (95088, 4882)	1
+  (95088, 4896)	1
+  (95088, 4899)	1
+  (95088, 4905)	1
+  (95088, 4941)	2
+  (95089, 687)	1
+  (95089, 875)	1
+adata.X shape: (95091, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[4300.5254   168.95721]
+ [4315.5405   228.23564]
+ [4305.551    176.24124]
+ ...
+ [1177.1761  3565.0295 ]
+ [ 886.5408  3850.442  ]
+ [ 981.6035  4199.1724 ]]
+AnnData object with n_obs × n_vars = 95091 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch6
+adata_batch.obs['cell_id']:
+aaaaaefp-1        1018_batch6_0
+aaaaenmo-1        1018_batch6_1
+aaaangko-1        1018_batch6_2
+aaabgbmf-1        1018_batch6_3
+aaacakkf-1        1018_batch6_4
+                    ...        
+oiidaodj-1    1018_batch6_93640
+oiidemgb-1    1018_batch6_93641
+oiiipigk-1    1018_batch6_93642
+oiijmfil-1    1018_batch6_93643
+oiiloppk-1    1018_batch6_93644
+Name: cell_id, Length: 93645, dtype: object
+Harmonized adata_batch shape: (93645, 4949)
+Final Harmonized Adata: Batch = 6
+AnnData object with n_obs × n_vars = 93645 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (1082, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 114089 stored elements and shape (1082, 5001)>
+  Coords	Values
+  (0, 3)	1
+  (0, 31)	1
+  (0, 83)	1
+  (0, 157)	1
+  (0, 180)	1
+  (0, 195)	1
+  (0, 235)	1
+  (0, 260)	1
+  (0, 281)	1
+  (0, 287)	1
+  (0, 301)	1
+  (0, 312)	1
+  (0, 431)	1
+  (0, 565)	1
+  (0, 609)	1
+  (0, 619)	3
+  (0, 638)	1
+  (0, 639)	1
+  (0, 645)	1
+  (0, 748)	1
+  (0, 796)	1
+  (0, 877)	1
+  (0, 884)	1
+  (0, 888)	1
+  (0, 946)	1
+  :	:
+  (1077, 4465)	1
+  (1077, 4732)	2
+  (1077, 4884)	1
+  (1077, 4905)	1
+  (1078, 318)	1
+  (1078, 1036)	1
+  (1078, 2436)	1
+  (1078, 3146)	1
+  (1078, 3338)	1
+  (1078, 3955)	1
+  (1078, 4063)	1
+  (1078, 4707)	1
+  (1078, 4834)	1
+  (1079, 1306)	1
+  (1079, 1947)	1
+  (1079, 2613)	1
+  (1079, 3510)	1
+  (1079, 4103)	1
+  (1080, 744)	1
+  (1080, 3954)	1
+  (1080, 4471)	1
+  (1081, 234)	1
+  (1081, 2130)	1
+  (1081, 4682)	1
+  (1081, 4683)	1
+adata.X shape: (1082, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[480.50366 289.1644 ]
+ [321.15588 358.36197]
+ [383.84387 348.77905]
+ ...
+ [326.81735 570.6683 ]
+ [311.54385 700.29205]
+ [619.8515  629.2699 ]]
+AnnData object with n_obs × n_vars = 1082 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch7
+adata_batch.obs['cell_id']:
+aabbdfli-1       1018_batch7_0
+aacokibi-1       1018_batch7_1
+aafjcclp-1       1018_batch7_2
+aajcclci-1       1018_batch7_3
+abejlmih-1       1018_batch7_4
+                    ...       
+oddgaabl-1    1018_batch7_1044
+odedgpnk-1    1018_batch7_1045
+odgfpcbe-1    1018_batch7_1046
+odhepagf-1    1018_batch7_1047
+odkpfcem-1    1018_batch7_1048
+Name: cell_id, Length: 1049, dtype: object
+Harmonized adata_batch shape: (1049, 4949)
+Final Harmonized Adata: Batch = 7
+AnnData object with n_obs × n_vars = 1049 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (33358, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 6681306 stored elements and shape (33358, 5001)>
+  Coords	Values
+  (0, 6)	1
+  (0, 12)	1
+  (0, 32)	2
+  (0, 39)	1
+  (0, 40)	1
+  (0, 45)	1
+  (0, 49)	1
+  (0, 57)	1
+  (0, 70)	3
+  (0, 78)	1
+  (0, 79)	1
+  (0, 86)	1
+  (0, 93)	1
+  (0, 101)	1
+  (0, 117)	1
+  (0, 120)	1
+  (0, 134)	1
+  (0, 151)	1
+  (0, 157)	1
+  (0, 160)	1
+  (0, 176)	1
+  (0, 195)	1
+  (0, 204)	1
+  (0, 208)	1
+  (0, 210)	1
+  :	:
+  (33356, 4239)	1
+  (33356, 4271)	1
+  (33356, 4276)	1
+  (33357, 883)	1
+  (33357, 1758)	2
+  (33357, 2125)	1
+  (33357, 2549)	1
+  (33357, 2674)	1
+  (33357, 2689)	1
+  (33357, 2780)	1
+  (33357, 2922)	1
+  (33357, 2937)	1
+  (33357, 3105)	1
+  (33357, 3176)	1
+  (33357, 3540)	1
+  (33357, 3648)	1
+  (33357, 4029)	1
+  (33357, 4141)	1
+  (33357, 4186)	3
+  (33357, 4226)	1
+  (33357, 4296)	1
+  (33357, 4332)	1
+  (33357, 4387)	1
+  (33357, 4505)	1
+  (33357, 4983)	1
+adata.X shape: (33358, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[6446.747    484.32138]
+ [6525.8345   537.71295]
+ [6497.0903   537.4755 ]
+ ...
+ [2338.8352  2828.9604 ]
+ [2549.028   2585.6172 ]
+ [2248.5337  2936.8474 ]]
+AnnData object with n_obs × n_vars = 33358 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch8
+adata_batch.obs['cell_id']:
+aaaamebl-1        1018_batch8_0
+aaafbbmm-1        1018_batch8_1
+aaafdlea-1        1018_batch8_2
+aaagdcfb-1        1018_batch8_3
+aaagiagb-1        1018_batch8_4
+                    ...        
+oicmamgn-1    1018_batch8_32091
+oidacfil-1    1018_batch8_32092
+oidbamda-1    1018_batch8_32093
+oidciada-1    1018_batch8_32094
+oidddpge-1    1018_batch8_32095
+Name: cell_id, Length: 32096, dtype: object
+Harmonized adata_batch shape: (32096, 4949)
+Final Harmonized Adata: Batch = 8
+AnnData object with n_obs × n_vars = 32096 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (2615, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 463901 stored elements and shape (2615, 5001)>
+  Coords	Values
+  (0, 57)	2
+  (0, 63)	2
+  (0, 125)	1
+  (0, 142)	1
+  (0, 145)	1
+  (0, 147)	1
+  (0, 157)	1
+  (0, 212)	1
+  (0, 214)	1
+  (0, 238)	1
+  (0, 246)	1
+  (0, 281)	1
+  (0, 302)	1
+  (0, 312)	1
+  (0, 319)	1
+  (0, 321)	1
+  (0, 365)	1
+  (0, 375)	1
+  (0, 392)	1
+  (0, 416)	1
+  (0, 427)	1
+  (0, 500)	1
+  (0, 527)	1
+  (0, 532)	2
+  (0, 546)	2
+  :	:
+  (2614, 1974)	1
+  (2614, 2111)	1
+  (2614, 2130)	1
+  (2614, 2263)	1
+  (2614, 2442)	1
+  (2614, 2593)	1
+  (2614, 2817)	1
+  (2614, 2976)	1
+  (2614, 3042)	1
+  (2614, 3207)	1
+  (2614, 3252)	2
+  (2614, 3340)	1
+  (2614, 3482)	1
+  (2614, 3514)	1
+  (2614, 3552)	1
+  (2614, 3662)	1
+  (2614, 4086)	1
+  (2614, 4186)	1
+  (2614, 4455)	1
+  (2614, 4556)	1
+  (2614, 4576)	1
+  (2614, 4719)	1
+  (2614, 4846)	1
+  (2614, 4906)	2
+  (2614, 4910)	1
+adata.X shape: (2615, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 667.39606 1228.6979 ]
+ [ 612.6896  1242.0399 ]
+ [ 691.8524  1243.8126 ]
+ ...
+ [ 544.9926  1364.7432 ]
+ [ 524.6847  1541.8877 ]
+ [ 653.889   1556.3191 ]]
+AnnData object with n_obs × n_vars = 2615 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch9
+adata_batch.obs['cell_id']:
+aafppkid-1       1018_batch9_0
+aahgpmka-1       1018_batch9_1
+aajeeamh-1       1018_batch9_2
+aalbkcjo-1       1018_batch9_3
+aanlcemp-1       1018_batch9_4
+                    ...       
+okgphgdc-1    1018_batch9_2561
+okjgdnil-1    1018_batch9_2562
+okjkkcaa-1    1018_batch9_2563
+okmbagbh-1    1018_batch9_2564
+okmjkgpn-1    1018_batch9_2565
+Name: cell_id, Length: 2566, dtype: object
+Harmonized adata_batch shape: (2566, 4949)
+Final Harmonized Adata: Batch = 9
+AnnData object with n_obs × n_vars = 2566 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (497816, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 127694540 stored elements and shape (497816, 5001)>
+  Coords	Values
+  (0, 12)	1
+  (0, 28)	1
+  (0, 38)	1
+  (0, 39)	1
+  (0, 45)	1
+  (0, 55)	1
+  (0, 59)	1
+  (0, 66)	1
+  (0, 79)	1
+  (0, 93)	1
+  (0, 140)	1
+  (0, 150)	1
+  (0, 151)	1
+  (0, 156)	1
+  (0, 167)	1
+  (0, 183)	1
+  (0, 195)	1
+  (0, 210)	1
+  (0, 212)	2
+  (0, 245)	1
+  (0, 246)	1
+  (0, 251)	1
+  (0, 260)	1
+  (0, 261)	2
+  (0, 280)	1
+  :	:
+  (497814, 1969)	1
+  (497814, 2218)	1
+  (497814, 3351)	1
+  (497814, 3482)	1
+  (497814, 4361)	1
+  (497814, 4387)	1
+  (497814, 4564)	1
+  (497814, 4739)	1
+  (497814, 4823)	1
+  (497815, 69)	1
+  (497815, 94)	1
+  (497815, 874)	1
+  (497815, 1068)	1
+  (497815, 1734)	1
+  (497815, 1889)	1
+  (497815, 2365)	1
+  (497815, 2614)	1
+  (497815, 3015)	1
+  (497815, 3141)	1
+  (497815, 3470)	1
+  (497815, 3728)	1
+  (497815, 4000)	1
+  (497815, 4186)	1
+  (497815, 4611)	1
+  (497815, 4838)	1
+adata.X shape: (497816, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 761.5347   457.1481 ]
+ [ 770.8445   475.6684 ]
+ [ 760.01587  450.20187]
+ ...
+ [4013.295    353.79327]
+ [4212.3066   383.59848]
+ [4250.731    174.17178]]
+AnnData object with n_obs × n_vars = 497816 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch10
+adata_batch.obs['cell_id']:
+aaaaaklk-1         1018_batch10_0
+aaaacjnb-1         1018_batch10_1
+aaaagpki-1         1018_batch10_2
+aaaamddc-1         1018_batch10_3
+aaaapeji-1         1018_batch10_4
+                     ...         
+oiipjgok-1    1018_batch10_496156
+oiipjjhj-1    1018_batch10_496157
+oiipkkcn-1    1018_batch10_496158
+oiipkmhf-1    1018_batch10_496159
+oiipljcn-1    1018_batch10_496160
+Name: cell_id, Length: 496161, dtype: object
+Harmonized adata_batch shape: (496161, 4949)
+Final Harmonized Adata: Batch = 10
+AnnData object with n_obs × n_vars = 496161 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (9137, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 792059 stored elements and shape (9137, 5001)>
+  Coords	Values
+  (0, 93)	2
+  (0, 270)	1
+  (0, 312)	1
+  (0, 332)	1
+  (0, 687)	1
+  (0, 871)	1
+  (0, 1065)	1
+  (0, 1179)	1
+  (0, 1227)	1
+  (0, 1337)	1
+  (0, 1707)	1
+  (0, 2059)	1
+  (0, 2174)	1
+  (0, 2257)	1
+  (0, 2452)	1
+  (0, 2598)	1
+  (0, 2630)	1
+  (0, 2708)	1
+  (0, 2778)	1
+  (0, 2812)	1
+  (0, 2967)	1
+  (0, 3204)	1
+  (0, 3252)	2
+  (0, 3262)	1
+  (0, 3354)	1
+  :	:
+  (9136, 79)	1
+  (9136, 195)	1
+  (9136, 248)	1
+  (9136, 844)	1
+  (9136, 1026)	1
+  (9136, 1518)	2
+  (9136, 1762)	1
+  (9136, 1925)	1
+  (9136, 1995)	1
+  (9136, 2069)	1
+  (9136, 2091)	1
+  (9136, 2239)	1
+  (9136, 2418)	1
+  (9136, 2471)	1
+  (9136, 2760)	1
+  (9136, 3354)	1
+  (9136, 3464)	1
+  (9136, 3569)	1
+  (9136, 4052)	1
+  (9136, 4158)	1
+  (9136, 4186)	1
+  (9136, 4478)	1
+  (9136, 4482)	1
+  (9136, 4575)	1
+  (9136, 4723)	1
+adata.X shape: (9137, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 640.70215 2807.4832 ]
+ [ 644.4462  2835.1123 ]
+ [ 628.5665  2833.1602 ]
+ ...
+ [2209.6248   476.9742 ]
+ [1879.3907   735.16   ]
+ [1855.6694   377.1336 ]]
+AnnData object with n_obs × n_vars = 9137 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch11
+adata_batch.obs['cell_id']:
+aaaljnng-1       1018_batch11_0
+aaaoicoi-1       1018_batch11_1
+aabblnjb-1       1018_batch11_2
+aabhgepp-1       1018_batch11_3
+aacdhfeg-1       1018_batch11_4
+                    ...        
+ohfnbofl-1    1018_batch11_8175
+ohgcnehg-1    1018_batch11_8176
+ohhljlfl-1    1018_batch11_8177
+ohigeeld-1    1018_batch11_8178
+ohjidmnf-1    1018_batch11_8179
+Name: cell_id, Length: 8180, dtype: object
+Harmonized adata_batch shape: (8180, 4949)
+Final Harmonized Adata: Batch = 11
+AnnData object with n_obs × n_vars = 8180 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (46312, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 9414357 stored elements and shape (46312, 5001)>
+  Coords	Values
+  (0, 5)	1
+  (0, 64)	1
+  (0, 69)	2
+  (0, 79)	1
+  (0, 95)	1
+  (0, 101)	1
+  (0, 141)	1
+  (0, 148)	1
+  (0, 151)	1
+  (0, 158)	1
+  (0, 160)	2
+  (0, 188)	1
+  (0, 197)	1
+  (0, 210)	2
+  (0, 212)	2
+  (0, 214)	1
+  (0, 224)	1
+  (0, 275)	1
+  (0, 280)	2
+  (0, 302)	2
+  (0, 335)	1
+  (0, 346)	1
+  (0, 357)	1
+  (0, 406)	1
+  (0, 419)	1
+  :	:
+  (46309, 4255)	1
+  (46309, 4780)	1
+  (46309, 4806)	1
+  (46310, 2)	1
+  (46310, 73)	1
+  (46310, 186)	1
+  (46310, 212)	1
+  (46310, 711)	2
+  (46310, 722)	1
+  (46310, 765)	1
+  (46310, 787)	1
+  (46310, 1016)	1
+  (46310, 1228)	1
+  (46310, 1736)	1
+  (46310, 1955)	1
+  (46310, 2116)	1
+  (46310, 2265)	1
+  (46310, 2517)	1
+  (46310, 2552)	1
+  (46310, 3203)	1
+  (46310, 4293)	1
+  (46310, 4781)	1
+  (46311, 700)	1
+  (46311, 928)	1
+  (46311, 2967)	1
+adata.X shape: (46312, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 419.29504  648.80255]
+ [ 369.8448   694.348  ]
+ [ 367.9756   689.00433]
+ ...
+ [7924.789   5546.878  ]
+ [7841.119   5582.2607 ]
+ [7924.815   5622.553  ]]
+AnnData object with n_obs × n_vars = 46312 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch12
+adata_batch.obs['cell_id']:
+aaaablfk-1        1018_batch12_0
+aaaambnj-1        1018_batch12_1
+aaaaogmd-1        1018_batch12_2
+aaaboici-1        1018_batch12_3
+aaadknni-1        1018_batch12_4
+                     ...        
+oilkhebl-1    1018_batch12_44934
+oimajlij-1    1018_batch12_44935
+oimfecdc-1    1018_batch12_44936
+oimgdjhc-1    1018_batch12_44937
+oimgpbmn-1    1018_batch12_44938
+Name: cell_id, Length: 44939, dtype: object
+Harmonized adata_batch shape: (44939, 4949)
+Final Harmonized Adata: Batch = 12
+AnnData object with n_obs × n_vars = 44939 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (559445, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 57713634 stored elements and shape (559445, 5001)>
+  Coords	Values
+  (0, 53)	1
+  (0, 83)	1
+  (0, 310)	1
+  (0, 318)	1
+  (0, 381)	1
+  (0, 445)	1
+  (0, 620)	1
+  (0, 625)	1
+  (0, 648)	1
+  (0, 707)	3
+  (0, 761)	1
+  (0, 815)	1
+  (0, 863)	1
+  (0, 1065)	3
+  (0, 1118)	1
+  (0, 1136)	1
+  (0, 1141)	2
+  (0, 1175)	1
+  (0, 1216)	1
+  (0, 1229)	1
+  (0, 1272)	1
+  (0, 1306)	2
+  (0, 1332)	1
+  (0, 1366)	1
+  (0, 1484)	1
+  :	:
+  (559444, 3266)	1
+  (559444, 3285)	1
+  (559444, 3353)	1
+  (559444, 3355)	1
+  (559444, 3444)	1
+  (559444, 3528)	1
+  (559444, 3635)	1
+  (559444, 3638)	1
+  (559444, 3642)	1
+  (559444, 3707)	1
+  (559444, 3746)	1
+  (559444, 3752)	1
+  (559444, 3895)	1
+  (559444, 3897)	1
+  (559444, 3911)	1
+  (559444, 3953)	2
+  (559444, 3954)	1
+  (559444, 3969)	1
+  (559444, 4040)	1
+  (559444, 4048)	1
+  (559444, 4063)	1
+  (559444, 4272)	1
+  (559444, 4278)	1
+  (559444, 4690)	1
+  (559444, 4885)	1
+adata.X shape: (559445, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 353.47388 8397.291  ]
+ [ 349.19092 8408.22   ]
+ [ 383.2673  8568.248  ]
+ ...
+ [2905.613   9473.54   ]
+ [2853.9775  9392.961  ]
+ [2915.039   9514.156  ]]
+AnnData object with n_obs × n_vars = 559445 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch13
+adata_batch.obs['cell_id']:
+aaaaaamm-1         1018_batch13_0
+aaaabhke-1         1018_batch13_1
+aaaabmcc-1         1018_batch13_2
+aaaadfko-1         1018_batch13_3
+aaaafedp-1         1018_batch13_4
+                     ...         
+oimfnaop-1    1018_batch13_533793
+oimfnlmp-1    1018_batch13_533794
+oimfoacc-1    1018_batch13_533795
+oimfpkpn-1    1018_batch13_533796
+oimgehhi-1    1018_batch13_533797
+Name: cell_id, Length: 533798, dtype: object
+Harmonized adata_batch shape: (533798, 4949)
+Final Harmonized Adata: Batch = 13
+AnnData object with n_obs × n_vars = 533798 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (55943, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 12231212 stored elements and shape (55943, 5001)>
+  Coords	Values
+  (0, 318)	1
+  (0, 401)	1
+  (0, 536)	1
+  (0, 1065)	1
+  (0, 1205)	1
+  (0, 1344)	1
+  (0, 1425)	1
+  (0, 1578)	1
+  (0, 1702)	1
+  (0, 1791)	1
+  (0, 2014)	1
+  (0, 2182)	1
+  (0, 2455)	1
+  (0, 2466)	1
+  (0, 2481)	1
+  (0, 3433)	1
+  (0, 3480)	1
+  (0, 3676)	1
+  (0, 3710)	1
+  (0, 3982)	1
+  (0, 4109)	1
+  (0, 4141)	1
+  (0, 4186)	1
+  (0, 4259)	1
+  (0, 4604)	1
+  :	:
+  (55941, 3640)	1
+  (55941, 3769)	1
+  (55941, 3955)	1
+  (55941, 3997)	1
+  (55941, 4107)	1
+  (55941, 4315)	1
+  (55941, 4338)	1
+  (55941, 4370)	1
+  (55941, 4394)	1
+  (55941, 4664)	1
+  (55941, 4834)	1
+  (55942, 36)	1
+  (55942, 331)	1
+  (55942, 530)	1
+  (55942, 1527)	1
+  (55942, 1843)	1
+  (55942, 1882)	1
+  (55942, 2249)	1
+  (55942, 2580)	1
+  (55942, 2583)	1
+  (55942, 3699)	1
+  (55942, 4586)	1
+  (55942, 4747)	1
+  (55942, 4793)	1
+  (55942, 4910)	1
+adata.X shape: (55943, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 456.11703  920.8796 ]
+ [ 629.33954  932.37244]
+ [ 733.2418   858.28625]
+ ...
+ [1327.2987  2740.0547 ]
+ [1484.6426  2279.1155 ]
+ [1452.0471  2272.3486 ]]
+AnnData object with n_obs × n_vars = 55943 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch14
+adata_batch.obs['cell_id']:
+aaaaifkd-1        1018_batch14_0
+aaabcpif-1        1018_batch14_1
+aaacapcb-1        1018_batch14_2
+aaacbkmj-1        1018_batch14_3
+aaacegba-1        1018_batch14_4
+                     ...        
+oiobecjo-1    1018_batch14_55233
+oiobpemp-1    1018_batch14_55234
+oioefmhc-1    1018_batch14_55235
+oioenjjd-1    1018_batch14_55236
+oiofldea-1    1018_batch14_55237
+Name: cell_id, Length: 55238, dtype: object
+Harmonized adata_batch shape: (55238, 4949)
+Final Harmonized Adata: Batch = 14
+AnnData object with n_obs × n_vars = 55238 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (384411, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 63105141 stored elements and shape (384411, 5001)>
+  Coords	Values
+  (0, 150)	1
+  (0, 195)	2
+  (0, 280)	1
+  (0, 321)	1
+  (0, 346)	2
+  (0, 709)	1
+  (0, 824)	1
+  (0, 959)	1
+  (0, 1026)	1
+  (0, 1033)	1
+  (0, 1035)	3
+  (0, 1065)	1
+  (0, 1069)	3
+  (0, 1109)	2
+  (0, 1227)	1
+  (0, 1247)	1
+  (0, 1306)	1
+  (0, 1335)	1
+  (0, 1380)	1
+  (0, 1440)	1
+  (0, 1470)	1
+  (0, 1516)	1
+  (0, 1518)	2
+  (0, 1539)	1
+  (0, 1625)	1
+  :	:
+  (384409, 3925)	1
+  (384409, 3951)	2
+  (384409, 3982)	1
+  (384409, 4083)	1
+  (384409, 4099)	1
+  (384409, 4167)	1
+  (384409, 4215)	1
+  (384409, 4260)	1
+  (384409, 4272)	1
+  (384409, 4283)	1
+  (384409, 4394)	1
+  (384409, 4478)	1
+  (384409, 4484)	1
+  (384409, 4518)	1
+  (384409, 4543)	1
+  (384409, 4591)	1
+  (384409, 4684)	1
+  (384409, 4740)	1
+  (384409, 4747)	1
+  (384409, 4893)	1
+  (384409, 4902)	1
+  (384409, 4932)	1
+  (384409, 4939)	1
+  (384410, 2432)	1
+  (384410, 2494)	1
+adata.X shape: (384411, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  332.37695 13206.866  ]
+ [  369.21857 13239.782  ]
+ [  214.15508 13235.255  ]
+ ...
+ [ 2929.2017  12745.074  ]
+ [ 2724.9292  12607.632  ]
+ [ 3329.2656  12467.452  ]]
+AnnData object with n_obs × n_vars = 384411 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch15
+adata_batch.obs['cell_id']:
+aaaacpgn-1         1018_batch15_0
+aaaaemjn-1         1018_batch15_1
+aaaajijh-1         1018_batch15_2
+aaaalfne-1         1018_batch15_3
+aaaancgo-1         1018_batch15_4
+                     ...         
+oijniing-1    1018_batch15_359357
+oijnlhnk-1    1018_batch15_359358
+oijoidba-1    1018_batch15_359359
+oijolaaf-1    1018_batch15_359360
+oijonobf-1    1018_batch15_359361
+Name: cell_id, Length: 359362, dtype: object
+Harmonized adata_batch shape: (359362, 4949)
+Final Harmonized Adata: Batch = 15
+AnnData object with n_obs × n_vars = 359362 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (63890, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 17568347 stored elements and shape (63890, 5001)>
+  Coords	Values
+  (0, 1)	2
+  (0, 3)	1
+  (0, 4)	1
+  (0, 12)	1
+  (0, 20)	1
+  (0, 22)	1
+  (0, 30)	1
+  (0, 32)	1
+  (0, 40)	1
+  (0, 42)	1
+  (0, 45)	5
+  (0, 53)	1
+  (0, 55)	1
+  (0, 64)	2
+  (0, 70)	1
+  (0, 73)	1
+  (0, 78)	1
+  (0, 83)	2
+  (0, 85)	1
+  (0, 93)	1
+  (0, 101)	4
+  (0, 115)	1
+  (0, 119)	1
+  (0, 123)	4
+  (0, 133)	2
+  :	:
+  (63889, 1881)	1
+  (63889, 1927)	1
+  (63889, 2275)	1
+  (63889, 2386)	1
+  (63889, 2571)	1
+  (63889, 2708)	2
+  (63889, 2766)	1
+  (63889, 2975)	1
+  (63889, 2993)	1
+  (63889, 3240)	1
+  (63889, 3257)	1
+  (63889, 3471)	1
+  (63889, 3592)	1
+  (63889, 3740)	1
+  (63889, 3844)	1
+  (63889, 3885)	1
+  (63889, 4151)	1
+  (63889, 4320)	1
+  (63889, 4414)	2
+  (63889, 4439)	1
+  (63889, 4494)	1
+  (63889, 4592)	1
+  (63889, 4660)	1
+  (63889, 4740)	1
+  (63889, 4794)	1
+adata.X shape: (63890, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1276.0544 1944.6272]
+ [1304.9243 1941.1661]
+ [1289.8911 1979.2966]
+ ...
+ [5261.199  3016.0205]
+ [5112.1216 2768.634 ]
+ [5524.396  2484.2998]]
+AnnData object with n_obs × n_vars = 63890 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch16
+adata_batch.obs['cell_id']:
+aaaaligg-1        1018_batch16_0
+aaaapdoe-1        1018_batch16_1
+aaadbhmh-1        1018_batch16_2
+aaadkibd-1        1018_batch16_3
+aaafoldo-1        1018_batch16_4
+                     ...        
+oilkpike-1    1018_batch16_63231
+oillgefk-1    1018_batch16_63232
+oilmemgp-1    1018_batch16_63233
+oilnbdch-1    1018_batch16_63234
+oilneamf-1    1018_batch16_63235
+Name: cell_id, Length: 63236, dtype: object
+Harmonized adata_batch shape: (63236, 4949)
+Final Harmonized Adata: Batch = 16
+AnnData object with n_obs × n_vars = 63236 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (1589, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 244956 stored elements and shape (1589, 5001)>
+  Coords	Values
+  (0, 19)	1
+  (0, 391)	1
+  (0, 499)	1
+  (0, 595)	2
+  (0, 678)	1
+  (0, 679)	1
+  (0, 709)	2
+  (0, 721)	1
+  (0, 757)	1
+  (0, 815)	1
+  (0, 853)	1
+  (0, 924)	1
+  (0, 1055)	1
+  (0, 1074)	1
+  (0, 1159)	1
+  (0, 1271)	1
+  (0, 1336)	1
+  (0, 1387)	3
+  (0, 1401)	1
+  (0, 1496)	1
+  (0, 1656)	1
+  (0, 1770)	1
+  (0, 1771)	1
+  (0, 1773)	1
+  (0, 1785)	1
+  :	:
+  (1572, 301)	1
+  (1572, 934)	1
+  (1572, 1242)	1
+  (1572, 4108)	1
+  (1572, 4456)	1
+  (1581, 361)	1
+  (1581, 813)	1
+  (1581, 989)	1
+  (1581, 1520)	1
+  (1581, 1791)	1
+  (1581, 2399)	1
+  (1581, 2911)	1
+  (1581, 3986)	1
+  (1582, 951)	1
+  (1583, 1619)	2
+  (1583, 1704)	1
+  (1583, 3437)	1
+  (1585, 272)	1
+  (1585, 4478)	1
+  (1588, 711)	1
+  (1588, 1641)	1
+  (1588, 3767)	1
+  (1588, 3849)	1
+  (1588, 4192)	1
+  (1588, 4788)	1
+adata.X shape: (1589, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 298.04483  758.1291 ]
+ [ 256.23767 1136.822  ]
+ [ 326.1868   882.58527]
+ ...
+ [ 604.4522  1295.0942 ]
+ [ 618.92017 1275.5187 ]
+ [ 769.5816  1346.3654 ]]
+AnnData object with n_obs × n_vars = 1589 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch17
+adata_batch.obs['cell_id']:
+aabjgmhc-1       1018_batch17_0
+aacligkh-1       1018_batch17_1
+aagldkba-1       1018_batch17_2
+aajdibnh-1       1018_batch17_3
+aakbnogj-1       1018_batch17_4
+                    ...        
+odgpiole-1    1018_batch17_1372
+odjkapea-1    1018_batch17_1373
+oeiopenb-1    1018_batch17_1374
+oelabhdi-1    1018_batch17_1375
+ofkcpfpa-1    1018_batch17_1376
+Name: cell_id, Length: 1377, dtype: object
+Harmonized adata_batch shape: (1377, 4949)
+Final Harmonized Adata: Batch = 17
+AnnData object with n_obs × n_vars = 1377 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (349798, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 93437799 stored elements and shape (349798, 5001)>
+  Coords	Values
+  (0, 23)	1
+  (0, 38)	1
+  (0, 45)	1
+  (0, 57)	1
+  (0, 63)	1
+  (0, 64)	1
+  (0, 147)	1
+  (0, 153)	1
+  (0, 161)	1
+  (0, 163)	1
+  (0, 165)	1
+  (0, 175)	1
+  (0, 200)	1
+  (0, 202)	1
+  (0, 214)	1
+  (0, 218)	1
+  (0, 224)	1
+  (0, 228)	1
+  (0, 234)	1
+  (0, 241)	1
+  (0, 248)	2
+  (0, 261)	3
+  (0, 268)	1
+  (0, 269)	1
+  (0, 281)	1
+  :	:
+  (349795, 666)	1
+  (349795, 1580)	1
+  (349795, 1885)	1
+  (349795, 3582)	1
+  (349795, 3911)	1
+  (349795, 4510)	1
+  (349795, 4542)	1
+  (349796, 463)	1
+  (349796, 597)	1
+  (349796, 680)	1
+  (349796, 696)	1
+  (349796, 711)	1
+  (349796, 1057)	1
+  (349796, 1587)	1
+  (349796, 2054)	1
+  (349796, 2090)	1
+  (349796, 2161)	1
+  (349796, 2424)	1
+  (349796, 4643)	1
+  (349796, 4908)	1
+  (349796, 4991)	1
+  (349797, 306)	1
+  (349797, 316)	1
+  (349797, 1065)	1
+  (349797, 1443)	1
+adata.X shape: (349798, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1445.9607 4649.364 ]
+ [1449.315  4660.329 ]
+ [1470.8046 4650.5757]
+ ...
+ [4222.9995 1971.8973]
+ [4157.701  1934.0707]
+ [6598.8574 1950.3473]]
+AnnData object with n_obs × n_vars = 349798 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch18
+adata_batch.obs['cell_id']:
+aaaaabbi-1         1018_batch18_0
+aaaahcda-1         1018_batch18_1
+aaaapmpk-1         1018_batch18_2
+aaabagbk-1         1018_batch18_3
+aaabbabe-1         1018_batch18_4
+                     ...         
+oiknhcbl-1    1018_batch18_345924
+oiknhdci-1    1018_batch18_345925
+oikninap-1    1018_batch18_345926
+oiknkieg-1    1018_batch18_345927
+oiknpaci-1    1018_batch18_345928
+Name: cell_id, Length: 345929, dtype: object
+Harmonized adata_batch shape: (345929, 4949)
+Final Harmonized Adata: Batch = 18
+AnnData object with n_obs × n_vars = 345929 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (1747, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 321799 stored elements and shape (1747, 5001)>
+  Coords	Values
+  (0, 55)	1
+  (0, 145)	1
+  (0, 250)	1
+  (0, 610)	1
+  (0, 626)	1
+  (0, 770)	1
+  (0, 798)	1
+  (0, 899)	1
+  (0, 929)	1
+  (0, 975)	1
+  (0, 1026)	1
+  (0, 1388)	1
+  (0, 1531)	1
+  (0, 1576)	1
+  (0, 1705)	1
+  (0, 1734)	1
+  (0, 1739)	1
+  (0, 1762)	1
+  (0, 2033)	1
+  (0, 2054)	1
+  (0, 2198)	1
+  (0, 2275)	1
+  (0, 2871)	1
+  (0, 2918)	1
+  (0, 3242)	1
+  :	:
+  (1742, 3650)	1
+  (1742, 3804)	1
+  (1743, 2267)	1
+  (1743, 2644)	1
+  (1743, 2728)	1
+  (1743, 2853)	1
+  (1743, 3122)	1
+  (1743, 3372)	1
+  (1743, 3576)	1
+  (1743, 4833)	1
+  (1744, 1122)	1
+  (1744, 1163)	1
+  (1744, 1336)	1
+  (1744, 4707)	1
+  (1745, 57)	2
+  (1745, 417)	1
+  (1745, 968)	1
+  (1745, 1274)	1
+  (1745, 2596)	1
+  (1745, 2698)	1
+  (1745, 2797)	1
+  (1745, 2967)	1
+  (1745, 3220)	1
+  (1745, 4439)	1
+  (1746, 556)	1
+adata.X shape: (1747, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  34.122215 2237.5972  ]
+ [ 125.97126  2433.7964  ]
+ [ 115.193665 2418.2773  ]
+ ...
+ [2633.4763   1225.275   ]
+ [2745.8904   1251.1632  ]
+ [2831.7651   1172.5662  ]]
+AnnData object with n_obs × n_vars = 1747 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch19
+adata_batch.obs['cell_id']:
+aadenjpj-1       1018_batch19_0
+aahjmekp-1       1018_batch19_1
+aahpdbcn-1       1018_batch19_2
+aaopfaio-1       1018_batch19_3
+abbmjfgc-1       1018_batch19_4
+                    ...        
+ockbocji-1    1018_batch19_1609
+oclglcgo-1    1018_batch19_1610
+odkcggbi-1    1018_batch19_1611
+oedebabh-1    1018_batch19_1612
+oenffhpp-1    1018_batch19_1613
+Name: cell_id, Length: 1614, dtype: object
+Harmonized adata_batch shape: (1614, 4949)
+Final Harmonized Adata: Batch = 19
+AnnData object with n_obs × n_vars = 1614 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (12346, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 2095727 stored elements and shape (12346, 5001)>
+  Coords	Values
+  (0, 12)	1
+  (0, 32)	2
+  (0, 34)	2
+  (0, 53)	1
+  (0, 59)	1
+  (0, 101)	2
+  (0, 117)	1
+  (0, 126)	1
+  (0, 149)	1
+  (0, 159)	1
+  (0, 183)	1
+  (0, 185)	1
+  (0, 201)	1
+  (0, 204)	1
+  (0, 210)	1
+  (0, 212)	1
+  (0, 220)	1
+  (0, 221)	1
+  (0, 222)	1
+  (0, 227)	1
+  (0, 252)	1
+  (0, 286)	1
+  (0, 287)	1
+  (0, 329)	1
+  (0, 333)	1
+  :	:
+  (12344, 3933)	1
+  (12344, 3986)	1
+  (12344, 4160)	1
+  (12344, 4546)	1
+  (12344, 4884)	1
+  (12344, 4899)	1
+  (12345, 252)	1
+  (12345, 914)	1
+  (12345, 1272)	2
+  (12345, 1389)	2
+  (12345, 1397)	1
+  (12345, 1462)	1
+  (12345, 1802)	1
+  (12345, 1969)	1
+  (12345, 2721)	1
+  (12345, 2740)	1
+  (12345, 2911)	1
+  (12345, 3104)	1
+  (12345, 3606)	1
+  (12345, 3637)	1
+  (12345, 3868)	1
+  (12345, 4018)	4
+  (12345, 4186)	4
+  (12345, 4193)	1
+  (12345, 4347)	1
+adata.X shape: (12346, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[1438.2565 1569.7642]
+ [1442.8179 1673.6473]
+ [1449.0625 1638.983 ]
+ ...
+ [4698.5503 2386.7673]
+ [4410.922  2469.87  ]
+ [4387.461  2309.2043]]
+AnnData object with n_obs × n_vars = 12346 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch20
+adata_batch.obs['cell_id']:
+aaaajnke-1       1018_batch20_0
+aaabeclo-1       1018_batch20_1
+aaacgpmp-1       1018_batch20_2
+aaanfieo-1       1018_batch20_3
+aaclbmal-1       1018_batch20_4
+                    ...        
+ojbjognf-1    1018_batch20_9646
+ojbnbijh-1    1018_batch20_9647
+ojbnoplk-1    1018_batch20_9648
+ojcnamfd-1    1018_batch20_9649
+ojcnmdnp-1    1018_batch20_9650
+Name: cell_id, Length: 9651, dtype: object
+Harmonized adata_batch shape: (9651, 4949)
+Final Harmonized Adata: Batch = 20
+AnnData object with n_obs × n_vars = 9651 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (460221, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 65681056 stored elements and shape (460221, 5001)>
+  Coords	Values
+  (0, 29)	1
+  (0, 30)	1
+  (0, 44)	1
+  (0, 70)	1
+  (0, 147)	1
+  (0, 148)	1
+  (0, 157)	3
+  (0, 238)	1
+  (0, 252)	1
+  (0, 265)	1
+  (0, 275)	1
+  (0, 312)	1
+  (0, 348)	1
+  (0, 375)	1
+  (0, 392)	1
+  (0, 438)	1
+  (0, 476)	2
+  (0, 485)	1
+  (0, 529)	1
+  (0, 714)	1
+  (0, 739)	1
+  (0, 837)	1
+  (0, 847)	1
+  (0, 879)	1
+  (0, 886)	1
+  :	:
+  (460220, 1184)	1
+  (460220, 1203)	1
+  (460220, 1285)	1
+  (460220, 1762)	1
+  (460220, 2590)	1
+  (460220, 2677)	1
+  (460220, 2861)	1
+  (460220, 2889)	1
+  (460220, 2997)	1
+  (460220, 3038)	1
+  (460220, 3155)	1
+  (460220, 3248)	1
+  (460220, 3296)	1
+  (460220, 3350)	1
+  (460220, 3422)	1
+  (460220, 3463)	1
+  (460220, 3746)	1
+  (460220, 3849)	1
+  (460220, 3875)	1
+  (460220, 3911)	1
+  (460220, 3962)	3
+  (460220, 4006)	1
+  (460220, 4814)	1
+  (460220, 4840)	1
+  (460220, 4874)	1
+adata.X shape: (460221, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[  98.7863   4832.9863  ]
+ [  73.07991  4841.9863  ]
+ [  93.199066 4853.2954  ]
+ ...
+ [3490.8186   3160.1838  ]
+ [3280.0999   3144.9644  ]
+ [2561.9683   3593.0654  ]]
+AnnData object with n_obs × n_vars = 460221 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch21
+adata_batch.obs['cell_id']:
+aaaabjoo-1         1018_batch21_0
+aaaakiej-1         1018_batch21_1
+aaaalade-1         1018_batch21_2
+aaabcenp-1         1018_batch21_3
+aaabdkep-1         1018_batch21_4
+                     ...         
+oilkplfd-1    1018_batch21_454176
+oillbblm-1    1018_batch21_454177
+oillelpp-1    1018_batch21_454178
+oillgeio-1    1018_batch21_454179
+oilliack-1    1018_batch21_454180
+Name: cell_id, Length: 454181, dtype: object
+Harmonized adata_batch shape: (454181, 4949)
+Final Harmonized Adata: Batch = 21
+AnnData object with n_obs × n_vars = 454181 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhk1018-23b_1p/output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (3206, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 249554 stored elements and shape (3206, 5001)>
+  Coords	Values
+  (0, 8)	1
+  (0, 33)	1
+  (0, 59)	1
+  (0, 67)	1
+  (0, 93)	1
+  (0, 101)	2
+  (0, 145)	3
+  (0, 158)	1
+  (0, 160)	1
+  (0, 170)	1
+  (0, 176)	1
+  (0, 188)	1
+  (0, 193)	1
+  (0, 207)	1
+  (0, 210)	1
+  (0, 212)	1
+  (0, 222)	3
+  (0, 238)	1
+  (0, 248)	2
+  (0, 261)	1
+  (0, 272)	1
+  (0, 281)	1
+  (0, 287)	1
+  (0, 320)	1
+  (0, 334)	1
+  :	:
+  (3200, 940)	1
+  (3200, 2174)	1
+  (3200, 2182)	1
+  (3200, 2452)	1
+  (3200, 3121)	1
+  (3200, 4186)	2
+  (3201, 3353)	1
+  (3201, 3613)	1
+  (3201, 4186)	1
+  (3202, 14)	1
+  (3202, 326)	1
+  (3202, 1246)	1
+  (3202, 1692)	1
+  (3202, 1969)	1
+  (3202, 2512)	1
+  (3202, 3056)	1
+  (3202, 4349)	2
+  (3202, 4578)	1
+  (3202, 4733)	2
+  (3202, 4973)	1
+  (3203, 516)	2
+  (3203, 580)	1
+  (3203, 1272)	1
+  (3203, 3741)	1
+  (3203, 3788)	1
+adata.X shape: (3206, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 611.44   4727.503 ]
+ [ 625.455  4673.4336]
+ [ 644.4379 4740.299 ]
+ ...
+ [1014.8118 3868.77  ]
+ [1039.0275 3866.0032]
+ [1046.8546 3869.2075]]
+AnnData object with n_obs × n_vars = 3206 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1018
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: kidney
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0075780__DI2-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI4-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI5-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI6-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-2__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075780__DI7-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI3-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI7-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-1__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00055__0075784__DI9-KID-0-FFPE-3__20250905__130304': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI2-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI3-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075575__DI6-KID-0-FFPE-3-S2__20250905__131457': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI1-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI5-KID-0-FFPE-2-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00155__0075577__DI8-KID-0-FFPE-3-S2__20250905__131458': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI3-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076510__DI6-KID-0-FFPE-2__20250905__125902': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI5-KID-0-FFPE-3__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI8-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma', 'output-XETG00272__0076522__DI9-KID-0-FFPE-2__20250905__125903': 'renal_cell_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch22
+adata_batch.obs['cell_id']:
+aaanecbl-1       1018_batch22_0
+aabmagnp-1       1018_batch22_1
+aacmkbdb-1       1018_batch22_2
+aadhhgba-1       1018_batch22_3
+aafdhdel-1       1018_batch22_4
+                    ...        
+oihagdjn-1    1018_batch22_2305
+oiifmgaf-1    1018_batch22_2306
+oijoccaj-1    1018_batch22_2307
+oiohmnbl-1    1018_batch22_2308
+ojmaoehm-1    1018_batch22_2309
+Name: cell_id, Length: 2310, dtype: object
+Harmonized adata_batch shape: (2310, 4949)
+Final Harmonized Adata: Batch = 22
+AnnData object with n_obs × n_vars = 2310 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhk1018-23b_1p/output-XETG00155__0075577__DI1-KID-0-FFPE-1-S2__20250905__131458.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-28>
+Subject: Job 503307: <xhk1018-23b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhk1018-23b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Oct  8 19:11:53 2025
+Job was executed on host(s) <node-13-28>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Oct  8 19:15:37 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct  8 19:15:37 2025
+Terminated at Wed Oct  8 19:17:33 2025
+Results reported at Wed Oct  8 19:17:33 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhk1018-23b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   71.21 sec.
+    Max Memory :                                 7746 MB
+    Average Memory :                             3156.06 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               43454.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   116 sec.
+    Turnaround time :                            340 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1018-23b_1p/farm-job-outputs/bronze-to-silver/1_503307.err> for stderr output of this job.
+

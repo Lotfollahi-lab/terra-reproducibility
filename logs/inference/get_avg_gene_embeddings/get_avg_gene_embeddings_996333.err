@@ -1,0 +1,8 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_avg_gene_embeddings.py", line 208, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_avg_gene_embeddings.py", line 131, in main
+    keep_indices = [i for i, t in enumerate(tissue_values) if t in tissue]
+NameError: name 'tissue_values' is not defined

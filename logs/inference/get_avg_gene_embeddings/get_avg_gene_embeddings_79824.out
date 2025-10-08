@@ -1,0 +1,66 @@
+Dataset({
+    features: ['cell_id', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'seg_tokens', 'n_nonzero_tokens'],
+    num_rows: 6107121
+})
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0203>
+Subject: Job 79824: <get_avg_gene_embeddings> in cluster <farm22> Exited
+
+Job <get_avg_gene_embeddings> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Sun Oct  5 20:56:59 2025
+Job was executed on host(s) <12*farm22-gpu0203>, in queue <gpu-basement>, as user <sb75> in cluster <farm22> at Sun Oct  5 20:58:18 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Sun Oct  5 20:58:18 2025
+Terminated at Sun Oct  5 21:00:27 2025
+Results reported at Sun Oct  5 21:00:27 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_avg_gene_embeddings                                                        # Job name
+#BSUB -o ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_%J.err    # Standard error
+#BSUB -q gpu-basement                                                                   # Queue name
+#BSUB -n 12                                                                             # Number of CPU cores
+#BSUB -M 256GB                                                                          # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                            # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 96:00                                                                          # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                               # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_avg_gene_embeddings.py \
+    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_fibroblasts.dataset' \
+    --save_prefix '5k_fibroblasts'
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   92.40 sec.
+    Max Memory :                                 2368 MB
+    Average Memory :                             1092.00 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               259776.00 MB
+    Max Swap :                                   402906 MB
+    Max Processes :                              4
+    Max Threads :                                63
+    Run time :                                   119 sec.
+    Turnaround time :                            208 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_79824.err> for stderr output of this job.
+

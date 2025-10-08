@@ -1,0 +1,8 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 183, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 112, in main
+    raise ValueError("No processed or complete AnnData found.")
+ValueError: No processed or complete AnnData found.

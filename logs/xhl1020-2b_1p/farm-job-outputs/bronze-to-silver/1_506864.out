@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-11-2-1>
+Subject: Job 506864: <xhl1020-2b_1p_bronze-to-silver_1> in cluster <farm22> Exited
+
+Job <xhl1020-2b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Oct  8 19:41:26 2025
+Job was executed on host(s) <node-11-2-1>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Oct  8 19:41:27 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct  8 19:41:27 2025
+Terminated at Wed Oct  8 19:41:43 2025
+Results reported at Wed Oct  8 19:41:43 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhl1020-2b_1p.yaml 1
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   7.71 sec.
+    Max Memory :                                 349 MB
+    Average Memory :                             262.40 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50851.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   16 sec.
+    Turnaround time :                            17 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1020-2b_1p/farm-job-outputs/bronze-to-silver/1_506864.err> for stderr output of this job.
+

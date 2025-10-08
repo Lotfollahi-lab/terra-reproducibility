@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py", line 472, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py", line 457, in main
+    harmonize_bronze_data_to_silver_data(
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py", line 339, in harmonize_bronze_data_to_silver_data
+    adata_batch.uns['condition'] = sample_condition_map[file.split(".")[0]]
+AttributeError: 'PosixPath' object has no attribute 'split'

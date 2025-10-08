@@ -1,0 +1,71 @@
+Dataset({
+    features: ['cell_id', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'seg_tokens', 'n_nonzero_tokens'],
+    num_rows: 579865
+})
+==================================================
+STEP 1: LOADING CONFIG...
+==================================================
+==================================================
+STEP 2: GETTING GENE EMBEDDINGS
+==================================================
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr', 'iter_number']
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 642334: <get_gp_embeddings> in cluster <farm22> Done
+
+Job <get_gp_embeddings> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Fri Oct  3 10:03:29 2025
+Job was executed on host(s) <12*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Fri Oct  3 10:03:30 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Fri Oct  3 10:03:30 2025
+Terminated at Fri Oct  3 11:29:55 2025
+Results reported at Fri Oct  3 11:29:55 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                 # LSF group
+#BSUB -J get_gp_embeddings                                       # Job name
+#BSUB -o ../../logs/inference/get_gp_embeddings_%J.out           # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_gp_embeddings_%J.err           # Standard error
+#BSUB -q gpu-lotfollahi                                          # Queue name
+#BSUB -n 12                                                      # Number of CPU cores
+#BSUB -M 800GB                                                   # Memory
+#BSUB -R "select[mem>800GB] rusage[mem=800GB] span[hosts=1]"     # Resource requirements: reserve 800GB RAM on a single host
+#BSUB -W 48:00                                                   # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                        # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_gp_embeddings.py
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6950.00 sec.
+    Max Memory :                                 435253 MB
+    Average Memory :                             140086.14 MB
+    Total Requested Memory :                     819200.00 MB
+    Delta Memory :                               383947.00 MB
+    Max Swap :                                   -
+    Max Processes :                              16
+    Max Threads :                                71
+    Run time :                                   5182 sec.
+    Turnaround time :                            5186 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_gp_embeddings_642334.err> for stderr output of this job.
+
