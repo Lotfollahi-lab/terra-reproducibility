@@ -1,0 +1,71 @@
+experiment:
+  name: "xhk1019-19b_1p"
+  description: "Xenium Human Kidney (dataset-id 1019) | 19 batch | 1 panel"
+  study: "Dataset from Adam Boxall (/nfs/team361/data/data_platform/data/sanger_renal_cell_carcinoma/SGP269)"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+    'dataset_id': 1019,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'kidney',
+    'sample_condition_map': {
+      'DI10-KID-0-FT-2-S3': 'renal_cell_carcinoma',
+      'DI10-KID-0-FT-3-S2': 'renal_cell_carcinoma',
+      'DI10-KID-0-FT-4-S2': 'renal_cell_carcinoma',
+      'DI12-KID-0-FT-4-S2': 'renal_cell_carcinoma',
+      'DI13-KID-0-FT-1-S3': 'renal_cell_carcinoma',
+      'DI15-KID-0-FT-2-S2': 'renal_cell_carcinoma',
+      'DI15-KID-0-FT-3-S2': 'renal_cell_carcinoma',
+      'DI10-KID-0-FT-1-S2': 'renal_cell_carcinoma',
+      'DI12-KID-0-FT-2-S3': 'renal_cell_carcinoma',
+      'DI12-KID-0-FT-3-S3': 'renal_cell_carcinoma',
+      'DI14-KID-0-FT-2-S2': 'renal_cell_carcinoma',
+      'DI15-KID-0-FT-1-S2': 'renal_cell_carcinoma',
+      'DI10-KID-0-FT-5-S2': 'renal_cell_carcinoma',
+      'DI13-KID-0-FT-2-S3': 'renal_cell_carcinoma',
+      'DI13-KID-0-FT-3-S2': 'renal_cell_carcinoma',
+      'DI14-KID-0-FT-1-S2': 'renal_cell_carcinoma',
+      'DI16-KID-0-FT-1-S2': 'renal_cell_carcinoma',
+      'DI11-KID-0-FT-1-S3': 'renal_cell_carcinoma',
+      'DI12-KID-0-FT-1-S3': 'renal_cell_carcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'batch_key': 'batch',
+    'sample_batch_map': {
+      'DI10-KID-0-FT-2-S3': 0,
+      'DI10-KID-0-FT-3-S2': 1,
+      'DI10-KID-0-FT-4-S2': 2,
+      'DI12-KID-0-FT-4-S2': 3,
+      'DI13-KID-0-FT-1-S3': 4,
+      'DI15-KID-0-FT-2-S2': 5,
+      'DI15-KID-0-FT-3-S2': 6,
+      'DI10-KID-0-FT-1-S2': 7,
+      'DI12-KID-0-FT-2-S3': 8,
+      'DI12-KID-0-FT-3-S3': 9,
+      'DI14-KID-0-FT-2-S2': 10,
+      'DI15-KID-0-FT-1-S2': 11,
+      'DI10-KID-0-FT-5-S2': 12,
+      'DI13-KID-0-FT-2-S3': 13,
+      'DI13-KID-0-FT-3-S2': 14,
+      'DI14-KID-0-FT-1-S2': 15,
+      'DI16-KID-0-FT-1-S2': 16,
+      'DI11-KID-0-FT-1-S3': 17,
+      'DI12-KID-0-FT-1-S3': 18,
+    }    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

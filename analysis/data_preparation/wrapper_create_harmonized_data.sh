@@ -4,7 +4,7 @@ GROUP="team361"
 EXPERIMENT_NAME="${1:-xhl40-2b_2p}"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/bronze-to-silver"
 
-SCRIPT="scripts/create_harmonized_data.sh"
+SCRIPT="analysis/data_preparation/create_harmonized_data.sh"
 
 case $EXPERIMENT_NAME in
     xhb1002-76b_3p)
