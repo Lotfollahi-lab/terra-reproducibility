@@ -1,6 +1,6 @@
 experiment:
   name: "xhp1017-4b_1p"
-  description: "Xenium Human Pancreas (dataset-id 1017) | 4 batch | 1 panel"
+  description: "Xenium Human Pancreas (dataset-id 1017) | 4 batch | 1 panel | 5049 genes"
   study: "Dataset from Marta Sallese (/nfs/team361/data/sanger_pancreas/nPOD)"
 
 paths:

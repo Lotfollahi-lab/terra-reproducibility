@@ -1,6 +1,6 @@
 experiment:
   name: "xhl1021-2b_1p"
-  description: "Xenium Human Lung (dataset-id 1021) | 2 batch | 1 panel"
+  description: "Xenium Human Lung (dataset-id 1021) | 2 batch | 1 panel | 4949 genes"
   study: "Dataset from Josie Bryant and Cecilia Kyanya (/nfs/team361/data/data_platform/data/sanger_lung/SGP272)"
 
 paths:

@@ -1,6 +1,6 @@
 experiment:
   name: "xhp1016-18b_1p"
-  description: "Xenium Human Pancreas (dataset-id 1016) | 18 batch | 1 panel | QC: excluded Hml6 samples | development"
+  description: "Xenium Human Pancreas (dataset-id 1016) | 18 batch | 1 panel | 5047 genes | QC: excluded Hml6 samples | development"
   study: "Dataset from Marta Sallese (/nfs/team361/data/sanger_pancreas/HDBR)"
 
 paths:

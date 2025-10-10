@@ -1,6 +1,6 @@
 experiment:
   name: "xhk1018-23b_1p"
-  description: "Xenium Human Kidney (dataset-id 1018) | 18 batch | 1 panel"
+  description: "Xenium Human Kidney (dataset-id 1018) | 18 batch | 1 panel | 4949 genes"
   study: "Dataset from Adam Boxall (/nfs/team361/data/data_platform/data/sanger_renal_cell_carcinoma/SGP267)"
 
 paths:
