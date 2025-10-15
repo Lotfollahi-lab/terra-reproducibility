@@ -1,0 +1,80 @@
+Experiment name: xhb1002-AT23-1-9b_1p.
+Experiment description: xhb1002-AT23-1-9b_1p (dataset-id 1002) | 9 batch | 1 panel | part1 (split only used for long seq len).
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhb1002-AT23-1-9b_1p/cProfiler/cell-graph-tokenizer/xhb1002-AT23-1-9b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 116538.494672863
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 480134: <xhb1002-AT23-1-9b_1p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <xhb1002-AT23-1-9b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Oct  8 15:28:08 2025
+Job was executed on host(s) <12*b12-hm-02>, in queue <hugemem>, as user <sb75> in cluster <farm22> at Tue Oct 14 02:02:51 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Tue Oct 14 02:02:51 2025
+Terminated at Wed Oct 15 10:36:05 2025
+Results reported at Wed Oct 15 10:36:05 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT23-1-9b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   134985.78 sec.
+    Max Memory :                                 871348 MB
+    Average Memory :                             734889.31 MB
+    Total Requested Memory :                     1126400.00 MB
+    Delta Memory :                               255052.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   117194 sec.
+    Turnaround time :                            587277 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT23-1-9b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_480134.err> for stderr output of this job.
+

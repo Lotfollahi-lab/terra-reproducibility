@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py", line 471, in <module>
-    config = collect_configs(args)
-  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/argparse_utils.py", line 43, in collect_configs
-    with open(config_fname, "r") as f:
-FileNotFoundError: [Errno 2] No such file or directory: 'config/bronze_to_silver/xhl1020-2b_1p.yaml'
