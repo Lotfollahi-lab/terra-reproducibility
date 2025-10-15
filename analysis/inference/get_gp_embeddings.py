@@ -182,7 +182,7 @@ if __name__ == '__main__':
                         help='Gene program name.')
     parser.add_argument('--save_suffix',
                         type=str,
-                        default='myeloid_vegf_gp',
+                        default='5k_myeloid_vegf_gp',
                         help='Suffix for saving the gene embedding pickle file.')
     parser.add_argument('--emb_layer',
                         type=int,

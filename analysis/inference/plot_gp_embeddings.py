@@ -61,8 +61,6 @@ def main(args):
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
 
-    params['data']['batch_size'] = args.batch_size
-
     if args.read_checkpoint:
         params['state']['read_checkpoint'] = args.read_checkpoint
     if args.load_timestamp:
@@ -107,14 +105,12 @@ def main(args):
     ############################
 
 
-    ### Get xxx ###
-
-    # Plot gene program embedding for one gene program at a time
-    #output_gene_embed = combined_data
+    ### Get avg nonezero gene embeddings for each emb_key and plot ###
+    dataset = load_from_disk(args.dataset_path)    
 
     for emb_key in args.emb_keys:
 
-        gene_emb = [v for k, v in output_gene_embed.items() if emb_key in k]
+        gene_emb = [v for k, v in output_gene_embed.items() if emb_key in k.split('_')[0]]
         
         # Stack them along a new axis: shape becomes (num_keys, N, D)
         #gene_emb_stacked = np.stack(gene_emb, axis=0)
@@ -129,20 +125,20 @@ def main(args):
         # To avoid divide-by-zero later
         valid_counts = np.where(valid_counts == 0, 1, valid_counts)
         # Zero out fully-zero rows before summing
-        masked = stacked * nonzero_mask[:, :, np.newaxis]  # shape: (12, 700000, 384)
+        masked = stacked * nonzero_mask[:, :, np.newaxis] # shape: (12, 700000, 384)
         # Sum across arrays and normalize
-        sum_embeddings = masked.sum(axis=0)                 # shape: (700000, 384)
-        mean_gene_emb = sum_embeddings / valid_counts[:, np.newaxis]  # shape: (700000, 384)
+        sum_embeddings = masked.sum(axis=0) # shape: (700000, 384)
+        mean_gene_emb = sum_embeddings / valid_counts[:, np.newaxis] # shape: (700000, 384)
 
         nonzero_row_mask = ~(mean_gene_emb == 0).all(axis=1)
         filtered_mean_gene_emb = mean_gene_emb[nonzero_row_mask]
         
         # Create AnnData
         adata = ad.AnnData(filtered_mean_gene_emb)
-        adata.obs['cell_id'] = list(np.array(filtered_dataset_subset['cell_id'])[nonzero_row_mask])
+        adata.obs['cell_id'] = list(np.array(dataset['cell_id'])[nonzero_row_mask])
         adata.obs['tissue'] = list(np.array([
-            token_dict_reverse[tissue_value.item() + spv_idx_subtract].split('spv_')[1]
-            for tissue_value in filtered_dataset_subset['tissue_value']])[nonzero_row_mask])
+            token_dict_reverse[tissue_value[0] + spv_idx_subtract].split('spv_')[1]
+            for tissue_value in dataset['tissue_value']])[nonzero_row_mask])
         adata.obs = adata.obs.set_index('cell_id')
 
         sc.pp.neighbors(adata, use_rep='X')
@@ -160,51 +156,7 @@ def main(args):
                 dpi=300,
                 bbox_inches='tight')
             plt.show()
-
-        # Filter expression AnnData
-        filtered_adata = adata_expr_reordered[adata.obs.index.intersection(adata_expr_reordered.obs.index)]
-        filtered_adata = filtered_adata[adata.obs.index]
-        filtered_adata.obsm = adata.obsm
-        filtered_adata.obsp = adata.obsp
-
-        sc.pp.normalize_total(filtered_adata, target_sum=1e4)
-        sc.pp.log1p(filtered_adata)
-
-        label = 'coarse_cell_type'
-        
-        categories = filtered_adata.obs[label].cat.categories
-        
-        # Create a default color palette (e.g., tab20) and override "Unassigned" with grey
-        default_colors = plt.get_cmap('tab20').colors
-        color_dict = {cat: default_colors[i % len(default_colors)] for i, cat in enumerate(categories)}
-        color_dict['Unassigned'] = 'grey'
-        
-        # Neighbors + UMAP
-        sc.pl.umap(filtered_adata,
-                color=label,
-                palette=[color_dict[cat] for cat in categories],
-                show=False)
-        plt.title(f'{emb_key}_{args.load_suffix} by {label} (UMAP)', fontsize=14)
-        plt.savefig(
-            f'{artifacts_folder_path}/{args.cohort_name}/{load_timestamp}/figures/{emb_key}_{args.load_suffix}_umap_{label}.png',
-            dpi=300,
-            bbox_inches='tight')
-        plt.show()
-        
-        for label in genes:
-            if label not in filtered_adata.var_names.tolist():
-                continue
-            # Neighbors + UMAP
-            sc.pl.umap(filtered_adata,
-                    color=label,
-                    show=False)
-            plt.title(f'{emb_key}_{args.load_suffix} by {label} (UMAP)', fontsize=14)
-            plt.savefig(
-                f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/figures/{emb_key}_{args.load_suffix}_umap_{label}.png',
-                dpi=300,
-                bbox_inches='tight')
-            plt.show()
-    ##############################
+    ##################################################################
 
 
 if __name__ == '__main__':
@@ -240,20 +192,8 @@ if __name__ == '__main__':
                         help='Gene program name.')
     parser.add_argument('--load_suffix',
                         type=str,
-                        default='myeloid_vegf_gp',
+                        default='5k_myeloid_apelin_gp',
                         help='Suffix for saving the gene embedding pickle file.')
-    parser.add_argument('--emb_layer',
-                        type=int,
-                        default=None,
-                        help='Embedding layer.')
-    parser.add_argument('--num_workers',
-                        type=int,
-                        default=12,
-                        help='Number of workers.')
-    parser.add_argument('--batch_size',
-                        type=int,
-                        default=128,
-                        help='Batch size.')
     parser.add_argument('--emb_keys',
                         type=str,
                         nargs='+',
