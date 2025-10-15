@@ -13,4 +13,7 @@
 source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
-python reorder_dataset.py
+python reorder_dataset.py \
+    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl' \
+    --cache_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10_loader_reidx.arrow'

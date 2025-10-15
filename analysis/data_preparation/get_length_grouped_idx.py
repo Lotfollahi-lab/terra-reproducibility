@@ -18,8 +18,14 @@ def main(args):
     print(dataset)
 
     # Load precomputed nonzero tokens
-    with open(args.nz_tokens_path, "rb") as f: 
-        n_nonzero_tokens = pickle.load(f)
+    if args.nz_tokens_path == "None":
+        args.nz_tokens_path = None
+
+    if args.nz_tokens_path:
+        with open(args.nz_tokens_path, "rb") as f: 
+            n_nonzero_tokens = pickle.load(f)
+    else:
+        n_nonzero_tokens = None
 
     # Set params
     token_dict_folder_path = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
