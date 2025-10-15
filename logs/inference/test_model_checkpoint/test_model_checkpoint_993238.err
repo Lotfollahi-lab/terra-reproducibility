@@ -330,4 +330,4 @@ Predictor number of parameters: 22476160
 Dataloader and -sampler created.
 Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
 Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/11102025_103747_908/nichejepa-ep1.pth.tar.
-0it [00:00, ?it/s]1it [00:30, 30.13s/it]2it [00:37, 16.83s/it]
+0it [00:00, ?it/s]1it [00:30, 30.13s/it]2it [00:37, 16.83s/it]3it [00:44, 12.44s/it]4it [00:52, 10.47s/it]5it [00:59,  9.19s/it]6it [01:06,  8.60s/it]7it [01:13,  8.04s/it]8it [01:21,  7.86s/it]9it [01:28,  7.64s/it]10it [01:35,  7.57s/it]11it [01:42,  7.36s/it]12it [01:49,  7.38s/it]13it [01:57,  7.30s/it]14it [02:04,  7.34s/it]15it [02:11,  7.19s/it]16it [02:18,  7.27s/it]17it [02:25,  7.15s/it]18it [02:33,  7.23s/it]19it [02:40,  7.17s/it]20it [02:47,  7.24s/it]21it [02:54,  7.12s/it]22it [03:01,  7.21s/it]
