@@ -14,13 +14,19 @@ case $EXPERIMENT_NAME in
         CORES=1
         QUEUE="normal"
         ;;
+    xhl1021-2b_1p)
+        RAM="600G"
+        TIME="48:00"
+        CORES=12
+        QUEUE="long"
+        ;;
     *)
         #RAM="2200G" # "600G", "1000G", "1500G"
         #TIME="240:00" # "48:00", "120:00"
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
-        RAM="1100G" # "600G", "1000G", "1500G"
-        TIME="240:00" # "48:00", "120:00"
+        RAM="1200G" # "600G", "1000G", "1500G"
+        TIME="48:00" # "48:00", "120:00"
         CORES=12
         QUEUE="hugemem" # "long", "hugemem", "teramem"
         ;;
