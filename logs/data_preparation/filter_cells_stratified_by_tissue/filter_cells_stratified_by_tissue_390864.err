@@ -1,0 +1,229 @@
+Filtering by dataset_id (num_proc=12):   0%|          | 0/81361647 [00:00<?, ? examples/s]Filtering by dataset_id (num_proc=12):   0%|          | 10000/81361647 [09:23<1274:00:59, 17.74 examples/s]Process ForkPoolWorker-3:
+Process ForkPoolWorker-8:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3674, in _map_single
+    for i, batch in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3623, in iter_outputs
+    for i, example in shard_iterable:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 2508, in iter
+    yield self._getitem(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 2840, in _getitem
+    pa_subtable = query_table(self._data, key, indices=self._indices)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 616, in query_table
+    pa_subtable = _query_table_with_indices_mapping(table, key, indices=indices)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 65, in _query_table_with_indices_mapping
+    return _query_table(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 99, in _query_table
+    return table.fast_gather(key % table.num_rows)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 122, in fast_gather
+    [
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 123, in <listcomp>
+    self._batches[batch_idx].slice(i - self._offsets[batch_idx], 1)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3637, in _map_single
+    arrow_formatted_shard = shard.with_format("arrow")
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 2774, in with_format
+    dataset = copy.deepcopy(self)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 271, in _reconstruct
+    state = deepcopy(state, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 231, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 153, in deepcopy
+    y = copier(memo)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 176, in __deepcopy__
+    return _deepcopy(self, memo)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 74, in _deepcopy
+    setattr(result, k, copy.deepcopy(v, memo))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 206, in _deepcopy_list
+    append(deepcopy(a, memo))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 206, in _deepcopy_list
+    append(deepcopy(a, memo))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 153, in deepcopy
+    y = copier(memo)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 176, in __deepcopy__
+    return _deepcopy(self, memo)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 74, in _deepcopy
+    setattr(result, k, copy.deepcopy(v, memo))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 265, in _reconstruct
+    y = func(*args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 264, in <genexpr>
+    args = (deepcopy(arg, memo) for arg in args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 146, in deepcopy
+    y = copier(x, memo)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 206, in _deepcopy_list
+    append(deepcopy(a, memo))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 265, in _reconstruct
+    y = func(*args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 264, in <genexpr>
+    args = (deepcopy(arg, memo) for arg in args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 265, in _reconstruct
+    y = func(*args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 264, in <genexpr>
+    args = (deepcopy(arg, memo) for arg in args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 172, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 265, in _reconstruct
+    y = func(*args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 264, in <genexpr>
+    args = (deepcopy(arg, memo) for arg in args)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/copy.py", line 137, in deepcopy
+    d = id(x)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3637, in _map_single
+    arrow_formatted_shard = shard.with_format("arrow")
+KeyboardInterrupt
+Process ForkPoolWorker-4:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "pyarrow/types.pxi", line 5996, in pyarrow.lib.schema
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/abc.py", line 117, in __instancecheck__
+    def __instancecheck__(cls, instance):
+KeyboardInterrupt
+Process ForkPoolWorker-6:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "pyarrow/types.pxi", line 5996, in pyarrow.lib.schema
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/abc.py", line 117, in __instancecheck__
+    def __instancecheck__(cls, instance):
+KeyboardInterrupt
+Process ForkPoolWorker-1:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "pyarrow/types.pxi", line 5996, in pyarrow.lib.schema
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/abc.py", line 117, in __instancecheck__
+    def __instancecheck__(cls, instance):
+KeyboardInterrupt
+Process ForkPoolWorker-2:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "pyarrow/types.pxi", line 5996, in pyarrow.lib.schema
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/abc.py", line 117, in __instancecheck__
+    def __instancecheck__(cls, instance):
+KeyboardInterrupt
+Filtering by dataset_id (num_proc=12):   0%|          | 10000/81361647 [09:31<1291:25:32, 17.50 examples/s]
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 612, in iflatmap_unordered
+    yield queue.get(timeout=0.05)
+  File "<string>", line 2, in get
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 818, in _callmethod
+    kind, result = conn.recv()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 253, in recv
+    buf = self._recv_bytes()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/filter_cells_stratified_by_tissue.py", line 121, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/filter_cells_stratified_by_tissue.py", line 64, in main
+    current_dataset = dataset.filter(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/fingerprint.py", line 442, in wrapper
+    out = func(dataset, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3895, in filter
+    indices = self.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 770, in get
+    raise TimeoutError
+multiprocess.context.TimeoutError
+Terminated

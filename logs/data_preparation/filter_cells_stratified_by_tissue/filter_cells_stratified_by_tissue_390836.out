@@ -1,0 +1,37 @@
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'seg_tokens', 'n_nonzero_tokens'],
+    num_rows: 81361647
+})
+      cohort_name  ... dataset_id_batch
+0  hst_corpus_90m  ...        14_batch0
+1  hst_corpus_90m  ...        15_batch0
+2  hst_corpus_90m  ...        15_batch1
+3  hst_corpus_90m  ...        16_batch0
+4  hst_corpus_90m  ...        16_batch1
+
+[5 rows x 18 columns]
+['51', '55', '1005', '34', '76', '33', '32', '26', '62', '52', '82', '20', '31', '23', '38', '14', '79', '1008', '19', '83', '1006', '40', '17', '35', '39', '1010', '57', '47', '1004', '22', '56', '36', '46', '60', '28', '21', '41', '75', '44', '18', '16', '15', '45', '48', '1001', '61', '1000', '1002', '1015', '30', '27', '1012', '1003', '1013', '81', '53', '80', '63', '42', '24', '29', '25', '43', '1007', '54', '37', '50']
+Sample ratio: 0.1.
+Complete length of current dataset: 377241.
+Complete length of current dataset: 878593.
+Tissue cell count diff: -740559.
+Truncated length of current dataset: 138034.
+Complete length of current dataset: 562208.
+Tissue cell count diff: -210517.
+Truncated length of current dataset: 351691.
+Complete length of current dataset: 111928.
+Tissue cell count diff: -45078.
+Truncated length of current dataset: 66850.
+Complete length of current dataset: 1488785.
+Complete length of current dataset: 367336.
+Tissue cell count diff: -98345.
+Truncated length of current dataset: 268991.
+Complete length of current dataset: 24899.
+Complete length of current dataset: 924380.
+Tissue cell count diff: -345302.
+Truncated length of current dataset: 579078.
+Complete length of current dataset: 442359.
+Tissue cell count diff: -216422.
+Truncated length of current dataset: 225937.
+Tissue cell count diff: -45078. Continuing...
+Tissue cell count diff: -210517. Continuing...
