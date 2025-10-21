@@ -1,0 +1,73 @@
+Dataset({
+    features: ['cell_id', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'seg_tokens', 'n_nonzero_tokens'],
+    num_rows: 579865
+})
+==================================================
+STEP 1: LOADING CONFIG...
+==================================================
+==================================================
+STEP 2: GETTING GENE EMBEDDINGS
+==================================================
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr', 'iter_number']
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 959637: <get_gp_embeddings> in cluster <farm22> Exited
+
+Job <get_gp_embeddings> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Tue Oct 21 09:09:29 2025
+Job was executed on host(s) <12*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Tue Oct 21 09:11:12 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Tue Oct 21 09:11:12 2025
+Terminated at Tue Oct 21 09:13:24 2025
+Results reported at Tue Oct 21 09:13:24 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                 # LSF group
+#BSUB -J get_gp_embeddings                                       # Job name
+#BSUB -o ../../logs/inference/get_gp_embeddings_%J.out           # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_gp_embeddings_%J.err           # Standard error
+#BSUB -q gpu-lotfollahi                                          # Queue name
+#BSUB -n 12                                                      # Number of CPU cores
+#BSUB -M 128GB                                                   # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"     # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                   # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                        # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_gp_embeddings.py \
+    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset' \
+    --gp_name 'NFkB signalling GP' \
+    --save_suffix 'myeloid_nfkb_gp'
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   77.00 sec.
+    Max Memory :                                 843 MB
+    Average Memory :                             538.00 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130229.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                44
+    Run time :                                   148 sec.
+    Turnaround time :                            235 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_gp_embeddings_959637.err> for stderr output of this job.
+
