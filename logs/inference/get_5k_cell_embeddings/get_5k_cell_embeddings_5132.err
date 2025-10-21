@@ -1,0 +1,12 @@
+JAX version 0.6.1 available.
+usage: get_5k_cell_embeddings.py [-h] [--load_timestamp LOAD_TIMESTAMP]
+                                 [--read_checkpoint READ_CHECKPOINT]
+                                 [--aws_run | --no-aws_run]
+                                 [--cohort_name COHORT_NAME]
+                                 [--inference_step_size INFERENCE_STEP_SIZE]
+                                 [--start_step START_STEP]
+                                 [--end_step END_STEP]
+                                 [--num_workers NUM_WORKERS]
+                                 [--batch_size BATCH_SIZE]
+get_5k_cell_embeddings.py: error: unrecognized arguments:  
+/tmp/1760632974.5132.shell: line 18: --load_timestamp: command not found

@@ -67,3 +67,15 @@ Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproduc
 ... storing 'batch' as categorical
 WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_xhb1002-75b_3p_cell_emb_leiden_res0_95_batch_3.svg
 ... storing 'batch' as categorical
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_4.svg
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_7.svg
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_1.svg
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_6.svg
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_0.svg
+WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep4_chl59-8b_1p_neighborhood_emb_leiden_res1_2129999999999956_batch_5.svg
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 734, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 656, in main
+    read_checkpoint,
+NameError: name 'read_checkpoint' is not defined

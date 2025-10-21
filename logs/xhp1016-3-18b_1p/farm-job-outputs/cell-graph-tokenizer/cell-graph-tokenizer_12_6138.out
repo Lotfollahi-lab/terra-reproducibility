@@ -1,0 +1,94 @@
+Experiment name: xhp1016-3-18b_1p.
+Experiment description: xenium human pancreas (dataset-id = 1016) | 18-batch | 1-panel | part3.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhp1016-3-18b_1p/cProfiler/cell-graph-tokenizer/xhp1016-3-18b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 14518.212490000002
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0406>
+Subject: Job 6138: <xhp1016-3-18b_1p_cell-graph-tokenizer_12> in cluster <cub22> Done
+
+Job <xhp1016-3-18b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Sat Oct 18 08:48:09 2025
+Job was executed on host(s) <12*farm-gpu0406>, in queue <inference>, as user <sb75> in cluster <cub22> at Sat Oct 18 10:00:57 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Oct 18 10:00:57 2025
+Terminated at Sat Oct 18 14:04:20 2025
+Results reported at Sat Oct 18 14:04:20 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhp1016-3-18b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   21391.62 sec.
+    Max Memory :                                 266777 MB
+    Average Memory :                             222372.16 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               347623.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                70
+    Run time :                                   14603 sec.
+    Turnaround time :                            18971 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhp1016-3-18b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_6138.err> for stderr output of this job.
+
