@@ -1,0 +1,147 @@
+experiment:
+  name: "xhs1022-55b_1p"
+  description: "Xenium Human Skin (dataset-id 1022) | 55 batch | 1 panel | Preprocess to silver"
+  study: "Beacon Data from Lloyd Steele (Validation Set + Psoriasis + 3D - nichejepa-reproducibility/analysis/data_preparation/harmonize_xhs1022-55b_1p.ipynb)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  source: "sanger"
+  download_params: {}
+  file_names: []
+  overwrite: False
+
+harmonization:
+  uns: {
+    'dataset_id': 1022,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'skin',
+    'sample_condition_map': {
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22-E2_a': 'psoriasis',
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22-E1_a': 'psoriasis',
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22-E2_b': 'psoriasis',
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22-E1_b': 'psoriasis',
+      'Week 8 (resolved)_CE6-SKI-28-FO-3-S22_replicate': 'psoriasis',
+      'Baseline_never_CE5-SKI-27-FO-2-S22_replicate': 'psoriasis',
+      'Baseline_resolved_CE3-SKI-28-FO-1-S22_replicate': 'psoriasis',
+      'Baseline_resolved_CE6-SKI-20-FO-1-S22_replicate': 'psoriasis',
+      'Lesional_CE6-SKI-28-FO-4-S22_replicate': 'psoriasis',
+      'Lesional_CE4-SKI-27-FO-4-S22_replicate': 'psoriasis',
+      'Week 8 (resolved)_CE5-SKI-27-FO-4-S22_replicate': 'psoriasis',
+      'Baseline_resolved_CE6-SKI-28-FO-4-S22_replicate': 'psoriasis',
+      'Lesional_CE5-SKI-28-FO-1-S22_replicate': 'psoriasis',
+      'Baseline_resolved_CE4-SKI-27-FO-1-S22_replicate': 'psoriasis',
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22_replicate': 'psoriasis',
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22_replicate': 'psoriasis',
+      'Lesional_Baseline_resolved_CE3-SKI-24-FO-1-S22_replicate': 'psoriasis',
+      'Baseline_never_CE3-SKI-28-FO-2-S22_replicate': 'psoriasis',
+      'Baseline_resolved_CE5-SKI-27-FO-1-S22_replicate': 'psoriasis',
+      'Baseline_never_CE4-SKI-21-FO-1-S22_replicate': 'psoriasis',
+      'Healthy2': 'healthy',
+      'Healthy1': 'healthy',
+      '3D_BK22_Lesional_baseline-A2': 'eczema',
+      '3D_BK25_week12-D1orE1a': 'eczema',
+      '3D_BK25_week12-A1': 'eczema',
+      '3D_BK22_Lesional_baseline-D1': 'eczema',
+      '3D_BK25_week12-D1orE1b': 'eczema',
+      '3D_BK25_week12-B1': 'eczema',
+      '3D_BK22_Lesional_baseline-B2': 'eczema',
+      '3D_BK25_week12-C1': 'eczema',
+      '3D_BK25_week12-D2': 'eczema',
+      '3D_BK22_Lesional_baseline-D2': 'eczema',
+      '3D_BK25_week12-B2': 'eczema',
+      '3D_BK22_Lesional_baseline-A1': 'eczema',
+      '3D_BK25_week12-C2': 'eczema',
+      '3D_BK25_week12-A2': 'eczema',
+      '3D_BK22_Lesional_baseline-B1': 'eczema',
+      '3D_BK22_Lesional_baseline-C2': 'eczema',
+      'CE4-SKI-27-FO-1-S25-S29-S32': 'eczema',
+      'BK51-SKI-27-FO-2-S4-S8-S6': 'eczema',
+      'BK30-SKI-28-FO-1-S6-B2': 'eczema',
+      'BK22-SKI-27-FO-2-S7-A1': 'eczema',
+      'BK30-SKI-28-FO-1-S14-C2': 'eczema',
+      'BK27-SKI-27-FO-5-S9-D1': 'eczema',
+      'CE3-SKI-28-FO-1-S25-D1': 'eczema',
+      'CE3-SKI-28-FO-1-S28-D2': 'eczema',
+      'BK21-SKI-27-FO-1-S13-C2': 'eczema',
+      'BK23-SKI-27-FO-1-S8-B1': 'eczema',
+      'BK21-SKI-27-FO1-S11-C1': 'eczema',
+      'BK51-SKI-27-FO-2-S9-B2': 'eczema',
+      'BK21-SKI-27-FO-1-S8-A3': 'eczema',
+      'BK39-SKI-27-FO-1-S8-D2': 'eczema',
+      'BK27-SKI-27-FO-1-S6-C1': 'eczema',
+      'CE3-SKI-28-FO-1-S25-E1': 'eczema',
+      'BK23-SKI-27-FO-5-S9-A2': 'eczema'
+    }
+  }
+  batch: {
+    'split_by_batch': True,
+    'batch_key': 'sample_id',
+    'sample_batch_map': {
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22-E2_a': 0,
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22-E1_a': 1,
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22-E2_b': 2,
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22-E1_b': 3,
+      'Week 8 (resolved)_CE6-SKI-28-FO-3-S22_replicate': 4,
+      'Baseline_never_CE5-SKI-27-FO-2-S22_replicate': 5,
+      'Baseline_resolved_CE3-SKI-28-FO-1-S22_replicate': 6,
+      'Baseline_resolved_CE6-SKI-20-FO-1-S22_replicate': 7,
+      'Lesional_CE6-SKI-28-FO-4-S22_replicate': 8,
+      'Lesional_CE4-SKI-27-FO-4-S22_replicate': 9,
+      'Week 8 (resolved)_CE5-SKI-27-FO-4-S22_replicate': 10,
+      'Baseline_resolved_CE6-SKI-28-FO-4-S22_replicate': 11,
+      'Lesional_CE5-SKI-28-FO-1-S22_replicate': 12,
+      'Baseline_resolved_CE4-SKI-27-FO-1-S22_replicate': 13,
+      'Week 8 (resolved)_CE3-SKI-28-FO-4-S22_replicate': 14,
+      'Week 8 (resolved)_CE4-SKI-27-FO-3-S22_replicate': 15,
+      'Lesional_Baseline_resolved_CE3-SKI-24-FO-1-S22_replicate': 16,
+      'Baseline_never_CE3-SKI-28-FO-2-S22_replicate': 17,
+      'Baseline_resolved_CE5-SKI-27-FO-1-S22_replicate': 18,
+      'Baseline_never_CE4-SKI-21-FO-1-S22_replicate': 19,
+      'Healthy2': 20,
+      'Healthy1': 21,
+      '3D_BK22_Lesional_baseline-A2': 22,
+      '3D_BK25_week12-D1orE1a': 23,
+      '3D_BK25_week12-A1': 24,
+      '3D_BK22_Lesional_baseline-D1': 25,
+      '3D_BK25_week12-D1orE1b': 26,
+      '3D_BK25_week12-B1': 27,
+      '3D_BK22_Lesional_baseline-B2': 28,
+      '3D_BK25_week12-C1': 29,
+      '3D_BK25_week12-D2': 30,
+      '3D_BK22_Lesional_baseline-D2': 31,
+      '3D_BK25_week12-B2': 32,
+      '3D_BK22_Lesional_baseline-A1': 33,
+      '3D_BK25_week12-C2': 34,
+      '3D_BK25_week12-A2': 35,
+      '3D_BK22_Lesional_baseline-B1': 36,
+      '3D_BK22_Lesional_baseline-C2': 37,
+      'CE4-SKI-27-FO-1-S25-S29-S32': 38,
+      'BK51-SKI-27-FO-2-S4-S8-S6': 39,
+      'BK30-SKI-28-FO-1-S6-B2': 40,
+      'BK22-SKI-27-FO-2-S7-A1': 41,
+      'BK30-SKI-28-FO-1-S14-C2': 42,
+      'BK27-SKI-27-FO-5-S9-D1': 43,
+      'CE3-SKI-28-FO-1-S25-D1': 44,
+      'CE3-SKI-28-FO-1-S28-D2': 45,
+      'BK21-SKI-27-FO-1-S13-C2': 46,
+      'BK23-SKI-27-FO-1-S8-B1': 47,
+      'BK21-SKI-27-FO1-S11-C1': 48,
+      'BK51-SKI-27-FO-2-S9-B2': 49,
+      'BK21-SKI-27-FO-1-S8-A3': 50,
+      'BK39-SKI-27-FO-1-S8-D2': 51,
+      'BK27-SKI-27-FO-1-S6-C1': 52,
+      'CE3-SKI-28-FO-1-S25-E1': 53,
+      'BK23-SKI-27-FO-5-S9-A2': 54
+    }    
+  }
+  key_mappings: {
+    'cell_type': 'lvl5_annotation_all',
+    'niche_type': 'niche19',
+    'disease_status': 'disease_overall',
+  }
+  misc: {
+    'min_genes': 10,
+  }

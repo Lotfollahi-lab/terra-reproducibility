@@ -1,6 +1,6 @@
 experiment:
-  experiment_description: xenium human skin (dataset-id = 1010) | 27-batch | 1-panel
-  experiment_name: xhs1010-27b_1p
+  experiment_description: xenium human skin (dataset-id = 1010) | 26-batch | 1-panel
+  experiment_name: xhs1010-26b_1p
   model_input_size: 7168
   tokenizer: cell-graph-tokenizer
 paths:
