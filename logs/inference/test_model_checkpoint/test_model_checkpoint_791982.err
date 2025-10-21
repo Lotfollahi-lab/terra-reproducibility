@@ -67,3 +67,4 @@ Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproduc
 ... storing 'batch' as categorical
 WARNING: saving figure to file /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_90m/18092025_140643_921/figures/showep3_xhb1002-75b_3p_cell_emb_leiden_res0_8549999999999999_batch_3.svg
 ... storing 'batch' as categorical
+Terminated

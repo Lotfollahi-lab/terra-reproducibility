@@ -1,0 +1,110 @@
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/harmonize_bronze_to_silver.py:302: ImplicitModificationWarning: Trying to modify attribute `._uns` of view, initializing view as actual.
+  adata_batch.uns['condition'] = sample_condition_map[sample_id]
