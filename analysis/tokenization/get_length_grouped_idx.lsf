@@ -14,6 +14,6 @@ source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
 python get_length_grouped_idx.py \
-    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_0.1_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_0.25_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
     --nz_tokens_path 'None' \
-    --idx_save_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.1_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl'
+    --idx_save_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.25_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl'

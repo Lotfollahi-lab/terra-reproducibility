@@ -33,7 +33,7 @@ def main(args):
 
     # Materialize the new physical order
     ds = ds.flatten_indices(
-        num_proc=32,
+        num_proc=64,
         writer_batch_size=1000)
 
     print("Flattening done.")

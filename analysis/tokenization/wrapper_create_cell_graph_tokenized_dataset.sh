@@ -25,10 +25,10 @@ case $EXPERIMENT_NAME in
         #TIME="240:00" # "48:00", "120:00"
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
-        RAM="1000G" # "600G", "1000G", "1500G"
+        RAM="600G" # "600G", "1000G", "1500G"
         TIME="48:00" # "48:00", "120:00"
         CORES=12
-        QUEUE="teramem" # "long", "hugemem", "teramem", "basement", "parallel", "week"
+        QUEUE="inference" # "long", "hugemem", "teramem", "basement", "parallel", "week"
         ;;
 esac
 
