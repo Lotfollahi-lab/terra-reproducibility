@@ -82,6 +82,7 @@ def main(args):
                 continue
                 
         combined_dataset = concatenate_datasets(datasets_list)
+        combined_dataset = combined_dataset.flatten_indices()
         print(f"Combined dataset length: {len(combined_dataset)}.")                                            
         print('Saving combined dataset...')
         combined_dataset.save_to_disk(args.dataset_path.replace(f'{args.cohort_name}_', f'{args.cohort_name}_{sample_ratio}_sample_'))

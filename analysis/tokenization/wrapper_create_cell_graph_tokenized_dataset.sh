@@ -25,10 +25,10 @@ case $EXPERIMENT_NAME in
         #TIME="240:00" # "48:00", "120:00"
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
-        RAM="1200G" # "600G", "1000G", "1500G"
+        RAM="1000G" # "600G", "1000G", "1500G"
         TIME="48:00" # "48:00", "120:00"
         CORES=12
-        QUEUE="hugemem" # "long", "hugemem", "teramem"
+        QUEUE="teramem" # "long", "hugemem", "teramem", "basement", "parallel", "week"
         ;;
 esac
 
@@ -52,8 +52,12 @@ echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 # Initialize GPU parameter
 GPU_PARAM=""
 
-# Check if the queue name contains 'gpu'
+# Check if the queue is a gpu queue
 if [[ "$QUEUE" == *gpu* ]]; then
+    GPU_PARAM="-gpu num=1"
+    echo "Queue requires GPUs. Requesting 1 GPU(s)."
+fi
+if [[ "$QUEUE" == inference ]]; then
     GPU_PARAM="-gpu num=1"
     echo "Queue requires GPUs. Requesting 1 GPU(s)."
 fi

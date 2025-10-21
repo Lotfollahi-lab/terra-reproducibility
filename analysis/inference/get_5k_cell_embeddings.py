@@ -237,11 +237,11 @@ if __name__ == '__main__':
                         help='Inference step size.')
     parser.add_argument('--start_step',
                         type=int,
-                        default=1,
+                        default=0,
                         help='Inference start step.')
     parser.add_argument('--end_step',
                         type=int,
-                        default=10,
+                        default=9,
                         help='Inference start step.')
     parser.add_argument('--num_workers',
                         type=int,

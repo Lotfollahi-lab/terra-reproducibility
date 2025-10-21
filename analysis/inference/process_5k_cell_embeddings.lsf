@@ -7,10 +7,12 @@
 #BSUB -n 12                                                                                   # Number of CPU cores
 #BSUB -M 1000GB                                                                               # Memory
 #BSUB -R "select[mem>1000GB] rusage[mem=1000GB] span[hosts=1]"                                # Resource requirements: reserve 1000GB RAM on a single host
-#BSUB -W 96:00                                                                                # Walltime (hh:mm)
+#BSUB -W 96:00                                                                                # Walltime (hh:mm)  
 
 # Load your environment
 source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
-python process_5k_cell_embeddings.py
+python process_5k_cell_embeddings.py \
+    --load_timestamp '18092025_140643_921' \
+    --read_checkpoint 'nichejepa-ep4.pth.tar'

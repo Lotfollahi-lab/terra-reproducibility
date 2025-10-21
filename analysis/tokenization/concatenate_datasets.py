@@ -37,7 +37,7 @@ def main(args):
         gold_dataset_path = gold_data_path / dataset_name
         dir_substring = f"{dataset_name}_{hparam_prefix}"
 
-        gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and dir_substring in p.name][0]
+        gold_dataset_dir = [p for p in gold_data_path.rglob("*") if p.is_dir() and (dir_substring + '.dataset' in p.name) or (dir_substring + f'_{args.seq_len}.dataset' in p.name)][0]
         
         print(gold_dataset_dir)
 
@@ -57,7 +57,10 @@ def main(args):
     print('Concatenating datasets...')
     tracemalloc.start()
     concatenated_dataset = datasets.concatenate_datasets(ds_list)
-    concatenated_dataset.save_to_disk(output_path, num_shards=args.num_shards)
+    concatenated_dataset.save_to_disk(
+        output_path
+        #num_shards=args.num_shards
+        )
     current, peak = tracemalloc.get_traced_memory()
     print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.')
 
@@ -71,11 +74,11 @@ if __name__ == '__main__':
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_90m',
+                        default='hst_corpus_110m',
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names_additional.txt', # '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt'
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names_additional.txt', # '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt'
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -113,6 +116,10 @@ if __name__ == '__main__':
                         type=int,
                         default='10', # '10', '6'
                         help='Number of neighbors.')
+    parser.add_argument('--seq_len',
+                        type=int,
+                        default='2816',
+                        help='Sequence length.')
     args = parser.parse_args()
     
     main(args)
