@@ -1,7 +1,0 @@
-Experiment name: xhs1022-2-55b_1p.
-Experiment description: xenium human skin (dataset-id = 1022) | 55-batch | 1-panel | part2.
-Tokenizer: cell-graph-tokenizer.
-Model input size: 2816.
-Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
-Number of Gene Tokens: 21952.
-Number of Tokens: 23407.

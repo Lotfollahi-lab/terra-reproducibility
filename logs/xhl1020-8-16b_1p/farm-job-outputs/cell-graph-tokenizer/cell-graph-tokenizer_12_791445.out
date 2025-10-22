@@ -1,0 +1,68 @@
+Experiment name: xhl1020-8-16b_1p.
+Experiment description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel | part8.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20251022_035054-j6l4pzxq[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20251022_035054-j6l4pzxq/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-01>
+Subject: Job 791445: <xhl1020-8-16b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xhl1020-8-16b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Oct 19 08:40:52 2025
+Job was executed on host(s) <12*b11-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Wed Oct 22 03:50:29 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct 22 03:50:29 2025
+Terminated at Wed Oct 22 04:58:08 2025
+Results reported at Wed Oct 22 04:58:08 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1020-8-16b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5677.56 sec.
+    Max Memory :                                 41395 MB
+    Average Memory :                             18396.34 MB
+    Total Requested Memory :                     1024000.00 MB
+    Delta Memory :                               982605.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                50
+    Run time :                                   4061 sec.
+    Turnaround time :                            245836 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1020-8-16b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_791445.err> for stderr output of this job.
+

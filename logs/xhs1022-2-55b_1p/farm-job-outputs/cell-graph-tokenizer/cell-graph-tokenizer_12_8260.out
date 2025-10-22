@@ -1,5 +1,5 @@
-Experiment name: xhs1022-1-55b_1p.
-Experiment description: xenium human skin (dataset-id = 1022) | 55-batch | 1-panel | part1.
+Experiment name: xhs1022-2-55b_1p.
+Experiment description: xenium human skin (dataset-id = 1022) | 55-batch | 1-panel | part2.
 Tokenizer: cell-graph-tokenizer.
 Model input size: 2816.
 Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
@@ -131,44 +131,70 @@ Normalizing gene expression counts...
 Retrieving gene tokens.
 Ranking gene tokens based on normalized counts.
 Retrieving tokens for neighborhood cells.
-[1;34mwandb[0m: 
-[1;34mwandb[0m: You can sync this run to the cloud by running:
-[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20251021_231636-etwy3s1s[0m
-[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20251021_231636-etwy3s1s/logs[0m
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhs1022-2-55b_1p/cProfiler/cell-graph-tokenizer/xhs1022-2-55b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 1209.5967586470001
 
 ------------------------------------------------------------
-Sender: LSF System <lsfadmin@farm-gpu0410>
-Subject: Job 8254: <xhs1022-1-55b_1p_cell-graph-tokenizer_12> in cluster <cub22> Exited
+Sender: LSF System <lsfadmin@farm-gpu0407>
+Subject: Job 8260: <xhs1022-2-55b_1p_cell-graph-tokenizer_12> in cluster <cub22> Done
 
-Job <xhs1022-1-55b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Tue Oct 21 23:15:53 2025
-Job was executed on host(s) <12*farm-gpu0410>, in queue <inference>, as user <sb75> in cluster <cub22> at Tue Oct 21 23:15:54 2025
+Job <xhs1022-2-55b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Tue Oct 21 23:23:45 2025
+Job was executed on host(s) <12*farm-gpu0407>, in queue <inference>, as user <sb75> in cluster <cub22> at Tue Oct 21 23:23:45 2025
 </nfs/users/nfs_s/sb75> was used as the home directory.
 </nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
-Started at Tue Oct 21 23:15:54 2025
-Terminated at Tue Oct 21 23:17:55 2025
-Results reported at Tue Oct 21 23:17:55 2025
+Started at Tue Oct 21 23:23:45 2025
+Terminated at Tue Oct 21 23:44:48 2025
+Results reported at Tue Oct 21 23:44:48 2025
 
 Your job looked like:
 
 ------------------------------------------------------------
 # LSBATCH: User input
-analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhs1022-1-55b_1p.yaml
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhs1022-2-55b_1p.yaml
 ------------------------------------------------------------
 
-Exited with exit code 1.
+Successfully completed.
 
 Resource usage summary:
 
-    CPU time :                                   784.69 sec.
-    Max Memory :                                 14073 MB
-    Average Memory :                             4852.95 MB
+    CPU time :                                   7905.49 sec.
+    Max Memory :                                 119783 MB
+    Average Memory :                             67535.23 MB
     Total Requested Memory :                     614400.00 MB
-    Delta Memory :                               600327.00 MB
+    Delta Memory :                               494617.00 MB
     Max Swap :                                   -
-    Max Processes :                              18
-    Max Threads :                                58
-    Run time :                                   121 sec.
-    Turnaround time :                            122 sec.
+    Max Processes :                              19
+    Max Threads :                                70
+    Run time :                                   1263 sec.
+    Turnaround time :                            1263 sec.
 
 The output (if any) is above this job summary.
 
@@ -176,5 +202,5 @@ The output (if any) is above this job summary.
 
 PS:
 
-Read file <logs/xhs1022-1-55b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_8254.err> for stderr output of this job.
+Read file <logs/xhs1022-2-55b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_8260.err> for stderr output of this job.
 
