@@ -1,0 +1,71 @@
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens'],
+    num_rows: 20340403
+})
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0401>
+Subject: Job 9852: <get_length_grouped_idx> in cluster <cub22> Done
+
+Job <get_length_grouped_idx> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Fri Oct 24 14:47:43 2025
+Job was executed on host(s) <6*farm-gpu0401>, in queue <inference>, as user <sb75> in cluster <cub22> at Fri Oct 24 14:47:43 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization> was used as the working directory.
+Started at Fri Oct 24 14:47:43 2025
+Terminated at Fri Oct 24 15:14:11 2025
+Results reported at Fri Oct 24 15:14:11 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_length_grouped_idx                                                          # Job name
+#BSUB -o ../../logs/tokenization/get_length_grouped_idx/get_length_grouped_idx_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/tokenization/get_length_grouped_idx/get_length_grouped_idx_%J.err    # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 6                                                                               # Number of CPU cores
+#BSUB -M 256GB                                                                            # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                               # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 12:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_length_grouped_idx.py \
+    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_0.25_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --nz_tokens_path 'None' \
+    --train_idx_path 'None' \
+    --idx_save_path  '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.25_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl'    
+    #--nz_tokens_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_n_nonzero_tokens_train.pkl' \
+    #--train_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl' \
+    #--idx_save_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx_split_train.pkl'
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   445.35 sec.
+    Max Memory :                                 2553 MB
+    Average Memory :                             1106.96 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               259591.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                49
+    Run time :                                   1590 sec.
+    Turnaround time :                            1588 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/tokenization/get_length_grouped_idx/get_length_grouped_idx_9852.err> for stderr output of this job.
+

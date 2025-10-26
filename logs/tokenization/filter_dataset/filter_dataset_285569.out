@@ -1,0 +1,94 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 285569: <filter_dataset> in cluster <farm22> Exited
+
+Job <filter_dataset> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Oct 23 16:03:50 2025
+Job was executed on host(s) <64*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Thu Oct 23 16:04:01 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization> was used as the working directory.
+Started at Thu Oct 23 16:04:01 2025
+Terminated at Thu Oct 23 16:04:40 2025
+Results reported at Thu Oct 23 16:04:40 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J filter_dataset                                                               # Job name
+#BSUB -o ../../logs/tokenization/filter_dataset/filter_dataset_%J.out                 # Standard output (%J = job ID)
+#BSUB -e ../../logs/tokenization/filter_dataset/filter_dataset_%J.err                 # Standard error
+#BSUB -q gpu-lotfollahi                                                                      # Queue name
+#BSUB -n 64                                                                           # Number of CPU cores
+#BSUB -M 256GB                                                                        # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                          # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 120:00                                                                       # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python filter_dataset.py \
+    --num_workers 64 \
+    --concatenate_datasets True \
+    --drop_columns True \
+    --deduplicate_coords True \
+    --fix_coord_order True \
+    --replace_batch_value True \
+    --filtering_dataset True \
+    --dataset_load_paths \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho54-1b_1p/xho54-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-3-16b_1p/xhl1020-3-16b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1005-1b_1p/xhl1005-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-2-23b_1p/xhk1018-2-23b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb81-1b_1p/xhb81-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1022-3-55b_1p/xhs1022-3-55b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-2-19b_1p/xhk1019-2-19b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-1-23b_1p/xhk1018-1-23b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT6-1-1b_1p/xhb1002-AT6-1-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-2-16b_1p/xhl1020-2-16b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl40-2b_2p/xhl40-2b_2p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhh32-1b_1p/xhh32-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT4-3b_1p/xhb1002-AT4-3b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1021-2-2b_1p/xhl1021-2-2b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1010-26b_1p/xhs1010-26b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV2-41b_1p/xhk1007-CV2-41b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chb56-1b_1p/chb56-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp30-1b_1p/xhp30-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chl57-2b_1p/chl57-2b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc55-3b_1p/xhc55-3b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT20-2b_1p/xhb1002-AT20-2b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU22-6b_1p/xho1012-AU22-6b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-1-20b_1p/xhe1008-1-20b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+        '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhln1004-1b_1p/xhln1004-1b_1p_32_None_None_None_None_None_shifted_log_knn_6_7168.dataset' \
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 2.
+
+Resource usage summary:
+
+    CPU time :                                   0.35 sec.
+    Max Memory :                                 5 MB
+    Average Memory :                             5.00 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               262139.00 MB
+    Max Swap :                                   -
+    Max Processes :                              1
+    Max Threads :                                3
+    Run time :                                   15 sec.
+    Turnaround time :                            50 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/tokenization/filter_dataset/filter_dataset_285569.err> for stderr output of this job.
+

@@ -1,0 +1,7 @@
+usage: filter_dataset.py [-h] [--data_directory_path DATA_DIRECTORY_PATH]
+                         [--concatenate_datasets CONCATENATE_DATASETS]
+                         [--num_workers NUM_WORKERS]
+                         [--filtered_batch_id FILTERED_BATCH_ID]
+                         [--dataset_load_paths DATASET_LOAD_PATHS [DATASET_LOAD_PATHS ...]]
+                         [--dataset_save_path DATASET_SAVE_PATH]
+filter_dataset.py: error: unrecognized arguments: --drop_columns True --deduplicate_coords True --fix_coord_order True --replace_batch_value True --filtering_dataset True

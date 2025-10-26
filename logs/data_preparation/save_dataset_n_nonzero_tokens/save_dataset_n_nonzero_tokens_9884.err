@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/save_dataset_n_nonzero_tokens.py", line 65, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/save_dataset_n_nonzero_tokens.py", line 22, in main
+    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'rb') as f:
+FileNotFoundError: [Errno 2] No such file or directory: '/nfs/team361/sb75/DATASETS/tokenizer/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10_ordered_precomputed_split_train.pkl'

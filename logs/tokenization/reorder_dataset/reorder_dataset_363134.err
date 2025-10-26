@@ -1,0 +1,2274 @@
+Flattening the indices (num_proc=192):   0%|          | 0/96048116 [00:00<?, ? examples/s]Flattening the indices (num_proc=192):   0%|          | 1000/96048116 [13:03<20914:02:38,  1.28 examples/s]Flattening the indices (num_proc=192):   0%|          | 2000/96048116 [13:04<8618:06:42,  3.10 examples/s] Flattening the indices (num_proc=192):   0%|          | 3000/96048116 [13:04<4686:32:47,  5.69 examples/s]Flattening the indices (num_proc=192):   0%|          | 4000/96048116 [13:06<2851:51:56,  9.35 examples/s]Flattening the indices (num_proc=192):   0%|          | 5000/96048116 [13:06<1826:08:55, 14.61 examples/s]Flattening the indices (num_proc=192):   0%|          | 6000/96048116 [13:06<1209:00:43, 22.07 examples/s]Flattening the indices (num_proc=192):   0%|          | 7000/96048116 [13:06<814:39:49, 32.75 examples/s] Flattening the indices (num_proc=192):   0%|          | 8000/96048116 [13:07<558:41:48, 47.75 examples/s]Flattening the indices (num_proc=192):   0%|          | 9000/96048116 [13:07<387:33:45, 68.83 examples/s]Flattening the indices (num_proc=192):   0%|          | 11000/96048116 [13:08<207:39:53, 128.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 12000/96048116 [13:08<157:01:58, 169.88 examples/s]Flattening the indices (num_proc=192):   0%|          | 13000/96048116 [13:08<117:33:39, 226.92 examples/s]Flattening the indices (num_proc=192):   0%|          | 15000/96048116 [13:09<68:36:11, 388.84 examples/s] Flattening the indices (num_proc=192):   0%|          | 17000/96048116 [13:09<43:42:57, 610.20 examples/s]Flattening the indices (num_proc=192):   0%|          | 19000/96048116 [13:09<31:31:50, 845.99 examples/s]Flattening the indices (num_proc=192):   0%|          | 21000/96048116 [13:10<23:15:35, 1146.79 examples/s]Flattening the indices (num_proc=192):   0%|          | 22000/96048116 [13:11<23:29:07, 1135.76 examples/s]Flattening the indices (num_proc=192):   0%|          | 23000/96048116 [13:11<19:52:08, 1342.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 24000/96048116 [13:11<17:10:37, 1552.85 examples/s]Flattening the indices (num_proc=192):   0%|          | 25000/96048116 [13:13<23:07:18, 1153.58 examples/s]Flattening the indices (num_proc=192):   0%|          | 26000/96048116 [13:13<19:37:27, 1359.18 examples/s]Flattening the indices (num_proc=192):   0%|          | 27000/96048116 [13:14<17:15:32, 1545.42 examples/s]Flattening the indices (num_proc=192):   0%|          | 28000/96048116 [13:17<35:20:54, 754.55 examples/s] Flattening the indices (num_proc=192):   0%|          | 29000/96048116 [13:18<32:31:43, 819.95 examples/s]Flattening the indices (num_proc=192):   0%|          | 30000/96048116 [13:20<40:49:23, 653.35 examples/s]Flattening the indices (num_proc=192):   0%|          | 31000/96048116 [13:22<42:14:16, 631.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 32000/96048116 [13:22<30:42:47, 868.39 examples/s]Flattening the indices (num_proc=192):   0%|          | 33000/96048116 [13:24<36:00:02, 740.85 examples/s]Flattening the indices (num_proc=192):   0%|          | 34000/96048116 [13:26<45:52:03, 581.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 36000/96048116 [13:27<31:59:24, 833.69 examples/s]Flattening the indices (num_proc=192):   0%|          | 37000/96048116 [13:28<25:40:58, 1038.42 examples/s]Flattening the indices (num_proc=192):   0%|          | 38000/96048116 [13:29<29:18:27, 909.98 examples/s] Flattening the indices (num_proc=192):   0%|          | 39000/96048116 [13:30<29:25:34, 906.30 examples/s]Flattening the indices (num_proc=192):   0%|          | 40000/96048116 [13:34<46:10:30, 577.56 examples/s]Flattening the indices (num_proc=192):   0%|          | 41000/96048116 [13:38<62:40:16, 425.53 examples/s]Flattening the indices (num_proc=192):   0%|          | 42000/96048116 [13:39<56:56:58, 468.28 examples/s]Flattening the indices (num_proc=192):   0%|          | 43000/96048116 [13:40<50:24:54, 528.97 examples/s]Flattening the indices (num_proc=192):   0%|          | 44000/96048116 [13:41<39:56:18, 667.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 45000/96048116 [13:43<39:58:20, 667.15 examples/s]Flattening the indices (num_proc=192):   0%|          | 46000/96048116 [13:53<109:04:47, 244.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 47000/96048116 [13:54<83:20:06, 320.00 examples/s] Flattening the indices (num_proc=192):   0%|          | 48000/96048116 [13:56<75:29:54, 353.21 examples/s]Flattening the indices (num_proc=192):   0%|          | 49000/96048116 [14:04<122:40:57, 217.36 examples/s]Flattening the indices (num_proc=192):   0%|          | 50000/96048116 [14:09<120:16:57, 221.70 examples/s]Flattening the indices (num_proc=192):   0%|          | 51000/96048116 [14:09<89:14:51, 298.78 examples/s] Flattening the indices (num_proc=192):   0%|          | 53000/96048116 [14:21<119:53:07, 222.42 examples/s]Flattening the indices (num_proc=192):   0%|          | 54000/96048116 [14:32<161:29:46, 165.11 examples/s]Flattening the indices (num_proc=192):   0%|          | 55000/96048116 [14:36<148:46:59, 179.22 examples/s]Flattening the indices (num_proc=192):   0%|          | 56000/96048116 [14:37<111:02:18, 240.14 examples/s]Flattening the indices (num_proc=192):   0%|          | 57000/96048116 [14:40<108:07:05, 246.62 examples/s]Flattening the indices (num_proc=192):   0%|          | 58000/96048116 [14:42<94:06:02, 283.36 examples/s] Flattening the indices (num_proc=192):   0%|          | 59000/96048116 [14:44<78:08:12, 341.24 examples/s]Flattening the indices (num_proc=192):   0%|          | 60000/96048116 [14:47<82:16:23, 324.08 examples/s]Flattening the indices (num_proc=192):   0%|          | 61000/96048116 [14:50<80:18:38, 332.00 examples/s]Flattening the indices (num_proc=192):   0%|          | 64000/96048116 [14:53<46:46:16, 570.06 examples/s]Flattening the indices (num_proc=192):   0%|          | 65000/96048116 [14:54<45:43:59, 582.99 examples/s]Flattening the indices (num_proc=192):   0%|          | 67000/96048116 [14:58<46:34:24, 572.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 68000/96048116 [14:58<39:26:06, 676.07 examples/s]Flattening the indices (num_proc=192):   0%|          | 69000/96048116 [14:59<32:21:53, 823.76 examples/s]Flattening the indices (num_proc=192):   0%|          | 70000/96048116 [14:59<29:22:50, 907.42 examples/s]Flattening the indices (num_proc=192):   0%|          | 71000/96048116 [15:01<30:32:48, 872.77 examples/s]Flattening the indices (num_proc=192):   0%|          | 73000/96048116 [15:01<21:04:59, 1264.51 examples/s]Flattening the indices (num_proc=192):   0%|          | 74000/96048116 [15:01<17:52:21, 1491.63 examples/s]Flattening the indices (num_proc=192):   0%|          | 75000/96048116 [15:02<16:35:25, 1606.90 examples/s]Flattening the indices (num_proc=192):   0%|          | 76000/96048116 [15:14<94:06:40, 283.27 examples/s] Flattening the indices (num_proc=192):   0%|          | 76000/96048116 [15:29<94:06:40, 283.27 examples/s]Flattening the indices (num_proc=192):   0%|          | 77000/96048116 [15:36<233:35:58, 114.12 examples/s]Flattening the indices (num_proc=192):   0%|          | 78000/96048116 [15:37<174:13:34, 153.01 examples/s]Flattening the indices (num_proc=192):   0%|          | 78000/96048116 [15:49<174:13:34, 153.01 examples/s]Flattening the indices (num_proc=192):   0%|          | 79000/96048116 [35:48<9372:06:10,  2.84 examples/s]Flattening the indices (num_proc=192):   0%|          | 81000/96048116 [35:48<5156:22:39,  5.17 examples/s]Flattening the indices (num_proc=192):   0%|          | 82000/96048116 [35:49<3902:42:24,  6.83 examples/s]Flattening the indices (num_proc=192):   0%|          | 83000/96048116 [35:49<2899:52:53,  9.19 examples/s]Flattening the indices (num_proc=192):   0%|          | 85000/96048116 [35:50<1672:23:10, 15.94 examples/s]Flattening the indices (num_proc=192):   0%|          | 86000/96048116 [35:51<1291:59:57, 20.63 examples/s]Flattening the indices (num_proc=192):   0%|          | 87000/96048116 [35:51<971:59:22, 27.42 examples/s] Flattening the indices (num_proc=192):   0%|          | 88000/96048116 [35:52<720:44:19, 36.98 examples/s]Flattening the indices (num_proc=192):   0%|          | 89000/96048116 [35:53<529:44:09, 50.32 examples/s]Flattening the indices (num_proc=192):   0%|          | 90000/96048116 [35:55<398:08:47, 66.95 examples/s]Flattening the indices (num_proc=192):   0%|          | 91000/96048116 [35:55<285:36:15, 93.33 examples/s]Flattening the indices (num_proc=192):   0%|          | 92000/96048116 [35:56<210:45:50, 126.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 93000/96048116 [35:56<150:35:57, 176.99 examples/s]Flattening the indices (num_proc=192):   0%|          | 94000/96048116 [35:57<110:24:08, 241.43 examples/s]Flattening the indices (num_proc=192):   0%|          | 95000/96048116 [35:57<78:45:01, 338.46 examples/s] Flattening the indices (num_proc=192):   0%|          | 97000/96048116 [35:58<47:33:00, 560.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 99000/96048116 [35:58<31:46:49, 838.64 examples/s]Flattening the indices (num_proc=192):   0%|          | 100000/96048116 [35:59<26:30:57, 1005.14 examples/s]Flattening the indices (num_proc=192):   0%|          | 102000/96048116 [36:00<20:47:16, 1282.08 examples/s]Flattening the indices (num_proc=192):   0%|          | 103000/96048116 [36:00<18:12:35, 1463.57 examples/s]Flattening the indices (num_proc=192):   0%|          | 104000/96048116 [36:00<16:00:43, 1664.45 examples/s]Flattening the indices (num_proc=192):   0%|          | 105000/96048116 [36:02<26:12:53, 1016.64 examples/s]Flattening the indices (num_proc=192):   0%|          | 106000/96048116 [36:05<39:20:37, 677.38 examples/s] Flattening the indices (num_proc=192):   0%|          | 107000/96048116 [36:06<33:13:15, 802.22 examples/s]Flattening the indices (num_proc=192):   0%|          | 108000/96048116 [36:06<25:26:00, 1047.83 examples/s]Flattening the indices (num_proc=192):   0%|          | 109000/96048116 [36:07<22:02:42, 1208.87 examples/s]Flattening the indices (num_proc=192):   0%|          | 110000/96048116 [36:07<19:46:55, 1347.15 examples/s]Flattening the indices (num_proc=192):   0%|          | 111000/96048116 [36:07<15:05:00, 1766.79 examples/s]Flattening the indices (num_proc=192):   0%|          | 112000/96048116 [36:08<13:24:57, 1986.36 examples/s]Flattening the indices (num_proc=192):   0%|          | 113000/96048116 [36:08<13:46:50, 1933.77 examples/s]Flattening the indices (num_proc=192):   0%|          | 114000/96048116 [36:09<15:57:30, 1669.85 examples/s]Flattening the indices (num_proc=192):   0%|          | 116000/96048116 [36:13<33:39:15, 791.81 examples/s] Flattening the indices (num_proc=192):   0%|          | 117000/96048116 [36:17<51:33:27, 516.85 examples/s]Flattening the indices (num_proc=192):   0%|          | 118000/96048116 [36:19<50:28:50, 527.87 examples/s]Flattening the indices (num_proc=192):   0%|          | 119000/96048116 [36:24<74:10:21, 359.26 examples/s]Flattening the indices (num_proc=192):   0%|          | 120000/96048116 [36:26<67:35:32, 394.23 examples/s]Flattening the indices (num_proc=192):   0%|          | 121000/96048116 [36:26<51:16:16, 519.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 122000/96048116 [36:33<85:59:54, 309.84 examples/s]Flattening the indices (num_proc=192):   0%|          | 122000/96048116 [36:49<85:59:54, 309.84 examples/s]Flattening the indices (num_proc=192):   0%|          | 123000/96048116 [36:52<210:36:10, 126.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 123000/96048116 [37:09<210:36:10, 126.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 124000/96048116 [38:06<727:27:37, 36.63 examples/s] Flattening the indices (num_proc=192):   0%|          | 124000/96048116 [38:19<727:27:37, 36.63 examples/s]Flattening the indices (num_proc=192):   0%|          | 125000/96048116 [38:44<811:47:28, 32.82 examples/s]Flattening the indices (num_proc=192):   0%|          | 126000/96048116 [38:51<632:03:30, 42.16 examples/s]Flattening the indices (num_proc=192):   0%|          | 127000/96048116 [38:53<456:52:18, 58.32 examples/s]Flattening the indices (num_proc=192):   0%|          | 128000/96048116 [38:54<331:43:24, 80.32 examples/s]Flattening the indices (num_proc=192):   0%|          | 129000/96048116 [38:56<242:50:08, 109.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 130000/96048116 [39:02<222:38:25, 119.67 examples/s]Flattening the indices (num_proc=192):   0%|          | 131000/96048116 [39:03<157:58:43, 168.65 examples/s]Flattening the indices (num_proc=192):   0%|          | 131000/96048116 [39:19<157:58:43, 168.65 examples/s]Flattening the indices (num_proc=192):   0%|          | 132000/96048116 [40:57<1026:35:25, 25.95 examples/s]Flattening the indices (num_proc=192):   0%|          | 133000/96048116 [41:38<1041:48:51, 25.57 examples/s]Flattening the indices (num_proc=192):   0%|          | 133000/96048116 [41:49<1041:48:51, 25.57 examples/s]Flattening the indices (num_proc=192):   0%|          | 134000/96048116 [41:53<850:12:55, 31.34 examples/s] Flattening the indices (num_proc=192):   0%|          | 134000/96048116 [42:09<850:12:55, 31.34 examples/s]Flattening the indices (num_proc=192):   0%|          | 135000/96048116 [42:22<829:48:59, 32.11 examples/s]Flattening the indices (num_proc=192):   0%|          | 136000/96048116 [42:35<686:36:29, 38.80 examples/s]Flattening the indices (num_proc=192):   0%|          | 137000/96048116 [42:36<486:53:44, 54.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 138000/96048116 [42:41<378:05:41, 70.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 139000/96048116 [42:42<271:11:06, 98.24 examples/s]Flattening the indices (num_proc=192):   0%|          | 140000/96048116 [42:48<237:48:58, 112.02 examples/s]Flattening the indices (num_proc=192):   0%|          | 141000/96048116 [42:52<201:49:33, 132.00 examples/s]Flattening the indices (num_proc=192):   0%|          | 142000/96048116 [43:07<258:13:55, 103.17 examples/s]Flattening the indices (num_proc=192):   0%|          | 143000/96048116 [43:10<206:01:55, 129.30 examples/s]Flattening the indices (num_proc=192):   0%|          | 144000/96048116 [43:13<166:24:03, 160.10 examples/s]Flattening the indices (num_proc=192):   0%|          | 145000/96048116 [43:15<138:12:46, 192.74 examples/s]Flattening the indices (num_proc=192):   0%|          | 146000/96048116 [43:16<104:44:18, 254.34 examples/s]Flattening the indices (num_proc=192):   0%|          | 147000/96048116 [43:17<77:45:21, 342.60 examples/s] Flattening the indices (num_proc=192):   0%|          | 148000/96048116 [43:18<64:54:38, 410.39 examples/s]Flattening the indices (num_proc=192):   0%|          | 149000/96048116 [43:20<62:49:07, 424.05 examples/s]Flattening the indices (num_proc=192):   0%|          | 150000/96048116 [43:22<58:02:54, 458.90 examples/s]Flattening the indices (num_proc=192):   0%|          | 151000/96048116 [43:24<58:28:27, 455.55 examples/s]Flattening the indices (num_proc=192):   0%|          | 152000/96048116 [43:29<78:34:51, 338.99 examples/s]Flattening the indices (num_proc=192):   0%|          | 153000/96048116 [43:30<57:43:29, 461.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 154000/96048116 [43:38<105:02:59, 253.57 examples/s]Flattening the indices (num_proc=192):   0%|          | 155000/96048116 [43:40<91:09:37, 292.20 examples/s] Flattening the indices (num_proc=192):   0%|          | 156000/96048116 [43:41<72:37:30, 366.77 examples/s]Flattening the indices (num_proc=192):   0%|          | 157000/96048116 [43:48<111:09:19, 239.63 examples/s]Flattening the indices (num_proc=192):   0%|          | 157000/96048116 [43:59<111:09:19, 239.63 examples/s]Flattening the indices (num_proc=192):   0%|          | 158000/96048116 [53:48<4869:53:10,  5.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 159000/96048116 [53:54<3451:32:56,  7.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 159000/96048116 [54:09<3451:32:56,  7.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 160000/96048116 [59:55<5301:20:11,  5.02 examples/s]Flattening the indices (num_proc=192):   0%|          | 161000/96048116 [59:58<3738:58:58,  7.12 examples/s]Flattening the indices (num_proc=192):   0%|          | 162000/96048116 [1:00:00<2631:11:11, 10.12 examples/s]Flattening the indices (num_proc=192):   0%|          | 163000/96048116 [1:00:00<1845:05:05, 14.44 examples/s]Flattening the indices (num_proc=192):   0%|          | 164000/96048116 [1:00:01<1293:41:17, 20.59 examples/s]Flattening the indices (num_proc=192):   0%|          | 165000/96048116 [1:00:01<912:10:14, 29.20 examples/s] Flattening the indices (num_proc=192):   0%|          | 167000/96048116 [1:00:02<493:35:27, 53.96 examples/s]Flattening the indices (num_proc=192):   0%|          | 168000/96048116 [1:00:02<372:04:44, 71.58 examples/s]Flattening the indices (num_proc=192):   0%|          | 169000/96048116 [1:00:03<281:29:53, 94.61 examples/s]Flattening the indices (num_proc=192):   0%|          | 172000/96048116 [1:00:03<134:18:35, 198.29 examples/s]Flattening the indices (num_proc=192):   0%|          | 173000/96048116 [1:00:04<109:15:56, 243.74 examples/s]Flattening the indices (num_proc=192):   0%|          | 175000/96048116 [1:00:04<71:55:14, 370.29 examples/s] Flattening the indices (num_proc=192):   0%|          | 176000/96048116 [1:00:04<58:37:16, 454.29 examples/s]Flattening the indices (num_proc=192):   0%|          | 177000/96048116 [1:00:05<47:05:06, 565.59 examples/s]Flattening the indices (num_proc=192):   0%|          | 178000/96048116 [1:00:05<39:42:04, 670.78 examples/s]Flattening the indices (num_proc=192):   0%|          | 179000/96048116 [1:00:06<35:39:36, 746.78 examples/s]Flattening the indices (num_proc=192):   0%|          | 180000/96048116 [1:00:06<27:34:38, 965.65 examples/s]Flattening the indices (num_proc=192):   0%|          | 181000/96048116 [1:00:08<28:36:46, 930.69 examples/s]Flattening the indices (num_proc=192):   0%|          | 182000/96048116 [1:00:08<21:23:38, 1244.71 examples/s]Flattening the indices (num_proc=192):   0%|          | 183000/96048116 [1:00:09<24:42:12, 1077.96 examples/s]Flattening the indices (num_proc=192):   0%|          | 184000/96048116 [1:00:10<25:14:17, 1055.10 examples/s]Flattening the indices (num_proc=192):   0%|          | 185000/96048116 [1:00:11<22:40:14, 1174.59 examples/s]Flattening the indices (num_proc=192):   0%|          | 186000/96048116 [1:00:11<21:56:25, 1213.66 examples/s]Flattening the indices (num_proc=192):   0%|          | 187000/96048116 [1:00:13<25:42:44, 1035.62 examples/s]Flattening the indices (num_proc=192):   0%|          | 188000/96048116 [1:00:13<19:25:48, 1370.43 examples/s]Flattening the indices (num_proc=192):   0%|          | 189000/96048116 [1:00:14<20:29:47, 1299.13 examples/s]Flattening the indices (num_proc=192):   0%|          | 190000/96048116 [1:00:14<15:55:04, 1672.79 examples/s]Flattening the indices (num_proc=192):   0%|          | 192000/96048116 [1:00:14<11:59:40, 2219.89 examples/s]Flattening the indices (num_proc=192):   0%|          | 193000/96048116 [1:00:15<11:01:17, 2415.87 examples/s]Flattening the indices (num_proc=192):   0%|          | 194000/96048116 [1:00:16<14:22:32, 1852.16 examples/s]Flattening the indices (num_proc=192):   0%|          | 195000/96048116 [1:00:16<11:43:59, 2269.28 examples/s]Flattening the indices (num_proc=192):   0%|          | 196000/96048116 [1:00:16<9:12:09, 2893.27 examples/s] Flattening the indices (num_proc=192):   0%|          | 197000/96048116 [1:00:21<46:21:44, 574.29 examples/s]Flattening the indices (num_proc=192):   0%|          | 198000/96048116 [1:00:23<46:12:34, 576.18 examples/s]Flattening the indices (num_proc=192):   0%|          | 199000/96048116 [1:00:24<38:30:37, 691.37 examples/s]Flattening the indices (num_proc=192):   0%|          | 200000/96048116 [1:00:24<33:02:56, 805.60 examples/s]Flattening the indices (num_proc=192):   0%|          | 201000/96048116 [1:00:25<32:17:55, 824.31 examples/s]Flattening the indices (num_proc=192):   0%|          | 201000/96048116 [1:00:39<32:17:55, 824.31 examples/s]Flattening the indices (num_proc=192):   0%|          | 202000/96048116 [1:00:50<219:15:58, 121.42 examples/s]Flattening the indices (num_proc=192):   0%|          | 203000/96048116 [1:00:52<164:20:48, 162.00 examples/s]Flattening the indices (num_proc=192):   0%|          | 204000/96048116 [1:00:53<128:25:38, 207.30 examples/s]Flattening the indices (num_proc=192):   0%|          | 204000/96048116 [1:01:09<128:25:38, 207.30 examples/s]Flattening the indices (num_proc=192):   0%|          | 205000/96048116 [1:02:35<897:42:59, 29.66 examples/s] Flattening the indices (num_proc=192):   0%|          | 206000/96048116 [1:02:37<650:35:15, 40.92 examples/s]Flattening the indices (num_proc=192):   0%|          | 208000/96048116 [1:02:45<399:05:35, 66.71 examples/s]Flattening the indices (num_proc=192):   0%|          | 208000/96048116 [1:02:59<399:05:35, 66.71 examples/s]Flattening the indices (num_proc=192):   0%|          | 209000/96048116 [1:03:04<424:38:32, 62.69 examples/s]Flattening the indices (num_proc=192):   0%|          | 210000/96048116 [1:03:09<345:43:21, 77.00 examples/s]Flattening the indices (num_proc=192):   0%|          | 211000/96048116 [1:03:10<262:19:58, 101.48 examples/s]Flattening the indices (num_proc=192):   0%|          | 212000/96048116 [1:03:14<217:50:18, 122.21 examples/s]Flattening the indices (num_proc=192):   0%|          | 212000/96048116 [1:03:29<217:50:18, 122.21 examples/s]Flattening the indices (num_proc=192):   0%|          | 213000/96048116 [1:07:44<2208:15:47, 12.06 examples/s]Flattening the indices (num_proc=192):   0%|          | 214000/96048116 [1:07:45<1574:09:53, 16.91 examples/s]Flattening the indices (num_proc=192):   0%|          | 215000/96048116 [1:07:47<1126:14:43, 23.64 examples/s]Flattening the indices (num_proc=192):   0%|          | 216000/96048116 [1:07:48<803:21:00, 33.14 examples/s] Flattening the indices (num_proc=192):   0%|          | 217000/96048116 [1:07:49<576:00:12, 46.21 examples/s]Flattening the indices (num_proc=192):   0%|          | 218000/96048116 [1:07:50<411:58:56, 64.61 examples/s]Flattening the indices (num_proc=192):   0%|          | 219000/96048116 [1:07:50<290:25:52, 91.65 examples/s]Flattening the indices (num_proc=192):   0%|          | 220000/96048116 [1:07:51<206:09:44, 129.12 examples/s]Flattening the indices (num_proc=192):   0%|          | 221000/96048116 [1:07:51<145:38:59, 182.76 examples/s]Flattening the indices (num_proc=192):   0%|          | 222000/96048116 [1:07:54<125:58:26, 211.30 examples/s]Flattening the indices (num_proc=192):   0%|          | 223000/96048116 [1:07:54<89:44:51, 296.59 examples/s] Flattening the indices (num_proc=192):   0%|          | 224000/96048116 [1:07:58<92:30:17, 287.75 examples/s]Flattening the indices (num_proc=192):   0%|          | 225000/96048116 [1:08:00<81:20:11, 327.25 examples/s]Flattening the indices (num_proc=192):   0%|          | 226000/96048116 [1:08:08<119:49:54, 222.12 examples/s]Flattening the indices (num_proc=192):   0%|          | 227000/96048116 [1:08:10<100:54:34, 263.77 examples/s]Flattening the indices (num_proc=192):   0%|          | 228000/96048116 [1:08:13<97:44:26, 272.32 examples/s] Flattening the indices (num_proc=192):   0%|          | 229000/96048116 [1:08:15<80:52:03, 329.14 examples/s]Flattening the indices (num_proc=192):   0%|          | 230000/96048116 [1:08:15<62:26:46, 426.22 examples/s]Flattening the indices (num_proc=192):   0%|          | 231000/96048116 [1:08:17<53:43:04, 495.47 examples/s]Flattening the indices (num_proc=192):   0%|          | 232000/96048116 [1:08:17<41:47:15, 636.92 examples/s]Flattening the indices (num_proc=192):   0%|          | 233000/96048116 [1:08:18<36:36:32, 727.01 examples/s]Flattening the indices (num_proc=192):   0%|          | 234000/96048116 [1:08:18<26:25:58, 1006.89 examples/s]Flattening the indices (num_proc=192):   0%|          | 235000/96048116 [1:08:21<38:47:02, 686.23 examples/s] Flattening the indices (num_proc=192):   0%|          | 236000/96048116 [1:08:21<29:48:14, 892.98 examples/s]Flattening the indices (num_proc=192):   0%|          | 237000/96048116 [1:08:25<50:25:35, 527.78 examples/s]Flattening the indices (num_proc=192):   0%|          | 238000/96048116 [1:08:28<62:11:05, 427.98 examples/s]Flattening the indices (num_proc=192):   0%|          | 238000/96048116 [1:08:39<62:11:05, 427.98 examples/s]Flattening the indices (num_proc=192):   0%|          | 239000/96048116 [1:08:42<154:47:39, 171.93 examples/s]Flattening the indices (num_proc=192):   0%|          | 240000/96048116 [1:08:49<163:32:46, 162.73 examples/s]Flattening the indices (num_proc=192):   0%|          | 240000/96048116 [1:08:59<163:32:46, 162.73 examples/s]Flattening the indices (num_proc=192):   0%|          | 241000/96048116 [1:12:09<1715:11:08, 15.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 242000/96048116 [1:20:07<5014:08:10,  5.31 examples/s]Flattening the indices (num_proc=192):   0%|          | 243000/96048116 [1:20:14<3567:59:24,  7.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 243000/96048116 [1:20:29<3567:59:24,  7.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 244000/96048116 [1:21:26<3066:05:37,  8.68 examples/s]Flattening the indices (num_proc=192):   0%|          | 245000/96048116 [1:21:28<2165:41:33, 12.29 examples/s]Flattening the indices (num_proc=192):   0%|          | 246000/96048116 [1:21:39<1605:11:56, 16.58 examples/s]Flattening the indices (num_proc=192):   0%|          | 247000/96048116 [1:21:40<1126:49:54, 23.62 examples/s]Flattening the indices (num_proc=192):   0%|          | 249000/96048116 [1:21:40<607:59:56, 43.77 examples/s] Flattening the indices (num_proc=192):   0%|          | 250000/96048116 [1:21:41<465:06:53, 57.21 examples/s]Flattening the indices (num_proc=192):   0%|          | 251000/96048116 [1:21:41<344:42:06, 77.20 examples/s]Flattening the indices (num_proc=192):   0%|          | 252000/96048116 [1:21:41<251:41:50, 105.72 examples/s]Flattening the indices (num_proc=192):   0%|          | 254000/96048116 [1:21:41<142:39:20, 186.53 examples/s]Flattening the indices (num_proc=192):   0%|          | 255000/96048116 [1:21:42<110:37:54, 240.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 256000/96048116 [1:21:42<84:42:55, 314.10 examples/s] Flattening the indices (num_proc=192):   0%|          | 257000/96048116 [1:21:43<66:52:03, 397.93 examples/s]Flattening the indices (num_proc=192):   0%|          | 259000/96048116 [1:21:43<39:46:33, 668.95 examples/s]Flattening the indices (num_proc=192):   0%|          | 260000/96048116 [1:21:43<33:07:38, 803.20 examples/s]Flattening the indices (num_proc=192):   0%|          | 261000/96048116 [1:21:45<35:29:35, 749.65 examples/s]Flattening the indices (num_proc=192):   0%|          | 262000/96048116 [1:21:45<28:26:27, 935.52 examples/s]Flattening the indices (num_proc=192):   0%|          | 263000/96048116 [1:21:46<22:13:12, 1197.43 examples/s]Flattening the indices (num_proc=192):   0%|          | 264000/96048116 [1:21:46<17:09:24, 1550.80 examples/s]Flattening the indices (num_proc=192):   0%|          | 265000/96048116 [1:21:49<39:23:38, 675.39 examples/s] Flattening the indices (num_proc=192):   0%|          | 266000/96048116 [1:21:50<30:05:22, 884.23 examples/s]Flattening the indices (num_proc=192):   0%|          | 267000/96048116 [1:21:51<31:35:00, 842.40 examples/s]Flattening the indices (num_proc=192):   0%|          | 269000/96048116 [1:21:53<28:44:31, 925.66 examples/s]Flattening the indices (num_proc=192):   0%|          | 270000/96048116 [1:21:53<22:27:30, 1184.64 examples/s]Flattening the indices (num_proc=192):   0%|          | 271000/96048116 [1:21:53<19:41:13, 1351.38 examples/s]Flattening the indices (num_proc=192):   0%|          | 272000/96048116 [1:21:54<17:36:29, 1510.90 examples/s]Flattening the indices (num_proc=192):   0%|          | 273000/96048116 [1:21:54<14:11:27, 1874.73 examples/s]Flattening the indices (num_proc=192):   0%|          | 274000/96048116 [1:21:54<12:54:18, 2061.49 examples/s]Flattening the indices (num_proc=192):   0%|          | 275000/96048116 [1:21:55<11:18:17, 2353.29 examples/s]Flattening the indices (num_proc=192):   0%|          | 276000/96048116 [1:21:57<27:05:14, 982.13 examples/s] Flattening the indices (num_proc=192):   0%|          | 277000/96048116 [1:22:00<37:35:59, 707.53 examples/s]Flattening the indices (num_proc=192):   0%|          | 278000/96048116 [1:22:00<27:25:08, 970.23 examples/s]Flattening the indices (num_proc=192):   0%|          | 279000/96048116 [1:22:00<21:31:43, 1235.68 examples/s]Flattening the indices (num_proc=192):   0%|          | 280000/96048116 [1:22:00<17:20:19, 1534.26 examples/s]Flattening the indices (num_proc=192):   0%|          | 281000/96048116 [1:22:01<15:38:37, 1700.49 examples/s]Flattening the indices (num_proc=192):   0%|          | 282000/96048116 [1:22:07<64:44:07, 410.93 examples/s] Flattening the indices (num_proc=192):   0%|          | 283000/96048116 [1:22:09<54:14:20, 490.45 examples/s]Flattening the indices (num_proc=192):   0%|          | 284000/96048116 [1:22:14<77:54:13, 341.46 examples/s]Flattening the indices (num_proc=192):   0%|          | 285000/96048116 [1:22:16<71:46:01, 370.66 examples/s]Flattening the indices (num_proc=192):   0%|          | 286000/96048116 [1:22:17<57:04:11, 466.11 examples/s]Flattening the indices (num_proc=192):   0%|          | 287000/96048116 [1:22:27<122:37:38, 216.92 examples/s]Flattening the indices (num_proc=192):   0%|          | 288000/96048116 [1:22:30<109:24:13, 243.14 examples/s]Process ForkPoolWorker-192:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 63, in _memory_mapped_arrow_table_from_file
+    opened_stream = _memory_mapped_record_batch_reader_from_file(filename)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 48, in _memory_mapped_record_batch_reader_from_file
+    memory_mapped_stream = pa.memory_map(filename)
+KeyboardInterrupt
+Process ForkPoolWorker-112:
+Process ForkPoolWorker-127:
+Process ForkPoolWorker-160:
+Process ForkPoolWorker-159:
+Process ForkPoolWorker-155:
+Process ForkPoolWorker-134:
+Process ForkPoolWorker-101:
+Process ForkPoolWorker-153:
+Process ForkPoolWorker-157:
+Process ForkPoolWorker-168:
+Process ForkPoolWorker-154:
+Process ForkPoolWorker-131:
+Process ForkPoolWorker-165:
+Process ForkPoolWorker-100:
+Process ForkPoolWorker-97:
+Process ForkPoolWorker-182:
+Process ForkPoolWorker-98:
+Process ForkPoolWorker-91:
+Process ForkPoolWorker-122:
+Process ForkPoolWorker-156:
+Process ForkPoolWorker-179:
+Process ForkPoolWorker-143:
+Process ForkPoolWorker-162:
+Process ForkPoolWorker-93:
+Process ForkPoolWorker-183:
+Process ForkPoolWorker-146:
+Process ForkPoolWorker-164:
+Process ForkPoolWorker-166:
+Process ForkPoolWorker-104:
+Process ForkPoolWorker-174:
+Process ForkPoolWorker-124:
+Process ForkPoolWorker-161:
+Process ForkPoolWorker-141:
+Process ForkPoolWorker-118:
+Process ForkPoolWorker-145:
+Process ForkPoolWorker-128:
+Process ForkPoolWorker-125:
+Process ForkPoolWorker-187:
+Process ForkPoolWorker-89:
+Process ForkPoolWorker-152:
+Process ForkPoolWorker-163:
+Process ForkPoolWorker-136:
+Process ForkPoolWorker-126:
+Process ForkPoolWorker-184:
+Process ForkPoolWorker-102:
+Process ForkPoolWorker-177:
+Process ForkPoolWorker-90:
+Process ForkPoolWorker-87:
+Process ForkPoolWorker-173:
+Process ForkPoolWorker-150:
+Process ForkPoolWorker-139:
+Process ForkPoolWorker-117:
+Process ForkPoolWorker-119:
+Process ForkPoolWorker-151:
+Process ForkPoolWorker-172:
+Process ForkPoolWorker-191:
+Process ForkPoolWorker-171:
+Process ForkPoolWorker-180:
+Process ForkPoolWorker-113:
+Process ForkPoolWorker-147:
+Process ForkPoolWorker-130:
+Process ForkPoolWorker-176:
+Process ForkPoolWorker-94:
+Process ForkPoolWorker-178:
+Process ForkPoolWorker-133:
+Process ForkPoolWorker-188:
+Traceback (most recent call last):
+Process ForkPoolWorker-106:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+Process ForkPoolWorker-149:
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Process ForkPoolWorker-132:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Process ForkPoolWorker-99:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+Process ForkPoolWorker-120:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+Process ForkPoolWorker-92:
+Process ForkPoolWorker-96:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+Process ForkPoolWorker-88:
+Process ForkPoolWorker-108:
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Process ForkPoolWorker-140:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Process ForkPoolWorker-115:
+KeyboardInterrupt
+Traceback (most recent call last):
+Process ForkPoolWorker-138:
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+Process ForkPoolWorker-148:
+Process ForkPoolWorker-107:
+Process ForkPoolWorker-114:
+Process ForkPoolWorker-111:
+Process ForkPoolWorker-105:
+Process ForkPoolWorker-167:
+Process ForkPoolWorker-137:
+Process ForkPoolWorker-144:
+Process ForkPoolWorker-158:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Process ForkPoolWorker-169:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-135:
+Process ForkPoolWorker-181:
+Process ForkPoolWorker-190:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-129:
+Traceback (most recent call last):
+Process ForkPoolWorker-189:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-109:
+Process ForkPoolWorker-170:
+Process ForkPoolWorker-142:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-95:
+Process ForkPoolWorker-123:
+Process ForkPoolWorker-116:
+Process ForkPoolWorker-110:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Process ForkPoolWorker-186:
+Process ForkPoolWorker-185:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-175:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-103:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Process ForkPoolWorker-121:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+Flattening the indices (num_proc=192):   0%|          | 288000/96048116 [1:22:39<458:04:16, 58.07 examples/s] 
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 612, in iflatmap_unordered
+    yield queue.get(timeout=0.05)
+  File "<string>", line 2, in get
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 818, in _callmethod
+    kind, result = conn.recv()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 253, in recv
+    buf = self._recv_bytes()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/reorder_dataset.py", line 67, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/reorder_dataset.py", line 35, in main
+    ds = ds.flatten_indices(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/fingerprint.py", line 442, in wrapper
+    out = func(dataset, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3965, in flatten_indices
+    return self.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 768, in get
+    self.wait(timeout)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 765, in wait
+    self._event.wait(timeout)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt
+Terminated
