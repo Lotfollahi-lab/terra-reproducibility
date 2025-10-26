@@ -1,0 +1,74 @@
+Load timestamp: 25102025_174845_488.
+Read checkpoint: nichejepa-ep0.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 625268: <test_model_checkpoint> in cluster <farm22> Exited
+
+Job <test_model_checkpoint> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Oct 26 06:33:44 2025
+Job was executed on host(s) <12*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Sun Oct 26 08:06:04 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Sun Oct 26 08:06:04 2025
+Terminated at Sun Oct 26 08:56:42 2025
+Results reported at Sun Oct 26 08:56:42 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                    # LSF group
+#BSUB -J test_model_checkpoint                                                      # Job name
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.err    # Standard error
+#BSUB -q gpu-lotfollahi                                                             # Queue name
+#BSUB -n 12                                                                         # Number of CPU cores
+#BSUB -M 128GB                                                                      # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                        # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 120:00                                                                     # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                           # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 25102025_174845_488 \
+    --read_checkpoint nichejepa-ep0.pth.tar \
+    --include_xhs49 \
+    --include_xhs1000 \
+    --include_xhk1007 \
+    --include_xhb1002 \
+    --include_chl59 \
+    --include_chr78  
+
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5785.00 sec.
+    Max Memory :                                 53939 MB
+    Average Memory :                             10262.78 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               77133.00 MB
+    Max Swap :                                   -
+    Max Processes :                              20
+    Max Threads :                                88
+    Run time :                                   3054 sec.
+    Turnaround time :                            8578 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_625268.err> for stderr output of this job.
+
