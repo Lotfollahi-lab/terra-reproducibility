@@ -653,7 +653,7 @@ def main(args):
         # Run model inference
         adata = run_inference(dataset_name,
                               params,
-                              read_checkpoint,
+                              args.read_checkpoint,
                               obs_cols=[niche_key],
                               write_to_disk=True)
 
@@ -703,27 +703,27 @@ if __name__ == '__main__':
                         help='Name of data cohort.')
     parser.add_argument("--include_xhs49",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on xhs49.')
     parser.add_argument("--include_xhs1000",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on xhs1000.')
     parser.add_argument("--include_xhk1007",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on xhk1007.')
     parser.add_argument("--include_xhb1002",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on xhb1002.') 
     parser.add_argument("--include_chl59",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on chl59.') 
     parser.add_argument("--include_chr78",
                         action=argparse.BooleanOptionalAction,
-                        default=True,
+                        default=False,
                         help='Flag whether to run inference on chr78.')
     parser.add_argument('--batch_size',
                         type=int,
