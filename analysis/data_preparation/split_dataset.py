@@ -7,52 +7,60 @@ from datasets import load_from_disk
 def main(args):
     # Load dataset and retrieve cell IDs
     dataset = load_from_disk(args.tokenized_data_folder_path)
-    cell_ids = list(dataset['cell_id'])
 
-    validation_indices = []
-    test_indices = []
+    if args.full_dataset:
+        indices = list(range(len(dataset)))
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_full.pkl', 'wb') as f:
+            pickle.dump(indices, f)
+        print("Saved full dataset split.")
 
-    print('done0')
-    print(len(cell_ids))
+    else:       
+        cell_ids = list(dataset['cell_id'])
 
-    # Single loop to determine validation and test indices
-    for index, cell_id in enumerate(cell_ids):
-        if any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.val_batch_ids):
-            validation_indices.append(index)
-        elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
-            test_indices.append(index)
-    print('done1')
+        validation_indices = []
+        test_indices = []
 
-    # Another loop to determine train indices
-    excluded_indices = set(validation_indices).union(test_indices)
-    print('done2')
-    print(len(excluded_indices))
-    print(len(validation_indices)+len(test_indices))
-    print(len(validation_indices))
-    print(len(test_indices))
-    train_indices = [index for index in range(len(cell_ids)) if index not in excluded_indices]
-    print('done3')
+        print('done0')
+        print(len(cell_ids))
 
-    # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
-    #train_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
-    #validation_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
-    #test_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
-    #print("Train unique identifiers:", train_unique)
-    #print("Validation unique identifiers:", validation_unique)
-    #print("Test unique identifiers:", test_unique)
-    #print('done4')
+        # Single loop to determine validation and test indices
+        for index, cell_id in enumerate(cell_ids):
+            if any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.val_batch_ids):
+                validation_indices.append(index)
+            elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
+                test_indices.append(index)
+        print('done1')
 
-    # Save the splits as pickle files
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
-        pickle.dump(train_indices, f)
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
-        pickle.dump(validation_indices, f)
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
-        pickle.dump(test_indices, f)
-    print("Saved train, validation, and test dataset splits.")
+        # Another loop to determine train indices
+        excluded_indices = set(validation_indices).union(test_indices)
+        print('done2')
+        print(len(excluded_indices))
+        print(len(validation_indices)+len(test_indices))
+        print(len(validation_indices))
+        print(len(test_indices))
+        train_indices = [index for index in range(len(cell_ids)) if index not in excluded_indices]
+        print('done3')
+
+        # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
+        #train_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
+        #validation_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
+        #test_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
+        #print("Train unique identifiers:", train_unique)
+        #print("Validation unique identifiers:", validation_unique)
+        #print("Test unique identifiers:", test_unique)
+        #print('done4')
+
+        # Save the splits as pickle files
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
+            pickle.dump(train_indices, f)
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
+            pickle.dump(validation_indices, f)
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
+            pickle.dump(test_indices, f)
+        print("Saved train, validation, and test dataset splits.")
 
 
 if __name__ == '__main__':
@@ -294,6 +302,10 @@ if __name__ == '__main__':
                                  '1022_batch54',
                                  '1022_batch55'],
                         help='Test batch IDs.')
+    parser.add_argument("--full_dataset",
+                        action=argparse.BooleanOptionalAction,
+                        default=False,
+                        help='Flag whether full dataset index should be saved instead of splits.')                         
     args = parser.parse_args()
     
     main(args)
