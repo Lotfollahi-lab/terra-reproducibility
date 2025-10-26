@@ -699,7 +699,7 @@ if __name__ == '__main__':
                         help='Flag whether the model was trained on AWS.')    
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_90m',
+                        default='hst_corpus_110m',
                         help='Name of data cohort.')
     parser.add_argument("--include_xhs49",
                         action=argparse.BooleanOptionalAction,

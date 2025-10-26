@@ -26,7 +26,7 @@ case $EXPERIMENT_NAME in
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
         RAM="600G" # "600G", "1000G", "1500G"
-        TIME="48:00" # "48:00", "120:00"
+        TIME="24:00" # "48:00", "120:00"
         CORES=12
         QUEUE="inference" # "long", "hugemem", "teramem", "basement", "parallel", "week"
         ;;

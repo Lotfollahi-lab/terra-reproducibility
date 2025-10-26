@@ -15,6 +15,19 @@ from nichejepa.datasets.dataloaders import init_dataloader_and_sampler, CustomDi
 def main(args):
     # Load Huggingface dataset
     dataset = load_from_disk(args.dataset_path)
+
+    # Retrieve training indices for filtering
+    # (required for full data as reordering idx is computed on training set;
+    # sample datasets contain only training set anyhow)
+    if args.train_idx_path == "None":
+        args.train_idx_path = None
+
+    if args.train_idx_path:
+        with open(args.train_idx_path, "rb") as f: 
+            train_indices = pickle.load(f)
+        
+        dataset = dataset.select(train_indices)
+
     print(dataset)
 
     # Load precomputed nonzero tokens
@@ -116,15 +129,19 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--dataset_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset',
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
                         help='Path where the Huggingface dataset will be loaded from.')
     parser.add_argument('--nz_tokens_path',
                         type=str,
                         default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_n_nonzero_tokens_train.pkl',
                         help='Path where the precomputed nonzero tokens will be loaded from.')
+    parser.add_argument('--train_idx_path',
+                        type=str,
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl',
+                        help='Path where the train index will be loaded from.')
     parser.add_argument('--idx_save_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl',
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl',
                         help='Path where the index will be saved.')
     parser.add_argument('--seq_len_cell',
                         type=int,

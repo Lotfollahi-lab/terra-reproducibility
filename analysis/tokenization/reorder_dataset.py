@@ -15,7 +15,7 @@ def main(args):
     # (required for full data as reordering idx was computed on training set;
     # sample datasets contain only training set anyhow)
     if args.train_idx_path == "None":
-            args.train_idx_path = None
+        args.train_idx_path = None
 
     if args.train_idx_path:
         with open(args.train_idx_path, "rb") as f: 
@@ -33,13 +33,13 @@ def main(args):
 
     # Materialize the new physical order
     ds = ds.flatten_indices(
-        num_proc=64,
+        num_proc=args.num_workers,
         writer_batch_size=1000)
 
     print("Flattening done.")
 
-    new_path = args.dataset_path.replace('.dataset', '_ordered.dataset')
-    ds.save_to_disk(new_path, num_shards=4000)
+    new_path = args.dataset_path.replace('.dataset', f'_{args.save_suffix}.dataset')
+    ds.save_to_disk(new_path)
     print("Saved to:", new_path)
 
 
@@ -58,6 +58,14 @@ if __name__ == '__main__':
                         type=str,
                         default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl',
                         help='Path where the order index will be loaded from.')
+    parser.add_argument('--save_suffix',
+                        type=str,
+                        default='ordered',
+                        help='Suffix for saving the ordered file.')
+    parser.add_argument('--num_workers',
+                        type=int,
+                        default=64,
+                        help='Number of workers.')
     args = parser.parse_args()
 
     main(args)
