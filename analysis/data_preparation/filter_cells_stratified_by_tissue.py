@@ -94,19 +94,19 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--dataset_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
                         help='Path where the Huggingface dataset will be loaded from.')
     parser.add_argument('--train_idx_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl',
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl',
                         help='Path where the training index is stored.')
     parser.add_argument('--dataset_split_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_split.txt',
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_split.txt',
                         help='Path where the dataset split is stored.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_90m',
+                        default='hst_corpus_110m',
                         help='Name of data cohort.')
     parser.add_argument('--num_workers',
                         type=int,

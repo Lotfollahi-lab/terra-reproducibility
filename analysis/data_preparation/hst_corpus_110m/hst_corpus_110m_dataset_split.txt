@@ -1,5 +1,4 @@
-val_batch_ids: []
-test_batch_ids: [
+val_batch_ids: [
     '49_batch0',
     '1000_batch11',
     '1000_batch19',
@@ -25,7 +24,9 @@ test_batch_ids: [
     '78_batch9',
     '78_batch8',
     '78_batch4',
-    '78_batch5',
+    '78_batch5'
+    ]
+test_batch_ids: [
     '1002_batch40',
     '1002_batch4',
     '1002_batch16',
@@ -215,5 +216,5 @@ test_batch_ids: [
     '1022_batch52',
     '1022_batch53',
     '1022_batch54',
-    '1022_batch55',
-]
+    '1022_batch55'
+    ]

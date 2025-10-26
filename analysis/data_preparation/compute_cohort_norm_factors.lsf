@@ -1,0 +1,20 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J compute_cohort_norm_factors                                                                   # Job array (4 jobs)
+#BSUB -o ../../logs/data_preparation/compute_cohort_norm_factors/compute_cohort_norm_factors_%J.out    # Standard output (%I = array index)
+#BSUB -e ../../logs/data_preparation/compute_cohort_norm_factors/compute_cohort_norm_factors_%J.err    # Standard error
+#BSUB -q long                                                                                          # Queue name
+#BSUB -n 6                                                                                             # Number of CPU cores
+#BSUB -M 128G                                                                                          # Memory
+#BSUB -R "select[mem>128G] rusage[mem=128G] span[hosts=1]"                                             # Resource requirements
+#BSUB -W 24:00                                                                                         # Walltime (hh:mm)
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run the Python script
+python compute_cohort_norm_factors.py \
+    --cohort_name 'hst_corpus_110m' \
+    --cohort_dataset_names_file_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
+    --basis_target_read_depth \
+    --target_read_depth_per_gene \

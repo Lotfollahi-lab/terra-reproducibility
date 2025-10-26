@@ -126,7 +126,7 @@ if __name__ == '__main__':
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt', # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
     args = parser.parse_args()
     
