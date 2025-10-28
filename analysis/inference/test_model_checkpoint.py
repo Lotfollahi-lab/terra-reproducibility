@@ -92,34 +92,36 @@ def main(args):
     if args.aws_run:
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
             params['data']['precomputed_epoch_n_nonzero_tokens'] = params['data']['precomputed_epoch_n_nonzero_tokens'].replace(
-                f'/fsx-shared/s3/{args.cohort_name}', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer'
+                f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
         elif 'precomputed_n_nonzero_tokens' in params['data'].keys():
             params['data']['precomputed_n_nonzero_tokens'] = params['data']['precomputed_n_nonzero_tokens'].replace(
-                f'/fsx-shared/s3/{args.cohort_name}', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer'
+                f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
         if 'precomputed_epoch_splits' in params['data'].keys():
             params['data']['precomputed_epoch_splits'] = params['data']['precomputed_epoch_splits'].replace(
-                f'/fsx-shared/s3/{args.cohort_name}', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer'
+                f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
         elif 'precomputed_split' in params['data'].keys():
             params['data']['precomputed_split'] = params['data']['precomputed_split'].replace(
-                f'/fsx-shared/s3/{args.cohort_name}', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer'
+                f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
         params['data']['token_dict_folder_path'] = params['data']['token_dict_folder_path'].replace(
-            '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer'
+            '/fsx-shared/s3', f'{args.datasets_path}/tokenizer'
         )
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
-            '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
+            '/fsx-shared/s3', f'{args.datasets_path}/gold/cell-graph-tokenizer'
         ).replace(
-            'hst_corpus_80m', 'hst_corpus_90m'
-        )    
+            'hst_corpus_80m', 'hst_corpus_110m'
+        ).replace(
+            'hst_corpus_90m', 'hst_corpus_110m'
+        )
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
         if 'val_batch_ids' in params['data']:
             del(params['data']['val_batch_ids'])
 
-    #params['data']['precomputed_n_nonzero_tokens'] = f"/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    #params['data']['precomputed_n_nonzero_tokens'] = f'{args.datasets_path}/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
     global layer
     layer = params['meta']['enc_depth']
     ###################
@@ -701,6 +703,10 @@ if __name__ == '__main__':
                         type=str,
                         default='hst_corpus_110m',
                         help='Name of data cohort.')
+    parser.add_argument('--datasets_path',
+                        type=str,
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS',
+                        help='Path to the DATASETS folder.')
     parser.add_argument("--include_xhs49",
                         action=argparse.BooleanOptionalAction,
                         default=False,

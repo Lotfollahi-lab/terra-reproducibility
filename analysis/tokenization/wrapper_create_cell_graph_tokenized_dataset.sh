@@ -18,7 +18,7 @@ case $EXPERIMENT_NAME in
         RAM="600G"
         TIME="48:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="inference"
         ;;
     *)
         #RAM="2200G" # "600G", "1000G", "1500G"
