@@ -61,9 +61,6 @@ def main(args):
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
 
-    if args.read_checkpoint:
-        params['state']['read_checkpoint'] = args.read_checkpoint
-        params['state']['load_checkpoint'] = True
     if args.aws_run:
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
             params['data']['precomputed_epoch_n_nonzero_tokens'] = params['data']['precomputed_epoch_n_nonzero_tokens'].replace(
@@ -124,10 +121,6 @@ def main(args):
     dataset, _, _ = prepare_dataset(params)
     print(dataset) # 88,626,282 cells
 
-    # Get gene panel values for 5k gene panel
-    min_gene_panel_size = 4948
-    max_gene_panel_size = 4949
-
     # Perform index subtraction as in tokenizer
     max_cls_tokens = 100
     spv_dict = {
@@ -136,7 +129,7 @@ def main(args):
     spv_idx_subtract = spv_start_idx - 2 - max_cls_tokens
 
     keep_gene_panel_values = torch.tensor([
-        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= min_gene_panel_size) and (int(k.split('panel')[1]) <= max_gene_panel_size)])
+        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= args.min_gene_panel_size) and (int(k.split('panel')[1]) <= args.max_gene_panel_size)])
 
     # Filter dataset
     dataset.set_format(type=None) # for extreme speed-up
@@ -168,27 +161,31 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='18062025_082526_412',
+                        default='29102025_142759_837',
                         help='Model load timestamp.')
-    parser.add_argument('--read_checkpoint',
-                        type=str,
-                        default='nichejepa-ep16_0.pth.tar',
-                        help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
                         default=True,
                         help='Flag whether the model was trained on AWS.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_80m',
+                        default='hst_corpus_110m',
                         help='Name of data cohort.')
+    parser.add_argument('--min_gene_panel_size',
+                        type=int,
+                        default=4947,
+                        help='Minimum gene panel size.')
+    parser.add_argument('--max_gene_panel_size',
+                        type=int,
+                        default=5049,
+                        help='Maximum gene panel size.')
     parser.add_argument('--num_workers',
                         type=int,
                         default=12,
                         help='Number of workers.')
     parser.add_argument('--filtered_dataset_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k.dataset',
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset',
                         help='Path where the filtered Huggingface dataset will be stored.')    
     args = parser.parse_args()
     

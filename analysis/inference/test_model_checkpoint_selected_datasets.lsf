@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -G team361                                                                    # LSF group
-#BSUB -J test_model_checkpoint[1-6]                                                 # Array job: 6 jobs (one per dataset)
+#BSUB -J test_model_checkpoint                                                      # Job name
 #BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.out    # Standard output (%J = job ID)
 #BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.err    # Standard error
 #BSUB -q inference                                                                  # Queue name
@@ -13,17 +13,16 @@
 # Load your environment
 source ~/.venvs/nichejepa/bin/activate
 
-# Define your datasets
-datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
-
-# Select dataset based on job index (LSF arrays start at 1)
-dataset=${datasets[$((LSB_JOBINDEX-1))]}
-
 # Run your Python script
 python test_model_checkpoint.py \
-    --cohort_name hst_corpus_90m \
-    --load_timestamp 12092025_142608_797 \
-    --read_checkpoint nichejepa-ep3.pth.tar \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 26102025_145410_337 \
+    --read_checkpoint nichejepa-ep2.pth.tar \
     --datasets_path /nfs/team361/sb75/DATASETS \
-    "$dataset"  
+    --no-include_xhs49 \
+    --no-include_xhs1000 \
+    --include_xhk1007 \
+    --include_xhb1002 \
+    --no-include_chl59 \
+    --no-include_chr78 \
 
