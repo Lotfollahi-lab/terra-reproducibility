@@ -1,0 +1,191 @@
+Load timestamp: 26102025_145410_337.
+Read checkpoint: nichejepa-ep2.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV2-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV5-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV8-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV1-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV9-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV3-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV6-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV7-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV4-41b_1p.
+        Class 1      Class 2  Mean Similarity  Variance Similarity
+0       Myeloid      Myeloid         0.520170             0.072344
+1       Myeloid   Epithelium         0.487778             0.109033
+2       Myeloid  Endothelium         0.263627             0.047596
+3       Myeloid     Lymphoid         0.369803             0.075083
+4       Myeloid       Stroma         0.258153             0.059670
+5    Epithelium      Myeloid         0.487778             0.109034
+6    Epithelium   Epithelium         0.937507             0.008038
+7    Epithelium  Endothelium         0.242498             0.059564
+8    Epithelium     Lymphoid         0.458781             0.134504
+9    Epithelium       Stroma         0.223124             0.085350
+10  Endothelium      Myeloid         0.263627             0.047596
+11  Endothelium   Epithelium         0.242502             0.059564
+12  Endothelium  Endothelium         0.503148             0.064314
+13  Endothelium     Lymphoid         0.257620             0.052737
+14  Endothelium       Stroma         0.369308             0.048475
+15     Lymphoid      Myeloid         0.369803             0.075082
+16     Lymphoid   Epithelium         0.458792             0.134505
+17     Lymphoid  Endothelium         0.257620             0.052736
+18     Lymphoid     Lymphoid         0.439317             0.092573
+19     Lymphoid       Stroma         0.238567             0.062867
+20       Stroma      Myeloid         0.258153             0.059670
+21       Stroma   Epithelium         0.223124             0.085350
+22       Stroma  Endothelium         0.369308             0.048475
+23       Stroma     Lymphoid         0.238567             0.062867
+24       Stroma       Stroma         0.477840             0.068988
+Average level_1_cell_type cosine similarity is 0.3686605393886566.
+Target number of unique values: 5.
+Leiden resolution: 0.75.
+Number of latent clusters 21.
+Leiden resolution: 0.65.
+Number of latent clusters 19.
+Leiden resolution: 0.55.
+Number of latent clusters 17.
+Leiden resolution: 0.45000000000000007.
+Number of latent clusters 15.
+Leiden resolution: 0.3500000000000001.
+Number of latent clusters 15.
+Leiden resolution: 0.2500000000000001.
+Number of latent clusters 12.
+Leiden resolution: 0.20000000000000012.
+Number of latent clusters 11.
+Leiden resolution: 0.15000000000000013.
+Number of latent clusters 9.
+Leiden resolution: 0.13000000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12900000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12800000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12700000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12600000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12500000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12400000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12300000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12200000000000014.
+Number of latent clusters 7.
+Leiden resolution: 0.12100000000000014.
+Number of latent clusters 8.
+Leiden resolution: 0.12000000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11900000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11800000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11700000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11600000000000013.
+Number of latent clusters 7.
+Leiden resolution: 0.11500000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11400000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11300000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.11200000000000013.
+Number of latent clusters 7.
+Leiden resolution: 0.11100000000000013.
+Number of latent clusters 7.
+Leiden resolution: 0.11000000000000013.
+Number of latent clusters 8.
+Leiden resolution: 0.10900000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10800000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10700000000000012.
+Number of latent clusters 6.
+Leiden resolution: 0.10600000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.10500000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10400000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10300000000000012.
+Number of latent clusters 6.
+Leiden resolution: 0.10200000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10100000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.10000000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.09900000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.09800000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09700000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09600000000000011.
+Number of latent clusters 6.
+Leiden resolution: 0.09500000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09400000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09300000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09200000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09100000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.09000000000000011.
+Number of latent clusters 6.
+Leiden resolution: 0.0890000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0880000000000001.
+Number of latent clusters 7.
+Leiden resolution: 0.0870000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0860000000000001.
+Number of latent clusters 7.
+Leiden resolution: 0.0850000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0840000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0830000000000001.
+Number of latent clusters 8.
+Leiden resolution: 0.0820000000000001.
+Number of latent clusters 7.
+Leiden resolution: 0.0810000000000001.
+Number of latent clusters 7.
+Leiden resolution: 0.0800000000000001.
+Number of latent clusters 7.
+Leiden resolution: 0.0790000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0780000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0770000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0760000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0750000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.0740000000000001.
+Number of latent clusters 6.
+Leiden resolution: 0.07300000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.07200000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.07100000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.07000000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.06900000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.06800000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.06700000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.06600000000000009.
+Number of latent clusters 6.
+Leiden resolution: 0.06500000000000009.
+Number of latent clusters 5.
+NMI is 0.5387478786057756. ARI is 0.5852133301333556.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']

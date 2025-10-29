@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/concatenate_datasets.py", line 125, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/concatenate_datasets.py", line 59, in main
+    concatenated_dataset = datasets.concatenate_datasets(ds_list)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/combine.py", line 213, in concatenate_datasets
+    return _concatenate_map_style_datasets(dsets, info=info, split=split, axis=axis)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 6406, in _concatenate_map_style_datasets
+    _check_if_features_can_be_aligned([dset.features for dset in dsets])
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/features/features.py", line 2301, in _check_if_features_can_be_aligned
+    raise ValueError(
+ValueError: The features can't be aligned because the key batch_token of features {'rel_x_coord': List(Value('float64')), 'rel_y_coord': List(Value('float64')), 'cell_id': Value('string'), 'batch_token': Value('int64'), 'gene_panel_token': Value('int64'), 'assay_token': Value('int64'), 'species_token': Value('int64'), 'tissue_token': Value('int64'), 'batch_value': List(Value('int64')), 'gene_panel_value': List(Value('int64')), 'assay_value': List(Value('int64')), 'species_value': List(Value('int64')), 'tissue_value': List(Value('int64')), 'gene_tokens': List(Value('int64')), 'gene_expr': List(Value('float64')), 'n_nonzero_tokens': Value('int64')} has unexpected type - Value('int64') (expected either List(Value('int64')) or Value("null").

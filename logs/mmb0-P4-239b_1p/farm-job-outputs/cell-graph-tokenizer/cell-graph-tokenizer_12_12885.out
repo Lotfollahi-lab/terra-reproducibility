@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0403>
+Subject: Job 12885: <mmb0-P4-239b_1p_cell-graph-tokenizer_12> in cluster <cub22> Exited
+
+Job <mmb0-P4-239b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Wed Oct 29 06:55:29 2025
+Job was executed on host(s) <12*farm-gpu0403>, in queue <inference>, as user <sb75> in cluster <cub22> at Wed Oct 29 09:23:29 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct 29 09:23:29 2025
+Terminated at Wed Oct 29 09:23:41 2025
+Results reported at Wed Oct 29 09:23:41 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mmb0-P4-239b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   13.32 sec.
+    Max Memory :                                 516 MB
+    Average Memory :                             400.75 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               613884.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   12 sec.
+    Turnaround time :                            8892 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mmb0-P4-239b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_12885.err> for stderr output of this job.
+
