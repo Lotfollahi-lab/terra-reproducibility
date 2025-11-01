@@ -1,0 +1,22 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 534, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 156, in run_inference
+    _, _, test_dataset = prepare_dataset(params)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/datasets/utils.py", line 56, in prepare_dataset
+    ds = load_from_disk(data_path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/load.py", line 1470, in load_from_disk
+    return Dataset.load_from_disk(dataset_path, keep_in_memory=keep_in_memory, storage_options=storage_options)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1773, in load_from_disk
+    dataset_size = estimate_dataset_size(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/file_utils.py", line 426, in estimate_dataset_size
+    return sum(path.stat().st_size for path in paths)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/file_utils.py", line 426, in <genexpr>
+    return sum(path.stat().st_size for path in paths)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pathlib.py", line 1097, in stat
+    return self._accessor.stat(self, follow_symlinks=follow_symlinks)
+KeyboardInterrupt

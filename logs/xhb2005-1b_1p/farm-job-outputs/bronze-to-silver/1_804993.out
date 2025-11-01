@@ -1,0 +1,49 @@
+Experiment Name: xhb2005-1b_1p
+Input Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2005-1b_1p
+Output Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2005-1b_1p
+No bronze (raw) .h5ad files found.
+Loading gene name to ensembl id dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-22>
+Subject: Job 804993: <xhb2005-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhb2005-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Oct 31 16:44:33 2025
+Job was executed on host(s) <node-14-22>, in queue <normal>, as user <sb75> in cluster <farm22> at Fri Oct 31 16:44:33 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Oct 31 16:44:33 2025
+Terminated at Fri Oct 31 16:44:47 2025
+Results reported at Fri Oct 31 16:44:47 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhb2005-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6.98 sec.
+    Max Memory :                                 261 MB
+    Average Memory :                             201.50 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50939.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   18 sec.
+    Turnaround time :                            14 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb2005-1b_1p/farm-job-outputs/bronze-to-silver/1_804993.err> for stderr output of this job.
+

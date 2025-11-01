@@ -1,0 +1,197 @@
+Experiment Name: xhb2008-1b_1p
+Input Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p
+Output Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2008-1b_1p
+No bronze (raw) .h5ad files found.
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1...
+[+] Reading /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1/cell_feature_matrix.h5
+[+] Reading observations /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1/cells.parquet
+[+] Reading experiment /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1/experiment.xenium
+[+] Reading gene panel /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1/Xenium_FFPE_Human_Breast_Cancer_Rep1_gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 167780 × 313
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1.h5ad
+Loading gene name to ensembl id dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (167780, 313)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 10604415 stored elements and shape (167780, 313)>
+  Coords	Values
+  (0, 33)	1
+  (0, 36)	1
+  (0, 67)	1
+  (0, 84)	1
+  (0, 95)	1
+  (0, 113)	3
+  (0, 170)	2
+  (0, 171)	4
+  (0, 212)	1
+  (0, 229)	2
+  (0, 256)	1
+  (0, 279)	5
+  (0, 284)	2
+  (0, 300)	2
+  (0, 309)	1
+  (1, 2)	1
+  (1, 7)	2
+  (1, 14)	1
+  (1, 41)	2
+  (1, 68)	4
+  (1, 72)	1
+  (1, 85)	1
+  (1, 100)	2
+  (1, 103)	1
+  (1, 111)	2
+  :	:
+  (167779, 248)	1
+  (167779, 250)	14
+  (167779, 252)	1
+  (167779, 253)	1
+  (167779, 254)	6
+  (167779, 257)	14
+  (167779, 258)	1
+  (167779, 261)	3
+  (167779, 266)	2
+  (167779, 267)	1
+  (167779, 268)	6
+  (167779, 274)	4
+  (167779, 279)	13
+  (167779, 284)	2
+  (167779, 286)	1
+  (167779, 287)	2
+  (167779, 288)	1
+  (167779, 289)	1
+  (167779, 292)	5
+  (167779, 294)	4
+  (167779, 295)	2
+  (167779, 296)	7
+  (167779, 299)	3
+  (167779, 300)	1
+  (167779, 307)	3
+adata.X shape: (167780, 313)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 313
+Number of genes with matching ensembl ids: 305
+Number of genes skipped: 8
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC11     ENSG00000121270
+ACTA2      ENSG00000107796
+ACTG2      ENSG00000163017
+ADAM9      ENSG00000168615
+ADGRE5     ENSG00000123146
+...                    ...
+VOPP1      ENSG00000154978
+VWF        ENSG00000110799
+ZEB1       ENSG00000148516
+ZEB2       ENSG00000169554
+ZNF562     ENSG00000171466
+
+[305 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 847.2599   326.19138]
+ [ 826.342    328.03183]
+ [ 848.7669   331.7432 ]
+ ...
+ [7470.159   5119.132  ]
+ [7477.7373  5128.713  ]
+ [7489.3765  5123.1978 ]]
+AnnData object with n_obs × n_vars = 167780 × 305
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2008
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: breast
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1': 'invasive_ductal_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+1              2008_batch0_0
+2              2008_batch0_1
+5              2008_batch0_2
+8              2008_batch0_3
+9              2008_batch0_4
+                 ...        
+167776    2008_batch0_163469
+167777    2008_batch0_163470
+167778    2008_batch0_163471
+167779    2008_batch0_163472
+167780    2008_batch0_163473
+Name: cell_id, Length: 163474, dtype: object
+Harmonized adata_batch shape: (163474, 305)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 163474 × 305
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2008-1b_1p/Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-07>
+Subject: Job 804348: <xhb2008-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhb2008-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Oct 31 16:27:32 2025
+Job was executed on host(s) <node-13-07>, in queue <normal>, as user <sb75> in cluster <farm22> at Fri Oct 31 16:27:33 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Oct 31 16:27:33 2025
+Terminated at Fri Oct 31 16:28:03 2025
+Results reported at Fri Oct 31 16:28:03 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhb2008-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   13.80 sec.
+    Max Memory :                                 709 MB
+    Average Memory :                             403.50 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50491.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                17
+    Run time :                                   25 sec.
+    Turnaround time :                            31 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb2008-1b_1p/farm-job-outputs/bronze-to-silver/1_804348.err> for stderr output of this job.
+

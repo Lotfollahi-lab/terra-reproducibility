@@ -1,0 +1,200 @@
+Load timestamp: 30102025_112358_100.
+Read checkpoint: nichejepa-ep1.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs49-1b_1p.
+                   Class 1  ... Variance Similarity
+0                 Epidemis  ...            0.065211
+1                 Epidemis  ...            0.053828
+2                 Epidemis  ...            0.008388
+3                 Epidemis  ...            0.005930
+4                 Epidemis  ...            0.036171
+..                     ...  ...                 ...
+59  Melanoma+blood vessels  ...            0.003408
+60  Melanoma+blood vessels  ...            0.039284
+61  Melanoma+blood vessels  ...            0.037676
+62  Melanoma+blood vessels  ...            0.021059
+63  Melanoma+blood vessels  ...            0.003050
+
+[64 rows x 4 columns]
+Average niche_name cosine similarity is 0.5275564193725586.
+Target number of unique values: 8.
+Leiden resolution: 0.4.
+Number of latent clusters 13.
+Leiden resolution: 0.38.
+Number of latent clusters 13.
+Leiden resolution: 0.36.
+Number of latent clusters 12.
+Leiden resolution: 0.33999999999999997.
+Number of latent clusters 14.
+Leiden resolution: 0.29.
+Number of latent clusters 13.
+Leiden resolution: 0.26999999999999996.
+Number of latent clusters 12.
+Leiden resolution: 0.24999999999999997.
+Number of latent clusters 10.
+Leiden resolution: 0.24899999999999997.
+Number of latent clusters 10.
+Leiden resolution: 0.24799999999999997.
+Number of latent clusters 10.
+Leiden resolution: 0.24699999999999997.
+Number of latent clusters 9.
+Leiden resolution: 0.24599999999999997.
+Number of latent clusters 10.
+Leiden resolution: 0.24499999999999997.
+Number of latent clusters 9.
+Leiden resolution: 0.24399999999999997.
+Number of latent clusters 10.
+Leiden resolution: 0.24299999999999997.
+Number of latent clusters 9.
+Leiden resolution: 0.24199999999999997.
+Number of latent clusters 9.
+Leiden resolution: 0.24099999999999996.
+Number of latent clusters 10.
+Leiden resolution: 0.23999999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23899999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23799999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23699999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23599999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23499999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23399999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23299999999999996.
+Number of latent clusters 10.
+Leiden resolution: 0.23199999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.23099999999999996.
+Number of latent clusters 9.
+Leiden resolution: 0.22999999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22899999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22799999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22699999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22599999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22499999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22399999999999995.
+Number of latent clusters 10.
+Leiden resolution: 0.22299999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22199999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.22099999999999995.
+Number of latent clusters 9.
+Leiden resolution: 0.21999999999999995.
+Number of latent clusters 10.
+Leiden resolution: 0.21899999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21799999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21699999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21599999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21499999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21399999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21299999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21199999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.21099999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.20999999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.20899999999999994.
+Number of latent clusters 9.
+Leiden resolution: 0.20799999999999993.
+Number of latent clusters 9.
+Leiden resolution: 0.20699999999999993.
+Number of latent clusters 9.
+Leiden resolution: 0.20599999999999993.
+Number of latent clusters 9.
+Leiden resolution: 0.20499999999999993.
+Number of latent clusters 9.
+Leiden resolution: 0.20399999999999993.
+Number of latent clusters 8.
+NMI is 0.4574883567940171. ARI is 0.3331595436267859.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0409>
+Subject: Job 13916[1]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Thu Oct 30 23:16:35 2025
+Job was executed on host(s) <12*farm-gpu0409>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Oct 30 23:16:35 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Oct 30 23:16:35 2025
+Terminated at Fri Oct 31 01:08:00 2025
+Results reported at Fri Oct 31 01:08:00 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 30102025_112358_100 \
+    --read_checkpoint nichejepa-ep1.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   7953.38 sec.
+    Max Memory :                                 55552 MB
+    Average Memory :                             6513.39 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               75520.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              20
+    Max Threads :                                86
+    Run time :                                   6685 sec.
+    Turnaround time :                            6685 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_13916_1.err> for stderr output of this job.
+

@@ -1,0 +1,184 @@
+Experiment Name: xhp2000-1b_1p
+Input Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2000-1b_1p
+Output Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2000-1b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2000-1b_1p/Xenium_Pancreatic_Cancer_with_Xenium_Human_Multi-Tissue_and_Cancer_Panel.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (190965, 474)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 11315391 stored elements and shape (190965, 474)>
+  Coords	Values
+  (0, 3)	4
+  (0, 4)	1
+  (0, 16)	5
+  (0, 20)	1
+  (0, 38)	1
+  (0, 40)	1
+  (0, 41)	1
+  (0, 52)	1
+  (0, 53)	3
+  (0, 58)	1
+  (0, 64)	3
+  (0, 66)	1
+  (0, 76)	1
+  (0, 79)	1
+  (0, 88)	1
+  (0, 91)	1
+  (0, 98)	1
+  (0, 118)	1
+  (0, 119)	2
+  (0, 123)	1
+  (0, 137)	3
+  (0, 158)	7
+  (0, 161)	1
+  (0, 162)	2
+  (0, 163)	1
+  :	:
+  (190964, 301)	1
+  (190964, 315)	1
+  (190964, 323)	1
+  (190964, 324)	1
+  (190964, 325)	1
+  (190964, 332)	4
+  (190964, 333)	1
+  (190964, 342)	4
+  (190964, 347)	1
+  (190964, 359)	1
+  (190964, 370)	1
+  (190964, 375)	1
+  (190964, 376)	1
+  (190964, 390)	1
+  (190964, 393)	1
+  (190964, 394)	2
+  (190964, 404)	2
+  (190964, 405)	1
+  (190964, 424)	2
+  (190964, 429)	1
+  (190964, 442)	2
+  (190964, 456)	1
+  (190964, 463)	1
+  (190964, 467)	1
+  (190964, 472)	5
+adata.X shape: (190965, 474)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 474
+Number of genes with matching ensembl ids: 468
+Number of genes skipped: 6
+adata.var:
+                ensembl_id
+gene_name                 
+ABCC11     ENSG00000121270
+ACE2       ENSG00000130234
+ACKR1      ENSG00000213088
+ACTA2      ENSG00000107796
+ACTG2      ENSG00000163017
+...                    ...
+VSIG4      ENSG00000155659
+VTN        ENSG00000109072
+VWA5A      ENSG00000110002
+VWF        ENSG00000110799
+YAF2       ENSG00000015153
+
+[468 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 793.2606   843.561  ]
+ [ 816.5379   788.01575]
+ [ 558.5094   852.3487 ]
+ ...
+ [9122.769   1728.8768 ]
+ [9095.9375  1759.6891 ]
+ [9114.828   1761.4355 ]]
+AnnData object with n_obs × n_vars = 190965 × 468
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2000
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: pancreas
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_Pancreatic_Cancer_with_Xenium_Human_Multi-Tissue_and_Cancer_Panel': 'ductal_adenocarcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaanbjb-1         2000_batch0_0
+aaabbnlb-1         2000_batch0_1
+aaabdean-1         2000_batch0_2
+aaabkppc-1         2000_batch0_3
+aaablfle-1         2000_batch0_4
+                     ...        
+oipjjmli-1    2000_batch0_190280
+oipkfocl-1    2000_batch0_190281
+oipkjaho-1    2000_batch0_190282
+oipkmkcd-1    2000_batch0_190283
+oiplafol-1    2000_batch0_190284
+Name: cell_id, Length: 190285, dtype: object
+Harmonized adata_batch shape: (190285, 468)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 190285 × 468
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2000-1b_1p/Xenium_Pancreatic_Cancer_with_Xenium_Human_Multi-Tissue_and_Cancer_Panel.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-22>
+Subject: Job 647697: <xhp2000-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhp2000-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Thu Oct 30 15:56:51 2025
+Job was executed on host(s) <node-13-22>, in queue <normal>, as user <sb75> in cluster <farm22> at Thu Oct 30 15:56:52 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Oct 30 15:56:52 2025
+Terminated at Thu Oct 30 15:57:09 2025
+Results reported at Thu Oct 30 15:57:09 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhp2000-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   8.19 sec.
+    Max Memory :                                 760 MB
+    Average Memory :                             510.20 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50440.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   23 sec.
+    Turnaround time :                            18 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhp2000-1b_1p/farm-job-outputs/bronze-to-silver/1_647697.err> for stderr output of this job.
+

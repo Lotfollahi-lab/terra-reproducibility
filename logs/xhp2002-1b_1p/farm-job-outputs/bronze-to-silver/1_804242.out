@@ -1,0 +1,197 @@
+Experiment Name: xhp2002-1b_1p
+Input Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p
+Output Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2002-1b_1p
+No bronze (raw) .h5ad files found.
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel...
+[+] Reading /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel/cell_feature_matrix.h5
+[+] Reading observations /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel/cells.parquet
+[+] Reading experiment /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel/experiment.xenium
+[+] Reading gene panel /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 235099 × 380
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel.h5ad
+Loading gene name to ensembl id dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (235099, 380)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 7210146 stored elements and shape (235099, 380)>
+  Coords	Values
+  (0, 1)	4
+  (0, 2)	1
+  (0, 3)	13
+  (0, 5)	1
+  (0, 7)	1
+  (0, 8)	12
+  (0, 14)	1
+  (0, 15)	5
+  (0, 22)	1
+  (0, 28)	1
+  (0, 35)	7
+  (0, 42)	1
+  (0, 69)	2
+  (0, 84)	1
+  (0, 88)	8
+  (0, 92)	1
+  (0, 94)	3
+  (0, 97)	2
+  (0, 104)	1
+  (0, 110)	14
+  (0, 112)	1
+  (0, 123)	1
+  (0, 137)	2
+  (0, 138)	4
+  (0, 145)	12
+  :	:
+  (235098, 289)	1
+  (235098, 290)	2
+  (235098, 292)	1
+  (235098, 293)	1
+  (235098, 298)	1
+  (235098, 300)	1
+  (235098, 303)	1
+  (235098, 307)	1
+  (235098, 312)	1
+  (235098, 313)	1
+  (235098, 315)	1
+  (235098, 322)	1
+  (235098, 328)	2
+  (235098, 336)	3
+  (235098, 342)	1
+  (235098, 347)	1
+  (235098, 349)	1
+  (235098, 351)	1
+  (235098, 357)	1
+  (235098, 364)	1
+  (235098, 365)	1
+  (235098, 369)	2
+  (235098, 371)	1
+  (235098, 373)	1
+  (235098, 375)	2
+adata.X shape: (235099, 380)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 380
+Number of genes with matching ensembl ids: 371
+Number of genes skipped: 9
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ACE2       ENSG00000130234
+ACTA2      ENSG00000107796
+ACTB       ENSG00000075624
+ADAM28     ENSG00000042980
+...                    ...
+VEGFA      ENSG00000112715
+VSIG4      ENSG00000155659
+VSIR       ENSG00000107738
+XBP1       ENSG00000100219
+ZNF683     ENSG00000176083
+
+[371 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[5952.4414 1723.5676]
+ [5968.458  1720.0582]
+ [5959.348  1724.9719]
+ ...
+ [8284.897  1157.2961]
+ [8278.814  1156.7733]
+ [8286.177  1148.4296]]
+AnnData object with n_obs × n_vars = 235099 × 371
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2002
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: pancreas
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel': 'ductal_adenocarcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaabjea-1         2002_batch0_0
+aaaagkdm-1         2002_batch0_1
+aaaamcdi-1         2002_batch0_2
+aaaaoidb-1         2002_batch0_3
+aaabdlfj-1         2002_batch0_4
+                     ...        
+oiofiklj-1    2002_batch0_213714
+oiofjpkj-1    2002_batch0_213715
+oiogecaa-1    2002_batch0_213716
+oiogfjcf-1    2002_batch0_213717
+oioghamb-1    2002_batch0_213718
+Name: cell_id, Length: 213719, dtype: object
+Harmonized adata_batch shape: (213719, 371)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 213719 × 371
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2002-1b_1p/Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-18>
+Subject: Job 804242: <xhp2002-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhp2002-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Oct 31 16:23:58 2025
+Job was executed on host(s) <node-13-18>, in queue <normal>, as user <sb75> in cluster <farm22> at Fri Oct 31 16:23:59 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Oct 31 16:23:59 2025
+Terminated at Fri Oct 31 16:24:40 2025
+Results reported at Fri Oct 31 16:24:40 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhp2002-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   26.10 sec.
+    Max Memory :                                 890 MB
+    Average Memory :                             554.29 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50310.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                19
+    Run time :                                   42 sec.
+    Turnaround time :                            42 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhp2002-1b_1p/farm-job-outputs/bronze-to-silver/1_804242.err> for stderr output of this job.
+
