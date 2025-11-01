@@ -1,0 +1,35 @@
+experiment:
+  name: "xhb2007-1b_1p"
+  description: "Xenium Human Breast (dataset-id 2007) | 1 batch | 1 panel | x genes"
+  study: "Dataset from Hest1k-IDC NCBI783 (Dabin Jeong) for CVPR submission"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/lotfollahi/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_2
+
+harmonization:
+  uns: {
+    'dataset_id': 2007,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'breast',
+    'sample_condition_map': {
+      'Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_2': 'invasive_ductal_carcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

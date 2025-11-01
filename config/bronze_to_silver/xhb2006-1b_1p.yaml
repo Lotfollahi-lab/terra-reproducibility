@@ -1,0 +1,35 @@
+experiment:
+  name: "xhb2006-1b_1p"
+  description: "Xenium Human Breast (dataset-id 2006) | 1 batch | 1 panel | x genes"
+  study: "Dataset from Hest1k-IDC TENX99 (Dabin Jeong) for CVPR submission"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/lotfollahi/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_FFPE_Human_Breast_using_the_Entire_Sample_Area_replicate_1
+
+harmonization:
+  uns: {
+    'dataset_id': 2006,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'breast',
+    'sample_condition_map': {
+      'Xenium_FFPE_Human_Breast_using_the_Entire_Sample_Area_replicate_1': 'invasive_ductal_carcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }
