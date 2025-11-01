@@ -22,7 +22,7 @@ RATIO=${ratios[$((LSB_JOBINDEX-1))]}
 # Run the Python script
 python filter_cells_stratified_by_tissue.py \
     --sample_ratios "$RATIO" \
-    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --dataset_path '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
     --train_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl' \
     --dataset_split_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_split.txt' \
     --cohort_name 'hst_corpus_110m' \

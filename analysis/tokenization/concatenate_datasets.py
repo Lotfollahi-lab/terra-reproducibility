@@ -78,7 +78,7 @@ if __name__ == '__main__':
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names_additional.txt', # '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt'
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt', #'/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names_additional.txt'
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,
@@ -114,11 +114,11 @@ if __name__ == '__main__':
                         help='Count count norm method.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default='10', # '10', '6'
+                        default=6, # 10, 6
                         help='Number of neighbors.')
     parser.add_argument('--seq_len',
                         type=int,
-                        default='2816',
+                        default=7168, # 2816, 7168
                         help='Sequence length.')
     args = parser.parse_args()
     

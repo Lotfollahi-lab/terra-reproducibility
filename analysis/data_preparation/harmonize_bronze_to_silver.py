@@ -16,7 +16,7 @@ from extract_utils import pre_process
 def create_gene_ensembl_map_dict(
         data_directory_path: Path,
         species: str, 
-        release: int=111
+        release: int=111,
     ) -> dict:
     """
     Create a dictionary of gene symbol names to ensembl id obtained from Ensembl Release.
