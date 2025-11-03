@@ -126,10 +126,6 @@ def main(args):
     dataset, _, _ = prepare_dataset(params)
     print(dataset) # 88,626,282 cells
 
-    # Get gene panel values for 5k gene panel
-    min_gene_panel_size = 4948
-    max_gene_panel_size = 4949
-
     # Perform index subtraction as in tokenizer
     max_cls_tokens = 100
     spv_dict = {
@@ -138,7 +134,7 @@ def main(args):
     spv_idx_subtract = spv_start_idx - 2 - max_cls_tokens
 
     keep_gene_panel_values = torch.tensor([
-        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= min_gene_panel_size) and (int(k.split('panel')[1]) <= max_gene_panel_size)])
+        v - spv_idx_subtract for k,v in token_dict.items() if ('spv_gene_panel' in k) and (int(k.split('panel')[1]) >= args.min_gene_panel_size) and (int(k.split('panel')[1]) <= args.max_gene_panel_size)])
 
     # Filter dataset
     dataset.set_format(type=None) # for extreme speed-up
@@ -243,6 +239,14 @@ if __name__ == '__main__':
                         type=int,
                         default=9,
                         help='Inference start step.')
+    parser.add_argument('--min_gene_panel_size',
+                        type=int,
+                        default=4947,
+                        help='Minimum gene panel size.')
+    parser.add_argument('--max_gene_panel_size',
+                        type=int,
+                        default=5049,
+                        help='Maximum gene panel size.')
     parser.add_argument('--num_workers',
                         type=int,
                         default=12,

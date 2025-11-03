@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -G team361
-#BSUB -J get_5k_cell_embeddings_[1-14]                                                   # Job array (14 jobs)
+#BSUB -J get_5k_cell_embeddings_[1-30]                                                   # Job array (14 jobs)
 #BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.out    # Standard output (%J = job ID)
 #BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.err    # Standard error
 #BSUB -q inference                                                                       # Queue name
@@ -23,7 +23,7 @@ echo "Running job index: $LSB_JOBINDEX, steps: $START-$END"
 
 # Run your Python script
 python get_5k_cell_embeddings.py \
-    --load_timestamp '18092025_140643_921' \
-    --read_checkpoint 'nichejepa-ep4.pth.tar' \
+    --load_timestamp '29102025_142759_837' \
+    --read_checkpoint 'nichejepa-ep3.pth.tar' \
     --start_step "$START" \
     --end_step "$END"
