@@ -1,9 +1,10 @@
 data:
-  dataset_name: 'hst_corpus_90m'
-  raw_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_90m'
+  dataset_name: 'hst_corpus_110m'
+  raw_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m'
   token_dict_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
-  tokenized_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
-  'finetune_training_data_path': '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/toy_train_dataset_xhs1000-39b_1p-batch1.dataset'
+  tokenized_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
+  'finetune_dataset': '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/toy_train_dataset_xhs1000-39b_1p-batch1.dataset'
+  'finetune_adata': '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/toy_train_dataset_xhs1000-39b_1p-batch1.h5ad'
   precomputed_split: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl'
   precomputed_n_nonzero_tokens: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10_n_nonzero_tokens_train.pkl'
   test_batch_ids: ['49_batch0']
@@ -49,8 +50,6 @@ mask:
   per_block_mask_ratio: 0.6 # 0.5, 0.6, 0.7, 0.8
   sample_segments: True # True
   restrict_neb_attn: False # True
-model:
-  ckpt_dir: '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/18092025_140643_921'
 optimization:
   warmup: 3 # 5, 3
   epochs: 2 # 30, 10
@@ -69,8 +68,18 @@ state:
   checkpoint_freq: 1
   write_tag: nichejepa
   read_timestamp: ''
-  folder_path: null
-  load_checkpoint: False # true, false
+  folder_path: '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/29102025_142759_837'
+  load_checkpoint: true # true, false
   read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
   checkpoint_freq_iter: 5000
-
+finetune:
+  use_peft: true
+  peft_method: 'lora'
+  peft_rank: 8
+  peft_alpha: 16
+  peft_dropout: 0.05
+  peft_bias: "none"
+  peft_task_type: 'SEQ_CLS'
+  use_mlp: false
+  hidden_dim: 512
+  label_name: 'NICHE_NAMES'
