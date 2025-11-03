@@ -56,3 +56,139 @@ Tissue cell count diff: -325714. Continuing...
 Tissue cell count diff: -548603. Continuing...
 Tissue cell count diff: -624761. Continuing...
 Tissue cell count diff: -203573. Continuing...
+Complete length of current dataset: 241623.
+Tissue cell count diff: -239207.
+Truncated length of current dataset: 2416.
+Tissue cell count diff: -624761. Continuing...
+Tissue cell count diff: -325714. Continuing...
+Complete length of current dataset: 123877.
+Complete length of current dataset: 1617614.
+Tissue cell count diff: -1590715.
+Truncated length of current dataset: 26899.
+Tissue cell count diff: -548603. Continuing...
+Complete length of current dataset: 1343752.
+Tissue cell count diff: -1302239.
+Truncated length of current dataset: 41513.
+Complete length of current dataset: 24899.
+Tissue cell count diff: -22364.
+Truncated length of current dataset: 2535.
+Tissue cell count diff: -1133369. Continuing...
+Tissue cell count diff: -1133369. Continuing...
+Complete length of current dataset: 814611.
+Tissue cell count diff: -754523.
+Truncated length of current dataset: 60088.
+Tissue cell count diff: -1133369. Continuing...
+Tissue cell count diff: -325714. Continuing...
+Complete length of current dataset: 2144591.
+Tissue cell count diff: -2123146.
+Truncated length of current dataset: 21445.
+Tissue cell count diff: -1133369. Continuing...
+Complete length of current dataset: 777955.
+Tissue cell count diff: -770176.
+Truncated length of current dataset: 7779.
+Tissue cell count diff: -1590715. Continuing...
+Tissue cell count diff: -754523. Continuing...
+Tissue cell count diff: -325714. Continuing...
+Complete length of current dataset: 2328471.
+Tissue cell count diff: -2305187.
+Truncated length of current dataset: 23284.
+Tissue cell count diff: -624761. Continuing...
+Tissue cell count diff: -624761. Continuing...
+Tissue cell count diff: -754523. Continuing...
+Tissue cell count diff: -295738. Continuing...
+Tissue cell count diff: -1133369. Continuing...
+Tissue cell count diff: -295738. Continuing...
+Tissue cell count diff: -548603. Continuing...
+Tissue cell count diff: -624761. Continuing...
+Tissue cell count diff: -1302239. Continuing...
+Tissue cell count diff: -166027. Continuing...
+Tissue cell count diff: -624761. Continuing...
+Tissue cell count diff: -295738. Continuing...
+Tissue cell count diff: -22364. Continuing...
+Tissue cell count diff: -866473. Continuing...
+Tissue cell count diff: -754523. Continuing...
+Tissue cell count diff: -866473. Continuing...
+Complete length of current dataset: 213719.
+Tissue cell count diff: -211582.
+Truncated length of current dataset: 2137.
+Tissue cell count diff: -754523. Continuing...
+Tissue cell count diff: -1590715. Continuing...
+Tissue cell count diff: -1302239. Continuing...
+Tissue cell count diff: -866473. Continuing...
+Tissue cell count diff: -548603. Continuing...
+Tissue cell count diff: -866473. Continuing...
+Tissue cell count diff: -1133369. Continuing...
+Tissue cell count diff: -866473. Continuing...
+Combined dataset length: 960470.
+Saving combined dataset...
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0404>
+Subject: Job 14797[1]: <filter_cells_stratified_by_tissue_[1-4]> in cluster <cub22> Done
+
+Job <filter_cells_stratified_by_tissue_[1-4]> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Sat Nov  1 11:32:29 2025
+Job was executed on host(s) <12*farm-gpu0404>, in queue <inference>, as user <sb75> in cluster <cub22> at Sat Nov  1 11:32:29 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation> was used as the working directory.
+Started at Sat Nov  1 11:32:29 2025
+Terminated at Sat Nov  1 18:58:11 2025
+Results reported at Sat Nov  1 18:58:11 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J filter_cells_stratified_by_tissue_[1-4]                                                                      # Job array (4 jobs)
+#BSUB -o ../../logs/data_preparation/filter_cells_stratified_by_tissue/filter_cells_stratified_by_tissue_%J_%I.out    # Standard output (%I = array index)
+#BSUB -e ../../logs/data_preparation/filter_cells_stratified_by_tissue/filter_cells_stratified_by_tissue_%J_%I.err    # Standard error
+#BSUB -q inference                                                                                                    # Queue name
+#BSUB -n 12                                                                                                           # Number of CPU cores
+#BSUB -M 128GB                                                                                                        # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                                                          # Resource requirements
+#BSUB -W 48:00                                                                                                        # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                                             # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define the list of sample ratios
+ratios=(0.01 0.1 0.25 0.5)
+
+# Get the ratio for this job index
+RATIO=${ratios[$((LSB_JOBINDEX-1))]}
+
+# Run the Python script
+python filter_cells_stratified_by_tissue.py \
+    --sample_ratios "$RATIO" \
+    --dataset_path '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --train_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl' \
+    --dataset_split_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_split.txt' \
+    --cohort_name 'hst_corpus_110m' \
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   192197.19 sec.
+    Max Memory :                                 82870 MB
+    Average Memory :                             59367.04 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               48202.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              17
+    Max Threads :                                37
+    Run time :                                   26742 sec.
+    Turnaround time :                            26742 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/data_preparation/filter_cells_stratified_by_tissue/filter_cells_stratified_by_tissue_14797_1.err> for stderr output of this job.
+

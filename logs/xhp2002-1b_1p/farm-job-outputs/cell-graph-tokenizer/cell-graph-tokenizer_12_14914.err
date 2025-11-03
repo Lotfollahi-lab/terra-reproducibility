@@ -1,0 +1,95 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:660: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Setting num_proc from 12 back to 1 for the train split to disable multiprocessing as it only contains one shard.
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1000 examples [00:00, 7538.70 examples/s]Generating train split: 3000 examples [00:00, 11625.63 examples/s]Generating train split: 5000 examples [00:00, 8744.59 examples/s] Generating train split: 7000 examples [00:00, 10524.71 examples/s]Generating train split: 9000 examples [00:00, 11846.96 examples/s]Generating train split: 11000 examples [00:00, 12767.20 examples/s]Generating train split: 13000 examples [00:01, 13310.14 examples/s]Generating train split: 15000 examples [00:01, 13785.99 examples/s]Generating train split: 17000 examples [00:01, 14107.99 examples/s]Generating train split: 19000 examples [00:01, 14421.92 examples/s]Generating train split: 21000 examples [00:01, 14537.57 examples/s]Generating train split: 23000 examples [00:01, 14566.82 examples/s]Generating train split: 25000 examples [00:01, 14555.06 examples/s]Generating train split: 27000 examples [00:02, 14616.80 examples/s]Generating train split: 29000 examples [00:02, 14707.21 examples/s]Generating train split: 31000 examples [00:02, 14835.76 examples/s]Generating train split: 33000 examples [00:02, 14769.56 examples/s]Generating train split: 35000 examples [00:02, 14722.41 examples/s]Generating train split: 37000 examples [00:02, 14696.39 examples/s]Generating train split: 39000 examples [00:02, 14698.18 examples/s]Generating train split: 41000 examples [00:02, 14736.76 examples/s]Generating train split: 43000 examples [00:03, 14732.36 examples/s]Generating train split: 45000 examples [00:03, 14746.21 examples/s]Generating train split: 47000 examples [00:03, 14727.85 examples/s]Generating train split: 49000 examples [00:03, 14436.13 examples/s]Generating train split: 51000 examples [00:03, 14480.36 examples/s]Generating train split: 53000 examples [00:03, 14638.30 examples/s]Generating train split: 55000 examples [00:03, 14676.64 examples/s]Generating train split: 57000 examples [00:04, 14792.64 examples/s]Generating train split: 59000 examples [00:04, 14822.30 examples/s]Generating train split: 61000 examples [00:04, 14939.78 examples/s]Generating train split: 63000 examples [00:04, 14990.48 examples/s]Generating train split: 65000 examples [00:04, 14744.82 examples/s]Generating train split: 67000 examples [00:04, 14600.66 examples/s]Generating train split: 69000 examples [00:04, 14440.67 examples/s]Generating train split: 71000 examples [00:05, 13786.30 examples/s]Generating train split: 73000 examples [00:05, 13941.76 examples/s]Generating train split: 75000 examples [00:05, 11677.12 examples/s]Generating train split: 77000 examples [00:05, 12455.97 examples/s]Generating train split: 79000 examples [00:05, 13091.85 examples/s]Generating train split: 81000 examples [00:05, 13677.02 examples/s]Generating train split: 83000 examples [00:05, 14061.95 examples/s]Generating train split: 85000 examples [00:06, 14306.82 examples/s]Generating train split: 87000 examples [00:06, 14315.33 examples/s]Generating train split: 89000 examples [00:06, 14268.95 examples/s]Generating train split: 91000 examples [00:06, 14199.59 examples/s]Generating train split: 93000 examples [00:06, 14098.40 examples/s]Generating train split: 95000 examples [00:06, 14123.00 examples/s]Generating train split: 97000 examples [00:06, 14122.53 examples/s]Generating train split: 99000 examples [00:07, 14120.68 examples/s]Generating train split: 101000 examples [00:07, 14125.67 examples/s]Generating train split: 103000 examples [00:07, 14303.64 examples/s]Generating train split: 105000 examples [00:07, 14479.44 examples/s]Generating train split: 107000 examples [00:07, 14639.71 examples/s]Generating train split: 109000 examples [00:07, 14713.38 examples/s]Generating train split: 111000 examples [00:07, 14701.83 examples/s]Generating train split: 113000 examples [00:08, 14423.94 examples/s]Generating train split: 115000 examples [00:08, 14340.41 examples/s]Generating train split: 117000 examples [00:08, 14300.44 examples/s]Generating train split: 119000 examples [00:08, 14325.27 examples/s]Generating train split: 121000 examples [00:08, 14415.39 examples/s]Generating train split: 123000 examples [00:08, 14352.64 examples/s]Generating train split: 125000 examples [00:08, 14259.64 examples/s]Generating train split: 127000 examples [00:09, 14176.16 examples/s]Generating train split: 129000 examples [00:09, 14108.85 examples/s]Generating train split: 131000 examples [00:09, 14247.86 examples/s]Generating train split: 133000 examples [00:09, 13560.08 examples/s]Generating train split: 135000 examples [00:09, 8435.43 examples/s] Generating train split: 137000 examples [00:10, 7684.73 examples/s]Generating train split: 139000 examples [00:10, 8873.68 examples/s]Generating train split: 141000 examples [00:10, 10007.99 examples/s]Generating train split: 143000 examples [00:10, 10986.41 examples/s]Generating train split: 145000 examples [00:10, 11856.29 examples/s]Generating train split: 147000 examples [00:10, 12467.60 examples/s]Generating train split: 149000 examples [00:11, 13034.26 examples/s]Generating train split: 151000 examples [00:11, 13317.02 examples/s]Generating train split: 153000 examples [00:11, 13512.79 examples/s]Generating train split: 155000 examples [00:11, 13694.31 examples/s]Generating train split: 157000 examples [00:11, 13869.82 examples/s]Generating train split: 159000 examples [00:11, 14011.10 examples/s]Generating train split: 161000 examples [00:11, 14116.61 examples/s]Generating train split: 163000 examples [00:12, 14190.93 examples/s]Generating train split: 165000 examples [00:12, 14198.23 examples/s]Generating train split: 167000 examples [00:12, 14190.45 examples/s]Generating train split: 169000 examples [00:12, 14177.98 examples/s]Generating train split: 171000 examples [00:12, 14153.79 examples/s]Generating train split: 173000 examples [00:12, 14057.32 examples/s]Generating train split: 175000 examples [00:12, 14034.15 examples/s]Generating train split: 177000 examples [00:13, 14042.47 examples/s]Generating train split: 179000 examples [00:13, 14014.90 examples/s]Generating train split: 181000 examples [00:13, 14094.39 examples/s]Generating train split: 183000 examples [00:13, 14059.83 examples/s]Generating train split: 185000 examples [00:13, 14025.58 examples/s]Generating train split: 187000 examples [00:14, 8451.96 examples/s] Generating train split: 189000 examples [00:14, 6895.23 examples/s]Generating train split: 191000 examples [00:14, 8123.28 examples/s]Generating train split: 193000 examples [00:14, 8125.28 examples/s]Generating train split: 195000 examples [00:15, 9274.37 examples/s]Generating train split: 197000 examples [00:15, 10330.04 examples/s]Generating train split: 199000 examples [00:15, 11146.76 examples/s]Generating train split: 201000 examples [00:15, 11889.66 examples/s]Generating train split: 203000 examples [00:15, 12497.79 examples/s]Generating train split: 205000 examples [00:15, 13014.25 examples/s]Generating train split: 207000 examples [00:15, 13448.90 examples/s]Generating train split: 209000 examples [00:16, 13583.38 examples/s]Generating train split: 211000 examples [00:16, 13780.23 examples/s]Generating train split: 213000 examples [00:16, 13959.26 examples/s]Generating train split: 213719 examples [00:16, 13058.80 examples/s]
+Map (num_proc=12):   0%|          | 0/213719 [00:00<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:00<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:01<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:01<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:01<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:01<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:02<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:02<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:02<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:02<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:02<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:03<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:03<?, ? examples/s]Map (num_proc=12):   0%|          | 0/213719 [00:03<?, ? examples/s]
+multiprocess.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 981, in _format_examples
+    example['assay_value'] = [example['assay_value']]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 282, in __getitem__
+    value = self.data[key]
+KeyError: 'assay_value'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 264, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 319, in _create_dataset
+    formatted_dataset = dataset.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 774, in get
+    raise self._value
+KeyError: 'assay_value'
+multiprocess.pool.RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 981, in _format_examples
+    example['assay_value'] = [example['assay_value']]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 282, in __getitem__
+    value = self.data[key]
+KeyError: 'assay_value'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 264, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 319, in _create_dataset
+    formatted_dataset = dataset.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 774, in get
+    raise self._value
+KeyError: 'assay_value'

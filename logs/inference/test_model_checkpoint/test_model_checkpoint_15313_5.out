@@ -1,0 +1,3 @@
+Load timestamp: 01112025_081731_614.
+Read checkpoint: nichejepa-ep4.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']

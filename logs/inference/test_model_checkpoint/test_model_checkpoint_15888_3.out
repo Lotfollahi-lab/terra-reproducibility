@@ -1,0 +1,168 @@
+Load timestamp: 02112025_043501_781.
+Read checkpoint: nichejepa-ep4.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV2-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV5-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV8-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV1-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV9-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV3-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV6-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV7-41b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhk1007-CV4-41b_1p.
+        Class 1      Class 2  Mean Similarity  Variance Similarity
+0       Myeloid      Myeloid         0.479062             0.064922
+1       Myeloid   Epithelium         0.266317             0.098589
+2       Myeloid  Endothelium         0.251919             0.018057
+3       Myeloid     Lymphoid         0.204855             0.047644
+4       Myeloid       Stroma         0.168051             0.028863
+5    Epithelium      Myeloid         0.266320             0.098590
+6    Epithelium   Epithelium         0.901399             0.009439
+7    Epithelium  Endothelium         0.217151             0.039516
+8    Epithelium     Lymphoid         0.310693             0.133111
+9    Epithelium       Stroma         0.124496             0.077646
+10  Endothelium      Myeloid         0.251920             0.018057
+11  Endothelium   Epithelium         0.217153             0.039516
+12  Endothelium  Endothelium         0.699611             0.034068
+13  Endothelium     Lymphoid         0.211369             0.032820
+14  Endothelium       Stroma         0.392887             0.033197
+15     Lymphoid      Myeloid         0.204855             0.047644
+16     Lymphoid   Epithelium         0.310693             0.133111
+17     Lymphoid  Endothelium         0.211368             0.032820
+18     Lymphoid     Lymphoid         0.381493             0.085341
+19     Lymphoid       Stroma         0.124019             0.040932
+20       Stroma      Myeloid         0.168051             0.028864
+21       Stroma   Epithelium         0.124495             0.077647
+22       Stroma  Endothelium         0.392885             0.033198
+23       Stroma     Lymphoid         0.124019             0.040932
+24       Stroma       Stroma         0.543304             0.062652
+Average level_1_cell_type cosine similarity is 0.30193543434143066.
+Target number of unique values: 5.
+Leiden resolution: 0.75.
+Number of latent clusters 17.
+Leiden resolution: 0.65.
+Number of latent clusters 15.
+Leiden resolution: 0.55.
+Number of latent clusters 14.
+Leiden resolution: 0.45000000000000007.
+Number of latent clusters 13.
+Leiden resolution: 0.4000000000000001.
+Number of latent clusters 13.
+Leiden resolution: 0.3500000000000001.
+Number of latent clusters 10.
+Leiden resolution: 0.33000000000000007.
+Number of latent clusters 11.
+Leiden resolution: 0.2800000000000001.
+Number of latent clusters 9.
+Leiden resolution: 0.26000000000000006.
+Number of latent clusters 9.
+Leiden resolution: 0.24000000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.22000000000000008.
+Number of latent clusters 9.
+Leiden resolution: 0.2000000000000001.
+Number of latent clusters 9.
+Leiden resolution: 0.1800000000000001.
+Number of latent clusters 9.
+Leiden resolution: 0.16000000000000011.
+Number of latent clusters 9.
+Leiden resolution: 0.14000000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.13900000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.13800000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.13700000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.13600000000000012.
+Number of latent clusters 9.
+Leiden resolution: 0.11600000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.11500000000000012.
+Number of latent clusters 8.
+Leiden resolution: 0.11400000000000012.
+Number of latent clusters 7.
+Leiden resolution: 0.11300000000000011.
+Number of latent clusters 6.
+Leiden resolution: 0.11200000000000011.
+Number of latent clusters 6.
+Leiden resolution: 0.11100000000000011.
+Number of latent clusters 6.
+Leiden resolution: 0.11000000000000011.
+Number of latent clusters 7.
+Leiden resolution: 0.10900000000000011.
+Number of latent clusters 5.
+NMI is 0.6433728544819415. ARI is 0.7273093599225412.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0404>
+Subject: Job 15888[3]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Mon Nov  3 06:40:44 2025
+Job was executed on host(s) <12*farm-gpu0404>, in queue <inference>, as user <sb75> in cluster <cub22> at Mon Nov  3 06:40:44 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Mon Nov  3 06:40:44 2025
+Terminated at Mon Nov  3 08:05:13 2025
+Results reported at Mon Nov  3 08:05:13 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 02112025_043501_781 \
+    --read_checkpoint nichejepa-ep4.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6678.05 sec.
+    Max Memory :                                 54975 MB
+    Average Memory :                             8522.11 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               76097.00 MB
+    Max Swap :                                   4 MB
+    Max Processes :                              20
+    Max Threads :                                86
+    Run time :                                   5069 sec.
+    Turnaround time :                            5069 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_15888_3.err> for stderr output of this job.
+
