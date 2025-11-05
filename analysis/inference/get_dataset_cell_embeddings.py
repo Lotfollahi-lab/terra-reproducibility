@@ -203,7 +203,7 @@ def main(args):
     adata = run_inference(args.dataset_name,
                           params,
                           args.read_checkpoint,
-                          obs_cols=None, #[niche_key],
+                          obs_cols=[], #[niche_key],
                           write_to_disk=True)
     #####################################
 

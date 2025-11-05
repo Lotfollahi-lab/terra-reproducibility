@@ -1,24 +1,60 @@
 #!/bin/bash
-#BSUB -G team361                                                                               # LSF group
-#BSUB -J get_dataset_cell_embeddings                                                           # Job name
-#BSUB -o ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J.out    # Standard output (%J = job ID)
-#BSUB -e ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J.err    # Standard error
-#BSUB -q inference                                                                             # Queue name
-#BSUB -n 12                                                                                    # Number of CPU cores
-#BSUB -M 128GB                                                                                 # Memory
-#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                                   # Resource requirements: reserve 128GB RAM on a single host
-#BSUB -W 48:00                                                                                 # Walltime (hh:mm)
-#BSUB -gpu "num=1:mode=exclusive_process"                                                      # Request 1 GPU
+#BSUB -G team361                                                                                  # LSF group
+#BSUB -J get_dataset_cell_embeddings[1-11]                                                        # Array job: 11 jobs (one per dataset)
+#BSUB -o ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J_%I.err    # Standard error
+#BSUB -q inference                                                                                # Queue name
+#BSUB -n 12                                                                                       # Number of CPU cores
+#BSUB -M 128GB                                                                                    # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                                      # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                                    # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                         # Request 1 GPU
 
 # Load your environment
 source ~/.venvs/nichejepa/bin/activate
 
+# Define datasets and batches (index 1-based)
+DATASETS=(
+    xhl2010-1b_1p
+    xhl2009-1b_1p
+    xhb2008-1b_1p
+    xhb2007-1b_1p
+    xhb2006-1b_1p
+    xhb2005-1b_1p
+    xhs2004-1b_1p
+    xhs2003-1b_1p
+    xhp2002-1b_1p
+    xhp2001-1b_1p
+    xhp2000-1b_1p
+)
+
+BATCHES=(
+    2010_batch0
+    2009_batch0
+    2008_batch0
+    2007_batch0
+    2006_batch0
+    2005_batch0
+    2004_batch0
+    2003_batch0
+    2002_batch0
+    2001_batch0
+    2000_batch0
+)
+
+# Adjust for 1-based LSF index
+IDX=$((LSB_JOBINDEX - 1))
+
+DATASET_NAME=${DATASETS[$IDX]}
+BATCH_ID=${BATCHES[$IDX]}
+
+echo "Running job index $LSB_JOBINDEX with dataset: $DATASET_NAME and batch: $BATCH_ID"
+
 # Run your Python script
 python get_dataset_cell_embeddings.py \
-    --cohort_name hst_corpus_80m \
-    --load_timestamp 11062025_183320_055 \
-    --read_checkpoint nichejepa-ep10_0.pth.tar \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 03112025_004451_930 \
+    --read_checkpoint nichejepa-ep3.pth.tar \
     --datasets_path /nfs/team361/sb75/DATASETS \
-    --dataset_name xhp2000-1b_1p \
-    --batch_id 2000_batch0
-
+    --dataset_name "$DATASET_NAME" \
+    --batch_id "$BATCH_ID"
