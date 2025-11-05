@@ -1,6 +1,6 @@
 experiment:
   name: "xhb2005-1b_1p"
-  description: "Xenium Human Breast (dataset-id 2005) | 1 batch | 1 panel | x genes"
+  description: "Xenium Human Breast (dataset-id 2005) | 1 batch | 1 panel | 272 genes"
   study: "Dataset from Hest1k-IDC TENX95 (Dabin Jeong) for CVPR submission"
 
 paths:

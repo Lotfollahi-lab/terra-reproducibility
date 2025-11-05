@@ -1,6 +1,6 @@
 experiment:
   name: "xhp2000-1b_1p"
-  description: "Xenium Human Pancreas (dataset-id 2000) | 1 batch | 1 panel | x genes"
+  description: "Xenium Human Pancreas (dataset-id 2000) | 1 batch | 1 panel | 468 genes"
   study: "Dataset from Hest1k-PAAD TENX116 (Dabin Jeong) for CVPR submission"
 
 paths:

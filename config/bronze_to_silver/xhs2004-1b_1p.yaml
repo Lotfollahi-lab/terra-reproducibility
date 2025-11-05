@@ -1,6 +1,6 @@
 experiment:
   name: "xhs2004-1b_1p"
-  description: "Xenium Human Skin (dataset-id 2004) | 1 batch | 1 panel | x genes"
+  description: "Xenium Human Skin (dataset-id 2004) | 1 batch | 1 panel | 376 genes"
   study: "Dataset from Hest1k-SKCM TENX117 (Dabin Jeong) for CVPR submission"
 
 paths:

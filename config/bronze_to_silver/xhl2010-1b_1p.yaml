@@ -1,6 +1,6 @@
 experiment:
   name: "xhl2010-1b_1p"
-  description: "Xenium Human Lung (dataset-id 2010) | 1 batch | 1 panel | x genes"
+  description: "Xenium Human Lung (dataset-id 2010) | 1 batch | 1 panel | 470 genes"
   study: "Dataset from Hest1k-LUAD TENX141 (Dabin Jeong) for CVPR submission"
 
 paths:
