@@ -1,1 +1,2 @@
 Running job index 11 with dataset: xhp2000-1b_1p and batch: 2000_batch0
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
