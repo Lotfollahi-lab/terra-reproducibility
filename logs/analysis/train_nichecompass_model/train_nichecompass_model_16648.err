@@ -1,0 +1,19 @@
+/nfs/team361/sb75/.venvs/nichecompass-new/lib/python3.10/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/queries/enzsub?format=json`
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/queries/interactions?format=json`
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/queries/complexes?format=json`
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/queries/annotations?format=json`
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/queries/intercell?format=json`
+2025-11-04 13:11:07 | [INFO] Downloading data from `https://omnipathdb.org/about?format=text`
+/nfs/team361/sb75/nichecompass/src/nichecompass/utils/gene_programs.py:507: FutureWarning: DataFrame.applymap has been deprecated. Use DataFrame.map instead.
+  ligand_target_matrix_df.applymap(
+/nfs/team361/sb75/nichecompass/src/nichecompass/data/utils.py:71: UserWarning: torch.sparse.SparseTensor(indices, values, shape, *, device=) is deprecated.  Please use torch.sparse_coo_tensor(indices, values, shape, dtype=, device=). (Triggered internally at /pytorch/torch/csrc/utils/tensor_new.cpp:644.)
+  torch_sparse_coo_tensor = torch.sparse.FloatTensor(indices, values, shape)
+/nfs/team361/sb75/.venvs/nichecompass-new/lib/python3.10/site-packages/torch_geometric/loader/neighbor_loader.py:229: UserWarning: The usage of the 'directed' argument in 'NeighborSampler' is deprecated. Use `subgraph_type='induced'` instead.
+  neighbor_sampler = NeighborSampler(
+/nfs/team361/sb75/.venvs/nichecompass-new/lib/python3.10/site-packages/torch_geometric/loader/link_neighbor_loader.py:252: UserWarning: The usage of the 'directed' argument in 'NeighborSampler' is deprecated. Use `subgraph_type='induced'` instead.
+  neighbor_sampler = NeighborSampler(
+/nfs/team361/sb75/.venvs/nichecompass-new/lib/python3.10/site-packages/torch_geometric/loader/neighbor_loader.py:229: UserWarning: The usage of the 'directed' argument in 'NeighborSampler' is deprecated. Use `subgraph_type='induced'` instead.
+  neighbor_sampler = NeighborSampler(
+... storing 'mapping_entity' as categorical
