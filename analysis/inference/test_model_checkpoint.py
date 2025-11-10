@@ -109,13 +109,16 @@ def main(args):
         params['data']['token_dict_folder_path'] = params['data']['token_dict_folder_path'].replace(
             '/fsx-shared/s3', f'{args.datasets_path}/tokenizer'
         )
-        params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
-            '/fsx-shared/s3', f'{args.datasets_path}/gold/cell-graph-tokenizer'
-        ).replace(
-            'hst_corpus_80m', 'hst_corpus_110m'
-        ).replace(
-            'hst_corpus_90m', 'hst_corpus_110m'
-        )
+        if args.overwrite_tokenized_data_folder_path:
+            params['data']['tokenized_data_folder_path'] = args.overwrite_tokenized_data_folder_path
+        else:
+            params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
+                '/fsx-shared/s3', f'{args.datasets_path}/gold/cell-graph-tokenizer'
+            ).replace(
+                'hst_corpus_80m', 'hst_corpus_110m'
+            ).replace(
+                'hst_corpus_90m', 'hst_corpus_110m'
+            )
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
         if 'val_batch_ids' in params['data']:
@@ -735,6 +738,10 @@ if __name__ == '__main__':
                         type=int,
                         default=128,
                         help='Batch size.')
+    parser.add_argument('--overwrite_tokenized_data_folder_path',
+                        type=str,
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
+                        help='Path to the tokenized data folder if different than model config.')
     args = parser.parse_args()
     
     main(args)
