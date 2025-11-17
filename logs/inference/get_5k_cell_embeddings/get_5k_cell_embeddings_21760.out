@@ -1,0 +1,297 @@
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 112578039
+})
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 40712678
+})
+Iteration: 20
+Batches: ['spv_1002_batch4', 'spv_1002_batch53']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 21
+Batches: ['spv_1002_batch24', 'spv_1002_batch4']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 22
+Batches: ['spv_1002_batch24']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 23
+Batches: ['spv_1002_batch24']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 24
+Batches: ['spv_1002_batch24', 'spv_1002_batch67']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 25
+Batches: ['spv_1002_batch67']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 26
+Batches: ['spv_1002_batch67']
+Dataset IDs: ['1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 27
+Batches: ['spv_47_batch0', 'spv_1002_batch67']
+Dataset IDs: ['47', '1002']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT4-3b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT20-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT13-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT18-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT101-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT19-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT12-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT9-6b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT14-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT17-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S2-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT3-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT10-7b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT6-4-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT16-15b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT21-2b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT23-9b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT5-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhb1002-AT15-10b_1p.
+Iteration: 28
+Batches: ['spv_47_batch0']
+Dataset IDs: ['47']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S2-1b_1p.
+Iteration: 29
+Batches: ['spv_47_batch0']
+Dataset IDs: ['47']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S1-1b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xho47-S2-1b_1p.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0401>
+Subject: Job 21760: <get_5k_cell_embeddings> in cluster <cub22> Done
+
+Job <get_5k_cell_embeddings> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Thu Nov 13 10:55:43 2025
+Job was executed on host(s) <12*farm-gpu0401>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Nov 13 10:55:43 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Nov 13 10:55:43 2025
+Terminated at Thu Nov 13 17:55:07 2025
+Results reported at Thu Nov 13 17:55:07 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_5k_cell_embeddings                                                          # Job name
+#BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J.out       # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J.err       # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 12                                                                              # Number of CPU cores
+#BSUB -M 128GB                                                                           # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                             # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '07112025_054432_709' \
+    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --start_step 20 \
+    --end_step 29
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   55442.10 sec.
+    Max Memory :                                 64561 MB
+    Average Memory :                             42738.98 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               66511.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              20
+    Max Threads :                                86
+    Run time :                                   25164 sec.
+    Turnaround time :                            25164 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_21760.err> for stderr output of this job.
+

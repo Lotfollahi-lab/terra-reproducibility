@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 179, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 78, in main
+    rsc.pp.neighbors(
+    ~~~~~~~~~~~~~~~~^
+        adata_emb,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        key_added=emb_key)
+        ^^^^^^^^^^^^^^^^^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/preprocessing/_neighbors/__init__.py", line 291, in neighbors
+    connectivities = connectivities.tocsr().get()
+                     ~~~~~~~~~~~~~~~~~~~~^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cupyx/scipy/sparse/_coo.py", line 534, in tocsr
+    x.sum_duplicates()
+    ~~~~~~~~~~~~~~~~^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cupyx/scipy/sparse/_coo.py", line 399, in sum_duplicates
+    order = cupy.lexsort(keys)
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cupy/_sorting/sort.py", line 85, in lexsort
+    idx_array = cupy.ndarray(keys._shape[1:], dtype=numpy.intp)
+  File "cupy/_core/core.pyx", line 167, in cupy._core.core.ndarray.__new__
+  File "cupy/_core/core.pyx", line 254, in cupy._core.core._ndarray_base._init
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 7615780160 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp

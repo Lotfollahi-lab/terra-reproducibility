@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 162, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 95, in main
+    cols_to_combine = [tissue + f"_{emb_key}_clusters_res_{latent_leiden_resolution}" for tissue in all_5k_tissues]
+                                                                                                    ^^^^^^^^^^^^^^
+NameError: name 'all_5k_tissues' is not defined

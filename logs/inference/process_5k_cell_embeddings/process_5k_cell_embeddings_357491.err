@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 179, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 78, in main
+    rsc.pp.neighbors(
+    ~~~~~~~~~~~~~~~~^
+        adata_emb,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        key_added=emb_key)
+        ^^^^^^^^^^^^^^^^^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/preprocessing/_neighbors/__init__.py", line 280, in neighbors
+    connectivities = _get_connectivities(
+        n_neighbors=n_neighbors,
+    ...<4 lines>...
+        knn_dist=knn_dist,
+    )
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/preprocessing/_neighbors/_helper/__init__.py", line 132, in _get_connectivities
+    connectivities = fuzzy_simplicial_set(
+        X_conn,
+    ...<6 lines>...
+        local_connectivity=local_connectivity,
+    )
+  File "cuml/manifold/simpl_set.pyx", line 195, in cuml.manifold.simpl_set.fuzzy_simplicial_set
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 4885521360 bytes) at: /tmp/conda-bld-output/bld/rattler-build_librmm/work/cpp/include/rmm/mr/device/cuda_memory_resource.hpp:62: cudaErrorMemoryAllocation out of memory

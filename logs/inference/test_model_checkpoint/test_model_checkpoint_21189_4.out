@@ -1,0 +1,165 @@
+Load timestamp: 11112025_172307_218.
+Read checkpoint: nichejepa-ep0.pth.tar.
+    Class 1 Class 2  Mean Similarity  Variance Similarity
+0         1       1         0.974093             0.001278
+1         1      11         0.972390             0.001341
+2         1       0         0.969057             0.001588
+3         1       6         0.975389             0.001156
+4         1       5         0.978815             0.000880
+..      ...     ...              ...                  ...
+191      13       4         0.953146             0.005157
+192      13      10         0.932793             0.007132
+193      13       2         0.952928             0.004842
+194      13       8         0.910855             0.008590
+195      13      13         0.949777             0.005681
+
+[196 rows x 4 columns]
+Average leiden_log1pnorm_res-1 cosine similarity is 0.9610998034477234.
+Target number of unique values: 14.
+Leiden resolution: 1.0.
+Number of latent clusters 18.
+Leiden resolution: 0.98.
+Number of latent clusters 19.
+Leiden resolution: 0.96.
+Number of latent clusters 19.
+Leiden resolution: 0.94.
+Number of latent clusters 18.
+Leiden resolution: 0.9199999999999999.
+Number of latent clusters 18.
+Leiden resolution: 0.8999999999999999.
+Number of latent clusters 18.
+Leiden resolution: 0.8799999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8789999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8779999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8769999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8759999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8749999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8739999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8729999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8719999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8709999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8699999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8689999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8679999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8669999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8659999999999999.
+Number of latent clusters 15.
+Leiden resolution: 0.8649999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8639999999999999.
+Number of latent clusters 18.
+Leiden resolution: 0.8439999999999999.
+Number of latent clusters 15.
+Leiden resolution: 0.8429999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8419999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8409999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8399999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8389999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8379999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8369999999999999.
+Number of latent clusters 17.
+Leiden resolution: 0.8359999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8349999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8339999999999999.
+Number of latent clusters 16.
+Leiden resolution: 0.8329999999999999.
+Number of latent clusters 18.
+Leiden resolution: 0.8129999999999998.
+Number of latent clusters 15.
+Leiden resolution: 0.8119999999999998.
+Number of latent clusters 14.
+NMI is 0.24719013273875928. ARI is 0.12014403387721638.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0409>
+Subject: Job 21189[4]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Wed Nov 12 11:01:02 2025
+Job was executed on host(s) <12*farm-gpu0409>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Nov 13 00:14:52 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Nov 13 00:14:52 2025
+Terminated at Thu Nov 13 05:06:52 2025
+Results reported at Thu Nov 13 05:06:52 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 11112025_172307_218 \
+    --read_checkpoint nichejepa-ep0.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   18140.72 sec.
+    Max Memory :                                 8500 MB
+    Average Memory :                             1911.59 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               122572.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   17520 sec.
+    Turnaround time :                            65150 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_21189_4.err> for stderr output of this job.
+
