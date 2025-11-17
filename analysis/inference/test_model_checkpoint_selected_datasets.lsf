@@ -16,13 +16,13 @@ source ~/.venvs/nichejepa/bin/activate
 # Run your Python script
 python test_model_checkpoint.py \
     --cohort_name hst_corpus_110m \
-    --load_timestamp 02112025_043501_781 \
-    --read_checkpoint nichejepa-ep1.pth.tar \
+    --load_timestamp 29102025_142759_837 \
+    --read_checkpoint nichejepa-ep2.pth.tar \
     --datasets_path /nfs/team361/sb75/DATASETS \
     --no-include_xhs49 \
     --no-include_xhs1000 \
-    --include_xhk1007 \
-    --include_xhb1002 \
-    --no-include_chl59 \
+    --no-include_xhk1007 \
+    --no-include_xhb1002 \
+    --include_chl59 \
     --no-include_chr78 \
 

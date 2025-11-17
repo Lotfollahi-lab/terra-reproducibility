@@ -13,27 +13,15 @@ from itertools import chain, compress
 from pathlib import Path
 
 import anndata as ad
-import celltypist
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import rapids_singlecell as rsc
 import scanpy as sc
-import scib_metrics
 import seaborn as sns
-import squidpy as sq
-import torch
-from datasets import concatenate_datasets, load_from_disk
 from scipy.sparse import csr_matrix
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.model_selection import train_test_split
-
-from app.infer import get_average_gene_embed, get_gene_embed, infer
-from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
 
 sys.path.append("../../utils")
 
@@ -66,7 +54,7 @@ def main(args):
         adata_list = []
         
         for i in range(args.inference_max_step + 1):
-            adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_{args.inference_step_size}_{i}.h5ad")
+            adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_{args.inference_step_size}_{i}.h5ad")
             adata_list.append(adata_tmp)
             del adata_tmp
         
@@ -77,6 +65,7 @@ def main(args):
         adata_emb.obs['cell'] = adata_emb.obs['cell'].astype(int)
 
         adata_emb.write(adata_complete_path)
+        print(f"Finished writing new AnnData to {adata_complete_path}.")
     print(adata_emb)
     ######################################################################
 
@@ -85,15 +74,27 @@ def main(args):
     if not os.path.exists(adata_processed_path):
         print("Process new AnnData.")
         for emb_key in args.emb_keys:
-            sc.pp.neighbors(adata_emb,
-                            n_neighbors=args.n_neighbors,
-                            use_rep=f'{emb_key}_emb_layer_{args.n_layer}',
-                            n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
-                            key_added=emb_key)
+            if args.use_rapids:
+                rsc.pp.neighbors(
+                    adata_emb,
+                    n_neighbors=args.n_neighbors,
+                    use_rep=f'{emb_key}_emb_layer_{args.n_layer}',
+                    n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+                    key_added=emb_key)
+
+                rsc.tl.umap(adata_emb,
+                            neighbors_key=emb_key,
+                            key_added=f'{emb_key}_umap')
+            else:
+                sc.pp.neighbors(adata_emb,
+                                n_neighbors=args.n_neighbors,
+                                use_rep=f'{emb_key}_emb_layer_{args.n_layer}',
+                                n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+                                key_added=emb_key)
         
-            sc.tl.umap(adata_emb,
-                    neighbors_key=emb_key,
-                    key_added=f'{emb_key}_umap')
+                sc.tl.umap(adata_emb,
+                           neighbors_key=emb_key,
+                           key_added=f'{emb_key}_umap')
         
             adata_emb.write(adata_processed_path)
 
@@ -101,10 +102,16 @@ def main(args):
 
             latent_cluster_key = f"{emb_key}_clusters_res_{args.latent_leiden_resolution}"
             
-            sc.tl.leiden(adata_emb,
-                        neighbors_key=emb_key,
-                        key_added=latent_cluster_key,
-                        resolution=args.latent_leiden_resolution)
+            if args.use_rapids:
+                rsc.tl.leiden(adata_emb,
+                              neighbors_key=emb_key,
+                              key_added=latent_cluster_key,
+                              resolution=args.latent_leiden_resolution)
+            else:
+                sc.tl.leiden(adata_emb,
+                             neighbors_key=emb_key,
+                             key_added=latent_cluster_key,
+                             resolution=args.latent_leiden_resolution)
         
             adata_emb.write(adata_processed_path)
     print(adata_emb)
@@ -126,6 +133,10 @@ if __name__ == '__main__':
                         action=argparse.BooleanOptionalAction,
                         default=True,
                         help='Flag whether the model was trained on AWS.')
+    parser.add_argument("--use_rapids",
+                        action=argparse.BooleanOptionalAction,
+                        default=True,
+                        help='Flag whether to use rapids_singlecell.')
     parser.add_argument('--cohort_name',
                         type=str,
                         default='hst_corpus_90m',
@@ -136,7 +147,7 @@ if __name__ == '__main__':
                         help='Inference step size.')
     parser.add_argument('--inference_max_step',
                         type=int,
-                        default=133,
+                        default=203,
                         help='Maximum inference step.')
     parser.add_argument('--emb_keys',
                         type=str,

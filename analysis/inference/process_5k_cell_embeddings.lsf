@@ -3,16 +3,21 @@
 #BSUB -J process_5k_cell_embeddings                                                           # Job name
 #BSUB -o ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.out    # Standard output (%J = job ID)
 #BSUB -e ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.err    # Standard error
-#BSUB -q hugemem                                                                              # Queue name
+#BSUB -q inference                                                                       # Queue name
 #BSUB -n 12                                                                                   # Number of CPU cores
-#BSUB -M 1000GB                                                                               # Memory
-#BSUB -R "select[mem>1000GB] rusage[mem=1000GB] span[hosts=1]"                                # Resource requirements: reserve 1000GB RAM on a single host
-#BSUB -W 96:00                                                                                # Walltime (hh:mm)  
+#BSUB -M 256GB                                                                                # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                                  # Resource requirements: reserve 1000GB RAM on a single host
+#BSUB -W 48:00                                                                                # Walltime (hh:mm)  
+#BSUB -gpu "num=1:mode=exclusive_process"     
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source /etc/profile.d/modules.sh
+module load cellgen/conda
+conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
 
 # Run your Python script
 python process_5k_cell_embeddings.py \
-    --load_timestamp '18092025_140643_921' \
-    --read_checkpoint 'nichejepa-ep4.pth.tar'
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '07112025_054432_709' \
+    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --n_pcs 50

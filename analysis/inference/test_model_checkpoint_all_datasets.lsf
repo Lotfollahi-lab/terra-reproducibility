@@ -22,8 +22,8 @@ dataset=${datasets[$((LSB_JOBINDEX-1))]}
 # Run your Python script
 python test_model_checkpoint.py \
     --cohort_name hst_corpus_110m \
-    --load_timestamp 08112025_183353_702 \
-    --read_checkpoint nichejepa-ep49.pth.tar \
+    --load_timestamp 14112025_074547_785 \
+    --read_checkpoint nichejepa-ep3_3.pth.tar \
     --datasets_path /nfs/team361/sb75/DATASETS \
     "$dataset"  
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 #BSUB -G team361
-#BSUB -J get_5k_cell_embeddings_[1-21]                                                   # Job array (14 jobs)
-#BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.out    # Standard output (%J = job ID)
-#BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.err    # Standard error
+#BSUB -J get_5k_cell_embeddings                                                          # Job name
+#BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J.out       # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J.err       # Standard error
 #BSUB -q inference                                                                       # Queue name
 #BSUB -n 12                                                                              # Number of CPU cores
 #BSUB -M 128GB                                                                           # Memory
@@ -13,18 +13,10 @@
 # Load your environment
 source ~/.venvs/nichejepa/bin/activate
 
-# Compute step range for this array job
-# Each job covers 10 steps: 0–9, 10–19, ..., 130–139
-STEP=10
-START=$(((LSB_JOBINDEX - 1) * STEP))
-END=$((START + STEP - 1))
-
-echo "Running job index: $LSB_JOBINDEX, steps: $START-$END"
-
 # Run your Python script
 python get_5k_cell_embeddings.py \
     --cohort_name 'hst_corpus_110m' \
     --load_timestamp '07112025_054432_709' \
     --read_checkpoint 'nichejepa-ep3.pth.tar' \
-    --start_step "$START" \
-    --end_step "$END"
+    --start_step 90 \
+    --end_step 99
