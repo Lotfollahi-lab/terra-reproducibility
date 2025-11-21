@@ -1,11 +1,11 @@
 experiment:
   experiment_description: xenium human skin (dataset-id = 1000) | 39-batch | 1-panel
   experiment_name: xhs1000-39b_1p
-  model_input_size: 2816
+  model_input_size: 11264
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
-  norm_factor_file_path: /lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_80m_norm_factors.csv
+  norm_factor_file_path: /lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv
   token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
 tokenization:
   count_cell_norm_method: null

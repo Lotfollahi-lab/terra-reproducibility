@@ -1,7 +1,8 @@
 experiment:
-  experiment_description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel | part8
+  experiment_description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel
+    | part8
   experiment_name: xhl1020-8-16b_1p
-  model_input_size: 7168
+  model_input_size: 11264
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
@@ -14,7 +15,7 @@ tokenization:
   delaunay: false
   include_zero_expr_genes: false
   keep_in_memory: false
-  n_neighs: 6
+  n_neighs: 10
   num_shards: 32
   processing_mode: parallel
   radius: null
