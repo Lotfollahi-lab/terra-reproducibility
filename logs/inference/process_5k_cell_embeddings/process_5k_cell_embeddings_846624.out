@@ -1,0 +1,76 @@
+Load existing complete AnnData.
+AnnData object with n_obs × n_vars = 40712678 × 0
+    obs: 'assay', 'batch', 'tissue', 'gene_panel_size', 'donor_id', 'dataset', 'cell', 'dataset_batch'
+    obsm: 'cell_emb_layer_12', 'neighborhood_emb_layer_12', 'spatial', 'spatial_cell_emb_layer_12'
+Process new AnnData.
+AnnData object with n_obs × n_vars = 40712678 × 0
+    obs: 'assay', 'batch', 'tissue', 'gene_panel_size', 'donor_id', 'dataset', 'cell', 'dataset_batch', 'cell_clusters_res_1.0', 'neighborhood_clusters_res_1.0', 'spatial_cell_clusters_res_1.0'
+    uns: 'cell', 'cell_umap', 'neighborhood', 'neighborhood_umap', 'spatial_cell', 'spatial_cell_umap', 'cell_clusters_res_1.0', 'neighborhood_clusters_res_1.0', 'spatial_cell_clusters_res_1.0'
+    obsm: 'cell_emb_layer_12', 'neighborhood_emb_layer_12', 'spatial', 'spatial_cell_emb_layer_12', 'cell_umap', 'neighborhood_umap', 'spatial_cell_umap'
+    obsp: 'cell_distances', 'cell_connectivities', 'neighborhood_distances', 'neighborhood_connectivities', 'spatial_cell_distances', 'spatial_cell_connectivities'
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0202>
+Subject: Job 846624: <process_5k_cell_embeddings> in cluster <farm22> Done
+
+Job <process_5k_cell_embeddings> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Tue Nov 18 07:34:23 2025
+Job was executed on host(s) <12*farm22-gpu0202>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Tue Nov 18 08:15:26 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Tue Nov 18 08:15:26 2025
+Terminated at Wed Nov 19 10:34:32 2025
+Results reported at Wed Nov 19 10:34:32 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J process_5k_cell_embeddings                                                           # Job name
+#BSUB -o ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.err    # Standard error
+#BSUB -q gpu-lotfollahi                                                                       # Queue name
+#BSUB -n 12                                                                                   # Number of CPU cores
+#BSUB -M 256GB                                                                                # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                                  # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                # Walltime (hh:mm)  
+#BSUB -gpu "num=1:mode=exclusive_process"     
+
+# Load your environment
+source /etc/profile.d/modules.sh
+module load cellgen/conda
+conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
+
+# Run your Python script
+python process_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '07112025_054432_709' \
+    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --n_pcs 50
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   92246.00 sec.
+    Max Memory :                                 238923 MB
+    Average Memory :                             197872.22 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               23221.00 MB
+    Max Swap :                                   1948 MB
+    Max Processes :                              4
+    Max Threads :                                21
+    Run time :                                   94741 sec.
+    Turnaround time :                            97209 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_846624.err> for stderr output of this job.
+

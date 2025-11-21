@@ -1,0 +1,69 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 28, in <module>
+    import wandb
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/__init__.py", line 22, in <module>
+    from wandb.sdk.lib import wb_logging as _wb_logging
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/__init__.py", line 25, in <module>
+    from .artifacts.artifact import Artifact
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/artifacts/artifact.py", line 29, in <module>
+    from wandb import data_types, env, util
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/data_types.py", line 16, in <module>
+    from .sdk.data_types.audio import Audio
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/data_types/audio.py", line 10, in <module>
+    from .base_types.media import BatchableMedia
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/data_types/base_types/media.py", line 13, in <module>
+    from .wb_value import WBValue
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/data_types/base_types/wb_value.py", line 4, in <module>
+    from wandb.sdk import wandb_setup
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/wandb_setup.py", line 28, in <module>
+    from . import wandb_settings
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/wandb_settings.py", line 39, in <module>
+    from .lib import apikey, credentials, ipython
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/apikey.py", line 21, in <module>
+    from wandb.apis import InternalApi
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/apis/__init__.py", line 44, in <module>
+    from .public import Api as PublicApi  # noqa
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/apis/public/__init__.py", line 1, in <module>
+    from wandb.apis.public.api import Api, RetryingClient, requests
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/apis/public/api.py", line 57, in <module>
+    from wandb.sdk.launch.utils import LAUNCH_DEFAULT_PROJECT
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/launch/__init__.py", line 1, in <module>
+    from ._launch import create_and_run_agent, launch
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/launch/_launch.py", line 12, in <module>
+    from . import loader
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/launch/loader.py", line 7, in <module>
+    from wandb.docker import is_docker_installed
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/docker/__init__.py", line 8, in <module>
+    from dockerpycreds.utils import find_executable  # type: ignore
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dockerpycreds/__init__.py", line 2, in <module>
+    from .store import Store
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dockerpycreds/store.py", line 9, in <module>
+    from .utils import create_environment_dict
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dockerpycreds/utils.py", line 1, in <module>
+    import distutils.spawn
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1002, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 945, in _find_spec
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/_distutils_hack/__init__.py", line 97, in find_spec
+    return method()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/_distutils_hack/__init__.py", line 108, in spec_for_distutils
+    mod = importlib.import_module('setuptools._distutils')
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/setuptools/__init__.py", line 16, in <module>
+    import setuptools.version
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/setuptools/version.py", line 1, in <module>
+    import pkg_resources
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3260, in <module>
+    def _initialize_master_working_set():
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3234, in _call_aside
+    f(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 3295, in _initialize_master_working_set
+    list(map(working_set.add_entry, sys.path))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 621, in add_entry
+    for dist in find_distributions(entry, True):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2096, in find_on_path
+    for dist in factory(fullpath):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pkg_resources/__init__.py", line 2154, in distributions_from_metadata
+    if len(os.listdir(path)) == 0:
+KeyboardInterrupt
