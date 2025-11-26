@@ -1,0 +1,21 @@
+data:
+  'finetune_dataset': '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-classification/train.dataset'
+  'finetune_adata': '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-classification/train.h5ad'
+  label_name: 'niche19_cls_idx'
+  batch_size: 64
+  pin_memory: false
+  num_workers: 6
+
+model:
+  pretrained_checkpoint_path: '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/01112025_081731_614'
+  finetune_checkpoint_path: '/lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-classification/artifacts/'
+  
+finetune:
+  use_peft: false
+  use_mlp: false
+  hidden_dim: 64
+  lr: 0.001
+  num_epochs: 5
+  selection_type: 'agg_cell'
+  excluded_tokens: null
+  top_k: null
