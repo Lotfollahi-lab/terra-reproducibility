@@ -16,6 +16,6 @@ source ~/.venvs/nichejepa/bin/activate
 # Run your Python script
 python concatenate_datasets.py \
     --cohort_name 'hst_corpus_110m' \
-    --cohort_dataset_names_file_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names_additional.txt' \
+    --cohort_dataset_names_file_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
     --n_neighs 10 \
     --seq_len 2816

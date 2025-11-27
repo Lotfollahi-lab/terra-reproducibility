@@ -1,0 +1,18 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J fix_dataset_duplicates                                                          # Job name
+#BSUB -o ../../logs/tokenization/fix_dataset_duplicates/fix_dataset_duplicates_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/tokenization/fix_dataset_duplicates/fix_dataset_duplicates_%J.err    # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 12                                                                              # Number of CPU cores
+#BSUB -M 256GB                                                                           # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                             # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python fix_dataset_duplicates.py \
+    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset'

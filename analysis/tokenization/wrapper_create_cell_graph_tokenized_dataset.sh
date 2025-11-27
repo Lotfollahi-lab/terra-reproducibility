@@ -8,11 +8,11 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 SCRIPT="analysis/tokenization/create_tokenized_dataset.sh"
 
 case $EXPERIMENT_NAME in
-    sss2-1b_1p)
-        RAM="2G"
-        TIME="0:10"
-        CORES=1
-        QUEUE="normal"
+    mmb0-1b_smb1-1b_1p)
+        RAM="200G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="inference"
         ;;
     xhl1021-2b_1p)
         RAM="600G"
