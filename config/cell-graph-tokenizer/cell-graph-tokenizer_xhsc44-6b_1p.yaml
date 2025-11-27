@@ -1,7 +1,7 @@
 experiment:
   experiment_description: xhsc44-6b_1p (dataset-id 44) | 6 batch | 1 panel
   experiment_name: xhsc44-6b_1p
-  model_input_size: 11264
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

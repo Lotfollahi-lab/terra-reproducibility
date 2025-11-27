@@ -2,7 +2,7 @@ experiment:
   experiment_description: xenium human pancreas (dataset-id = 1016) | 18-batch | 1-panel
     | part2
   experiment_name: xhp1016-2-18b_1p
-  model_input_size: 11264
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

@@ -2,7 +2,7 @@ experiment:
   experiment_description: xenium human kidney (dataset-id = 1019) | 19-batch | 1-panel
     | part4
   experiment_name: xhk1019-4-19b_1p
-  model_input_size: 11264
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

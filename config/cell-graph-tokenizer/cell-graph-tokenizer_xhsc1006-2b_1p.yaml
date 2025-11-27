@@ -2,7 +2,7 @@ experiment:
   experiment_description: Xenium Human Spinal Cord (dataset-id = 1006) | 2-batch |
     1-panel
   experiment_name: xhsc1006-2b_1p
-  model_input_size: 11264
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/

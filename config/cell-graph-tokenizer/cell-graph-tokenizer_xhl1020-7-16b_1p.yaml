@@ -2,7 +2,7 @@ experiment:
   experiment_description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel
     | part7
   experiment_name: xhl1020-7-16b_1p
-  model_input_size: 11264
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
