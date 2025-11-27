@@ -1,0 +1,7 @@
+Experiment name: xhl1020-8-16b_1p.
+Experiment description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel | part8.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
