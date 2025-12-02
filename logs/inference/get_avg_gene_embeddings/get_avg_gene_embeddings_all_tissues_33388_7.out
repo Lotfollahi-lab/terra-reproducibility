@@ -1,0 +1,81 @@
+Running for tissue: lung
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 40712678
+})
+==================================================
+STEP 1: LOADING CONFIG...
+==================================================
+==================================================
+STEP 2: GETTING AVERAGE GENE EMBEDDINGS
+==================================================
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0406>
+Subject: Job 33388[7]: <get_avg_gene_embeddings_all_tissues_[1-11]> in cluster <cub22> Done
+
+Job <get_avg_gene_embeddings_all_tissues_[1-11]> was submitted from host <farm-gpu0403> by user <sb75> in cluster <cub22> at Mon Dec  1 20:20:23 2025
+Job was executed on host(s) <12*farm-gpu0406>, in queue <inference>, as user <sb75> in cluster <cub22> at Mon Dec  1 20:20:24 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Mon Dec  1 20:20:24 2025
+Terminated at Tue Dec  2 08:33:11 2025
+Results reported at Tue Dec  2 08:33:11 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_avg_gene_embeddings_all_tissues_[1-11]                                                    # Job array (11 jobs)                                                        
+#BSUB -o ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_%J_%I.err    # Standard error
+#BSUB -q inference                                                                                     # Queue name
+#BSUB -n 12                                                                                            # Number of CPU cores
+#BSUB -M 512GB                                                                                         # Memory
+#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                           # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                              # Request 1 GPU
+
+# -------------------------
+# Define tissues array
+# -------------------------
+TISSUES=(brain breast cervix embryo kidney liver lung ovary pancreas prostate skin)
+
+# Select the tissue based on the job array index (%I is 1-based)
+TISSUE=${TISSUES[$LSB_JOBINDEX-1]}
+
+echo "Running for tissue: $TISSUE"
+
+python get_avg_gene_embeddings.py \
+    --dataset_path "/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/07112025_054432_709/5k.dataset" \
+    --save_prefix "5k_${TISSUE}" \
+    --tissues "$TISSUE" \
+    --batch_size 32
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   50148.21 sec.
+    Max Memory :                                 17694 MB
+    Average Memory :                             16341.52 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               506594.00 MB
+    Max Swap :                                   -
+    Max Processes :                              16
+    Max Threads :                                69
+    Run time :                                   43967 sec.
+    Turnaround time :                            43968 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_33388_7.err> for stderr output of this job.
+

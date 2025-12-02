@@ -5,3 +5,62 @@ Model input size: 2816.
 Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
 Number of Gene Tokens: 21952.
 Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhl1020-3-16b_1p/cProfiler/cell-graph-tokenizer/xhl1020-3-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 5385.562060979
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0408>
+Subject: Job 30724: <xhl1020-3-16b_1p_cell-graph-tokenizer_12> in cluster <cub22> Done
+
+Job <xhl1020-3-16b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Thu Nov 27 14:48:09 2025
+Job was executed on host(s) <12*farm-gpu0408>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Nov 27 14:48:09 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Nov 27 14:48:09 2025
+Terminated at Thu Nov 27 16:18:31 2025
+Results reported at Thu Nov 27 16:18:31 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1020-3-16b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   13603.50 sec.
+    Max Memory :                                 65928 MB
+    Average Memory :                             28949.38 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               548472.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                70
+    Run time :                                   5422 sec.
+    Turnaround time :                            5422 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1020-3-16b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_30724.err> for stderr output of this job.
+

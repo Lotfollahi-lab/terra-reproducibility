@@ -1,0 +1,12 @@
+Running for tissue: skin
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 40712678
+})
+==================================================
+STEP 1: LOADING CONFIG...
+==================================================
+==================================================
+STEP 2: GETTING AVERAGE GENE EMBEDDINGS
+==================================================
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
