@@ -161,7 +161,7 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='29102025_142759_837',
+                        default='03112025_004451_930',
                         help='Model load timestamp.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
@@ -185,7 +185,7 @@ if __name__ == '__main__':
                         help='Number of workers.')
     parser.add_argument('--filtered_dataset_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset',
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/03112025_004451_930/5k.dataset',
                         help='Path where the filtered Huggingface dataset will be stored.')    
     args = parser.parse_args()
     

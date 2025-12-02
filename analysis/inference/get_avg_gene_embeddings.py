@@ -29,11 +29,11 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
+from nichejepa.datasets_new import prepare_dataset
+from nichejepa.utils_new.config import create_params_from_YAML_wandb_config
+from nichejepa.utils_new.distributed import init_distributed
+from nichejepa.utils_new.embedding import collect_adata_from_folder
+from nichejepa.utils_new.evaluation import classification_metrics, clustering_metrics
 
 sys.path.append("../../utils")
 
@@ -46,6 +46,7 @@ def main(args):
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
+    model_folder_path = f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/{args.load_timestamp}'
     ####################
 
 
@@ -160,7 +161,7 @@ def main(args):
             num_workers=args.num_workers,
             cell_gene_ensembl_id=cell_gene_ensembl_id,
             neighborhood_gene_ensembl_id=neighborhood_gene_ensembl_id,
-            include_spatial_cell_emb=True,
+            include_spatial_cell_emb=False,
         )
         
         tissue_avg_gene_embed_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/{args.read_checkpoint.split("-")[1].split(".")[0]}_{args.save_prefix}_{tissue}_avg_gene_embed.pkl'
@@ -176,11 +177,11 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--load_timestamp',
                         type=str,
-                        default='27092025_012758_922',
+                        default='07112025_054432_709',
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep2.pth.tar',
+                        default='nichejepa-ep3.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
@@ -188,11 +189,11 @@ if __name__ == '__main__':
                         help='Flag whether the model was trained on AWS.')    
     parser.add_argument('--cohort_name',
                         type=str,
-                        default='hst_corpus_90m',
+                        default='hst_corpus_110m',
                         help='Name of data cohort.')
     parser.add_argument('--dataset_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k.dataset',
+                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/07112025_054432_709/5k.dataset',
                         help='Path where the Huggingface dataset will be loaded from.')
     parser.add_argument('--save_prefix',
                         type=str,

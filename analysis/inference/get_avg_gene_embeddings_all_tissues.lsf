@@ -1,0 +1,27 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_avg_gene_embeddings_all_tissues_[1-11]                                                    # Job array (11 jobs)                                                        
+#BSUB -o ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_%J_%I.err    # Standard error
+#BSUB -q inference                                                                                     # Queue name
+#BSUB -n 12                                                                                            # Number of CPU cores
+#BSUB -M 512GB                                                                                         # Memory
+#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                           # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                              # Request 1 GPU
+
+# -------------------------
+# Define tissues array
+# -------------------------
+TISSUES=(brain breast cervix embryo kidney liver lung ovary pancreas prostate skin)
+
+# Select the tissue based on the job array index (%I is 1-based)
+TISSUE=${TISSUES[$LSB_JOBINDEX-1]}
+
+echo "Running for tissue: $TISSUE"
+
+python get_avg_gene_embeddings.py \
+    --dataset_path "/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/07112025_054432_709/5k.dataset" \
+    --save_prefix "5k_${TISSUE}" \
+    --tissues "$TISSUE" \
+    --batch_size 32
