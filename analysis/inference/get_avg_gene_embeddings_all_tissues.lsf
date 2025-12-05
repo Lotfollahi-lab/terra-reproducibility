@@ -5,10 +5,13 @@
 #BSUB -e ../../logs/inference/get_avg_gene_embeddings/get_avg_gene_embeddings_all_tissues_%J_%I.err    # Standard error
 #BSUB -q inference                                                                                     # Queue name
 #BSUB -n 12                                                                                            # Number of CPU cores
-#BSUB -M 512GB                                                                                         # Memory
-#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                           # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -M 128GB                                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                                           # Resource requirements: reserve 256GB RAM on a single host
 #BSUB -W 48:00                                                                                         # Walltime (hh:mm)
 #BSUB -gpu "num=1:mode=exclusive_process"                                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
 
 # -------------------------
 # Define tissues array
@@ -21,7 +24,10 @@ TISSUE=${TISSUES[$LSB_JOBINDEX-1]}
 echo "Running for tissue: $TISSUE"
 
 python get_avg_gene_embeddings.py \
-    --dataset_path "/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/07112025_054432_709/5k.dataset" \
-    --save_prefix "5k_${TISSUE}" \
+    --dataset_path "/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset" \
+    --load_timestamp "07112025_054432_709" \
+    --read_checkpoint "nichejepa-ep3.pth.tar" \
+    --cohort_name "hst_corpus_110m" \
+    --save_prefix "5k" \
     --tissues "$TISSUE" \
-    --batch_size 32
+    --batch_size 48
