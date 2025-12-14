@@ -1,0 +1,33 @@
+name: rapids_singlecell_nichejepa
+channels:
+ - rapidsai
+ - nvidia
+ - conda-forge
+ - bioconda
+dependencies:
+ - rapids=25.10
+ - python=3.13
+ - cuda-version=12.9
+ - cudnn
+ - cutensor
+ - cusparselt
+ - jupyterlab
+ - pip
+ - pip:
+    - gdown
+    - wget
+    - scikit-misc
+    - rapids-singlecell
+    - anndata
+    - celltypist
+    - transformers
+    - datasets
+    - session-info
+    - wandb
+    - pyensembl
+    - leidenalg
+    #-pip install torch --index-url https://download.pytorch.org/whl/cu129
+    #-pip install scib-metrics
+    #-pip install -e . (in nichejepa directory)
+    #-pip install dask[dataframe]==2025.9.1 distributed
+    #-pip install peft
