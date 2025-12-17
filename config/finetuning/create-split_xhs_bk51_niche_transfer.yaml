@@ -1,0 +1,14 @@
+data:
+  adata_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+  dataset_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.dataset
+
+split:
+  in_patient: true
+  stratify_group: batch
+  patient_id: BK51
+  label_column: niche19
+  k_outer: 4
+  k_inner: 1
+  shuffle: true
+  seed: 42
+  root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_bk51_niche-transfer
