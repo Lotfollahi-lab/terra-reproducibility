@@ -1,0 +1,28 @@
+# Data paths
+data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-transfer
+
+# Model config
+model:
+  pretrained_checkpoint_path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/01112025_081731_614
+
+# Data config
+data:
+  batch_size: 100
+  num_workers: 6
+  pin_memory: false
+
+# Embed cells
+embed:
+  selection_type: agg_cell
+  excluded_tokens: null
+  top_k: null
+
+# Evaluation config
+evaluation:
+  k_values:
+    - 4
+    - 8
+    - 12
+    - 16
+    - 20
+  knn_batch_size: 10000
