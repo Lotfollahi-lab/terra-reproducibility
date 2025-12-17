@@ -243,7 +243,11 @@ def main():
             f"Expected: {test_adata_path} and {test_dataset_path}"
         )
     
-    if not (output_outer_dir / "test_features.npy").exists() or not (output_outer_dir / "test_labels.npy").exists():
+    if config['embed']['selection_type'] == 'agg_cell':
+        test_feature_path = output_outer_dir / "test_cell_features.npy"
+    elif config['embed']['selection_type'] == 'agg_graph':
+        test_feature_path = output_outer_dir / "test_neighborhood_features.npy"
+    if not test_feature_path.exists() or not (output_outer_dir / "test_labels.npy").exists():
         test_adata = sc.read_h5ad(test_adata_path)
         test_dataset = load_from_disk(str(test_dataset_path))
         test_dataset.set_format(
@@ -294,7 +298,11 @@ def main():
             f"Expected: {train_adata_path} and {train_dataset_path}"
         )
     
-    if not (output_outer_dir / "train_features.npy").exists() or not (output_outer_dir / "train_labels.npy").exists():
+    if config['embed']['selection_type'] == 'agg_cell':
+        train_feature_path = output_outer_dir / "train_cell_features.npy"
+    elif config['embed']['selection_type'] == 'agg_graph':
+        train_feature_path = output_outer_dir / "train_neighborhood_features.npy"
+    if not train_feature_path.exists() or not (output_outer_dir / "train_labels.npy").exists():
         train_adata = sc.read_h5ad(train_adata_path)
         train_dataset = load_from_disk(str(train_dataset_path))
         train_dataset.set_format(

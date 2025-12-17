@@ -13,7 +13,7 @@ data:
 
 # Embed cells
 embed:
-  selection_type: agg_cell
+  selection_type: agg_graph
   excluded_tokens: null
   top_k: null
 
