@@ -26,6 +26,7 @@ dependencies:
     - wandb
     - pyensembl
     - leidenalg
+    - cellphonedb
     #-pip install torch --index-url https://download.pytorch.org/whl/cu129
     #-pip install scib-metrics
     #-pip install -e . (in nichejepa directory)
