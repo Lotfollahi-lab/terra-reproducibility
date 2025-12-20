@@ -54,9 +54,12 @@ def main(args):
         adata_list = []
         
         for i in range(args.inference_max_step + 1):
-            adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_{args.inference_step_size}_{i}.h5ad")
-            adata_list.append(adata_tmp)
-            del adata_tmp
+            try:
+                adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_{args.inference_step_size}_{i}.h5ad")
+                adata_list.append(adata_tmp)
+                del adata_tmp
+            except:
+                print(f"Could not read AnnData with path {artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_{args.inference_step_size}_{i}.h5ad")
         
         adata_emb = sc.concat(adata_list, join='outer', index_unique=None)
         

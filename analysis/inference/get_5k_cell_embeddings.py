@@ -29,11 +29,11 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import classification_metrics, clustering_metrics
+from nichejepa.datasets_new import prepare_dataset
+from nichejepa.utils_new.config import create_params_from_YAML_wandb_config
+from nichejepa.utils_new.distributed import init_distributed
+from nichejepa.utils_new.embedding import collect_adata_from_folder
+from nichejepa.utils_new.evaluation import classification_metrics, clustering_metrics
 
 sys.path.append("../../utils")
 

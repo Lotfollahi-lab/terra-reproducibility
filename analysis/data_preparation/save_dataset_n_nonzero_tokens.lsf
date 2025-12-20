@@ -15,8 +15,9 @@ source ~/.venvs/nichejepa/bin/activate
 
 # Run your Python script
 python save_dataset_n_nonzero_tokens.py \
-   --tokenized_data_folder_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_6.dataset' \
-   --cohort_name 'hst_corpus_110m'   
+   --tokenized_data_folder_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+   --cohort_name 'hst_corpus_110m' \
+   --full_dataset
    
    #--tokenized_data_folder_path '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_0.01_sample_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
    #--cohort_name 'hst_corpus_110m' \
