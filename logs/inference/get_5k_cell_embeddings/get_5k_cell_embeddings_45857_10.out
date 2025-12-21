@@ -1,0 +1,13 @@
+Running job index: 10, steps: 90-99
+Dataset({
+    features: ['cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens'],
+    num_rows: 112578039
+})
+Dataset({
+    features: ['cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens'],
+    num_rows: 40712678
+})
+Iteration: 90
+Batches: ['spv_1010_batch3', 'spv_1010_batch14', 'spv_1010_batch17', 'spv_1010_batch5', 'spv_1010_batch12', 'spv_1010_batch22', 'spv_1010_batch2', 'spv_1010_batch25', 'spv_1010_batch1', 'spv_1010_batch23', 'spv_1010_batch15', 'spv_1010_batch20', 'spv_1010_batch7', 'spv_1010_batch16']
+Dataset IDs: ['1010']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']

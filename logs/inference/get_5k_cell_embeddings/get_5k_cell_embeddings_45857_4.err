@@ -1,0 +1,69 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (seg_embed): Embedding(13, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2818, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+    (special_value_embed): Embedding(1002, 384, padding_idx=0)
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (seg_embed): Embedding(13, 192, padding_idx=0)
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2818, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30741888
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 3 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/19122025_101304_096/nichejepa-ep2.pth.tar.
+0it [00:00, ?it/s]1it [00:04,  4.08s/it]2it [00:06,  3.01s/it]3it [00:08,  2.54s/it]4it [00:10,  2.32s/it]5it [00:12,  2.21s/it]6it [00:14,  2.13s/it]7it [00:16,  2.08s/it]8it [00:18,  2.05s/it]9it [00:20,  2.02s/it]10it [00:22,  2.01s/it]11it [00:24,  2.00s/it]12it [00:26,  1.99s/it]13it [00:28,  1.98s/it]14it [00:30,  1.98s/it]15it [00:32,  1.98s/it]16it [00:34,  1.98s/it]17it [00:35,  1.97s/it]18it [00:37,  1.97s/it]19it [00:39,  1.98s/it]20it [00:41,  1.98s/it]21it [00:43,  1.98s/it]22it [00:45,  1.98s/it]23it [00:47,  1.98s/it]24it [00:49,  1.98s/it]25it [00:51,  1.98s/it]26it [00:53,  1.98s/it]27it [00:55,  1.98s/it]28it [00:57,  1.99s/it]29it [00:59,  1.99s/it]30it [01:01,  1.98s/it]31it [01:03,  1.98s/it]32it [01:05,  1.98s/it]33it [01:07,  1.98s/it]34it [01:09,  1.99s/it]35it [01:11,  1.99s/it]36it [01:13,  1.99s/it]37it [01:15,  1.99s/it]38it [01:17,  1.99s/it]39it [01:19,  2.00s/it]40it [01:21,  1.99s/it]41it [01:23,  1.99s/it]42it [01:25,  1.99s/it]43it [01:27,  1.98s/it]44it [01:29,  1.99s/it]45it [01:31,  1.99s/it]46it [01:33,  1.99s/it]47it [01:35,  1.99s/it]48it [01:37,  1.98s/it]49it [01:39,  1.99s/it]50it [01:41,  1.99s/it]51it [01:43,  1.99s/it]52it [01:45,  1.99s/it]53it [01:47,  1.99s/it]54it [01:49,  1.99s/it]55it [01:51,  1.99s/it]56it [01:53,  1.99s/it]57it [01:55,  1.99s/it]58it [01:57,  1.99s/it]59it [01:59,  2.00s/it]60it [02:01,  2.00s/it]61it [02:03,  2.00s/it]62it [02:05,  2.00s/it]63it [02:07,  2.01s/it]64it [02:09,  2.00s/it]65it [02:11,  2.00s/it]66it [02:13,  2.01s/it]67it [02:15,  2.00s/it]68it [02:17,  2.01s/it]69it [02:19,  2.02s/it]70it [02:21,  2.01s/it]71it [02:23,  2.01s/it]72it [02:25,  2.01s/it]73it [02:27,  2.00s/it]74it [02:29,  2.00s/it]75it [02:31,  2.00s/it]76it [02:33,  2.00s/it]77it [02:35,  2.00s/it]78it [02:37,  2.00s/it]79it [02:39,  2.00s/it]80it [02:41,  2.01s/it]81it [02:43,  2.01s/it]82it [02:45,  2.01s/it]83it [02:47,  2.01s/it]84it [02:49,  2.01s/it]85it [02:51,  2.01s/it]86it [02:53,  2.01s/it]87it [02:55,  2.01s/it]88it [02:57,  2.01s/it]89it [02:59,  2.01s/it]90it [03:01,  2.01s/it]91it [03:03,  2.00s/it]92it [03:05,  2.00s/it]93it [03:07,  2.00s/it]94it [03:09,  2.00s/it]95it [03:11,  2.00s/it]96it [03:13,  2.00s/it]97it [03:15,  2.00s/it]98it [03:17,  2.00s/it]99it [03:19,  2.01s/it]100it [03:21,  2.00s/it]101it [03:23,  2.00s/it]102it [03:25,  2.00s/it]103it [03:27,  2.00s/it]104it [03:29,  2.00s/it]105it [03:31,  2.00s/it]106it [03:33,  2.00s/it]107it [03:35,  2.00s/it]108it [03:37,  1.99s/it]109it [03:39,  1.99s/it]110it [03:41,  1.99s/it]111it [03:43,  1.99s/it]112it [03:45,  1.99s/it]113it [03:47,  1.99s/it]114it [03:49,  2.00s/it]115it [03:51,  2.00s/it]116it [03:53,  2.00s/it]117it [03:55,  1.99s/it]118it [03:57,  1.99s/it]119it [03:59,  2.00s/it]120it [04:01,  2.00s/it]121it [04:03,  2.00s/it]122it [04:05,  1.99s/it]123it [04:07,  1.99s/it]124it [04:09,  1.99s/it]125it [04:11,  1.99s/it]126it [04:13,  1.99s/it]127it [04:15,  1.99s/it]128it [04:17,  1.99s/it]129it [04:19,  1.99s/it]130it [04:21,  1.99s/it]131it [04:23,  2.00s/it]132it [04:25,  1.99s/it]133it [04:27,  1.99s/it]134it [04:29,  2.00s/it]135it [04:31,  2.00s/it]136it [04:33,  2.00s/it]137it [04:35,  2.00s/it]138it [04:37,  2.00s/it]139it [04:39,  2.00s/it]140it [04:41,  2.00s/it]141it [04:43,  1.99s/it]142it [04:45,  1.99s/it]143it [04:47,  1.99s/it]144it [04:49,  2.00s/it]145it [04:51,  2.00s/it]146it [04:53,  2.00s/it]147it [04:55,  2.00s/it]148it [04:57,  2.00s/it]149it [04:59,  2.01s/it]150it [05:01,  2.01s/it]151it [05:03,  2.01s/it]152it [05:05,  2.01s/it]153it [05:07,  2.00s/it]154it [05:09,  1.99s/it]155it [05:11,  2.00s/it]156it [05:13,  2.00s/it]157it [05:15,  2.00s/it]158it [05:17,  2.00s/it]159it [05:19,  2.01s/it]160it [05:21,  2.01s/it]161it [05:23,  2.02s/it]162it [05:25,  2.01s/it]163it [05:27,  2.01s/it]164it [05:29,  2.01s/it]165it [05:31,  2.01s/it]166it [05:33,  2.00s/it]167it [05:35,  2.01s/it]168it [05:37,  2.01s/it]169it [05:39,  2.01s/it]170it [05:41,  2.01s/it]171it [05:43,  2.01s/it]172it [05:45,  2.01s/it]173it [05:47,  2.01s/it]174it [05:49,  2.02s/it]175it [05:51,  2.02s/it]176it [05:53,  2.02s/it]177it [05:55,  2.02s/it]178it [05:57,  2.02s/it]179it [05:59,  2.02s/it]180it [06:01,  2.02s/it]181it [06:03,  2.01s/it]182it [06:05,  2.01s/it]183it [06:07,  2.01s/it]184it [06:09,  2.01s/it]185it [06:11,  2.02s/it]186it [06:13,  2.02s/it]187it [06:15,  2.01s/it]188it [06:17,  2.01s/it]189it [06:19,  2.01s/it]190it [06:21,  2.01s/it]191it [06:23,  2.02s/it]
