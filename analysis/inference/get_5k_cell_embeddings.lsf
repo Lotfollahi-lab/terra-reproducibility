@@ -16,7 +16,7 @@ source ~/.venvs/nichejepa/bin/activate
 # Run your Python script
 python get_5k_cell_embeddings.py \
     --cohort_name 'hst_corpus_110m' \
-    --load_timestamp '07112025_054432_709' \
-    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --load_timestamp '19122025_101304_096' \
+    --read_checkpoint 'nichejepa-ep2.pth.tar' \
     --start_step 90 \
     --end_step 99
