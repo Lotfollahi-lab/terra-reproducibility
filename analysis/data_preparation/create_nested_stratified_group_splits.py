@@ -1,5 +1,5 @@
 """
-Usage: python reproducibility/analysis/finetune/bk51-split-prep.py --config reproducibility/config/finetuning/create-split_xhs_bk51_niche_transfer.yaml
+Usage: python reproducibility/analysis/data_preparation/create_nested_stratified_group_splits.py --config reproducibility/config/create-nested-split/create-split_xhs_bk51_niche_transfer.yaml
 
 This script creates nested stratified group k-fold cross-validation splits for within-donor or across-donor datasets.
 
@@ -30,14 +30,14 @@ The `shuffle` flag indicates whether to shuffle the data before splitting.
 The `seed` flag indicates the random seed to use for reproducibility.
 The `root_save_dir` flag indicates the root directory to save the splits.
 
-For details of the splits and the nested stratified group k-fold cross-validation, see the documentation of the `nested_stratified_group_k_fold_splits` function.
+For details of the splits and the nested stratified group k-fold cross-validation, see the documentation of the `NestedStratifiedGroupKFold` class.
 """
 
 import argparse
 import yaml
 import scanpy as sc
 from datasets import load_from_disk
-from nichejepa.utils import nested_stratified_group_k_fold_splits
+from nichejepa.utils.nested_stratified_group_split import NestedStratifiedGroupKFold
 
 
 def main():
@@ -62,15 +62,24 @@ def main():
     else:
         print(f"Splitting donors.")
 
-    nested_stratified_group_k_fold_splits(
-        adata=adata,
-        dataset=dataset,
+    splitter = NestedStratifiedGroupKFold(
         stratify_group=cfg["split"]["stratify_group"],
         label_column=cfg["split"]["label_column"],
         K_outer=cfg["split"]["k_outer"],
         K_inner=cfg["split"]["k_inner"],
         shuffle=cfg["split"].get("shuffle", True),
         seed=cfg["split"].get("seed", 42),
+        require_all_labels=cfg["split"].get("require_all_labels", False),
+        group_balance_tolerance=cfg["split"].get("group_balance_tolerance", 1),
+        max_retries=cfg["split"].get("max_retries", 10),
+    )
+
+    split_info = splitter.design_splits(adata)
+
+    splitter.build_split_data(
+        adata=adata,
+        dataset=dataset,
+        split_info=split_info,
         root_save_dir=cfg["split"]["root_save_dir"],
     )
 

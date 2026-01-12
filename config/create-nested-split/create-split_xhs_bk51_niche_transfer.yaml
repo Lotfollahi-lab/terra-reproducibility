@@ -12,3 +12,6 @@ split:
   shuffle: true
   seed: 42
   root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_bk51_niche-transfer
+  require_all_labels: false
+  group_balance_tolerance: 1
+  max_retries: 1
