@@ -1,0 +1,72 @@
+Combine new AnnData.
+Finished writing new AnnData to /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/05012026_141057_751/adata_ep1_5k_complete.h5ad.
+AnnData object with n_obs × n_vars = 40712678 × 0
+    obs: 'assay', 'batch', 'tissue', 'gene_panel_size', 'donor_id', 'dataset', 'cell', 'dataset_batch'
+    obsm: 'cell_emb_layer_12', 'neighborhood_emb_layer_12', 'spatial', 'spatial_cell_emb_layer_12'
+Process new AnnData.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0401>
+Subject: Job 56685: <process_5k_cell_embeddings> in cluster <cub22> Exited
+
+Job <process_5k_cell_embeddings> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Thu Jan  8 14:12:19 2026
+Job was executed on host(s) <12*farm-gpu0401>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Jan  8 14:12:20 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Jan  8 14:12:20 2026
+Terminated at Thu Jan  8 14:30:34 2026
+Results reported at Thu Jan  8 14:30:34 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J process_5k_cell_embeddings                                                           # Job name
+#BSUB -o ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.err    # Standard error
+#BSUB -q inference                                                                            # Queue name
+#BSUB -n 12                                                                                   # Number of CPU cores
+#BSUB -M 512GB                                                                                # Memory
+#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                  # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                # Walltime (hh:mm)  
+#BSUB -gpu "num=1:mode=exclusive_process"     
+
+# Load your environment
+source /etc/profile.d/modules.sh
+module load cellgen/conda
+conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
+
+# Run your Python script
+python process_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '05012026_141057_751' \
+    --read_checkpoint 'nichejepa-ep1.pth.tar' \
+    #--n_pcs 50
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   469.06 sec.
+    Max Memory :                                 379819 MB
+    Average Memory :                             209914.84 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               144469.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              4
+    Max Threads :                                19
+    Run time :                                   1094 sec.
+    Turnaround time :                            1095 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_56685.err> for stderr output of this job.
+

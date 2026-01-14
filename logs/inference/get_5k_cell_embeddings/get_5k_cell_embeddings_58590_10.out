@@ -1,0 +1,151 @@
+Running job index: 10, steps: 90-99
+Dataset({
+    features: ['cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens'],
+    num_rows: 112578039
+})
+Dataset({
+    features: ['cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens'],
+    num_rows: 40712678
+})
+Iteration: 90
+Batches: ['spv_1010_batch1', 'spv_1010_batch17', 'spv_1010_batch7', 'spv_1010_batch16', 'spv_1010_batch25', 'spv_1010_batch5', 'spv_1010_batch22', 'spv_1010_batch15', 'spv_1010_batch20', 'spv_1010_batch23', 'spv_1010_batch12', 'spv_1010_batch14', 'spv_1010_batch2', 'spv_1010_batch3']
+Dataset IDs: ['1010']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs1010-26b_1p.
+Iteration: 91
+Batches: ['spv_1010_batch6', 'spv_1010_batch13', 'spv_1011_batch16', 'spv_1011_batch7', 'spv_1011_batch0', 'spv_1010_batch19', 'spv_1010_batch21', 'spv_1010_batch15', 'spv_1010_batch18', 'spv_1010_batch11', 'spv_1010_batch8', 'spv_1011_batch1', 'spv_1010_batch4']
+Dataset IDs: ['1011', '1010']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs1010-26b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs1011-22b_1p.
+Iteration: 92
+Batches: ['spv_1011_batch19', 'spv_1011_batch12', 'spv_1011_batch21', 'spv_1011_batch14', 'spv_1011_batch10', 'spv_1011_batch4', 'spv_1011_batch20', 'spv_1011_batch2', 'spv_1011_batch9', 'spv_1011_batch3', 'spv_1011_batch18', 'spv_1011_batch8', 'spv_1011_batch6', 'spv_1011_batch15', 'spv_1011_batch1', 'spv_1011_batch17', 'spv_1011_batch5']
+Dataset IDs: ['1011']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs1011-22b_1p.
+Iteration: 93
+Batches: ['spv_1013_batch0', 'spv_1011_batch12', 'spv_1011_batch13', 'spv_1011_batch11']
+Dataset IDs: ['1011', '1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs1011-22b_1p.
+Iteration: 94
+Batches: ['spv_1013_batch0', 'spv_1013_batch1']
+Dataset IDs: ['1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Iteration: 95
+Batches: ['spv_1013_batch1']
+Dataset IDs: ['1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Iteration: 96
+Batches: ['spv_1013_batch1', 'spv_1013_batch2']
+Dataset IDs: ['1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Iteration: 97
+Batches: ['spv_1013_batch3', 'spv_1013_batch2']
+Dataset IDs: ['1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Iteration: 98
+Batches: ['spv_1013_batch3']
+Dataset IDs: ['1013']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Iteration: 99
+Batches: ['spv_1015_batch26', 'spv_1013_batch3']
+Dataset IDs: ['1013', '1015']
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1013-4b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R6-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R1-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R2-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R5-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R4-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R3-28b_1p.
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhl1015-R7-28b_1p.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0408>
+Subject: Job 58590[10]: <get_5k_cell_embeddings_[1-21]> in cluster <cub22> Done
+
+Job <get_5k_cell_embeddings_[1-21]> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Sun Jan 11 12:54:26 2026
+Job was executed on host(s) <12*farm-gpu0408>, in queue <inference>, as user <sb75> in cluster <cub22> at Sun Jan 11 12:54:27 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Sun Jan 11 12:54:27 2026
+Terminated at Sun Jan 11 21:56:08 2026
+Results reported at Sun Jan 11 21:56:08 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_5k_cell_embeddings_[1-21]                                                   # Job array (14 jobs)
+#BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.err    # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 12                                                                              # Number of CPU cores
+#BSUB -M 128GB                                                                           # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                             # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Compute step range for this array job
+# Each job covers 10 steps: 0–9, 10–19, ..., 130–139
+STEP=10
+START=$(((LSB_JOBINDEX - 1) * STEP))
+END=$((START + STEP - 1))
+
+echo "Running job index: $LSB_JOBINDEX, steps: $START-$END"
+
+# Run your Python script
+python get_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '08012026_125254_919' \
+    --read_checkpoint 'nichejepa-ep1.pth.tar' \
+    --start_step "$START" \
+    --end_step "$END"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   62843.00 sec.
+    Max Memory :                                 26463 MB
+    Average Memory :                             21509.96 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               104609.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              20
+    Max Threads :                                86
+    Run time :                                   32501 sec.
+    Turnaround time :                            32502 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_58590_10.err> for stderr output of this job.
+

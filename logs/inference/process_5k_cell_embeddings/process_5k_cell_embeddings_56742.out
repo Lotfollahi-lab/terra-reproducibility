@@ -1,0 +1,67 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0403>
+Subject: Job 56742: <process_5k_cell_embeddings> in cluster <cub22> Exited
+
+Job <process_5k_cell_embeddings> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Thu Jan  8 16:31:12 2026
+Job was executed on host(s) <12*farm-gpu0403>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Jan  8 16:31:13 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Jan  8 16:31:13 2026
+Terminated at Thu Jan  8 16:31:53 2026
+Results reported at Thu Jan  8 16:31:53 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J process_5k_cell_embeddings                                                           # Job name
+#BSUB -o ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.err    # Standard error
+#BSUB -q inference                                                                             # Queue name
+#BSUB -n 12                                                                                   # Number of CPU cores
+#BSUB -M 512GB                                                                                # Memory
+#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                  # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                # Walltime (hh:mm)  
+#BSUB -gpu "num=1:mode=exclusive_process"     
+
+# Load your environment
+source /etc/profile.d/modules.sh
+module load cellgen/conda
+conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
+
+# Run your Python script
+python process_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '05012026_141057_751' \
+    --read_checkpoint 'nichejepa-ep1.pth.tar' \
+    --use_rapids False \
+    #--n_pcs 50
+
+------------------------------------------------------------
+
+Exited with exit code 2.
+
+Resource usage summary:
+
+    CPU time :                                   11.00 sec.
+    Max Memory :                                 348 MB
+    Average Memory :                             259.88 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               523940.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                17
+    Run time :                                   45 sec.
+    Turnaround time :                            41 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_56742.err> for stderr output of this job.
+
