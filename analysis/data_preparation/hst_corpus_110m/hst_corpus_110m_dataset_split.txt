@@ -24,7 +24,13 @@ val_batch_ids: [
     '78_batch9',
     '78_batch8',
     '78_batch4',
-    '78_batch5'
+    '78_batch5',
+    '75_batch0',
+    '75_batch1',
+    '75_batch2',
+    '75_batch3',
+    '1016_batch3',
+    '1016_batch12',
     ]
 test_batch_ids: [
     '1002_batch40',
@@ -82,7 +88,6 @@ test_batch_ids: [
     '1016_batch0',
     '1016_batch1',
     '1016_batch2',
-    '1016_batch3',
     '1016_batch4',
     '1016_batch5',
     '1016_batch6',
@@ -91,7 +96,6 @@ test_batch_ids: [
     '1016_batch9',
     '1016_batch10',
     '1016_batch11',
-    '1016_batch12',
     '1016_batch13',
     '1016_batch14',
     '1016_batch15',
