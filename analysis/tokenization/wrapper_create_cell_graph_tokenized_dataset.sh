@@ -14,21 +14,69 @@ case $EXPERIMENT_NAME in
         CORES=12
         QUEUE="inference"
         ;;
-    xhl1021-2b_1p)
-        RAM="600G"
-        TIME="48:00"
+    xhb1002-AT6-1-1b_1p)
+        RAM="512G"
+        TIME="24:00"
         CORES=12
-        QUEUE="inference"
+        QUEUE="long"
+        ;;
+    xhe1008-8-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xho47-S1-1b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhb1002-AT9-6b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhp1016-2-18b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhb1002-AT5-1b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhe1008-7-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhb1002-AT15-10b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhe1008-6-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
         ;;
     *)
         #RAM="2200G" # "600G", "1000G", "1500G"
         #TIME="240:00" # "48:00", "120:00"
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
-        RAM="600G" # "600G", "1000G", "1500G"
+        RAM="256G" # "600G", "1000G", "1500G"
         TIME="24:00" # "48:00", "120:00"
         CORES=12
-        QUEUE="inference" # "long", "hugemem", "teramem", "basement", "parallel", "week"
+        QUEUE="long" # "long", "hugemem", "teramem", "basement", "parallel", "week"
         ;;
 esac
 

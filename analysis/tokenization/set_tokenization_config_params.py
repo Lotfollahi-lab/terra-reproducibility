@@ -69,7 +69,7 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
-                        default=None, # None, 'gene_corrected_read_depth'
+                        default='read_depth', # None, 'gene_corrected_read_depth', 'read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=none_or_str,
@@ -77,11 +77,11 @@ if __name__ == '__main__':
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=none_or_str,
-                        default=None, # None
+                        default='shifted_log', # None, 'shifted_log'
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
                         type=none_or_str,
-                        default=None, # None, 'gene_corrected_read_depth'
+                        default='read_depth', # None, 'gene_corrected_read_depth', 'read_depth'
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
                         type=none_or_str,
@@ -89,7 +89,7 @@ if __name__ == '__main__':
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
                         type=none_or_str,
-                        default='shifted_log', # None
+                        default='shifted_log', # None, 'shifted_log'
                         help='Count count norm method.')
     parser.add_argument('--include_zero_expr_genes',
                         action=argparse.BooleanOptionalAction,
