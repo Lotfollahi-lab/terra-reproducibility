@@ -1,0 +1,65 @@
+Experiment name: xhe1008-8-20b_1p.
+Experiment description: xhe1008-8-20b_1p (dataset-id 1008) | 20 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-22>
+Subject: Job 649210: <xhe1008-8-20b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xhe1008-8-20b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Mar 20 08:23:20 2026
+Job was executed on host(s) <12*node-13-22>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Mar 20 09:59:21 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Mar 20 09:59:21 2026
+Terminated at Fri Mar 20 10:23:52 2026
+Results reported at Fri Mar 20 10:23:52 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhe1008-8-20b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   2787.00 sec.
+    Max Memory :                                 262368 MB
+    Average Memory :                             68477.02 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -224.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                51
+    Run time :                                   1472 sec.
+    Turnaround time :                            7232 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhe1008-8-20b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_649210.err> for stderr output of this job.
+

@@ -1,0 +1,43 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-25>
+Subject: Job 649216: <xhe1009-17b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xhe1009-17b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Mar 20 08:23:21 2026
+Job was executed on host(s) <12*node-13-25>, in queue <long>, as user <sb75> in cluster <farm22> at Fri Mar 20 10:07:07 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Mar 20 10:07:07 2026
+Terminated at Fri Mar 20 10:07:51 2026
+Results reported at Fri Mar 20 10:07:51 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhe1009-17b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   24.18 sec.
+    Max Memory :                                 580 MB
+    Average Memory :                             450.20 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261564.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   26 sec.
+    Turnaround time :                            6270 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhe1009-17b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_649216.err> for stderr output of this job.
+
