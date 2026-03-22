@@ -5,3 +5,118 @@ Model input size: 2816.
 Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
 Number of Gene Tokens: 21952.
 Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhb1002-AT15-10b_1p/cProfiler/cell-graph-tokenizer/xhb1002-AT15-10b_1p_32_read_depth_None_shifted_log_read_depth_None_shifted_log_knn_10_2816_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 9305.794625719001
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-02>
+Subject: Job 774299: <xhb1002-AT15-10b_1p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <xhb1002-AT15-10b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Mar 20 16:18:26 2026
+Job was executed on host(s) <12*b11-hm-02>, in queue <hugemem>, as user <sb75> in cluster <farm22> at Fri Mar 20 16:18:27 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Mar 20 16:18:27 2026
+Terminated at Fri Mar 20 18:54:36 2026
+Results reported at Fri Mar 20 18:54:36 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT15-10b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   41873.75 sec.
+    Max Memory :                                 418765 MB
+    Average Memory :                             187873.61 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               105523.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   9371 sec.
+    Turnaround time :                            9370 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT15-10b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_774299.err> for stderr output of this job.
+

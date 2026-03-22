@@ -1,0 +1,100 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/storage.py:48: FutureWarning: AnnData previously had undefined behavior around matrices of type <class 'scipy.sparse._coo.coo_matrix'>.In 0.12, passing in this type will throw an error. Please convert to a supported type.Continue using for this minor version at your own risk.
+  warnings.warn(msg, FutureWarning)
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/storage.py:48: FutureWarning: AnnData previously had undefined behavior around matrices of type <class 'scipy.sparse._coo.coo_matrix'>.In 0.12, passing in this type will throw an error. Please convert to a supported type.Continue using for this minor version at your own risk.
+  warnings.warn(msg, FutureWarning)
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'read_depth_mean'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 590, in _tokenize_adata
+    adata.layers['X_count'] = normalize_by_factor(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/preprocessors/normalizers.py", line 160, in normalize_by_factor
+    [norm_factor_df[
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/preprocessors/normalizers.py", line 160, in <listcomp>
+    [norm_factor_df[
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'read_depth_mean'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 265, in tokenize_data
+    dataset_dict = self._tokenize_files(Path(input_directory), file_format)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 378, in _tokenize_files
+    file_dataset_dict = future.result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+KeyError: 'read_depth_mean'
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3805, in get_loc
+    return self._engine.get_loc(casted_key)
+  File "index.pyx", line 167, in pandas._libs.index.IndexEngine.get_loc
+  File "index.pyx", line 196, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7081, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 7089, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'read_depth_mean'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 590, in _tokenize_adata
+    adata.layers['X_count'] = normalize_by_factor(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/preprocessors/normalizers.py", line 160, in normalize_by_factor
+    [norm_factor_df[
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/preprocessors/normalizers.py", line 160, in <listcomp>
+    [norm_factor_df[
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/frame.py", line 4102, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/indexes/base.py", line 3812, in get_loc
+    raise KeyError(key) from err
+KeyError: 'read_depth_mean'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 265, in tokenize_data
+    dataset_dict = self._tokenize_files(Path(input_directory), file_format)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 378, in _tokenize_files
+    file_dataset_dict = future.result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+KeyError: 'read_depth_mean'

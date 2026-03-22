@@ -6,3 +6,55 @@ wandb: Tracking run with wandb version 0.19.11
 wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
 /nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:663: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
   coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 851, in _tokenize_adata
+    self.token_dict[f'spv_{batch_id_key}'] - spv_idx_subtract] * n_cells
+KeyError: 'spv_2006_batch0'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 265, in tokenize_data
+    dataset_dict = self._tokenize_files(Path(input_directory), file_format)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 378, in _tokenize_files
+    file_dataset_dict = future.result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+KeyError: 'spv_2006_batch0'
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 851, in _tokenize_adata
+    self.token_dict[f'spv_{batch_id_key}'] - spv_idx_subtract] * n_cells
+KeyError: 'spv_2006_batch0'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 265, in tokenize_data
+    dataset_dict = self._tokenize_files(Path(input_directory), file_format)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 378, in _tokenize_files
+    file_dataset_dict = future.result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+KeyError: 'spv_2006_batch0'
