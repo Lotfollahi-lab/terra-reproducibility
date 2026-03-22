@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 33, in <module>
+    from nichejepa.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/datasets/__init__.py", line 1, in <module>
+    from .cell_datasets import (CellBaseDataset,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/datasets/cell_datasets.py", line 3, in <module>
+    import datasets
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/__init__.py", line 17, in <module>
+    from .arrow_dataset import Column, Dataset
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 58, in <module>
+    import pandas as pd
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/__init__.py", line 49, in <module>
+    from pandas.core.api import (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/api.py", line 47, in <module>
+    from pandas.core.groupby import (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/groupby/__init__.py", line 1, in <module>
+    from pandas.core.groupby.generic import (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/groupby/generic.py", line 68, in <module>
+    from pandas.core.frame import DataFrame
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/frame.py", line 509, in <module>
+    class DataFrame(NDFrame, OpsMixin):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/frame.py", line 8443, in DataFrame
+    def rmod(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/util/_decorators.py", line 488, in __call__
+    func.__doc__ = dedent(self.join.join(docitems))
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/textwrap.py", line 439, in dedent
+    indents = _leading_whitespace_re.findall(text)
+KeyboardInterrupt

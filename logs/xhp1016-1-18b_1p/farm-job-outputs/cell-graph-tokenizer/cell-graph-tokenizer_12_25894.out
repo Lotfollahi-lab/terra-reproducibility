@@ -1,0 +1,83 @@
+Experiment name: xhp1016-1-18b_1p.
+Experiment description: xenium human pancreas (dataset-id = 1016) | 18-batch | 1-panel | part1.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0403>
+Subject: Job 25894: <xhp1016-1-18b_1p_cell-graph-tokenizer_12> in cluster <cub22> Exited
+
+Job <xhp1016-1-18b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Thu Nov 20 16:20:20 2025
+Job was executed on host(s) <12*farm-gpu0403>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Nov 20 16:20:20 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Thu Nov 20 16:20:20 2025
+Terminated at Thu Nov 20 16:23:23 2025
+Results reported at Thu Nov 20 16:23:23 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhp1016-1-18b_1p.yaml
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   818.00 sec.
+    Max Memory :                                 105151 MB
+    Average Memory :                             40134.73 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               509249.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                51
+    Run time :                                   183 sec.
+    Turnaround time :                            183 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhp1016-1-18b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_25894.err> for stderr output of this job.
+

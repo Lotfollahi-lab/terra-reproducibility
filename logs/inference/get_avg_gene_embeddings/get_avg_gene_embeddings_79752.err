@@ -1,0 +1,8 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_avg_gene_embeddings.py", line 220, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_avg_gene_embeddings.py", line 156, in main
+    model_folder_path=model_folder_path,
+NameError: name 'model_folder_path' is not defined

@@ -1,0 +1,65 @@
+#!/bin/bash
+#BSUB -G team361                                                                         # LSF group
+#BSUB -J train_nichecompass_model                                                        # Job name
+#BSUB -o ../../logs/analysis/train_nichecompass_model/train_nichecompass_model_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/analysis/train_nichecompass_model/train_nichecompass_model_%J.err    # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 12                                                                              # Number of CPU cores
+#BSUB -M 128GB                                                                           # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                             # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source /nfs/team361/sb75/.venvs/nichecompass/bin/activate
+
+# Run your Python script
+python train_nichecompass_model.py \
+    --dataset xhp2000-1b_1p \
+    --dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2000-1b_1p \
+    --batch_file_paths "Xenium_Pancreatic_Cancer_with_Xenium_Human_Multi-Tissue_and_Cancer_Panel"
+
+    #--dataset xhl2010-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhl2010-1b_1p \
+    #--batch_file_paths "Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on"    
+
+    #--dataset xhl2009-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhl2009-1b_1p \
+    #--batch_file_paths "Xenium_Preview_Data_FFPE_Human_Lung_Cancer_with_Xenium_Multimodal_Cell_Segmentation"       
+
+    #--dataset xhb2008-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2008-1b_1p \
+    #--batch_file_paths "Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_1_replicate_1"   
+   
+    #--dataset xhb2007-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2007-1b_1p \
+    #--batch_file_paths "Xenium_High_resolution_mapping_of_the_breast_cancer_tumor_microenvironment_using_integrated_single_cell_spatial_and_in_situ_analysis_sample_2"
+
+    #--dataset xhb2006-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2006-1b_1p \
+    #--batch_file_paths "Xenium_FFPE_Human_Breast_using_the_Entire_Sample_Area_replicate_1"
+ 
+    #--dataset xhb2005-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhb2005-1b_1p \
+    #--batch_file_paths "Xenium_V1_FFPE_Human_Breast_IDC"
+
+    #--dataset xhs2004-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhs2004-1b_1p \
+    #--batch_file_paths "Xeniumranger_V1_hSkin_Melanoma_Add_on_FFPE"
+
+    #--dataset xhs2003-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhs2003-1b_1p \
+    #--batch_file_paths "Xenium_V1_hSkin_Melanoma_Base_FFPE"
+
+    #--dataset xhp2002-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2002-1b_1p \
+    #--batch_file_paths "Xenium_FFPE_Human_Pancreatic_Ductal_Adenocarcinoma_Data_with_Human_Immuno-Oncology_Profiling_Panel"
+
+    #--dataset xhp2001-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2001-1b_1p \
+    #--batch_file_paths "Xenium_FFPE_Human_Pancreas_with_Xenium_Multimodal_Cell_Segmentation"
+
+    #--dataset xhp2000-1b_1p \
+    #--dataset_folder_path /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2000-1b_1p \
+    #--batch_file_paths "Xenium_Pancreatic_Cancer_with_Xenium_Human_Multi-Tissue_and_Cancer_Panel"
+

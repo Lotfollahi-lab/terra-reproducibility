@@ -1,0 +1,50 @@
+Experiment Name: xhp1017-4b_1p
+Input Directory: /nfs/team361/sb75/DATASETS/bronze/xhp1017-4b_1p
+Output Directory: /nfs/team361/sb75/DATASETS/silver/xhp1017-4b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary from /nfs/team361/sb75/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhp1017-4b_1p/output-XETG00272__0059807__DJ1-PNC-0-FFPE-1-S1__20250717__122703.h5ad
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-10>
+Subject: Job 481960: <xhp1017-4b_1p_bronze-to-silver_1> in cluster <farm22> Exited
+
+Job <xhp1017-4b_1p_bronze-to-silver_1> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Oct  8 15:51:56 2025
+Job was executed on host(s) <node-13-10>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Oct  8 16:16:13 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct  8 16:16:13 2025
+Terminated at Wed Oct  8 16:16:33 2025
+Results reported at Wed Oct  8 16:16:33 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhp1017-4b_1p.yaml 1
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   10.06 sec.
+    Max Memory :                                 446 MB
+    Average Memory :                             321.20 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50754.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   20 sec.
+    Turnaround time :                            1477 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhp1017-4b_1p/farm-job-outputs/bronze-to-silver/1_481960.err> for stderr output of this job.
+

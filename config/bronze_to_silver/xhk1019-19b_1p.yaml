@@ -1,0 +1,71 @@
+experiment:
+  name: "xhk1019-19b_1p"
+  description: "Xenium Human Kidney (dataset-id 1019) | 19 batch | 1 panel | 4949 genes"
+  study: "Dataset from Adam Boxall (/nfs/team361/data/data_platform/data/sanger_renal_cell_carcinoma/SGP269)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00272__0072738__DI10-KID-0-FT-5-S2__20250730__130527
+    - output-XETG00272__0072738__DI13-KID-0-FT-2-S3__20250730__130527
+    - output-XETG00272__0072738__DI13-KID-0-FT-3-S2__20250730__130527
+    - output-XETG00272__0072738__DI14-KID-0-FT-1-S2__20250730__130526
+    - output-XETG00272__0072738__DI16-KID-0-FT-1-S2__20250730__130527
+    - output-XETG00272__0072741__DI11-KID-0-FT-1-S3__20250730__130527
+    - output-XETG00272__0072741__DI12-KID-0-FT-1-S3__20250730__130527
+    - output-XETG00335__0050862__DI10-KID-0-FT-2-S3__20250730__125204
+    - output-XETG00335__0050862__DI10-KID-0-FT-3-S2__20250730__125203
+    - output-XETG00335__0050862__DI10-KID-0-FT-4-S2__20250730__125203
+    - output-XETG00335__0050862__DI12-KID-0-FT-4-S2__20250730__125203
+    - output-XETG00335__0050862__DI13-KID-0-FT-1-S3__20250730__125203
+    - output-XETG00335__0050862__DI15-KID-0-FT-2-S2__20250730__125203
+    - output-XETG00335__0050862__DI15-KID-0-FT-3-S2__20250730__125203
+    - output-XETG00335__0050870__DI10-KID-0-FT-1-S2__20250730__125204
+    - output-XETG00335__0050870__DI12-KID-0-FT-2-S3__20250730__125204
+    - output-XETG00335__0050870__DI12-KID-0-FT-3-S3__20250730__125204
+    - output-XETG00335__0050870__DI14-KID-0-FT-2-S2__20250730__125204
+    - output-XETG00335__0050870__DI15-KID-0-FT-1-S2__20250730__125204
+
+harmonization:
+  uns: {
+    'dataset_id': 1019,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'kidney',
+    'sample_condition_map': {
+      'output-XETG00272__0072738__DI10-KID-0-FT-5-S2__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00272__0072738__DI13-KID-0-FT-2-S3__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00272__0072738__DI13-KID-0-FT-3-S2__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00272__0072738__DI14-KID-0-FT-1-S2__20250730__130526': 'renal_cell_carcinoma',
+      'output-XETG00272__0072738__DI16-KID-0-FT-1-S2__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00272__0072741__DI11-KID-0-FT-1-S3__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00272__0072741__DI12-KID-0-FT-1-S3__20250730__130527': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI10-KID-0-FT-2-S3__20250730__125204': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI10-KID-0-FT-3-S2__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI10-KID-0-FT-4-S2__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI12-KID-0-FT-4-S2__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI13-KID-0-FT-1-S3__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI15-KID-0-FT-2-S2__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050862__DI15-KID-0-FT-3-S2__20250730__125203': 'renal_cell_carcinoma',
+      'output-XETG00335__0050870__DI10-KID-0-FT-1-S2__20250730__125204': 'renal_cell_carcinoma',
+      'output-XETG00335__0050870__DI12-KID-0-FT-2-S3__20250730__125204': 'renal_cell_carcinoma',
+      'output-XETG00335__0050870__DI12-KID-0-FT-3-S3__20250730__125204': 'renal_cell_carcinoma',
+      'output-XETG00335__0050870__DI14-KID-0-FT-2-S2__20250730__125204': 'renal_cell_carcinoma',
+      'output-XETG00335__0050870__DI15-KID-0-FT-1-S2__20250730__125204': 'renal_cell_carcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}   
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

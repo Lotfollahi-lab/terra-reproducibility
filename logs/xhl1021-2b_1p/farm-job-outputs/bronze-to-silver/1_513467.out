@@ -1,0 +1,345 @@
+Experiment Name: xhl1021-2b_1p
+Input Directory: /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p
+Output Directory: /nfs/team361/sb75/DATASETS/silver/xhl1021-2b_1p
+No bronze (raw) .h5ad files found.
+Extracting bronze (raw) .h5ad from /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553...
+[+] Reading /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553
+[+] Reading cell-feature matrix /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553/cell_feature_matrix.h5
+[+] Reading observations /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553/cells.parquet
+[+] Reading experiment /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553/experiment.xenium
+[+] Reading gene panel /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 733805 × 5001
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553.h5ad
+Extracting bronze (raw) .h5ad from /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642...
+[+] Reading /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642
+[+] Reading cell-feature matrix /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642/cell_feature_matrix.h5
+[+] Reading observations /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642/cells.parquet
+[+] Reading experiment /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642/experiment.xenium
+[+] Reading gene panel /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 981882 × 5001
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642.h5ad
+Loading gene name to ensembl id dictionary from /nfs/team361/sb75/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (981882, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 174608795 stored elements and shape (981882, 5001)>
+  Coords	Values
+  (0, 45)	1
+  (0, 51)	1
+  (0, 83)	1
+  (0, 152)	1
+  (0, 160)	1
+  (0, 193)	1
+  (0, 207)	1
+  (0, 251)	1
+  (0, 281)	2
+  (0, 320)	2
+  (0, 321)	1
+  (0, 322)	1
+  (0, 357)	1
+  (0, 365)	1
+  (0, 438)	1
+  (0, 545)	1
+  (0, 621)	2
+  (0, 630)	1
+  (0, 664)	1
+  (0, 681)	1
+  (0, 684)	1
+  (0, 687)	1
+  (0, 690)	2
+  (0, 707)	1
+  (0, 750)	1
+  :	:
+  (981880, 4293)	1
+  (981880, 4326)	2
+  (981880, 4390)	1
+  (981880, 4425)	1
+  (981880, 4483)	1
+  (981880, 4526)	1
+  (981880, 4610)	1
+  (981880, 4623)	1
+  (981880, 4632)	1
+  (981880, 4682)	1
+  (981880, 4683)	1
+  (981880, 4685)	1
+  (981880, 4728)	1
+  (981880, 4770)	1
+  (981880, 4790)	1
+  (981880, 4872)	1
+  (981880, 4907)	1
+  (981881, 360)	1
+  (981881, 810)	1
+  (981881, 971)	1
+  (981881, 1513)	1
+  (981881, 1673)	1
+  (981881, 1867)	1
+  (981881, 2309)	1
+  (981881, 4569)	2
+adata.X shape: (981882, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 8642.265    524.5535]
+ [ 8651.861    523.3314]
+ [ 8646.161    519.3241]
+ ...
+ [ 3053.6255 20423.285 ]
+ [ 3049.9111 20434.98  ]
+ [ 3053.6846 20428.902 ]]
+AnnData object with n_obs × n_vars = 981882 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1021
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642': 'cystic_fibrosis', 'output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553': 'cystic_fibrosis'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaaakdh-1         1021_batch0_0
+aaaacboi-1         1021_batch0_1
+aaaaejad-1         1021_batch0_2
+aaaaepgn-1         1021_batch0_3
+aaaafjca-1         1021_batch0_4
+                     ...        
+oimljdpf-1    1021_batch0_968231
+oimlkcek-1    1021_batch0_968232
+oimlkgjf-1    1021_batch0_968233
+oimllhnp-1    1021_batch0_968234
+oimlnomm-1    1021_batch0_968235
+Name: cell_id, Length: 968236, dtype: object
+Harmonized adata_batch shape: (968236, 4949)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 968236 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhl1021-2b_1p/output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (733805, 5001)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 84888332 stored elements and shape (733805, 5001)>
+  Coords	Values
+  (0, 2089)	1
+  (0, 2424)	1
+  (0, 2778)	1
+  (0, 3142)	1
+  (1, 38)	1
+  (1, 60)	1
+  (1, 93)	1
+  (1, 147)	2
+  (1, 152)	2
+  (1, 184)	1
+  (1, 215)	1
+  (1, 242)	1
+  (1, 267)	1
+  (1, 312)	1
+  (1, 319)	1
+  (1, 365)	1
+  (1, 417)	1
+  (1, 418)	1
+  (1, 528)	1
+  (1, 570)	1
+  (1, 657)	1
+  (1, 681)	2
+  (1, 687)	1
+  (1, 705)	1
+  (1, 786)	1
+  :	:
+  (733804, 4195)	1
+  (733804, 4220)	2
+  (733804, 4242)	1
+  (733804, 4253)	1
+  (733804, 4295)	1
+  (733804, 4304)	1
+  (733804, 4339)	1
+  (733804, 4398)	1
+  (733804, 4408)	1
+  (733804, 4435)	1
+  (733804, 4480)	1
+  (733804, 4509)	1
+  (733804, 4544)	1
+  (733804, 4601)	1
+  (733804, 4623)	1
+  (733804, 4630)	1
+  (733804, 4642)	1
+  (733804, 4705)	1
+  (733804, 4742)	1
+  (733804, 4755)	1
+  (733804, 4796)	1
+  (733804, 4895)	1
+  (733804, 4941)	1
+  (733804, 4976)	1
+  (733804, 4983)	1
+adata.X shape: (733805, 5001)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 5001
+Number of genes with matching ensembl ids: 4949
+Number of genes skipped: 52
+adata.var:
+                ensembl_id
+gene_name                 
+A2ML1      ENSG00000166535
+AAMP       ENSG00000127837
+AAR2       ENSG00000131043
+AARSD1     ENSG00000266967
+ABAT       ENSG00000183044
+...                    ...
+ZSCAN26    ENSG00000197062
+ZSWIM6     ENSG00000130449
+ZUP1       ENSG00000153975
+ZYG11B     ENSG00000162378
+ZYX        ENSG00000159840
+
+[4949 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[   19.72248 18076.906  ]
+ [   40.65656 18271.846  ]
+ [   33.79624 18276.076  ]
+ ...
+ [ 6775.6646  15520.921  ]
+ [ 6773.3     15509.967  ]
+ [ 6858.0205  15224.277  ]]
+AnnData object with n_obs × n_vars = 733805 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 1021
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642': 'cystic_fibrosis', 'output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553': 'cystic_fibrosis'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+aaaabjkm-1         1021_batch1_0
+aaaacpdb-1         1021_batch1_1
+aaaaecgd-1         1021_batch1_2
+aaaafenk-1         1021_batch1_3
+aaaafpik-1         1021_batch1_4
+                     ...        
+oinkcmjb-1    1021_batch1_708116
+oinkeekk-1    1021_batch1_708117
+oinkelhn-1    1021_batch1_708118
+oinkjjnl-1    1021_batch1_708119
+oinkjknn-1    1021_batch1_708120
+Name: cell_id, Length: 708121, dtype: object
+Harmonized adata_batch shape: (708121, 4949)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 708121 × 4949
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'genomic_control_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'nucleus_count', 'segmentation_method', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xhl1021-2b_1p/output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-10-5-1>
+Subject: Job 513467: <xhl1021-2b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhl1021-2b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Wed Oct  8 20:27:41 2025
+Job was executed on host(s) <node-10-5-1>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Oct  8 20:27:42 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Oct  8 20:27:42 2025
+Terminated at Wed Oct  8 20:53:28 2025
+Results reported at Wed Oct  8 20:53:28 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhl1021-2b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1516.00 sec.
+    Max Memory :                                 10398 MB
+    Average Memory :                             5530.37 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               40802.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                22
+    Run time :                                   1552 sec.
+    Turnaround time :                            1547 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1021-2b_1p/farm-job-outputs/bronze-to-silver/1_513467.err> for stderr output of this job.
+

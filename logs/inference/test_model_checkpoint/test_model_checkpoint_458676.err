@@ -1,0 +1,576 @@
+JAX version 0.6.1 available.
+JAX version 0.6.1 available.
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Loaded parameters from YAML file.
+Loaded parameters from YAML file.
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+0it [00:00, ?it/s]0it [00:01, ?it/s]
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 372, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+0it [00:00, ?it/s]EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+0it [00:02, ?it/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 426, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+0it [00:00, ?it/s]0it [00:02, ?it/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 480, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+JAX version 0.6.1 available.
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Loaded parameters from YAML file.
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+0it [00:00, ?it/s]0it [00:01, ?it/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 534, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+0it [00:00, ?it/s]0it [00:02, ?it/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 594, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+EncoderMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedEncoder(
+    (token_embed): Embedding(23407, 384, padding_idx=0)
+    (blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=384, out_features=1152, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=384, out_features=384, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=384, out_features=1536, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=1536, out_features=384, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (norm): LayerNorm((384,), eps=1e-06, elementwise_affine=True)
+    (pos_embed): Embedding(2817, 384, padding_idx=0)
+    (value_embed): MLP(
+      (fc1): Linear(in_features=1, out_features=192, bias=True)
+      (act): GELU(approximate='none')
+      (fc2): Linear(in_features=192, out_features=384, bias=True)
+      (drop): Dropout(p=0.0, inplace=False)
+    )
+  )
+)
+PredictorMultiMaskWrapper(
+  (backbone): GeneTransformerCombinedPredictor(
+    (predictor_embed): Linear(in_features=384, out_features=192, bias=True)
+    (token_embed_projection): Linear(in_features=384, out_features=192, bias=True)
+    (predictor_blocks): ModuleList(
+      (0-11): 12 x Block(
+        (norm1): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (attn): Attention(
+          (qkv): Linear(in_features=192, out_features=576, bias=True)
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=192, out_features=192, bias=True)
+          (proj_drop): Dropout(p=0.0, inplace=False)
+        )
+        (norm2): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+        (mlp): MLP(
+          (fc1): Linear(in_features=192, out_features=768, bias=True)
+          (act): GELU(approximate='none')
+          (fc2): Linear(in_features=768, out_features=192, bias=True)
+          (drop): Dropout(p=0.0, inplace=False)
+        )
+      )
+    )
+    (predictor_norm): LayerNorm((192,), eps=1e-06, elementwise_affine=True)
+    (predictor_proj): Linear(in_features=192, out_features=384, bias=True)
+    (pos_embed): Embedding(2817, 192, padding_idx=0)
+  )
+)
+Encoder number of parameters: 30357120
+Predictor number of parameters: 5560896
+Dataloader and -sampler created.
+Loaded pretrained target encoder from epoch 2 with msg: <All keys matched successfully>.
+Finished loading checkpoint with read path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/28102025_172635_143/nichejepa-ep1.pth.tar.
+0it [00:00, ?it/s]0it [00:01, ?it/s]
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 656, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 160, in run_inference
+    adata = infer(params,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/app/infer.py", line 396, in infer
+    full_ctx, cell_only_ctx = return_layer_emb_fn(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 1160, in return_layer_emb
+    full_ctx: dict[int, torch.Tensor] = self._compute_layer_emb(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/gene_transformers.py", line 233, in _compute_layer_emb
+    x = blk(x, masks=attn)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 201, in forward
+    y, attn = self.attn(self.norm1(x),
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1751, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1762, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/models/modules.py", line 90, in forward
+    x = nn.functional.scaled_dot_product_attention(
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 22.69 GiB. GPU 0 has a total capacity of 31.73 GiB of which 3.12 GiB is free. Including non-PyTorch memory, this process has 28.61 GiB memory in use. Of the allocated memory 28.24 GiB is allocated by PyTorch, and 5.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

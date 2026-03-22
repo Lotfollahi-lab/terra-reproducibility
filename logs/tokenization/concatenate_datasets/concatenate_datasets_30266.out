@@ -1,0 +1,383 @@
+32_None_None_None_None_None_shifted_log_knn_10
+Empty DataFrame
+Columns: []
+Index: [xhb23-1b_1p, xhb24-2b_1p, xhb25-2b_1p, xhb26-2b_1p, xhb27-1b_1p, xhl28-1b_1p, xhl29-1b_1p, xhp30-1b_1p, xhs31-2b_1p, xhh32-1b_1p, xhln33-1b_1p, xhp34-1b_1p, xhp35-1b_1p, xhs36-2b_1p, xhb37-3b_1p, xhc38-4b_1p, xhk39-2b_1p, xhl40-2b_2p, xhl41-2b_1p, xhb42-3b_1p, xht43-2b_1p, xhsc44-6b_1p, xhc45-1b_1p, xhl46-1b_1p, xhp48-1b_1p, xhs49-1b_1p, xho50-1b_1p, xhc51-1b_1p, xhd52-1b_1p, xhl53-1b_1p, xho54-1b_1p, xhc55-3b_1p, xhs62-1b_1p, xhb76-16b_1p, xhk79-4b_1p, xhs1000-39b_1p, xhb1002-AT3-1b_1p, xhb1002-AT4-3b_1p, xhb1002-AT5-1b_1p, xhb1002-AT9-6b_1p, xhb1002-AT10-7b_1p, xhb1002-AT12-1b_1p, xhb1002-AT13-2b_1p, xhb1002-AT14-1b_1p, xhb1002-AT15-10b_1p, xhb1002-AT16-15b_1p, xhb1002-AT17-2b_1p, xhb1002-AT18-2b_1p, xhb1002-AT19-1b_1p, xhb1002-AT20-2b_1p, xhb1002-AT21-2b_1p, xhb1002-AT23-9b_1p, xhb1002-AT101-6b_1p, xhb1003-1b_1p, xhln1004-1b_1p, xhl1005-1b_1p, mhb14-1b_1p, mhc15-2b_1p, mhl16-2b_1p, mhl17-2b_1p, mhm18-2b_1p, mho19-4b_1p, mhp20-2b_1p, mhu21-3b_1p, mhl63-10b_1p, chb56-1b_1p, chl57-2b_1p, chl59-8b_1p, chc61-9b_1p, chr78-11b_1p, chp60-1b_1p, mhh22-3b_1p, shp75-4b_1p, xhb1002-AT6-1-1b_1p, xhb1002-AT6-2-1b_1p, xhb1002-AT6-3-1b_1p, xhb1002-AT6-4-1b_1p, xho47-S1-1b_1p, xho47-S2-1b_1p, xhsc1006-2b_1p, xhc1001-1b_1p, mhl80-8b_1p, xhb81-1b_1p, xhl82-2b_1p, mhb83-1b_1p, xhk1007-CV1-41b_1p, xhk1007-CV2-41b_1p, xhk1007-CV3-41b_1p, xhk1007-CV4-41b_1p, xhk1007-CV5-41b_1p, xhk1007-CV6-41b_1p, xhk1007-CV7-41b_1p, xhk1007-CV8-41b_1p, xhk1007-CV9-41b_1p, xhe1008-1-20b_1p, xhe1008-2-20b_1p, xhe1008-3-20b_1p, xhe1008-4-20b_1p, xhe1008-5-20b_1p, xhe1008-6-20b_1p, ...]
+
+[156 rows x 0 columns]
+Processing:  xhb23-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb23-1b_1p/xhb23-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb24-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb24-2b_1p/xhb24-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb25-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb25-2b_1p/xhb25-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb26-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb26-2b_1p/xhb26-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb27-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb27-1b_1p/xhb27-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl28-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl28-1b_1p/xhl28-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl29-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl29-1b_1p/xhl29-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp30-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp30-1b_1p/xhp30-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs31-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs31-2b_1p/xhs31-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhh32-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhh32-1b_1p/xhh32-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhln33-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhln33-1b_1p/xhln33-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp34-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp34-1b_1p/xhp34-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp35-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp35-1b_1p/xhp35-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs36-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs36-2b_1p/xhs36-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb37-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb37-3b_1p/xhb37-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhc38-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc38-4b_1p/xhc38-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk39-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk39-2b_1p/xhk39-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl40-2b_2p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl40-2b_2p/xhl40-2b_2p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl41-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl41-2b_1p/xhl41-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb42-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb42-3b_1p/xhb42-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xht43-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xht43-2b_1p/xht43-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhsc44-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhsc44-6b_1p/xhsc44-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhc45-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc45-1b_1p/xhc45-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl46-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl46-1b_1p/xhl46-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp48-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp48-1b_1p/xhp48-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs49-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs49-1b_1p/xhs49-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho50-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho50-1b_1p/xho50-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhc51-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc51-1b_1p/xhc51-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhd52-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhd52-1b_1p/xhd52-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl53-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl53-1b_1p/xhl53-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho54-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho54-1b_1p/xho54-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhc55-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc55-3b_1p/xhc55-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs62-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs62-1b_1p/xhs62-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb76-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb76-16b_1p/xhb76-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk79-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk79-4b_1p/xhk79-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1000-39b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1000-39b_1p/xhs1000-39b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT3-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT3-1b_1p/xhb1002-AT3-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT4-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT4-3b_1p/xhb1002-AT4-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT5-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT5-1b_1p/xhb1002-AT5-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT9-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT9-6b_1p/xhb1002-AT9-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT10-7b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT10-7b_1p/xhb1002-AT10-7b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT12-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT12-1b_1p/xhb1002-AT12-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT13-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT13-2b_1p/xhb1002-AT13-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT14-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT14-1b_1p/xhb1002-AT14-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT15-10b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT15-10b_1p/xhb1002-AT15-10b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT16-15b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT16-15b_1p/xhb1002-AT16-15b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT17-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT17-2b_1p/xhb1002-AT17-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT18-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT18-2b_1p/xhb1002-AT18-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT19-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT19-1b_1p/xhb1002-AT19-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT20-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT20-2b_1p/xhb1002-AT20-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT21-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT21-2b_1p/xhb1002-AT21-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT23-9b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT23-9b_1p/xhb1002-AT23-9b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT101-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT101-6b_1p/xhb1002-AT101-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1003-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1003-1b_1p/xhb1003-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhln1004-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhln1004-1b_1p/xhln1004-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1005-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1005-1b_1p/xhl1005-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhb14-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhb14-1b_1p/mhb14-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhc15-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhc15-2b_1p/mhc15-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhl16-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhl16-2b_1p/mhl16-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhl17-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhl17-2b_1p/mhl17-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhm18-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhm18-2b_1p/mhm18-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mho19-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mho19-4b_1p/mho19-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhp20-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhp20-2b_1p/mhp20-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhu21-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhu21-3b_1p/mhu21-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhl63-10b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhl63-10b_1p/mhl63-10b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chb56-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chb56-1b_1p/chb56-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chl57-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chl57-2b_1p/chl57-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chl59-8b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chl59-8b_1p/chl59-8b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chc61-9b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chc61-9b_1p/chc61-9b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chr78-11b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chr78-11b_1p/chr78-11b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  chp60-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/chp60-1b_1p/chp60-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhh22-3b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhh22-3b_1p/mhh22-3b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  shp75-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/shp75-4b_1p/shp75-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT6-1-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT6-1-1b_1p/xhb1002-AT6-1-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT6-2-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT6-2-1b_1p/xhb1002-AT6-2-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT6-3-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT6-3-1b_1p/xhb1002-AT6-3-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb1002-AT6-4-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb1002-AT6-4-1b_1p/xhb1002-AT6-4-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho47-S1-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho47-S1-1b_1p/xho47-S1-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho47-S2-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho47-S2-1b_1p/xho47-S2-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhsc1006-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhsc1006-2b_1p/xhsc1006-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhc1001-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhc1001-1b_1p/xhc1001-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhl80-8b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhl80-8b_1p/mhl80-8b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhb81-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhb81-1b_1p/xhb81-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl82-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl82-2b_1p/xhl82-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  mhb83-1b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mhb83-1b_1p/mhb83-1b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV1-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV1-41b_1p/xhk1007-CV1-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV2-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV2-41b_1p/xhk1007-CV2-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV3-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV3-41b_1p/xhk1007-CV3-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV4-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV4-41b_1p/xhk1007-CV4-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV5-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV5-41b_1p/xhk1007-CV5-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV6-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV6-41b_1p/xhk1007-CV6-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV7-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV7-41b_1p/xhk1007-CV7-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV8-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV8-41b_1p/xhk1007-CV8-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1007-CV9-41b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1007-CV9-41b_1p/xhk1007-CV9-41b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-1-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-1-20b_1p/xhe1008-1-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-2-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-2-20b_1p/xhe1008-2-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-3-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-3-20b_1p/xhe1008-3-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-4-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-4-20b_1p/xhe1008-4-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-5-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-5-20b_1p/xhe1008-5-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-6-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-6-20b_1p/xhe1008-6-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-7-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-7-20b_1p/xhe1008-7-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-8-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-8-20b_1p/xhe1008-8-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-9-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-9-20b_1p/xhe1008-9-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhe1008-10-20b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhe1008-10-20b_1p/xhe1008-10-20b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1009-17b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1009-17b_1p/xhs1009-17b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1010-26b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1010-26b_1p/xhs1010-26b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1011-22b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1011-22b_1p/xhs1011-22b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU14-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU14-6b_1p/xho1012-AU14-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU16-7b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU16-7b_1p/xho1012-AU16-7b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU18-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU18-6b_1p/xho1012-AU18-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU20-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU20-6b_1p/xho1012-AU20-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU21-7b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU21-7b_1p/xho1012-AU21-7b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU22-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU22-6b_1p/xho1012-AU22-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AU30-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AU30-6b_1p/xho1012-AU30-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-AUrv15-6b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-AUrv15-6b_1p/xho1012-AUrv15-6b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-Hrv66-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv66-2b_1p/xho1012-Hrv66-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-Hrv69-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv69-4b_1p/xho1012-Hrv69-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-Hrv162-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv162-2b_1p/xho1012-Hrv162-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-Hrv182-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-Hrv182-4b_1p/xho1012-Hrv182-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xho1012-M23-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xho1012-M23-4b_1p/xho1012-M23-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1013-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1013-4b_1p/xhl1013-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R1-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R1-28b_1p/xhl1015-R1-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R2-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R2-28b_1p/xhl1015-R2-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R3-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R3-28b_1p/xhl1015-R3-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R4-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R4-28b_1p/xhl1015-R4-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R5-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R5-28b_1p/xhl1015-R5-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R6-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R6-28b_1p/xhl1015-R6-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1015-R7-28b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1015-R7-28b_1p/xhl1015-R7-28b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp1016-1-18b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp1016-1-18b_1p/xhp1016-1-18b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp1016-2-18b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp1016-2-18b_1p/xhp1016-2-18b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp1016-3-18b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp1016-3-18b_1p/xhp1016-3-18b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhp1017-4b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhp1017-4b_1p/xhp1017-4b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-1-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-1-23b_1p/xhk1018-1-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-2-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-2-23b_1p/xhk1018-2-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-3-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-3-23b_1p/xhk1018-3-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-4-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-4-23b_1p/xhk1018-4-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-5-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-5-23b_1p/xhk1018-5-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1018-6-23b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1018-6-23b_1p/xhk1018-6-23b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1019-1-19b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-1-19b_1p/xhk1019-1-19b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1019-2-19b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-2-19b_1p/xhk1019-2-19b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1019-3-19b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-3-19b_1p/xhk1019-3-19b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1019-4-19b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-4-19b_1p/xhk1019-4-19b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhk1019-5-19b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhk1019-5-19b_1p/xhk1019-5-19b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-1-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-1-16b_1p/xhl1020-1-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-2-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-2-16b_1p/xhl1020-2-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-3-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-3-16b_1p/xhl1020-3-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-4-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-4-16b_1p/xhl1020-4-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-5-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-5-16b_1p/xhl1020-5-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-6-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-6-16b_1p/xhl1020-6-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-7-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-7-16b_1p/xhl1020-7-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1020-8-16b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1020-8-16b_1p/xhl1020-8-16b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1021-1-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1021-1-2b_1p/xhl1021-1-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhl1021-2-2b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhl1021-2-2b_1p/xhl1021-2-2b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1022-1-55b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1022-1-55b_1p/xhs1022-1-55b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1022-2-55b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1022-2-55b_1p/xhs1022-2-55b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Processing:  xhs1022-3-55b_1p
+/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/xhs1022-3-55b_1p/xhs1022-3-55b_1p_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset
+Concatenating datasets...
+Current memory usage is 16.968785MB; Peak was 50.210991MB.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0404>
+Subject: Job 30266: <concatenate_datasets> in cluster <cub22> Done
+
+Job <concatenate_datasets> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Wed Nov 26 21:31:36 2025
+Job was executed on host(s) <12*farm-gpu0404>, in queue <inference>, as user <sb75> in cluster <cub22> at Wed Nov 26 21:31:36 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization> was used as the working directory.
+Started at Wed Nov 26 21:31:36 2025
+Terminated at Thu Nov 27 05:58:52 2025
+Results reported at Thu Nov 27 05:58:52 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J concatenate_datasets                                                         # Job name
+#BSUB -o ../../logs/tokenization/concatenate_datasets/concatenate_datasets_%J.out     # Standard output (%J = job ID)
+#BSUB -e ../../logs/tokenization/concatenate_datasets/concatenate_datasets_%J.err     # Standard error
+#BSUB -q inference                                                                    # Queue name
+#BSUB -n 12                                                                           # Number of CPU cores
+#BSUB -M 256GB                                                                        # Memory
+#BSUB -R "select[mem>256GB] rusage[mem=256GB] span[hosts=1]"                          # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                        # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                             # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python concatenate_datasets.py \
+    --cohort_name 'hst_corpus_110m' \
+    --cohort_dataset_names_file_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
+    --n_neighs 10 \
+    --seq_len 2816
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   17324.60 sec.
+    Max Memory :                                 1781 MB
+    Average Memory :                             1736.81 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               260363.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                50
+    Run time :                                   30436 sec.
+    Turnaround time :                            30436 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/tokenization/concatenate_datasets/concatenate_datasets_30266.err> for stderr output of this job.
+

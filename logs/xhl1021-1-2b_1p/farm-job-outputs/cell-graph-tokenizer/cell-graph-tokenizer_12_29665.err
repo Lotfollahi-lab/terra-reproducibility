@@ -1,0 +1,134 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:660: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Setting num_proc from 12 back to 1 for the train split to disable multiprocessing as it only contains one shard.
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1000 examples [00:00, 4232.80 examples/s]Generating train split: 1999 examples [00:00, 5494.01 examples/s]Generating train split: 1999 examples [00:00, 4093.88 examples/s]
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1586, in _prepare_split_single
+    writer.write(example, key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 553, in write
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 616, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 432, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1595, in _prepare_split_single
+    num_examples, num_bytes = writer.finalize()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 658, in finalize
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 616, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 432, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 122] Disk quota exceeded
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 264, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 309, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1183, in from_generator
+    ).read()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 49, in read
+    self.builder.download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 894, in download_and_prepare
+    self._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1609, in _download_and_prepare
+    super()._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 970, in _download_and_prepare
+    self._prepare_split(split_generator, **prepare_split_kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1447, in _prepare_split
+    for job_id, done, content in self._prepare_split_single(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1604, in _prepare_split_single
+    raise DatasetGenerationError("An error occurred while generating the dataset") from e
+datasets.exceptions.DatasetGenerationError: An error occurred while generating the dataset
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1586, in _prepare_split_single
+    writer.write(example, key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 553, in write
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 616, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 432, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1595, in _prepare_split_single
+    num_examples, num_bytes = writer.finalize()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 658, in finalize
+    self.write_examples_on_file()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 511, in write_examples_on_file
+    self.write_batch(batch_examples=batch_examples)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 631, in write_batch
+    self.write_table(pa_table, writer_batch_size)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_writer.py", line 649, in write_table
+    self.pa_writer.write_table(pa_table, writer_batch_size)
+  File "pyarrow/ipc.pxi", line 616, in pyarrow.lib._CRecordBatchWriter.write_table
+  File "pyarrow/error.pxi", line 89, in pyarrow.lib.check_status
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/fsspec/implementations/local.py", line 432, in write
+    return self.f.write(*args, **kwargs)
+OSError: [Errno 122] Disk quota exceeded
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 290, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 232, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 264, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 309, in _create_dataset
+    dataset = Dataset.from_generator(dict_generator,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1183, in from_generator
+    ).read()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 49, in read
+    self.builder.download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 894, in download_and_prepare
+    self._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1609, in _download_and_prepare
+    super()._download_and_prepare(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 970, in _download_and_prepare
+    self._prepare_split(split_generator, **prepare_split_kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1447, in _prepare_split
+    for job_id, done, content in self._prepare_split_single(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 1604, in _prepare_split_single
+    raise DatasetGenerationError("An error occurred while generating the dataset") from e
+datasets.exceptions.DatasetGenerationError: An error occurred while generating the dataset

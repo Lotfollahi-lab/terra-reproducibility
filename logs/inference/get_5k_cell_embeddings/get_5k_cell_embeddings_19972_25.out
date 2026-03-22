@@ -1,0 +1,82 @@
+Running job index: 25, steps: 240-249
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 112578039
+})
+Dataset({
+    features: ['rel_x_coord', 'rel_y_coord', 'cell_id', 'batch_value', 'gene_panel_value', 'assay_value', 'species_value', 'tissue_value', 'gene_tokens', 'gene_expr', 'n_nonzero_tokens', 'batch_token', 'gene_panel_token', 'assay_token', 'species_token', 'tissue_token'],
+    num_rows: 40712678
+})
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0407>
+Subject: Job 19972[25]: <get_5k_cell_embeddings_[1-30]> in cluster <cub22> Done
+
+Job <get_5k_cell_embeddings_[1-30]> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Mon Nov 10 08:02:59 2025
+Job was executed on host(s) <12*farm-gpu0407>, in queue <inference>, as user <sb75> in cluster <cub22> at Mon Nov 10 08:02:59 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Mon Nov 10 08:02:59 2025
+Terminated at Mon Nov 10 08:14:14 2025
+Results reported at Mon Nov 10 08:14:14 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J get_5k_cell_embeddings_[1-30]                                                   # Job array (14 jobs)
+#BSUB -o ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_%J_%I.err    # Standard error
+#BSUB -q inference                                                                       # Queue name
+#BSUB -n 12                                                                              # Number of CPU cores
+#BSUB -M 128GB                                                                           # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                             # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                           # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Compute step range for this array job
+# Each job covers 10 steps: 0–9, 10–19, ..., 130–139
+STEP=10
+START=$(((LSB_JOBINDEX - 1) * STEP))
+END=$((START + STEP - 1))
+
+echo "Running job index: $LSB_JOBINDEX, steps: $START-$END"
+
+# Run your Python script
+python get_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '07112025_054432_709' \
+    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --start_step "$START" \
+    --end_step "$END"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1586.11 sec.
+    Max Memory :                                 21244 MB
+    Average Memory :                             8745.86 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               109828.00 MB
+    Max Swap :                                   -
+    Max Processes :                              17
+    Max Threads :                                61
+    Run time :                                   675 sec.
+    Turnaround time :                            675 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_5k_cell_embeddings/get_5k_cell_embeddings_19972_25.err> for stderr output of this job.
+

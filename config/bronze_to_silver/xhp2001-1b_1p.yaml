@@ -1,0 +1,35 @@
+experiment:
+  name: "xhp2001-1b_1p"
+  description: "Xenium Human Pancreas (dataset-id 2001) | 1 batch | 1 panel | 372 genes"
+  study: "Dataset from Hest1k-PAAD TENX126 (Dabin Jeong) for CVPR submission"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/lotfollahi/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_FFPE_Human_Pancreas_with_Xenium_Multimodal_Cell_Segmentation
+
+harmonization:
+  uns: {
+    'dataset_id': 2001,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'pancreas',
+    'sample_condition_map': {
+      'Xenium_FFPE_Human_Pancreas_with_Xenium_Multimodal_Cell_Segmentation': 'ductal_adenocarcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

@@ -1,0 +1,19 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 534, in main
+    adata = run_inference(dataset_name,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 153, in run_inference
+    adata = sc.read_h5ad(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_io/h5ad.py", line 239, in read_h5ad
+    with h5py.File(filename, "r") as f:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/h5py/_hl/files.py", line 564, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/h5py/_hl/files.py", line 238, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 102, in h5py.h5f.open
+BlockingIOError: [Errno 11] Unable to synchronously open file (unable to lock file, errno = 11, error message = 'Resource temporarily unavailable')

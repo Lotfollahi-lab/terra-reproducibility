@@ -1,0 +1,646 @@
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/_core/anndata.py:1756: UserWarning: Observation names are not unique. To make them unique, call `.obs_names_make_unique`.
+  utils.warn_names_duplicates("obs")
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:43: RuntimeWarning: invalid value encountered in divide
+  nonzero_means = np.true_divide(nonzero_sums, nonzero_counts)
+/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/compute_cohort_norm_factors.py:57: RuntimeWarning: invalid value encountered in divide
+  nonzero_means_gcrd = np.true_divide(

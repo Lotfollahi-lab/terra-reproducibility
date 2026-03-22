@@ -1,0 +1,81 @@
+Load existing processed AnnData.
+AnnData object with n_obs × n_vars = 40712678 × 0
+    obs: 'assay', 'batch', 'tissue', 'gene_panel_size', 'donor_id', 'dataset', 'cell', 'dataset_batch', 'cell_clusters_res_1.0', 'neighborhood_clusters_res_1.0', 'spatial_cell_clusters_res_1.0'
+    uns: 'cell', 'cell_clusters_res_1.0', 'cell_umap', 'neighborhood', 'neighborhood_clusters_res_1.0', 'neighborhood_umap', 'spatial_cell', 'spatial_cell_clusters_res_1.0', 'spatial_cell_umap'
+    obsm: 'cell_emb_layer_12', 'cell_umap', 'neighborhood_emb_layer_12', 'neighborhood_umap', 'spatial', 'spatial_cell_emb_layer_12', 'spatial_cell_umap'
+    obsp: 'cell_connectivities', 'cell_distances', 'neighborhood_connectivities', 'neighborhood_distances', 'spatial_cell_connectivities', 'spatial_cell_distances'
+AnnData object with n_obs × n_vars = 40712678 × 0
+    obs: 'assay', 'batch', 'tissue', 'gene_panel_size', 'donor_id', 'dataset', 'cell', 'dataset_batch', 'cell_clusters_res_1.0', 'neighborhood_clusters_res_1.0', 'spatial_cell_clusters_res_1.0'
+    uns: 'cell', 'cell_clusters_res_1.0', 'cell_umap', 'neighborhood', 'neighborhood_clusters_res_1.0', 'neighborhood_umap', 'spatial_cell', 'spatial_cell_clusters_res_1.0', 'spatial_cell_umap'
+    obsm: 'cell_emb_layer_12', 'cell_umap', 'neighborhood_emb_layer_12', 'neighborhood_umap', 'spatial', 'spatial_cell_emb_layer_12', 'spatial_cell_umap'
+    obsp: 'cell_connectivities', 'cell_distances', 'neighborhood_connectivities', 'neighborhood_distances', 'spatial_cell_connectivities', 'spatial_cell_distances'
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm22-gpu0201>
+Subject: Job 219207: <process_5k_cell_embeddings> in cluster <farm22> Done
+
+Job <process_5k_cell_embeddings> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Mon Jan 19 20:51:00 2026
+Job was executed on host(s) <12*farm22-gpu0201>, in queue <gpu-lotfollahi>, as user <sb75> in cluster <farm22> at Tue Jan 20 16:55:25 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Tue Jan 20 16:55:25 2026
+Terminated at Tue Jan 20 17:21:43 2026
+Results reported at Tue Jan 20 17:21:43 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J process_5k_cell_embeddings                                                           # Job name
+#BSUB -o ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_%J.err    # Standard error
+#BSUB -q gpu-lotfollahi                                                                             # Queue name
+#BSUB -n 12                                                                                   # Number of CPU cores
+#BSUB -M 512GB                                                                                # Memory
+#BSUB -R "select[mem>512GB] rusage[mem=512GB] span[hosts=1]"                                  # Resource requirements: reserve 256GB RAM on a single host
+#BSUB -W 48:00                                                                                # Walltime (hh:mm)  
+#BSUB -gpu "num=1:mode=exclusive_process"     
+
+# Load your environment
+source /etc/profile.d/modules.sh
+module load cellgen/conda
+conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
+
+# Run your Python script
+python process_5k_cell_embeddings.py \
+    --cohort_name 'hst_corpus_110m' \
+    --load_timestamp '11012026_190057_836' \
+    --read_checkpoint 'nichejepa-ep0.pth.tar' \
+    --use_rapids \
+    --n_pcs 50
+    #--no-use_rapids \
+    #--use_rapids \ 
+    #--n_pcs 50
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2009.00 sec.
+    Max Memory :                                 221861 MB
+    Average Memory :                             73552.68 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               302427.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                19
+    Run time :                                   1578 sec.
+    Turnaround time :                            73843 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/process_5k_cell_embeddings/process_5k_cell_embeddings_219207.err> for stderr output of this job.
+

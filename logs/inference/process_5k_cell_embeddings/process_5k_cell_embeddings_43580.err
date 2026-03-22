@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 179, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 57, in main
+    adata_tmp = sc.read_h5ad(f"{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}/adata_{args.read_checkpoint.split('-')[1].split('.')[0]}_5k_{args.inference_step_size}_{i}.h5ad")
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/anndata/_io/h5ad.py", line 262, in read_h5ad
+    with h5py.File(filename, "r") as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/h5py/_hl/files.py", line 566, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/h5py/_hl/files.py", line 241, in make_fid
+    fid = h5f.open(name, flags, fapl=fapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 104, in h5py.h5f.open
+FileNotFoundError: [Errno 2] Unable to synchronously open file (unable to open file: name = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/14122025_085026_476/adata_ep3_5k_200000_10.h5ad', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)

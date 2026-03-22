@@ -1,0 +1,197 @@
+Experiment Name: xhl2010-1b_1p
+Input Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p
+Output Directory: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhl2010-1b_1p
+No bronze (raw) .h5ad files found.
+Extracting bronze (raw) .h5ad from /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on...
+[+] Reading /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on
+[+] Reading cell-feature matrix /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on/cell_feature_matrix.h5
+[+] Reading observations /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on/cells.parquet
+[+] Reading experiment /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on/experiment.xenium
+[+] Reading gene panel /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on/gene_panel.json
+Raw adata:
+AnnData object with n_obs × n_vars = 161000 × 480
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json'
+    obsm: 'spatial'
+Writing to file: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on.h5ad
+Loading gene name to ensembl id dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /lustre/scratch126/cellgen/lotfollahi/DATASETS/bronze/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (161000, 480)
+adata.X is present.
+All entries in adata.X are integers.
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 12013873 stored elements and shape (161000, 480)>
+  Coords	Values
+  (0, 0)	7
+  (0, 5)	1
+  (0, 15)	1
+  (0, 16)	1
+  (0, 25)	1
+  (0, 36)	1
+  (0, 83)	1
+  (0, 90)	1
+  (0, 101)	1
+  (0, 106)	1
+  (0, 122)	1
+  (0, 141)	1
+  (0, 170)	1
+  (0, 181)	1
+  (0, 211)	3
+  (0, 214)	1
+  (0, 260)	1
+  (0, 272)	1
+  (0, 274)	1
+  (0, 283)	1
+  (0, 289)	1
+  (0, 296)	2
+  (0, 302)	1
+  (0, 304)	5
+  (0, 317)	2
+  :	:
+  (160999, 279)	2
+  (160999, 286)	2
+  (160999, 306)	1
+  (160999, 313)	2
+  (160999, 318)	1
+  (160999, 339)	1
+  (160999, 345)	2
+  (160999, 349)	2
+  (160999, 357)	2
+  (160999, 359)	1
+  (160999, 361)	1
+  (160999, 364)	1
+  (160999, 380)	2
+  (160999, 392)	2
+  (160999, 404)	1
+  (160999, 405)	1
+  (160999, 414)	1
+  (160999, 427)	1
+  (160999, 428)	1
+  (160999, 429)	1
+  (160999, 434)	2
+  (160999, 439)	1
+  (160999, 453)	1
+  (160999, 460)	2
+  (160999, 475)	1
+adata.X shape: (161000, 480)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 480
+Number of genes with matching ensembl ids: 470
+Number of genes skipped: 10
+adata.var:
+                ensembl_id
+gene_name                 
+A2M        ENSG00000175899
+ACE2       ENSG00000130234
+ACTA2      ENSG00000107796
+ACTB       ENSG00000075624
+ADAM28     ENSG00000042980
+...                    ...
+VSIG4      ENSG00000155659
+VSIR       ENSG00000107738
+VWA5A      ENSG00000110002
+XBP1       ENSG00000100219
+ZNF683     ENSG00000176083
+
+[470 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 111.3486     28.035435]
+ [ 120.433235   75.61804 ]
+ [ 126.72793    56.905014]
+ ...
+ [7191.4634    398.1084  ]
+ [7185.162     400.09918 ]
+ [7179.023     394.4322  ]]
+AnnData object with n_obs × n_vars = 161000 × 470
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition'
+    obsm: 'spatial'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2010
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: homo_sapiens
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: lung
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on': 'nonsmall_cell_lung_carcinoma'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaaakjjo-1         2010_batch0_0
+aaaaoeme-1         2010_batch0_1
+aaaaofcm-1         2010_batch0_2
+aaabeahl-1         2010_batch0_3
+aaabkjgc-1         2010_batch0_4
+                     ...        
+oimkckeg-1    2010_batch0_159124
+oimkjcem-1    2010_batch0_159125
+oimklafm-1    2010_batch0_159126
+oimkmnpi-1    2010_batch0_159127
+oimknppn-1    2010_batch0_159128
+Name: cell_id, Length: 159129, dtype: object
+Harmonized adata_batch shape: (159129, 470)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 159129 × 470
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'deprecated_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'experiment.xenium', 'gene_panel.json', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'spatial'
+Writing to: /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhl2010-1b_1p/Xenium_FFPE_Human_Lung_Cancer_Data_with_Human_Immuno-Oncology_Profiling_Panel_and_Custom_Add-on.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-12>
+Subject: Job 804376: <xhl2010-1b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xhl2010-1b_1p_bronze-to-silver_1> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Oct 31 16:28:34 2025
+Job was executed on host(s) <node-13-12>, in queue <normal>, as user <sb75> in cluster <farm22> at Fri Oct 31 16:28:34 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Fri Oct 31 16:28:34 2025
+Terminated at Fri Oct 31 16:28:56 2025
+Results reported at Fri Oct 31 16:28:56 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xhl2010-1b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   12.37 sec.
+    Max Memory :                                 781 MB
+    Average Memory :                             510.33 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               50419.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                19
+    Run time :                                   23 sec.
+    Turnaround time :                            22 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl2010-1b_1p/farm-job-outputs/bronze-to-silver/1_804376.err> for stderr output of this job.
+

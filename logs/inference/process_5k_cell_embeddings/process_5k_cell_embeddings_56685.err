@@ -1,0 +1,34 @@
+... storing 'batch' as categorical
+... storing 'dataset' as categorical
+... storing 'dataset_batch' as categorical
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 182, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 81, in main
+    rsc.pp.neighbors(
+    ~~~~~~~~~~~~~~~~^
+        adata_emb,
+        ^^^^^^^^^^
+    ...<2 lines>...
+        n_pcs=(args.n_pcs if args.n_pcs > 0 else None),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        key_added=emb_key)
+        ^^^^^^^^^^^^^^^^^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/preprocessing/_neighbors/__init__.py", line 254, in neighbors
+    X_contiguous = _check_neighbors_X(X, algorithm)
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/preprocessing/_neighbors/_helper/__init__.py", line 66, in _check_neighbors_X
+    X_contiguous = cp.asarray(X, order="C", dtype=np.float32)
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cupy/_creation/from_data.py", line 88, in asarray
+    return _core.array(a, dtype, False, order, blocking=blocking)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "cupy/_core/core.pyx", line 2502, in cupy._core.core.array
+  File "cupy/_core/core.pyx", line 2529, in cupy._core.core.array
+  File "cupy/_core/core.pyx", line 2740, in cupy._core.core._array_default
+  File "cupy/_core/core.pyx", line 167, in cupy._core.core.ndarray.__new__
+  File "cupy/_core/core.pyx", line 254, in cupy._core.core._ndarray_base._init
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 62534673408 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp

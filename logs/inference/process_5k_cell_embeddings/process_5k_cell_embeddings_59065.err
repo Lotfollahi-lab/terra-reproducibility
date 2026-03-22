@@ -1,0 +1,14 @@
+usage: process_5k_cell_embeddings.py [-h] [--load_timestamp LOAD_TIMESTAMP]
+                                     [--read_checkpoint READ_CHECKPOINT]
+                                     [--aws_run | --no-aws_run]
+                                     [--use_rapids | --no-use_rapids]
+                                     [--cohort_name COHORT_NAME]
+                                     [--inference_step_size INFERENCE_STEP_SIZE]
+                                     [--inference_max_step INFERENCE_MAX_STEP]
+                                     [--emb_keys EMB_KEYS [EMB_KEYS ...]]
+                                     [--num_workers NUM_WORKERS]
+                                     [--n_neighbors N_NEIGHBORS]
+                                     [--latent_leiden_resolution LATENT_LEIDEN_RESOLUTION]
+                                     [--n_layer N_LAYER] [--n_pcs N_PCS]
+process_5k_cell_embeddings.py: error: unrecognized arguments:  
+/tmp/1768206683.59065.shell: line 24: --n_pcs: command not found

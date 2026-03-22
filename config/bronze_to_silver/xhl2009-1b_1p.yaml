@@ -1,0 +1,35 @@
+experiment:
+  name: "xhl2009-1b_1p"
+  description: "Xenium Human Lung (dataset-id 2009) | 1 batch | 1 panel | 372 genes"
+  study: "Dataset from Hest1k-LUAD TENX118 (Dabin Jeong) for CVPR submission"
+
+paths:
+  data_directory_path: "/lustre/scratch126/cellgen/lotfollahi/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_Preview_Data_FFPE_Human_Lung_Cancer_with_Xenium_Multimodal_Cell_Segmentation
+
+harmonization:
+  uns: {
+    'dataset_id': 2009,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'lung',
+    'sample_condition_map': {
+      'Xenium_Preview_Data_FFPE_Human_Lung_Cancer_with_Xenium_Multimodal_Cell_Segmentation': 'nonsmall_cell_lung_carcinoma',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

@@ -1,0 +1,37 @@
+experiment:
+  name: "xhl1021-2b_1p"
+  description: "Xenium Human Lung (dataset-id 1021) | 2 batch | 1 panel | 4949 genes"
+  study: "Dataset from Josie Bryant and Cecilia Kyanya (/nfs/team361/data/data_platform/data/sanger_lung/SGP272)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642
+    - output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553
+
+harmonization:
+  uns: {
+    'dataset_id': 1021,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'lung',
+    'sample_condition_map': {
+      'output-XETG00055__0050469__TB16_0507_LLL_G-S7__20250807__124642': 'cystic_fibrosis',
+      'output-XETG00272__0060111__TB16_0266_RLL_Q-S6__20250807__123553': 'cystic_fibrosis',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

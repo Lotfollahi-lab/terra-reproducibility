@@ -1,0 +1,17 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+... storing 'batch' as categorical
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 740, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 433, in main
+    compute_embedding_similarity(adata,
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/test_model_checkpoint.py", line 191, in compute_embedding_similarity
+    similarity_stats = compute_similarity_stats(
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/../../utils/analysis_utils.py", line 64, in compute_similarity_stats
+    variance_similarity = np.var(similarity_matrix)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/numpy/_core/fromnumeric.py", line 4268, in var
+    return _methods._var(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/numpy/_core/_methods.py", line 171, in _var
+    arrmean = umr_sum(arr, axis, dtype, keepdims=True, where=where)
+KeyboardInterrupt

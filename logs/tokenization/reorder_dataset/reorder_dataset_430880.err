@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/reorder_dataset.py", line 67, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/reorder_dataset.py", line 27, in main
+    with open(args.order_idx_path, "rb") as f: 
+FileNotFoundError: [Errno 2] No such file or directory: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizerhst_corpus_90m_0.25_sample_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl'

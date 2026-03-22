@@ -7,52 +7,60 @@ from datasets import load_from_disk
 def main(args):
     # Load dataset and retrieve cell IDs
     dataset = load_from_disk(args.tokenized_data_folder_path)
-    cell_ids = dataset['cell_id']
 
-    validation_indices = []
-    test_indices = []
+    if args.full_dataset:
+        indices = list(range(len(dataset)))
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_full.pkl', 'wb') as f:
+            pickle.dump(indices, f)
+        print("Saved full dataset split.")
 
-    print('done0')
-    print(len(cell_ids))
+    else:       
+        cell_ids = list(dataset['cell_id'])
 
-    # Single loop to determine validation and test indices
-    for index, cell_id in enumerate(cell_ids):
-        if any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.val_batch_ids):
-            validation_indices.append(index)
-        elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
-            test_indices.append(index)
-    print('done1')
+        validation_indices = []
+        test_indices = []
 
-    # Another loop to determine train indices
-    excluded_indices = set(validation_indices).union(test_indices)
-    print('done2')
-    print(len(excluded_indices))
-    print(len(validation_indices)+len(test_indices))
-    print(len(validation_indices))
-    print(len(test_indices))
-    train_indices = [index for index in range(len(cell_ids)) if index not in excluded_indices]
-    print('done3')
+        print('done0')
+        print(len(cell_ids))
 
-    # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
-    #train_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
-    #validation_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
-    #test_unique = {
-    #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
-    #print("Train unique identifiers:", train_unique)
-    #print("Validation unique identifiers:", validation_unique)
-    #print("Test unique identifiers:", test_unique)
-    #print('done4')
+        # Single loop to determine validation and test indices
+        for index, cell_id in enumerate(cell_ids):
+            if any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.val_batch_ids):
+                validation_indices.append(index)
+            elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
+                test_indices.append(index)
+        print('done1')
 
-    # Save the splits as pickle files
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
-        pickle.dump(validation_indices, f)
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
-        pickle.dump(test_indices, f)
-    with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
-        pickle.dump(train_indices, f)
-    print("Saved train, validation, and test dataset splits.")
+        # Another loop to determine train indices
+        excluded_indices = set(validation_indices).union(test_indices)
+        print('done2')
+        print(len(excluded_indices))
+        print(len(validation_indices)+len(test_indices))
+        print(len(validation_indices))
+        print(len(test_indices))
+        train_indices = [index for index in range(len(cell_ids)) if index not in excluded_indices]
+        print('done3')
+
+        # Extract unique identifiers (first and second part before the first underscore) for each index list and store in sets
+        #train_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in train_indices}
+        #validation_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in validation_indices}
+        #test_unique = {
+        #    f"{cell_ids[i].split('_')[0]}_{cell_ids[i].split('_')[1]}" for i in test_indices}
+        #print("Train unique identifiers:", train_unique)
+        #print("Validation unique identifiers:", validation_unique)
+        #print("Test unique identifiers:", test_unique)
+        #print('done4')
+
+        # Save the splits as pickle files
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
+            pickle.dump(train_indices, f)
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
+            pickle.dump(validation_indices, f)
+        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
+            pickle.dump(test_indices, f)
+        print("Saved train, validation, and test dataset splits.")
 
 
 if __name__ == '__main__':
@@ -64,30 +72,27 @@ if __name__ == '__main__':
                         help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
-                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_90m/hst_corpus_90m_32_None_None_None_None_None_shifted_log_knn_10.dataset', # '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_gene_corrected_read_depth_nonzero_mean_None_None_None_shifted_log_knn_10.dataset', '/nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer/hst_corpus_80m/hst_corpus_80m_32_None_None_None_None_None_shifted_log_knn_10.dataset'
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset',
                         help='Tokenized data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_90m", # "hst_corpus_80m", "hst_corpus_70m"
+                        default="hst_corpus_110m",
                         help='Name of the cohort.')
     parser.add_argument('--val_batch_ids',
                         type=str,
                         nargs='+',
-                        default=['1000_batch23',
-                                 '1000_batch24',
-                                 '1000_batch25',
-                                 '1000_batch28',
-                                 '1000_batch29'],
-                        help='Validation batch IDs.')
-    parser.add_argument('--test_batch_ids',
-                        type=str,
-                        nargs='+',
                         default=['49_batch0',
+                                 '1000_batch11',
+                                 '1000_batch19',
+                                 '1000_batch32',
+                                 '1007_batch1',
+                                 '1007_batch14',
+                                 '1002_batch3',
+                                 '1002_batch15',
+                                 '1002_batch27',
                                  '59_batch0',
-                                 '59_batch3',
                                  '59_batch6',
                                  '59_batch7',
-                                 '59_batch2',
                                  '59_batch4',
                                  '59_batch1',
                                  '59_batch5',
@@ -102,97 +107,209 @@ if __name__ == '__main__':
                                  '78_batch8',
                                  '78_batch4',
                                  '78_batch5',
-                                 '1000_batch4',
-                                 '1000_batch6',
-                                 '1000_batch11',
-                                 '1000_batch12',
-                                 '1000_batch18',
-                                 '1000_batch19',
-                                 '1000_batch21',
-                                 '1000_batch22',
-                                 '1000_batch34',
-                                 '1000_batch38',
-                                 '1000_batch20',
-                                 '1000_batch26',
-                                 '1000_batch27',
-                                 '1000_batch32',
-                                 '1000_batch36',
-                                 '1002_batch3',
-                                 '1002_batch15'
-                                 '1002_batch27',
-                                 '1002_batch39',
-                                 '1002_batch45',
-                                 '1002_batch26',
+                                 '75_batch0',
+                                 '75_batch1',
+                                 '75_batch2',
+                                 '75_batch3',
+                                 '1016_batch3',
+                                 '1016_batch12'],
+                        help='Validation batch IDs.')
+    parser.add_argument('--test_batch_ids',
+                        type=str,
+                        nargs='+',
+                        default=['1002_batch40',
                                  '1002_batch4',
-                                 '1002_batch16'
+                                 '1002_batch16',
                                  '1002_batch18',
                                  '1002_batch23',
                                  '1002_batch31',
                                  '1002_batch34',
                                  '1002_batch53',
                                  '1002_batch55',
-                                 '1002_batch40',
                                  '1002_batch46',
-                                 '1007_batch1',
-                                 '1007_batch14',
-                                 '1007_batch20',
-                                 '1007_batch36',
-                                 '1007_batch17',
-                                 '1007_batch33',
-                                 '1007_batch4',
-                                 '1007_batch2',
-                                 '1007_batch0',
-                                 '1007_batch27',
-                                 '1007_batch3',
-                                 '1007_batch12',
-                                 '1007_batch19',
-                                 '1007_batch24',
-                                 '1007_batch6',
-                                 '1007_batch25',
-                                 '1007_batch34',
-                                 '1007_batch30',
-                                 '1007_batch39',
-                                 '1007_batch22',
-                                 '1009_batch0',
-                                 '1009_batch1',
-                                 '1009_batch2',
-                                 '1009_batch3',
-                                 '1009_batch4',
+                                 '1018_batch0',
+                                 '1018_batch1',
+                                 '1018_batch2',
+                                 '1018_batch3',
+                                 '1018_batch4',
+                                 '1018_batch5',
+                                 '1018_batch6',
+                                 '1018_batch7',
+                                 '1018_batch8',
+                                 '1018_batch9',
+                                 '1018_batch10',
+                                 '1018_batch11',
+                                 '1018_batch12',
+                                 '1018_batch13',
+                                 '1018_batch14',
+                                 '1018_batch15',
+                                 '1018_batch16',
+                                 '1018_batch17',
+                                 '1018_batch18',
+                                 '1018_batch19',
+                                 '1018_batch20',
+                                 '1018_batch21',
+                                 '1018_batch22',
+                                 '1019_batch0',
+                                 '1019_batch1',
+                                 '1019_batch2',
+                                 '1019_batch3',
+                                 '1019_batch4',
+                                 '1019_batch5',
+                                 '1019_batch6',
+                                 '1019_batch7',
+                                 '1019_batch8',
+                                 '1019_batch9',
+                                 '1019_batch10',
+                                 '1019_batch11',
+                                 '1019_batch12',
+                                 '1019_batch13',
+                                 '1019_batch14',
+                                 '1019_batch15',
+                                 '1019_batch16',
+                                 '1019_batch17',
+                                 '1019_batch18',
+                                 '1016_batch0',
+                                 '1016_batch1',
+                                 '1016_batch2',
+                                 '1016_batch4',
+                                 '1016_batch5',
+                                 '1016_batch6',
+                                 '1016_batch7',
+                                 '1016_batch8',
+                                 '1016_batch9',
+                                 '1016_batch10',
+                                 '1016_batch11',
+                                 '1016_batch13',
+                                 '1016_batch14',
+                                 '1016_batch15',
+                                 '1016_batch16',
+                                 '1016_batch17',
+                                 '1017_batch0',
+                                 '1017_batch1',
+                                 '1017_batch2',
+                                 '1017_batch3',
+                                 '30_batch0',
+                                 '34_batch0',
+                                 '35_batch0',
+                                 '60_batch0',
+                                 '1000_batch37',
+                                 '1000_batch36',
+                                 '1000_batch28',
+                                 '1000_batch6',
+                                 '1000_batch2',
+                                 '1000_batch0',
+                                 '1000_batch3',
+                                 '1000_batch16',
+                                 '1000_batch15',
+                                 '1000_batch22',
+                                 '1000_batch27',
+                                 '1000_batch29',
+                                 '1000_batch30',
                                  '1009_batch5',
-                                 '1009_batch6',
-                                 '1009_batch7',
-                                 '1009_batch8',
+                                 '1009_batch4',
                                  '1009_batch9',
                                  '1009_batch10',
-                                 '1009_batch11',
-                                 '1009_batch12',
-                                 '1009_batch13',
+                                 '1009_batch6',
                                  '1009_batch14',
-                                 '1009_batch15',
-                                 '1009_batch16',
-                                 '1011_batch0',
-                                 '1011_batch1',
-                                 '1011_batch2',
-                                 '1011_batch3',
-                                 '1011_batch4',
+                                 '1009_batch0',
+                                 '1009_batch8',
+                                 '1009_batch11',
+                                 '1009_batch1',
+                                 '1009_batch3',
+                                 '1009_batch7',
+                                 '1009_batch13',
+                                 '1010_batch5',
+                                 '1010_batch19',
+                                 '1010_batch4',
+                                 '1010_batch9',
+                                 '1010_batch20',
+                                 '1010_batch17',
+                                 '1010_batch10',
+                                 '1010_batch14',
+                                 '1010_batch25',
+                                 '1010_batch0',
+                                 '1010_batch8',
+                                 '1010_batch23',
+                                 '1010_batch21',
+                                 '1010_batch1',
+                                 '1010_batch7',
+                                 '1010_batch16',
+                                 '1010_batch15',
+                                 '1010_batch13',
+                                 '1010_batch12',
                                  '1011_batch5',
-                                 '1011_batch6',
-                                 '1011_batch7',
-                                 '1011_batch8',
+                                 '1011_batch4',
                                  '1011_batch9',
-                                 '1011_batch10',
-                                 '1011_batch11',
-                                 '1011_batch12',
-                                 '1011_batch13',
-                                 '1011_batch14',
-                                 '1011_batch15',
-                                 '1011_batch16',
-                                 '1011_batch17',
-                                 '1011_batch18',
-                                 '1011_batch19',
                                  '1011_batch20',
-                                 '1011_batch21'],
+                                 '1011_batch17',
+                                 '1011_batch10',
+                                 '1011_batch6',
+                                 '1011_batch8',
+                                 '1011_batch18',
+                                 '1011_batch11',
+                                 '1011_batch21',
+                                 '1011_batch7',
+                                 '1011_batch16',
+                                 '1022_batch0',
+                                 '1022_batch1',
+                                 '1022_batch2',
+                                 '1022_batch3',
+                                 '1022_batch4',
+                                 '1022_batch5',
+                                 '1022_batch6',
+                                 '1022_batch7',
+                                 '1022_batch8',
+                                 '1022_batch9',
+                                 '1022_batch10',
+                                 '1022_batch11',
+                                 '1022_batch12',
+                                 '1022_batch13',
+                                 '1022_batch14',
+                                 '1022_batch15',
+                                 '1022_batch16',
+                                 '1022_batch17',
+                                 '1022_batch18',
+                                 '1022_batch19',
+                                 '1022_batch22',
+                                 '1022_batch23',
+                                 '1022_batch24',
+                                 '1022_batch25',
+                                 '1022_batch26',
+                                 '1022_batch27',
+                                 '1022_batch28',
+                                 '1022_batch29',
+                                 '1022_batch30',
+                                 '1022_batch31',
+                                 '1022_batch32',
+                                 '1022_batch33',
+                                 '1022_batch34',
+                                 '1022_batch35',
+                                 '1022_batch36',
+                                 '1022_batch37',
+                                 '1022_batch38',
+                                 '1022_batch39',
+                                 '1022_batch40',
+                                 '1022_batch41',
+                                 '1022_batch42',
+                                 '1022_batch43',
+                                 '1022_batch44',
+                                 '1022_batch45',
+                                 '1022_batch46',
+                                 '1022_batch47',
+                                 '1022_batch48',
+                                 '1022_batch49',
+                                 '1022_batch50',
+                                 '1022_batch51',
+                                 '1022_batch52',
+                                 '1022_batch53',
+                                 '1022_batch54',
+                                 '1022_batch55'],
                         help='Test batch IDs.')
+    parser.add_argument("--full_dataset",
+                        action=argparse.BooleanOptionalAction,
+                        default=False,
+                        help='Flag whether full dataset index should be saved instead of splits.')                         
     args = parser.parse_args()
     
     main(args)

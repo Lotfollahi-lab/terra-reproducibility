@@ -1,0 +1,46 @@
+Flattening the indices (num_proc=128):   0%|          | 0/81361647 [00:00<?, ? examples/s]Flattening the indices (num_proc=128):   0%|          | 0/81361647 [01:28<?, ? examples/s]
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 612, in iflatmap_unordered
+    yield queue.get(timeout=0.05)
+  File "<string>", line 2, in get
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 818, in _callmethod
+    kind, result = conn.recv()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 253, in recv
+    buf = self._recv_bytes()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/reorder_dataset.py", line 63, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/reorder_dataset.py", line 35, in main
+    ds = ds.flatten_indices(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/fingerprint.py", line 442, in wrapper
+    out = func(dataset, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3965, in flatten_indices
+    return self.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 768, in get
+    self.wait(timeout)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 765, in wait
+    self._event.wait(timeout)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/threading.py", line 607, in wait
+    signaled = self._cond.wait(timeout)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/threading.py", line 324, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt
+Terminated

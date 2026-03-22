@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-01>
+Subject: Job 362367: <reorder_dataset> in cluster <farm22> Exited
+
+Job <reorder_dataset> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Fri Oct 24 08:20:43 2025
+Job was executed on host(s) <128*b11-hm-01>, in queue <teramem>, as user <sb75> in cluster <farm22> at Fri Oct 24 11:49:25 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization> was used as the working directory.
+Started at Fri Oct 24 11:49:25 2025
+Terminated at Fri Oct 24 15:50:02 2025
+Results reported at Fri Oct 24 15:50:02 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J reorder_dataset                                                   # Job name
+#BSUB -o ../../logs/tokenization/reorder_dataset/reorder_dataset_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/tokenization/reorder_dataset/reorder_dataset_%J.err    # Standard error
+#BSUB -q teramem                                                             # Queue name
+#BSUB -n 128                                                                # Number of CPU cores
+#BSUB -M 750GB                                                             # Memory
+#BSUB -R "select[mem>750GB] rusage[mem=750GB] span[hosts=1]"               # Resource requirements: reserve 756GB RAM on a single host
+#BSUB -W 120:00                                                             # Walltime (hh:mm)
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python reorder_dataset.py \
+    --dataset_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10.dataset' \
+    --train_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_split_train.pkl' \
+    --order_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx_split_train.pkl' \
+    --num_workers 128
+    #--train_idx_path 'None' \
+    #--order_idx_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_10_precomputed_loader_idx.pkl'    
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   13411.00 sec.
+    Max Memory :                                 217203 MB
+    Average Memory :                             208712.44 MB
+    Total Requested Memory :                     768000.00 MB
+    Delta Memory :                               550797.00 MB
+    Max Swap :                                   -
+    Max Processes :                              133
+    Max Threads :                                269
+    Run time :                                   14437 sec.
+    Turnaround time :                            26959 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/tokenization/reorder_dataset/reorder_dataset_362367.err> for stderr output of this job.
+

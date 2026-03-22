@@ -1,0 +1,69 @@
+experiment:
+  name: "xhp1016-18b_1p"
+  description: "Xenium Human Pancreas (dataset-id 1016) | 18 batch | 1 panel | 5047 genes | QC: excluded Hml6 samples | development"
+  study: "Dataset from Marta Sallese (/nfs/team361/data/sanger_pancreas/HDBR)"
+
+paths:
+  data_directory_path: "/nfs/team361/sb75/DATASETS"
+
+dataset:
+  overwrite: false
+  source: directories
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - output-XETG00055__0073068__Hml4-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073068__Hml8-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073068__Hml9-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073068__Sml4-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073068__Sml7-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073075__Hml2-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073075__Hml7-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073075__Sml8-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00055__0073075__Sml9-PNC-0-FFPE-1-s4__20250814__132610
+    - output-XETG00272__0072628__Hml4-PNC-0-FFPE-1-s5__20250814__133046
+    - output-XETG00272__0072628__Hml9-PNC-0-FFPE-1-s5__20250814__133047
+    - output-XETG00272__0072628__Sml9-PNC-0-FFPE-1-s5__20250814__133047
+    - output-XETG00272__0072631__Hml1-PNC-0-FFPE-1-s4__20250814__133047
+    - output-XETG00272__0072631__Hml1-PNC-0-FFPE-1-s5__20250814__133047
+    - output-XETG00272__0072631__Hml3-PNC-0-FFPE-1-s4__20250814__133047
+    - output-XETG00272__0072631__Hml5-PNC-0-FFPE-1-s4__20250814__133047
+    - output-XETG00272__0072631__Sml4-PNC-0-FFPE-1-s4__20250814__133047
+    - output-XETG00272__0072631__Sml6-PNC-0-FFPE-1-s4__20250814__133047
+
+harmonization:
+  uns: {
+    'dataset_id': 1016,
+    'assay': 'xenium',
+    'species': 'homo_sapiens',
+    'tissue': 'pancreas',
+    'sample_condition_map': {
+      'output-XETG00055__0073068__Hml4-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073068__Hml8-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073068__Hml9-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073068__Sml4-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073068__Sml7-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073075__Hml2-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073075__Hml7-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073075__Sml8-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00055__0073075__Sml9-PNC-0-FFPE-1-s4__20250814__132610': 'healthy',
+      'output-XETG00272__0072628__Hml4-PNC-0-FFPE-1-s5__20250814__133046': 'healthy',
+      'output-XETG00272__0072628__Hml9-PNC-0-FFPE-1-s5__20250814__133047': 'healthy',
+      'output-XETG00272__0072628__Sml9-PNC-0-FFPE-1-s5__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Hml1-PNC-0-FFPE-1-s4__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Hml1-PNC-0-FFPE-1-s5__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Hml3-PNC-0-FFPE-1-s4__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Hml5-PNC-0-FFPE-1-s4__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Sml4-PNC-0-FFPE-1-s4__20250814__133047': 'healthy',
+      'output-XETG00272__0072631__Sml6-PNC-0-FFPE-1-s4__20250814__133047': 'healthy',
+    }
+  }
+  batch: {
+    'split_by_batch': False,
+    'sample_batch_map': {}    
+  }
+  key_mappings: {}
+  misc: {
+    'min_genes': 10,
+  }

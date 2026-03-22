@@ -1,25 +1,25 @@
 experiment:
   experiment_description: mhm18-2b_1p (dataset-id 18) | 2 batch | 1 panel
   experiment_name: mhm18-2b_1p
-  model_input_size: 7168
+  model_input_size: 2816
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
-  norm_factor_file_path: /lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_80m_norm_factors.csv
+  norm_factor_file_path: /lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv
   token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
 tokenization:
-  count_cell_norm_method: null
+  count_cell_norm_method: read_depth
   count_count_norm_method: shifted_log
   count_gene_norm_method: null
   delaunay: false
   include_zero_expr_genes: false
   keep_in_memory: false
-  n_neighs: 6
+  n_neighs: 10
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: null
-  rank_count_norm_method: null
+  rank_cell_norm_method: read_depth
+  rank_count_norm_method: shifted_log
   rank_gene_norm_method: null
   species: homo_sapiens
   use_generator: true

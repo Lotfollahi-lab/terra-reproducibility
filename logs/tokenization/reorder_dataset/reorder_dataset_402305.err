@@ -1,0 +1,906 @@
+Flattening the indices (num_proc=128):   0%|          | 0/112578039 [00:00<?, ? examples/s]Process ForkPoolWorker-98:
+Process ForkPoolWorker-101:
+Process ForkPoolWorker-99:
+Process ForkPoolWorker-100:
+Process ForkPoolWorker-102:
+Process ForkPoolWorker-103:
+Process ForkPoolWorker-107:
+Process ForkPoolWorker-104:
+Process ForkPoolWorker-105:
+Process ForkPoolWorker-108:
+Process ForkPoolWorker-97:
+Process ForkPoolWorker-106:
+Process ForkPoolWorker-109:
+Process ForkPoolWorker-118:
+Process ForkPoolWorker-119:
+Process ForkPoolWorker-120:
+Process ForkPoolWorker-112:
+Process ForkPoolWorker-114:
+Process ForkPoolWorker-113:
+Process ForkPoolWorker-115:
+Process ForkPoolWorker-92:
+Process ForkPoolWorker-117:
+Process ForkPoolWorker-116:
+Process ForkPoolWorker-94:
+Process ForkPoolWorker-122:
+Process ForkPoolWorker-123:
+Process ForkPoolWorker-90:
+Process ForkPoolWorker-124:
+Process ForkPoolWorker-121:
+Process ForkPoolWorker-126:
+Process ForkPoolWorker-125:
+Process ForkPoolWorker-128:
+Process ForkPoolWorker-127:
+Process ForkPoolWorker-93:
+Process ForkPoolWorker-95:
+Process ForkPoolWorker-83:
+Process ForkPoolWorker-91:
+Process ForkPoolWorker-96:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 810, in _callmethod
+    conn = self._tls.connection
+AttributeError: 'ForkAwareLocal' object has no attribute 'connection'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 814, in _callmethod
+    self._connect()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 801, in _connect
+    conn = self._Client(self._token.address, authkey=self._authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+
+During handling of the above exception, another exception occurred:
+
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+KeyboardInterrupt
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 367, in get
+    with self._rlock:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/synchronize.py", line 101, in __enter__
+    return self._semlock.__enter__()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+KeyboardInterrupt
+Traceback (most recent call last):
+
+During handling of the above exception, another exception occurred:
+
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 333, in _exit_function
+    debug('running all "atexit" finalizers with priority >= 0')
+Traceback (most recent call last):
+Traceback (most recent call last):
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 292, in _run_finalizers
+    keys.sort(reverse=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 332, in _exit_function
+    info('process shutting down')
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 48, in debug
+    def debug(msg, *args):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 52, in info
+    def info(msg, *args):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 332, in _exit_function
+    info('process shutting down')
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 333, in _exit_function
+    debug('running all "atexit" finalizers with priority >= 0')
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 320, in _exit_function
+    def _exit_function(info=info, debug=debug, _run_finalizers=_run_finalizers,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 292, in _run_finalizers
+    keys.sort(reverse=True)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 52, in info
+    def info(msg, *args):
+KeyboardInterrupt
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 48, in debug
+    def debug(msg, *args):
+KeyboardInterrupt
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 63, in _memory_mapped_arrow_table_from_file
+    opened_stream = _memory_mapped_record_batch_reader_from_file(filename)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 48, in _memory_mapped_record_batch_reader_from_file
+    memory_mapped_stream = pa.memory_map(filename)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 300, in _run_finalizers
+    finalizer()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 224, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 870, in _decref
+    conn = _Client(token.address, authkey=authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 63, in _memory_mapped_arrow_table_from_file
+    opened_stream = _memory_mapped_record_batch_reader_from_file(filename)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 49, in _memory_mapped_record_batch_reader_from_file
+    return pa.ipc.open_stream(memory_mapped_stream)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pyarrow/ipc.py", line 190, in open_stream
+    return RecordBatchStreamReader(source, options=options,
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pyarrow/ipc.py", line 52, in __init__
+    self._open(source, options=options, memory_pool=memory_pool)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 300, in _run_finalizers
+    finalizer()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 224, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 870, in _decref
+    conn = _Client(token.address, authkey=authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 64, in _memory_mapped_arrow_table_from_file
+    pa_table = opened_stream.read_all()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+KeyboardInterrupt
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1027, in __setstate__
+    table = _memory_mapped_arrow_table_from_file(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1012, in __init__
+    self.path = os.path.abspath(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 63, in _memory_mapped_arrow_table_from_file
+    opened_stream = _memory_mapped_record_batch_reader_from_file(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/posixpath.py", line 386, in abspath
+    return normpath(path)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 48, in _memory_mapped_record_batch_reader_from_file
+    memory_mapped_stream = pa.memory_map(filename)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/posixpath.py", line 360, in normpath
+    comps = path.split(sep)
+  File "pyarrow/io.pxi", line 1143, in pyarrow.lib.memory_map
+  File "pyarrow/io.pxi", line 1151, in pyarrow.lib._check_is_file
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/genericpath.py", line 42, in isdir
+    st = os.stat(s)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+KeyboardInterrupt
+Traceback (most recent call last):
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 317, in _bootstrap
+    util._exit_function()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 300, in _run_finalizers
+    finalizer()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 334, in _exit_function
+    _run_finalizers(0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 224, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 300, in _run_finalizers
+    finalizer()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 870, in _decref
+    conn = _Client(token.address, authkey=authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/util.py", line 224, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 870, in _decref
+    conn = _Client(token.address, authkey=authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+KeyboardInterrupt
+Process ForkPoolWorker-82:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 810, in _callmethod
+    conn = self._tls.connection
+AttributeError: 'ForkAwareLocal' object has no attribute 'connection'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 814, in _callmethod
+    self._connect()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 801, in _connect
+    conn = self._Client(self._token.address, authkey=self._authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process ForkPoolWorker-80:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 810, in _callmethod
+    conn = self._tls.connection
+AttributeError: 'ForkAwareLocal' object has no attribute 'connection'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 814, in _callmethod
+    self._connect()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 801, in _connect
+    conn = self._Client(self._token.address, authkey=self._authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process ForkPoolWorker-81:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 810, in _callmethod
+    conn = self._tls.connection
+AttributeError: 'ForkAwareLocal' object has no attribute 'connection'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 814, in _callmethod
+    self._connect()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 801, in _connect
+    conn = self._Client(self._token.address, authkey=self._authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 511, in Client
+    answer_challenge(c, authkey)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 755, in answer_challenge
+    message = connection.recv_bytes(256)         # reject large message
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 219, in recv_bytes
+    buf = self._recv_bytes(maxlength)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+Process ForkPoolWorker-85:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1011, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 166, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 108, in __init__
+    recordbatch for recordbatch in table.to_batches() if len(recordbatch) > 0
+KeyboardInterrupt
+Process ForkPoolWorker-84:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1318, in __setstate__
+    table = self._concat_blocks_horizontally_and_vertically(blocks)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1351, in _concat_blocks_horizontally_and_vertically
+    return cls._concat_blocks(pa_tables_to_concat_vertically, axis=0)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1331, in _concat_blocks
+    return pa.concat_tables(pa_tables, promote_options="default")
+KeyboardInterrupt
+Process ForkPoolWorker-86:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1011, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 166, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 108, in __init__
+    recordbatch for recordbatch in table.to_batches() if len(recordbatch) > 0
+KeyboardInterrupt
+Process ForkPoolWorker-87:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1011, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 166, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 108, in __init__
+    recordbatch for recordbatch in table.to_batches() if len(recordbatch) > 0
+KeyboardInterrupt
+Process ForkPoolWorker-88:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1011, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 166, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 108, in __init__
+    recordbatch for recordbatch in table.to_batches() if len(recordbatch) > 0
+KeyboardInterrupt
+Process ForkPoolWorker-89:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 114, in worker
+    task = get()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/queues.py", line 370, in get
+    return _ForkingPickler.loads(res)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 303, in loads
+    return load(file, ignore, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 289, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 444, in load
+    obj = StockUnpickler.load(self)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1029, in __setstate__
+    MemoryMappedTable.__init__(self, table, path=path, replays=replays)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 1011, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 166, in __init__
+    super().__init__(table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/table.py", line 108, in __init__
+    recordbatch for recordbatch in table.to_batches() if len(recordbatch) > 0
+KeyboardInterrupt
+Terminated

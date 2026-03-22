@@ -8,17 +8,153 @@ LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 SCRIPT="analysis/tokenization/create_tokenized_dataset.sh"
 
 case $EXPERIMENT_NAME in
-    sss2-1b_1p)
-        RAM="2G"
-        TIME="0:10"
-        CORES=1
-        QUEUE="normal"
+    mmb0-1b_smb1-1b_1p)
+        RAM="200G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    mmb0-1b_smb1-1b_2p)
+        RAM="200G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhb1002-AT6-1-1b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhe1008-8-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xho47-S1-1b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhb1002-AT9-6b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhp1016-2-18b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhb1002-AT5-1b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhe1008-7-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhb1002-AT15-10b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhe1008-6-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhb1002-AT6-4-1b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhb1002-AT10-7b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhe1008-9-20b_1p)
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xho47-S2-1b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R1-28b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R6-28b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P1-239b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P2-239b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P3-239b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P4-239b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P5-239b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    smb1-20b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
         ;;
     *)
-        RAM="2000G" # "600G", "1000G", "1500G"
-        TIME="48:00" # "48:00", "120:00"
-        CORES=24
-        QUEUE="teramem" # "long", "hugemem", "teramem"
+        #RAM="2200G" # "600G", "1000G", "1500G"
+        #TIME="240:00" # "48:00", "120:00"
+        #CORES=12
+        #QUEUE="teramem" # "long", "hugemem", "teramem"
+        RAM="256G" # "600G", "1000G", "1500G"
+        TIME="24:00" # "48:00", "120:00"
+        CORES=12
+        QUEUE="long" # "long", "hugemem", "teramem", "basement", "parallel", "week"
         ;;
 esac
 
@@ -42,8 +178,12 @@ echo "Running ${TOKENIZER_NAME} on ${EXPERIMENT_NAME} using ${CORES} cores..."
 # Initialize GPU parameter
 GPU_PARAM=""
 
-# Check if the queue name contains 'gpu'
+# Check if the queue is a gpu queue
 if [[ "$QUEUE" == *gpu* ]]; then
+    GPU_PARAM="-gpu num=1"
+    echo "Queue requires GPUs. Requesting 1 GPU(s)."
+fi
+if [[ "$QUEUE" == inference ]]; then
     GPU_PARAM="-gpu num=1"
     echo "Queue requires GPUs. Requesting 1 GPU(s)."
 fi

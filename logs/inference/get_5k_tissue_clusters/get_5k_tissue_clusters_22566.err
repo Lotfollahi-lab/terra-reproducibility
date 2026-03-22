@@ -1,0 +1,61 @@
+Traceback (most recent call last):
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 1480389632 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp
+Exception ignored in: 'cupy.cuda.thrust.cupy_malloc'
+Traceback (most recent call last):
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 1480389632 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp
+Traceback (most recent call last):
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 1480389632 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp
+Exception ignored in: 'cupy.cuda.thrust.cupy_malloc'
+Traceback (most recent call last):
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 1480389632 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 162, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_tissue_clusters.py", line 80, in main
+    rsc.tl.umap(adata_emb_tissue,
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+            neighbors_key=f'{emb_key}_{tissue}',
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            key_added=f'{emb_key}_{tissue}_umap')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rapids_singlecell/tools/_umap.py", line 225, in umap
+    X_umap = simplicial_set_embedding(
+        data=cp.array(X),
+    ...<10 lines>...
+        metric_kwds=neigh_params.get("metric_kwds", None),
+    )
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cuml/internals/api_decorators.py", line 211, in wrapper
+    ret = func(*args, **kwargs)
+  File "cuml/manifold/simpl_set.pyx", line 360, in cuml.manifold.simpl_set.simplicial_set_embedding
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/cupyx/scipy/sparse/_coo.py", line 401, in sum_duplicates
+    src_row = self.row[order]
+              ~~~~~~~~^^^^^^^
+  File "cupy/_core/core.pyx", line 1627, in cupy._core.core._ndarray_base.__getitem__
+  File "cupy/_core/_routines_indexing.pyx", line 43, in cupy._core._routines_indexing._ndarray_getitem
+  File "cupy/_core/core.pyx", line 935, in cupy._core.core._ndarray_base.take
+  File "cupy/_core/_routines_indexing.pyx", line 132, in cupy._core._routines_indexing._ndarray_take
+  File "cupy/_core/_routines_indexing.pyx", line 816, in cupy._core._routines_indexing._take
+  File "cupy/_core/core.pyx", line 167, in cupy._core.core.ndarray.__new__
+  File "cupy/_core/core.pyx", line 254, in cupy._core.core._ndarray_base._init
+  File "cupy/cuda/memory.pyx", line 875, in cupy.cuda.memory.alloc
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/rmm/allocators/cupy.py", line 37, in rmm_cupy_allocator
+    buf = pylibrmm.device_buffer.DeviceBuffer(size=nbytes, stream=stream)
+  File "rmm/pylibrmm/device_buffer.pyx", line 102, in rmm.pylibrmm.device_buffer.DeviceBuffer.__cinit__
+MemoryError: std::bad_alloc: out_of_memory: CUDA error (failed to allocate 739833248 bytes) at: /nfs/team361/sb75/ENVS/rapids-singlecell/include/rmm/mr/device/cuda_memory_resource.hpp

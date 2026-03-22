@@ -90,7 +90,7 @@ def main(args):
         params['data']['tokenized_data_folder_path'] = params['data']['tokenized_data_folder_path'].replace(
             '/fsx-shared/s3', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer'
         ).replace(
-            'hst_corpus_80m', args.cohort_name
+            'hst_corpus_80m', 'hst_corpus_90m'
         )
         if 'test_batch_ids' in params['data']:
             del(params['data']['test_batch_ids'])
@@ -182,7 +182,7 @@ if __name__ == '__main__':
                         help='Gene program name.')
     parser.add_argument('--save_suffix',
                         type=str,
-                        default='myeloid_vegf_gp',
+                        default='5k_myeloid_vegf_gp',
                         help='Suffix for saving the gene embedding pickle file.')
     parser.add_argument('--emb_layer',
                         type=int,

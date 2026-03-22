@@ -1,0 +1,34 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 179, in <module>
+    main(args)
+    ~~~~^^^^^^
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/process_5k_cell_embeddings.py", line 61, in main
+    adata_emb = sc.concat(adata_list, join='outer', index_unique=None)
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/anndata/_core/merge.py", line 1725, in concat
+    concat_mapping = concat_aligned_mapping(
+        [getattr(a, f"{axis_name}m") for a in adatas],
+    ...<3 lines>...
+        force_lazy=force_lazy,
+    )
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/anndata/_core/merge.py", line 1067, in outer_concat_aligned_mapping
+    result[k] = concat_arrays(
+                ~~~~~~~~~~~~~^
+        [
+        ^
+    ...<15 lines>...
+        force_lazy=force_lazy,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/nfs/team361/sb75/ENVS/rapids-singlecell/lib/python3.13/site-packages/anndata/_core/merge.py", line 906, in concat_arrays
+    return np.concatenate(
+           ~~~~~~~~~~~~~~^
+        [
+        ^
+    ...<3 lines>...
+        axis=axis,
+        ^^^^^^^^^^
+    )
+    ^
+KeyboardInterrupt
+Terminated

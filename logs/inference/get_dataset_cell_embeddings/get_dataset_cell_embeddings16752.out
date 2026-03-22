@@ -1,0 +1,76 @@
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr', 'iter_number']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/xhp2001-1b_1p.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0407>
+Subject: Job 16752: <get_dataset_cell_embeddings> in cluster <cub22> Done
+
+Job <get_dataset_cell_embeddings> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Tue Nov  4 17:11:57 2025
+Job was executed on host(s) <12*farm-gpu0407>, in queue <inference>, as user <sb75> in cluster <cub22> at Tue Nov  4 17:11:58 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Tue Nov  4 17:11:58 2025
+Terminated at Tue Nov  4 17:35:21 2025
+Results reported at Tue Nov  4 17:35:21 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                               # LSF group
+#BSUB -J get_dataset_cell_embeddings                                                           # Job name
+#BSUB -o ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings%J.err    # Standard error
+#BSUB -q inference                                                                             # Queue name
+#BSUB -n 12                                                                                    # Number of CPU cores
+#BSUB -M 128GB                                                                                 # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                                   # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                                 # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                                      # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python get_dataset_cell_embeddings.py \
+    --cohort_name hst_corpus_80m \
+    --load_timestamp 11062025_183320_055 \
+    --read_checkpoint nichejepa-ep10_0.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    --dataset_name xhp2001-1b_1p \
+    --batch_id 2001_batch0
+
+    #--dataset_name xhs2003-1b_1p \
+    #--batch_id 2003_batch0
+
+    #--dataset_name xhs2004-1b_1p \
+    #--batch_id 2004_batch0
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2758.92 sec.
+    Max Memory :                                 5933 MB
+    Average Memory :                             4381.09 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               125139.00 MB
+    Max Swap :                                   -
+    Max Processes :                              52
+    Max Threads :                                214
+    Run time :                                   1403 sec.
+    Turnaround time :                            1404 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/get_dataset_cell_embeddings/get_dataset_cell_embeddings16752.err> for stderr output of this job.
+

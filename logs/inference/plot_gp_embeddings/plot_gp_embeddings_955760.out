@@ -1,0 +1,61 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b11-hm-02>
+Subject: Job 955760: <plot_gp_embeddings> in cluster <farm22> Exited
+
+Job <plot_gp_embeddings> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Mon Oct 13 21:23:31 2025
+Job was executed on host(s) <12*b11-hm-02>, in queue <hugemem>, as user <sb75> in cluster <farm22> at Fri Oct 17 09:09:18 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Fri Oct 17 09:09:18 2025
+Terminated at Fri Oct 17 09:15:12 2025
+Results reported at Fri Oct 17 09:15:12 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                # LSF group
+#BSUB -J plot_gp_embeddings                                     # Job name
+#BSUB -o ../../logs/inference/plot_gp_embeddings_%J.out         # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/plot_gp_embeddings_%J.err         # Standard error
+#BSUB -q hugemem                                                # Queue name
+#BSUB -n 12                                                     # Number of CPU cores
+#BSUB -M 900GB                                                  # Memory
+#BSUB -R "select[mem>900GB] rusage[mem=900GB] span[hosts=1]"    # Resource requirements: reserve 900GB RAM on a single host
+#BSUB -W 48:00                                                  # Walltime (hh:mm)
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Run your Python script
+python plot_gp_embeddings.py \
+    --dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset' \
+    --gp_name 'Apelin signalling GP' \
+    --load_suffix '5k_myeloid_apelin_gp'
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   242.84 sec.
+    Max Memory :                                 331929 MB
+    Average Memory :                             157654.86 MB
+    Total Requested Memory :                     921600.00 MB
+    Delta Memory :                               589671.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                29
+    Run time :                                   354 sec.
+    Turnaround time :                            301901 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/plot_gp_embeddings_955760.err> for stderr output of this job.
+

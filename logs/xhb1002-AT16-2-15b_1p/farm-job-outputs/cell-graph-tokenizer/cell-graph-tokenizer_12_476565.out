@@ -1,0 +1,100 @@
+Experiment name: xhb1002-AT16-2-15b_1p.
+Experiment description: xhb1002-AT16-2-15b_1p (dataset-id 1002) | 15 batch | 1 panel | part2 (split only used for long seq len).
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 476565: <xhb1002-AT16-2-15b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xhb1002-AT16-2-15b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Oct  8 14:30:41 2025
+Job was executed on host(s) <12*b12-hm-02>, in queue <hugemem>, as user <sb75> in cluster <farm22> at Tue Oct 14 01:03:52 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Tue Oct 14 01:03:52 2025
+Terminated at Tue Oct 14 02:02:44 2025
+Results reported at Tue Oct 14 02:02:44 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb1002-AT16-2-15b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   9058.00 sec.
+    Max Memory :                                 1130433 MB
+    Average Memory :                             703689.81 MB
+    Total Requested Memory :                     1126400.00 MB
+    Delta Memory :                               -4033.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                54
+    Run time :                                   3533 sec.
+    Turnaround time :                            473523 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb1002-AT16-2-15b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_476565.err> for stderr output of this job.
+

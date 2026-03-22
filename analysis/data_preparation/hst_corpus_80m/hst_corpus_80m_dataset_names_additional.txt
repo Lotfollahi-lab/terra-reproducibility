@@ -1,6 +1,6 @@
 hst_corpus_70m
 xhs1009-17b_1p
-xhs1010-27b_1p
+xhs1010-26b_1p
 xhs1011-22b_1p
 xho1012-AU14-6b_1p
 xho1012-AU16-7b_1p

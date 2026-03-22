@@ -1,0 +1,65 @@
+Experiment name: xhl1020-7-16b_1p.
+Experiment description: xenium human lung (dataset-id = 1020) | 16-batch | 1-panel | part7.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 7168.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0402>
+Subject: Job 6551: <xhl1020-7-16b_1p_cell-graph-tokenizer_12> in cluster <cub22> Exited
+
+Job <xhl1020-7-16b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Sun Oct 19 00:00:26 2025
+Job was executed on host(s) <12*farm-gpu0402>, in queue <inference>, as user <sb75> in cluster <cub22> at Sun Oct 19 01:52:01 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Oct 19 01:52:01 2025
+Terminated at Sun Oct 19 02:22:47 2025
+Results reported at Sun Oct 19 02:22:47 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1020-7-16b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   2799.00 sec.
+    Max Memory :                                 615514 MB
+    Average Memory :                             267872.31 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               -1114.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                51
+    Run time :                                   1846 sec.
+    Turnaround time :                            8541 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1020-7-16b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_6551.err> for stderr output of this job.
+

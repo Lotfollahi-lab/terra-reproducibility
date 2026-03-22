@@ -1,0 +1,289 @@
+Load timestamp: 01112025_081731_614.
+Read checkpoint: nichejepa-ep1.pth.tar.
+                   Class 1  ... Variance Similarity
+0                 Epidemis  ...            0.121016
+1                 Epidemis  ...            0.115349
+2                 Epidemis  ...            0.019367
+3                 Epidemis  ...            0.022387
+4                 Epidemis  ...            0.076162
+..                     ...  ...                 ...
+59  Melanoma+blood vessels  ...            0.005750
+60  Melanoma+blood vessels  ...            0.032081
+61  Melanoma+blood vessels  ...            0.029727
+62  Melanoma+blood vessels  ...            0.019474
+63  Melanoma+blood vessels  ...            0.003317
+
+[64 rows x 4 columns]
+Average niche_name cosine similarity is 0.48811304569244385.
+Target number of unique values: 8.
+Leiden resolution: 0.4.
+Number of latent clusters 12.
+Leiden resolution: 0.38.
+Number of latent clusters 11.
+Leiden resolution: 0.379.
+Number of latent clusters 11.
+Leiden resolution: 0.378.
+Number of latent clusters 11.
+Leiden resolution: 0.377.
+Number of latent clusters 11.
+Leiden resolution: 0.376.
+Number of latent clusters 11.
+Leiden resolution: 0.375.
+Number of latent clusters 13.
+Leiden resolution: 0.355.
+Number of latent clusters 11.
+Leiden resolution: 0.354.
+Number of latent clusters 13.
+Leiden resolution: 0.33399999999999996.
+Number of latent clusters 13.
+Leiden resolution: 0.31399999999999995.
+Number of latent clusters 11.
+Leiden resolution: 0.31299999999999994.
+Number of latent clusters 11.
+Leiden resolution: 0.31199999999999994.
+Number of latent clusters 12.
+Leiden resolution: 0.2919999999999999.
+Number of latent clusters 12.
+Leiden resolution: 0.2719999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2709999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2699999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2689999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2679999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2669999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2659999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2649999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2639999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2629999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2619999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2609999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2599999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2589999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2579999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2569999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2559999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2549999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2539999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2529999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2519999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2509999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2499999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2489999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2479999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.2469999999999999.
+Number of latent clusters 10.
+Leiden resolution: 0.24599999999999989.
+Number of latent clusters 10.
+Leiden resolution: 0.24499999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.24399999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.24299999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.24199999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.24099999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23999999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23899999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23799999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23699999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23599999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23499999999999988.
+Number of latent clusters 10.
+Leiden resolution: 0.23399999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.23299999999999987.
+Number of latent clusters 11.
+Leiden resolution: 0.23199999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.23099999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22999999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22899999999999987.
+Number of latent clusters 9.
+Leiden resolution: 0.22799999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22699999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22599999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22499999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22399999999999987.
+Number of latent clusters 10.
+Leiden resolution: 0.22299999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.22199999999999986.
+Number of latent clusters 11.
+Leiden resolution: 0.22099999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21999999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21899999999999986.
+Number of latent clusters 11.
+Leiden resolution: 0.21799999999999986.
+Number of latent clusters 11.
+Leiden resolution: 0.21699999999999986.
+Number of latent clusters 9.
+Leiden resolution: 0.21599999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21499999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21399999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21299999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21199999999999986.
+Number of latent clusters 10.
+Leiden resolution: 0.21099999999999985.
+Number of latent clusters 10.
+Leiden resolution: 0.20999999999999985.
+Number of latent clusters 10.
+Leiden resolution: 0.20899999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20799999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20699999999999985.
+Number of latent clusters 10.
+Leiden resolution: 0.20599999999999985.
+Number of latent clusters 10.
+Leiden resolution: 0.20499999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20399999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20299999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20199999999999985.
+Number of latent clusters 9.
+Leiden resolution: 0.20099999999999985.
+Number of latent clusters 10.
+Leiden resolution: 0.19999999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19899999999999984.
+Number of latent clusters 10.
+Leiden resolution: 0.19799999999999984.
+Number of latent clusters 10.
+Leiden resolution: 0.19699999999999984.
+Number of latent clusters 10.
+Leiden resolution: 0.19599999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19499999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19399999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19299999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19199999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.19099999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.18999999999999984.
+Number of latent clusters 9.
+Leiden resolution: 0.18899999999999983.
+Number of latent clusters 9.
+Leiden resolution: 0.18799999999999983.
+Number of latent clusters 8.
+NMI is 0.4795877388377437. ARI is 0.3259795669722528.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0409>
+Subject: Job 15491[1]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Sun Nov  2 14:12:42 2025
+Job was executed on host(s) <12*farm-gpu0409>, in queue <inference>, as user <sb75> in cluster <cub22> at Sun Nov  2 14:12:43 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Sun Nov  2 14:12:43 2025
+Terminated at Sun Nov  2 15:48:05 2025
+Results reported at Sun Nov  2 15:48:05 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 01112025_081731_614 \
+    --read_checkpoint nichejepa-ep1.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   5887.35 sec.
+    Max Memory :                                 7536 MB
+    Average Memory :                             1391.83 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               123536.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   5722 sec.
+    Turnaround time :                            5723 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_15491_1.err> for stderr output of this job.
+

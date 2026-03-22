@@ -1,0 +1,8 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_dataset.py", line 192, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/get_5k_dataset.py", line 121, in main
+    dataset, _, _ = prepare_dataset(params)
+ValueError: not enough values to unpack (expected 3, got 2)

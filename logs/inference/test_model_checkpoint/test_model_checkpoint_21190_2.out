@@ -1,0 +1,93 @@
+Load timestamp: 11112025_172307_218.
+Read checkpoint: nichejepa-ep1.pth.tar.
+                 Class 1  ... Variance Similarity
+0    Interstitial stroma  ...            0.004683
+1    Interstitial stroma  ...            0.007845
+2    Interstitial stroma  ...            0.010226
+3    Interstitial stroma  ...            0.026827
+4    Interstitial stroma  ...            0.005363
+..                   ...  ...                 ...
+139    Epidermis with T2  ...            0.016004
+140    Epidermis with T2  ...            0.013489
+141    Epidermis with T2  ...            0.006650
+142    Epidermis with T2  ...            0.016317
+143    Epidermis with T2  ...            0.000000
+
+[144 rows x 4 columns]
+Average niche_type cosine similarity is 0.7853777408599854.
+Target number of unique values: 12.
+Leiden resolution: 0.4.
+Number of latent clusters 12.
+NMI is 0.5166299060831304. ARI is 0.4047005031002917.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0410>
+Subject: Job 21190[2]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Wed Nov 12 11:01:06 2025
+Job was executed on host(s) <12*farm-gpu0410>, in queue <inference>, as user <sb75> in cluster <cub22> at Thu Nov 13 01:56:27 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Thu Nov 13 01:56:27 2025
+Terminated at Thu Nov 13 01:57:31 2025
+Results reported at Thu Nov 13 01:57:31 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 11112025_172307_218 \
+    --read_checkpoint nichejepa-ep1.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   151.33 sec.
+    Max Memory :                                 1122 MB
+    Average Memory :                             772.00 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               129950.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                28
+    Run time :                                   64 sec.
+    Turnaround time :                            53785 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_21190_2.err> for stderr output of this job.
+

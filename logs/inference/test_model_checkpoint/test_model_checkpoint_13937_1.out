@@ -1,0 +1,142 @@
+Load timestamp: 30102025_112358_100.
+Read checkpoint: nichejepa-ep2.pth.tar.
+['encoder', 'predictor', 'target_encoder', 'opt', 'scaler', 'epoch', 'zero_epoch_tracking', 'loss', 'batch_size', 'world_size', 'lr']
+Loading metadata AnnDatas...
+Loading AnnData objects from /lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/hst_corpus_110m/xhs49-1b_1p.
+                   Class 1  ... Variance Similarity
+0                 Epidemis  ...            0.080563
+1                 Epidemis  ...            0.045349
+2                 Epidemis  ...            0.011646
+3                 Epidemis  ...            0.006997
+4                 Epidemis  ...            0.032654
+..                     ...  ...                 ...
+59  Melanoma+blood vessels  ...            0.005181
+60  Melanoma+blood vessels  ...            0.025642
+61  Melanoma+blood vessels  ...            0.029749
+62  Melanoma+blood vessels  ...            0.016641
+63  Melanoma+blood vessels  ...            0.008279
+
+[64 rows x 4 columns]
+Average niche_name cosine similarity is 0.4402827322483063.
+Target number of unique values: 8.
+Leiden resolution: 0.4.
+Number of latent clusters 18.
+Leiden resolution: 0.30000000000000004.
+Number of latent clusters 14.
+Leiden resolution: 0.25000000000000006.
+Number of latent clusters 13.
+Leiden resolution: 0.23000000000000007.
+Number of latent clusters 12.
+Leiden resolution: 0.21000000000000008.
+Number of latent clusters 11.
+Leiden resolution: 0.20900000000000007.
+Number of latent clusters 10.
+Leiden resolution: 0.20800000000000007.
+Number of latent clusters 11.
+Leiden resolution: 0.20700000000000007.
+Number of latent clusters 13.
+Leiden resolution: 0.18700000000000008.
+Number of latent clusters 10.
+Leiden resolution: 0.18600000000000008.
+Number of latent clusters 10.
+Leiden resolution: 0.18500000000000008.
+Number of latent clusters 10.
+Leiden resolution: 0.18400000000000008.
+Number of latent clusters 10.
+Leiden resolution: 0.18300000000000008.
+Number of latent clusters 9.
+Leiden resolution: 0.18200000000000008.
+Number of latent clusters 11.
+Leiden resolution: 0.18100000000000008.
+Number of latent clusters 9.
+Leiden resolution: 0.18000000000000008.
+Number of latent clusters 9.
+Leiden resolution: 0.17900000000000008.
+Number of latent clusters 9.
+Leiden resolution: 0.17800000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.17700000000000007.
+Number of latent clusters 10.
+Leiden resolution: 0.17600000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.17500000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.17400000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.17300000000000007.
+Number of latent clusters 9.
+Leiden resolution: 0.17200000000000007.
+Number of latent clusters 8.
+NMI is 0.4857584860258051. ARI is 0.3377043810416981.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0402>
+Subject: Job 13937[1]: <test_model_checkpoint[1-6]> in cluster <cub22> Done
+
+Job <test_model_checkpoint[1-6]> was submitted from host <cub22-head1> by user <sb75> in cluster <cub22> at Fri Oct 31 00:03:48 2025
+Job was executed on host(s) <12*farm-gpu0402>, in queue <inference>, as user <sb75> in cluster <cub22> at Fri Oct 31 00:03:48 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/analysis/inference> was used as the working directory.
+Started at Fri Oct 31 00:03:48 2025
+Terminated at Fri Oct 31 01:08:04 2025
+Results reported at Fri Oct 31 01:08:04 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -G team361                                                                       # LSF group
+#BSUB -J test_model_checkpoint[1-6]                                                    # Array job: 6 jobs (one per dataset)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Load your environment
+source ~/.venvs/nichejepa/bin/activate
+
+# Define your datasets
+datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select dataset based on job index (LSF arrays start at 1)
+dataset=${datasets[$((LSB_JOBINDEX-1))]}
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name hst_corpus_110m \
+    --load_timestamp 30102025_112358_100 \
+    --read_checkpoint nichejepa-ep2.pth.tar \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    "$dataset"  
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   5244.90 sec.
+    Max Memory :                                 55572 MB
+    Average Memory :                             8413.60 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               75500.00 MB
+    Max Swap :                                   1 MB
+    Max Processes :                              20
+    Max Threads :                                86
+    Run time :                                   3856 sec.
+    Turnaround time :                            3856 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <../../logs/inference/test_model_checkpoint/test_model_checkpoint_13937_1.err> for stderr output of this job.
+

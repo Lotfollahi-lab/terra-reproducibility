@@ -1,0 +1,61 @@
+Experiment name: xhb2006-1b_1p.
+Experiment description: xenium human breast (dataset-id = 2006) | 1-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 2816.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts.
+Retrieving tokens for neighborhood cells.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20251101_161916-971d94pt[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20251101_161916-971d94pt/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@farm-gpu0405>
+Subject: Job 14918: <xhb2006-1b_1p_cell-graph-tokenizer_12> in cluster <cub22> Exited
+
+Job <xhb2006-1b_1p_cell-graph-tokenizer_12> was submitted from host <cub22-head2> by user <sb75> in cluster <cub22> at Sat Nov  1 16:18:52 2025
+Job was executed on host(s) <12*farm-gpu0405>, in queue <inference>, as user <sb75> in cluster <cub22> at Sat Nov  1 16:18:53 2025
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Nov  1 16:18:53 2025
+Terminated at Sat Nov  1 16:55:35 2025
+Results reported at Sat Nov  1 16:55:35 2025
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhb2006-1b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   2217.19 sec.
+    Max Memory :                                 41833 MB
+    Average Memory :                             13075.54 MB
+    Total Requested Memory :                     614400.00 MB
+    Delta Memory :                               572567.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                51
+    Run time :                                   2202 sec.
+    Turnaround time :                            2203 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhb2006-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_14918.err> for stderr output of this job.
+

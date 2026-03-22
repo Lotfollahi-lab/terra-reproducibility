@@ -20,6 +20,7 @@ def main(args):
         header=None)
     print(datasets_df)
 
+    running_n_cells = 0
     batchwise_norm_factor_dict = {}
 
     print("Computing norm factors...")
@@ -32,6 +33,7 @@ def main(args):
 
         for file in silver_dataset_path.glob('*.h5ad'):
             adata = sc.read_h5ad(file)
+            running_n_cells += len(adata)
 
             # Compute batchwise nonzero means and means per gene
             X_dense = adata.X.toarray()
@@ -64,18 +66,23 @@ def main(args):
                     n_cells = 0
                 else:
                     n_cells = len(adata)
+                    n_nonzero_cells = nonzero_counts[idx]
                 if f"{gene_id}_n_cells" in batchwise_norm_factor_dict.keys():
                     batchwise_norm_factor_dict[f"{gene_id}_nonzero_means"].append(nonzero_means[idx])
                     batchwise_norm_factor_dict[f"{gene_id}_means"].append(means[idx])
                     batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_nonzero_means"].append(nonzero_means_gcrd[idx])
                     batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_means"].append(means_gcrd[idx])
                     batchwise_norm_factor_dict[f"{gene_id}_n_cells"].append(n_cells)
+                    batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"].append(n_nonzero_cells)
                 else:
                     batchwise_norm_factor_dict[f"{gene_id}_nonzero_means"] = [nonzero_means[idx]]
                     batchwise_norm_factor_dict[f"{gene_id}_means"] = [means[idx]]
                     batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_nonzero_means"] = [nonzero_means_gcrd[idx]]
                     batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_means"] = [means_gcrd[idx]]
                     batchwise_norm_factor_dict[f"{gene_id}_n_cells"] = [n_cells]
+                    batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"] = [n_nonzero_cells]
+
+            print(f"Running number of cells: {running_n_cells}.")
 
             current, peak = tracemalloc.get_traced_memory()
             print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
@@ -92,21 +99,22 @@ def main(args):
         norm_factor_dict[gene_id] = {}
         norm_factor_dict[gene_id]["nonzero_mean"] = np.dot(
             np.array(batchwise_norm_factor_dict[f"{gene_id}_nonzero_means"]),
-            np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"])
-        ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
+            np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"])
+        ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"]).sum()
         norm_factor_dict[gene_id]["mean"] = np.dot(
             np.array(batchwise_norm_factor_dict[f"{gene_id}_means"]),
             np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"])
         ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
         norm_factor_dict[gene_id]["gene_corrected_read_depth_nonzero_mean"] = np.dot(
             np.array(batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_nonzero_means"]),
-            np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"])
-        ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
+            np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"])
+        ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"]).sum()
         norm_factor_dict[gene_id]["gene_corrected_read_depth_mean"] = np.dot(
             np.array(batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_means"]),
             np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"])
         ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
         norm_factor_dict[gene_id]["n_cells"] = np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
+        norm_factor_dict[gene_id]["n_nonzero_cells"] = np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"]).sum()
 
     norm_factor_df = pd.DataFrame.from_dict(norm_factor_dict, orient='index').reset_index()
     norm_factor_df = norm_factor_df.rename(columns={'index': 'gene_id'})
@@ -125,19 +133,19 @@ if __name__ == '__main__':
                         help='Data directory path.')
     parser.add_argument('--cohort_name',
                         type=str,
-                        default="hst_corpus_90m", # "hst_corpus_80m", "hst_corpus_70m"
+                        default="hst_corpus_110m", # "hst_corpus_90m", "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing datasets of the cohort.')                        
     parser.add_argument('--basis_target_read_depth',
                         type=float,
-                        default=154.01749299636748, # 150.6692 (hst_corpus_80m)
+                        default=151.1754621380761, # 154.01749299636748 (hst_corpus_90m); 150.6692 (hst_corpus_80m)
                         help='Read depth independent of number of probed genes.')
     parser.add_argument('--target_read_depth_per_gene',
                         type=float,
-                        default=0.05644618485013678, # 0.0646 (hst_corpus_80m)
+                        default=0.04705053555567159, # 0.05644618485013678 (hst_corpus_90m); 0.0646 (hst_corpus_80m)
                         help='Additional read depth increment per probed gene.')
     args = parser.parse_args()
     

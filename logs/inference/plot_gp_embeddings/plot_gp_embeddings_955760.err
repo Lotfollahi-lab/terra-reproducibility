@@ -1,0 +1,10 @@
+JAX version 0.6.1 available.
+Loaded parameters from YAML file.
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/plot_gp_embeddings.py", line 204, in <module>
+    main(args)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/plot_gp_embeddings.py", line 139, in main
+    adata.obs['tissue'] = list(np.array([
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/inference/plot_gp_embeddings.py", line 140, in <listcomp>
+    token_dict_reverse[tissue_value[0] + spv_idx_subtract].split('spv_')[1]
+NameError: name 'token_dict_reverse' is not defined
