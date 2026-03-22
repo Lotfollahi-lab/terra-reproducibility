@@ -4,12 +4,12 @@ experiment:
   model_input_size: 704 # 704, 2816, 11264
   tokenizer: cell-graph-tokenizer
 paths:
-  data_directory_path: /nfs/team361/sb75/DATASETS
-  norm_factor_file_path: /lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv # UPDATE
+  data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
+  norm_factor_file_path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/mst_corpus_10m_norm_factors.csv
   token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
 tokenization:
-  count_cell_norm_method: read_depth
-  count_count_norm_method: shifted_log
+  count_cell_norm_method: null
+  count_count_norm_method: null
   count_gene_norm_method: null
   delaunay: false
   include_zero_expr_genes: false
@@ -18,9 +18,9 @@ tokenization:
   num_shards: 32
   processing_mode: parallel
   radius: null
-  rank_cell_norm_method: read_depth
-  rank_count_norm_method: shifted_log
-  rank_gene_norm_method: null
+  rank_cell_norm_method: 'gene_corrected_read_depth'
+  rank_count_norm_method: null
+  rank_gene_norm_method: 'mean'
   species: mus_musculus
   use_generator: true
 wandb:
