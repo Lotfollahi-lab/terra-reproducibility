@@ -14,3 +14,7 @@ analysis/statistics/results/
 analysis/data_analysis/logs
 analysis/checkpoints
 analysis/benchmarking/scGPT
+
+analysis/benchmarking/CellPLM
+analysis/benchmarking/nicheformer
+analysis/benchmarking/scGPT-spatial
