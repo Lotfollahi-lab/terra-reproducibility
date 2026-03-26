@@ -99,7 +99,7 @@ case $EXPERIMENT_NAME in
         QUEUE="hugemem"
         ;;
     xhl1015-R1-28b_1p)    
-        RAM="512G"
+        RAM="768G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
