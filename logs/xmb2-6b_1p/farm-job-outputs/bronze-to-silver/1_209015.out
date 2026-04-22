@@ -1,0 +1,895 @@
+Experiment Name: xmb2-6b_1p
+Input Directory: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p
+Output Directory: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p
+Using existing bronze (raw) .h5ad files...
+Loading gene name to ensembl id dictionary from /nfs/team361/sb75/DATASETS/genes/mus_musculus_gene_name_to_ensembl_id_dict.pkl...
+Data is already split by batch.
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_17_9_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (62268, 347)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 4019260 stored elements and shape (62268, 347)>
+  Coords	Values
+  (0, 0)	4
+  (0, 1)	2
+  (0, 2)	1
+  (0, 13)	6
+  (0, 14)	1
+  (0, 15)	1
+  (0, 16)	1
+  (0, 19)	1
+  (0, 21)	2
+  (0, 22)	2
+  (0, 24)	1
+  (0, 25)	5
+  (0, 26)	1
+  (0, 29)	1
+  (0, 32)	3
+  (0, 33)	5
+  (0, 34)	1
+  (0, 37)	1
+  (0, 48)	1
+  (0, 54)	2
+  (0, 56)	1
+  (0, 57)	1
+  (0, 63)	15
+  (0, 64)	1
+  (0, 65)	3
+  :	:
+  (62266, 41)	1
+  (62266, 82)	1
+  (62266, 84)	1
+  (62266, 94)	2
+  (62266, 111)	1
+  (62266, 145)	1
+  (62266, 148)	1
+  (62266, 157)	3
+  (62266, 170)	2
+  (62266, 288)	1
+  (62266, 320)	1
+  (62267, 12)	2
+  (62267, 13)	1
+  (62267, 21)	1
+  (62267, 48)	1
+  (62267, 60)	1
+  (62267, 78)	1
+  (62267, 87)	1
+  (62267, 135)	1
+  (62267, 157)	3
+  (62267, 162)	2
+  (62267, 170)	1
+  (62267, 177)	1
+  (62267, 207)	1
+  (62267, 340)	1
+adata.X shape: (62268, 347)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 347
+Number of genes with matching ensembl ids: 340
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[340 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 831.78534  755.8038 ]
+ [ 821.73346  768.91046]
+ [ 831.93207  780.3677 ]
+ ...
+ [5251.1963  4366.193  ]
+ [5248.4937  4382.1904 ]
+ [5272.0234  4387.3696 ]]
+AnnData object with n_obs × n_vars = 62268 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch0
+adata_batch.obs['cell_id']:
+aaabiggh-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs        2_batch0_0
+aaacfoel-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs        2_batch0_1
+aaaeefil-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs        2_batch0_2
+aaaehidd-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs        2_batch0_3
+aaagcbkg-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs        2_batch0_4
+                                                           ...      
+oindmjog-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs    2_batch0_59846
+oinecaba-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs    2_batch0_59847
+oinehfmf-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs    2_batch0_59848
+oinemiil-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs    2_batch0_59849
+oingfoec-1_Xenium_V1_FFPE_TgCRND8_17_9_months_outs    2_batch0_59850
+Name: cell_id, Length: 59851, dtype: object
+Harmonized adata_batch shape: (59851, 340)
+Final Harmonized Adata: Batch = 0
+AnnData object with n_obs × n_vars = 59851 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_17_9_months_outs.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_13_4_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (59935, 347)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 4094480 stored elements and shape (59935, 347)>
+  Coords	Values
+  (0, 0)	1
+  (0, 3)	4
+  (0, 13)	13
+  (0, 14)	1
+  (0, 25)	1
+  (0, 30)	2
+  (0, 35)	1
+  (0, 43)	1
+  (0, 48)	3
+  (0, 53)	1
+  (0, 62)	1
+  (0, 63)	6
+  (0, 64)	1
+  (0, 81)	8
+  (0, 83)	2
+  (0, 84)	2
+  (0, 85)	1
+  (0, 87)	1
+  (0, 98)	1
+  (0, 118)	2
+  (0, 121)	1
+  (0, 123)	2
+  (0, 125)	3
+  (0, 132)	1
+  (0, 140)	3
+  :	:
+  (59931, 331)	1
+  (59932, 17)	1
+  (59932, 97)	1
+  (59932, 105)	1
+  (59932, 120)	1
+  (59932, 122)	1
+  (59932, 159)	1
+  (59932, 163)	1
+  (59932, 170)	2
+  (59932, 177)	1
+  (59932, 178)	2
+  (59932, 180)	1
+  (59932, 183)	2
+  (59932, 236)	1
+  (59932, 264)	1
+  (59932, 295)	1
+  (59932, 336)	1
+  (59932, 338)	1
+  (59932, 340)	1
+  (59932, 342)	1
+  (59933, 264)	2
+  (59934, 86)	1
+  (59934, 179)	1
+  (59934, 230)	3
+  (59934, 259)	1
+adata.X shape: (59935, 347)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 347
+Number of genes with matching ensembl ids: 340
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[340 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 828.6819   864.78625]
+ [ 402.32397  862.38184]
+ [ 313.64786  864.75006]
+ ...
+ [5416.0254  4817.5835 ]
+ [6614.144   2922.117  ]
+ [6622.0723  3202.3916 ]]
+AnnData object with n_obs × n_vars = 59935 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch1
+adata_batch.obs['cell_id']:
+aaadnakl-1_Xenium_V1_FFPE_wildtype_13_4_months_outs        2_batch1_0
+aaaeaoem-1_Xenium_V1_FFPE_wildtype_13_4_months_outs        2_batch1_1
+aaaebjlp-1_Xenium_V1_FFPE_wildtype_13_4_months_outs        2_batch1_2
+aaahenla-1_Xenium_V1_FFPE_wildtype_13_4_months_outs        2_batch1_3
+aaahgemb-1_Xenium_V1_FFPE_wildtype_13_4_months_outs        2_batch1_4
+                                                            ...      
+oimgdpai-1_Xenium_V1_FFPE_wildtype_13_4_months_outs    2_batch1_58929
+oimhkkko-1_Xenium_V1_FFPE_wildtype_13_4_months_outs    2_batch1_58930
+oiminpdh-1_Xenium_V1_FFPE_wildtype_13_4_months_outs    2_batch1_58931
+oimjabgg-1_Xenium_V1_FFPE_wildtype_13_4_months_outs    2_batch1_58932
+oimjaijc-1_Xenium_V1_FFPE_wildtype_13_4_months_outs    2_batch1_58933
+Name: cell_id, Length: 58934, dtype: object
+Harmonized adata_batch shape: (58934, 340)
+Final Harmonized Adata: Batch = 1
+AnnData object with n_obs × n_vars = 58934 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_13_4_months_outs.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_2_5_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (58231, 347)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 4537760 stored elements and shape (58231, 347)>
+  Coords	Values
+  (0, 5)	3
+  (0, 9)	1
+  (0, 13)	11
+  (0, 14)	1
+  (0, 18)	1
+  (0, 19)	1
+  (0, 21)	2
+  (0, 32)	1
+  (0, 34)	1
+  (0, 35)	2
+  (0, 36)	2
+  (0, 39)	2
+  (0, 40)	1
+  (0, 48)	2
+  (0, 53)	7
+  (0, 54)	1
+  (0, 55)	2
+  (0, 57)	1
+  (0, 62)	1
+  (0, 63)	4
+  (0, 64)	1
+  (0, 65)	2
+  (0, 66)	1
+  (0, 74)	2
+  (0, 75)	4
+  :	:
+  (58230, 201)	1
+  (58230, 211)	4
+  (58230, 212)	12
+  (58230, 232)	1
+  (58230, 235)	1
+  (58230, 236)	1
+  (58230, 238)	2
+  (58230, 240)	2
+  (58230, 247)	3
+  (58230, 250)	1
+  (58230, 253)	2
+  (58230, 260)	1
+  (58230, 262)	4
+  (58230, 267)	1
+  (58230, 270)	1
+  (58230, 275)	1
+  (58230, 276)	1
+  (58230, 279)	1
+  (58230, 290)	1
+  (58230, 299)	1
+  (58230, 300)	4
+  (58230, 305)	6
+  (58230, 313)	1
+  (58230, 314)	1
+  (58230, 343)	6
+adata.X shape: (58231, 347)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 347
+Number of genes with matching ensembl ids: 340
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[340 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 828.5583   846.77295]
+ [ 849.49243  859.894  ]
+ [ 840.0986   721.2689 ]
+ ...
+ [4184.9233  4323.685  ]
+ [4173.49    4323.4927 ]
+ [4191.498   4307.7407 ]]
+AnnData object with n_obs × n_vars = 58231 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch2
+adata_batch.obs['cell_id']:
+aaaaiiag-1_Xenium_V1_FFPE_wildtype_2_5_months_outs        2_batch2_0
+aaabdjmb-1_Xenium_V1_FFPE_wildtype_2_5_months_outs        2_batch2_1
+aaacjpoi-1_Xenium_V1_FFPE_wildtype_2_5_months_outs        2_batch2_2
+aaadncba-1_Xenium_V1_FFPE_wildtype_2_5_months_outs        2_batch2_3
+aaafjoec-1_Xenium_V1_FFPE_wildtype_2_5_months_outs        2_batch2_4
+                                                           ...      
+oiodejmp-1_Xenium_V1_FFPE_wildtype_2_5_months_outs    2_batch2_58193
+oiohfcbe-1_Xenium_V1_FFPE_wildtype_2_5_months_outs    2_batch2_58194
+oioifaid-1_Xenium_V1_FFPE_wildtype_2_5_months_outs    2_batch2_58195
+oioipdka-1_Xenium_V1_FFPE_wildtype_2_5_months_outs    2_batch2_58196
+oiokkmhe-1_Xenium_V1_FFPE_wildtype_2_5_months_outs    2_batch2_58197
+Name: cell_id, Length: 58198, dtype: object
+Harmonized adata_batch shape: (58198, 340)
+Final Harmonized Adata: Batch = 2
+AnnData object with n_obs × n_vars = 58198 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_2_5_months_outs.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_2_5_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (53913, 346)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3984721 stored elements and shape (53913, 346)>
+  Coords	Values
+  (0, 13)	2
+  (0, 19)	1
+  (0, 21)	4
+  (0, 25)	1
+  (0, 33)	1
+  (0, 35)	4
+  (0, 36)	6
+  (0, 53)	1
+  (0, 54)	1
+  (0, 55)	1
+  (0, 60)	2
+  (0, 63)	1
+  (0, 81)	7
+  (0, 82)	1
+  (0, 84)	1
+  (0, 88)	1
+  (0, 98)	1
+  (0, 103)	3
+  (0, 106)	1
+  (0, 116)	1
+  (0, 117)	4
+  (0, 135)	1
+  (0, 136)	1
+  (0, 142)	1
+  (0, 149)	1
+  :	:
+  (53912, 235)	1
+  (53912, 237)	3
+  (53912, 238)	3
+  (53912, 239)	1
+  (53912, 240)	3
+  (53912, 246)	1
+  (53912, 253)	2
+  (53912, 264)	1
+  (53912, 270)	1
+  (53912, 275)	1
+  (53912, 282)	4
+  (53912, 286)	1
+  (53912, 288)	1
+  (53912, 294)	1
+  (53912, 295)	1
+  (53912, 296)	4
+  (53912, 300)	1
+  (53912, 303)	1
+  (53912, 305)	12
+  (53912, 311)	1
+  (53912, 320)	1
+  (53912, 324)	2
+  (53912, 342)	1
+  (53912, 343)	1
+  (53912, 344)	1
+adata.X shape: (53913, 346)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 346
+Number of genes with matching ensembl ids: 339
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[339 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 843.68823  608.29816]
+ [ 851.0893   612.55554]
+ [ 833.5574   611.50134]
+ ...
+ [2708.6865  4255.5947 ]
+ [2720.7478  4257.9165 ]
+ [2724.6245  4307.632  ]]
+AnnData object with n_obs × n_vars = 53913 × 339
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch3
+adata_batch.obs['cell_id']:
+aaabfoap-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs        2_batch3_0
+aaabonpk-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs        2_batch3_1
+aaadnjke-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs        2_batch3_2
+aaaeilha-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs        2_batch3_3
+aaaenhoh-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs        2_batch3_4
+                                                          ...      
+oigkoklj-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs    2_batch3_53495
+oigloohc-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs    2_batch3_53496
+oigmajpm-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs    2_batch3_53497
+oignbodm-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs    2_batch3_53498
+oignloic-1_Xenium_V1_FFPE_TgCRND8_2_5_months_outs    2_batch3_53499
+Name: cell_id, Length: 53500, dtype: object
+Harmonized adata_batch shape: (53500, 339)
+Final Harmonized Adata: Batch = 3
+AnnData object with n_obs × n_vars = 53500 × 339
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_2_5_months_outs.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_5_7_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (58682, 347)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 3841950 stored elements and shape (58682, 347)>
+  Coords	Values
+  (0, 2)	4
+  (0, 9)	1
+  (0, 10)	1
+  (0, 13)	17
+  (0, 16)	2
+  (0, 31)	1
+  (0, 32)	1
+  (0, 34)	1
+  (0, 36)	4
+  (0, 48)	4
+  (0, 54)	1
+  (0, 62)	1
+  (0, 63)	12
+  (0, 64)	1
+  (0, 68)	1
+  (0, 78)	2
+  (0, 81)	22
+  (0, 82)	2
+  (0, 83)	2
+  (0, 84)	2
+  (0, 99)	2
+  (0, 100)	1
+  (0, 117)	1
+  (0, 121)	2
+  (0, 125)	9
+  :	:
+  (58681, 124)	1
+  (58681, 125)	2
+  (58681, 126)	1
+  (58681, 138)	2
+  (58681, 140)	2
+  (58681, 148)	1
+  (58681, 149)	1
+  (58681, 154)	2
+  (58681, 155)	1
+  (58681, 157)	7
+  (58681, 160)	2
+  (58681, 170)	2
+  (58681, 194)	1
+  (58681, 210)	1
+  (58681, 213)	1
+  (58681, 230)	1
+  (58681, 233)	1
+  (58681, 240)	2
+  (58681, 246)	1
+  (58681, 253)	2
+  (58681, 279)	3
+  (58681, 288)	3
+  (58681, 314)	1
+  (58681, 340)	2
+  (58681, 345)	1
+adata.X shape: (58682, 347)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 347
+Number of genes with matching ensembl ids: 340
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[340 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 844.3944   870.384  ]
+ [ 830.43427  771.2955 ]
+ [ 851.596    706.2677 ]
+ ...
+ [2613.307   4337.9087 ]
+ [2619.25    4364.7856 ]
+ [2623.0789  4383.2197 ]]
+AnnData object with n_obs × n_vars = 58682 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch4
+adata_batch.obs['cell_id']:
+aaabaohn-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs        2_batch4_0
+aaabocno-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs        2_batch4_1
+aaadpgin-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs        2_batch4_2
+aaaecjii-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs        2_batch4_3
+aaaegkaj-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs        2_batch4_4
+                                                          ...      
+oijlpmjb-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs    2_batch4_58301
+oijmjakb-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs    2_batch4_58302
+oikbcigb-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs    2_batch4_58303
+oikbfpkg-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs    2_batch4_58304
+oikcmgab-1_Xenium_V1_FFPE_TgCRND8_5_7_months_outs    2_batch4_58305
+Name: cell_id, Length: 58306, dtype: object
+Harmonized adata_batch shape: (58306, 340)
+Final Harmonized Adata: Batch = 4
+AnnData object with n_obs × n_vars = 58306 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_TgCRND8_5_7_months_outs.h5ad
+
+Harmonizing: /nfs/team361/sb75/DATASETS/bronze/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_5_7_months_outs.h5ad
+Setting spatial coordinates in adata.obsm based on keys provided in key_mappings...
+Raw adata shape: (58685, 347)
+adata.X is present.
+Not all entries in adata.X are integers.
+All entries in adata.layers['counts'] are integers.
+Setting adata.X from adata.layers['counts']...
+<Compressed Sparse Row sparse matrix of dtype 'int64'
+	with 4523556 stored elements and shape (58685, 347)>
+  Coords	Values
+  (0, 3)	1
+  (0, 5)	1
+  (0, 8)	6
+  (0, 12)	18
+  (0, 13)	10
+  (0, 16)	1
+  (0, 18)	1
+  (0, 21)	3
+  (0, 28)	2
+  (0, 42)	1
+  (0, 63)	1
+  (0, 70)	1
+  (0, 79)	1
+  (0, 81)	3
+  (0, 82)	1
+  (0, 83)	2
+  (0, 84)	2
+  (0, 87)	1
+  (0, 88)	1
+  (0, 94)	3
+  (0, 98)	1
+  (0, 105)	1
+  (0, 112)	5
+  (0, 122)	2
+  (0, 123)	1
+  :	:
+  (58684, 192)	1
+  (58684, 207)	1
+  (58684, 210)	3
+  (58684, 211)	1
+  (58684, 212)	1
+  (58684, 213)	1
+  (58684, 225)	2
+  (58684, 228)	2
+  (58684, 233)	1
+  (58684, 237)	2
+  (58684, 240)	2
+  (58684, 253)	3
+  (58684, 255)	2
+  (58684, 279)	1
+  (58684, 280)	1
+  (58684, 282)	1
+  (58684, 288)	2
+  (58684, 303)	1
+  (58684, 305)	2
+  (58684, 308)	2
+  (58684, 319)	1
+  (58684, 325)	1
+  (58684, 340)	4
+  (58684, 344)	1
+  (58684, 345)	1
+adata.X shape: (58685, 347)
+type(adata.X): <class 'scipy.sparse._csr.csr_matrix'>
+adata.X.dtype: int64
+Number of genes in bronze data: 347
+Number of genes with matching ensembl ids: 340
+Number of genes skipped: 7
+adata.var:
+                   ensembl_id
+gene_name                    
+Abca7      ENSMUSG00000035722
+Acsbg1     ENSMUSG00000032281
+Acta2      ENSMUSG00000035783
+Acvrl1     ENSMUSG00000000530
+Adamts2    ENSMUSG00000036545
+...                       ...
+Vwc2l      ENSMUSG00000045648
+Wfs1       ENSMUSG00000039474
+Zfp366     ENSMUSG00000050919
+Zfp536     ENSMUSG00000043456
+Zfpm2      ENSMUSG00000022306
+
+[340 rows x 1 columns]
+adata.obsm['spatial'] is already present.
+adata.obsm['spatial']:
+[[ 836.6107  834.4095]
+ [ 833.483   854.2592]
+ [1659.5309 4259.2876]
+ ...
+ [5177.5444 4623.798 ]
+ [5152.844  4627.653 ]
+ [5244.542  4577.7603]]
+AnnData object with n_obs × n_vars = 58685 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+dataset_id not present in adata.uns.
+Setting from config...
+adata.uns['dataset_id']: 2
+assay not present in adata.uns.
+Setting from config...
+adata.uns['assay']: xenium
+species not present in adata.uns.
+Setting from config...
+adata.uns['species']: mus_musculus
+tissue not present in adata.uns.
+Setting from config...
+adata.uns['tissue']: brain
+sample_condition_map not present in adata.uns.
+Setting from config...
+adata.uns['sample_condition_map']: {'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer', 'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer', 'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy', 'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy'}
+batch not present in adata.uns.
+Setting from config...
+adata.uns['batch']: batch5
+adata_batch.obs['cell_id']:
+aaaaomnd-1_Xenium_V1_FFPE_wildtype_5_7_months_outs        2_batch5_0
+aaabamjh-1_Xenium_V1_FFPE_wildtype_5_7_months_outs        2_batch5_1
+aaabncdp-1_Xenium_V1_FFPE_wildtype_5_7_months_outs        2_batch5_2
+aaacifle-1_Xenium_V1_FFPE_wildtype_5_7_months_outs        2_batch5_3
+aaadpmhm-1_Xenium_V1_FFPE_wildtype_5_7_months_outs        2_batch5_4
+                                                           ...      
+oikgljno-1_Xenium_V1_FFPE_wildtype_5_7_months_outs    2_batch5_58625
+oikiggdk-1_Xenium_V1_FFPE_wildtype_5_7_months_outs    2_batch5_58626
+oikimpfp-1_Xenium_V1_FFPE_wildtype_5_7_months_outs    2_batch5_58627
+oikjhblj-1_Xenium_V1_FFPE_wildtype_5_7_months_outs    2_batch5_58628
+oikkinnp-1_Xenium_V1_FFPE_wildtype_5_7_months_outs    2_batch5_58629
+Name: cell_id, Length: 58630, dtype: object
+Harmonized adata_batch shape: (58630, 340)
+Final Harmonized Adata: Batch = 5
+AnnData object with n_obs × n_vars = 58630 × 340
+    obs: 'cell_id', 'transcript_counts', 'control_probe_counts', 'control_codeword_counts', 'unassigned_codeword_counts', 'total_counts', 'cell_area', 'nucleus_area', 'region', 'slide_id', 'technology', 'n_genes', 'original_cell_id'
+    var: 'ensembl_id'
+    uns: 'log1p', 'neighbors', 'novae_tissue', 'spatial_neighbors', 'spatialdata_attrs', 'umap', 'condition', 'dataset_id', 'assay', 'species', 'tissue', 'sample_condition_map', 'batch'
+    obsm: 'X_pca', 'X_umap', 'spatial'
+    layers: 'counts'
+    obsp: 'connectivities', 'distances', 'spatial_connectivities', 'spatial_distances'
+Writing to: /nfs/team361/sb75/DATASETS/silver/xmb2-6b_1p/Xenium_V1_FFPE_wildtype_5_7_months_outs.h5ad
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-22>
+Subject: Job 209015: <xmb2-6b_1p_bronze-to-silver_1> in cluster <farm22> Done
+
+Job <xmb2-6b_1p_bronze-to-silver_1> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Apr  1 19:56:49 2026
+Job was executed on host(s) <node-13-22>, in queue <normal>, as user <sb75> in cluster <farm22> at Wed Apr  1 19:56:50 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Apr  1 19:56:50 2026
+Terminated at Wed Apr  1 20:12:04 2026
+Results reported at Wed Apr  1 20:12:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/data_preparation/create_harmonized_data.sh config/bronze_to_silver/xmb2-6b_1p.yaml 1
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   902.98 sec.
+    Max Memory :                                 1246 MB
+    Average Memory :                             959.65 MB
+    Total Requested Memory :                     51200.00 MB
+    Delta Memory :                               49954.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   916 sec.
+    Turnaround time :                            915 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xmb2-6b_1p/farm-job-outputs/bronze-to-silver/1_209015.err> for stderr output of this job.
+

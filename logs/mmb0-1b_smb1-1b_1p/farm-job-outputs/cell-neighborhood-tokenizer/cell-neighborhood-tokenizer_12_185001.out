@@ -1,0 +1,64 @@
+Experiment name: mmb0-1b_smb1-1b_1p.
+Experiment description: mmb0-1b_smb1-1b_1p (dataset-id 0 & 1) | 2 batch | 2 panel.
+Tokenizer: cell-neighborhood-tokenizer.
+Model input size: 704.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
+Number of Gene Tokens: 1669.
+Number of Tokens: 2785.
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Filtering cells.
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood graph and aggregating counts.
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Profiling stats saved to: logs/mmb0-1b_smb1-1b_1p/cProfiler/cell-neighborhood-tokenizer/mmb0-1b_smb1-1b_1p_32_None_None_None_None_None_None_knn_10_704_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 140.243058249
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-28>
+Subject: Job 185001: <mmb0-1b_smb1-1b_1p_cell-neighborhood-tokenizer_12> in cluster <farm22> Done
+
+Job <mmb0-1b_smb1-1b_1p_cell-neighborhood-tokenizer_12> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Wed Apr  8 18:07:31 2026
+Job was executed on host(s) <12*node-13-28>, in queue <long>, as user <sb75> in cluster <farm22> at Wed Apr  8 18:08:52 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Wed Apr  8 18:08:52 2026
+Terminated at Wed Apr  8 18:12:06 2026
+Results reported at Wed Apr  8 18:12:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_mmb0-1b_smb1-1b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   291.10 sec.
+    Max Memory :                                 2375 MB
+    Average Memory :                             1219.07 MB
+    Total Requested Memory :                     204800.00 MB
+    Delta Memory :                               202425.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   194 sec.
+    Turnaround time :                            275 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mmb0-1b_smb1-1b_1p/farm-job-outputs/cell-neighborhood-tokenizer/cell-neighborhood-tokenizer_12_185001.err> for stderr output of this job.
+
