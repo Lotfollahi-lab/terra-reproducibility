@@ -1,5 +1,6 @@
 import os
 import pickle
+import anndata as ad
 import numpy as np
 import scanpy as sc
 import pandas as pd
@@ -13,10 +14,12 @@ from download_utils import download_zipfiles
 from extract_utils import pre_process
 
 
+ad.settings.allow_write_nullable_strings = True
+
 def create_gene_ensembl_map_dict(
         data_directory_path: Path,
         species: str, 
-        release: int=111,
+        release: int=110, # mouse (110), human (111)
     ) -> dict:
     """
     Create a dictionary of gene symbol names to ensembl id obtained from Ensembl Release.

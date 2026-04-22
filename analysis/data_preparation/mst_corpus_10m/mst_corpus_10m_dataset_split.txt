@@ -1,2 +1,4 @@
 val_batch_ids: []
-test_batch_ids: []
+test_batch_ids: [
+    '0_batch82',
+    '1_batch15']
