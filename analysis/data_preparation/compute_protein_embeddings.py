@@ -1,8 +1,16 @@
 """Compute ESM-C 600M protein embeddings for the NicheJEPA gene-token
 vocabulary.
 
+Supports human and mouse out of the box (``--species human`` / ``mouse``),
+and is straightforward to extend to other pyensembl-supported species
+by adding an entry to ``_SPECIES_SPECS``. ESM-C is species-agnostic at
+the protein-sequence level, so the only species-specific parts are
+(1) which pyensembl database we query and (2) which Ensembl gene-ID
+prefix we use to filter NicheJEPA's token dictionary.
+
 For each Ensembl gene ID present in the NicheJEPA token dictionary
-(``token_dictionary_homo_sapiens.pkl``), this script:
+(e.g. ``token_dictionary_homo_sapiens.pkl`` or
+``token_dictionary_mus_musculus.pkl``), this script:
 
 1. Looks up the gene in pyensembl (default release: 111).
 2. Picks the gene's canonical protein sequence — heuristically the
@@ -39,14 +47,26 @@ Usage
 -----
 ::
 
+    # Human
     python analysis/data_preparation/compute_protein_embeddings.py \\
+        --species human \\
         --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl \\
         --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_human \\
-        --ensembl_release 111 \\
-        --max_sequence_length 4096 \\
-        --batch_size 1
+        --ensembl_release 111
 
-The resulting ``esm_c_600m_human.pt`` / ``.json`` are referenced
+    # Mouse
+    python analysis/data_preparation/compute_protein_embeddings.py \\
+        --species mouse \\
+        --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl \\
+        --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_mouse \\
+        --ensembl_release 111
+
+Pyensembl needs a one-time per-species download:
+
+    pyensembl download --release 111 --species human
+    pyensembl download --release 111 --species mouse
+
+The resulting ``esm_c_600m_<species>.pt`` / ``.json`` are referenced
 directly from the model YAML under the ``protein_init`` block.
 """
 
@@ -64,7 +84,20 @@ import torch
 logger = logging.getLogger("compute_protein_embeddings")
 
 
-_ENSG_PREFIX = "ENSG"
+# Per-species configuration: which pyensembl species to query and which
+# Ensembl gene-ID prefix to filter the token dictionary on. The prefix
+# also appears in NicheJEPA's `protein_init.py` defaults; keep this in
+# sync if you extend either side.
+_SPECIES_SPECS = {
+    "human": {
+        "pyensembl_species": "human",
+        "gene_id_prefix":    "ENSG",
+    },
+    "mouse": {
+        "pyensembl_species": "mouse",
+        "gene_id_prefix":    "ENSMUSG",
+    },
+}
 
 
 def _setup_logging(verbose: bool) -> None:
@@ -75,10 +108,12 @@ def _setup_logging(verbose: bool) -> None:
     )
 
 
-def _iter_gene_ensembl_ids(token_dict: Dict[str, int]) -> List[str]:
-    """Return all ENSG-prefixed keys from the token dict, sorted for
-    reproducibility."""
-    return sorted(k for k in token_dict.keys() if k.startswith(_ENSG_PREFIX))
+def _iter_gene_ensembl_ids(token_dict: Dict[str, int],
+                           gene_id_prefix: str) -> List[str]:
+    """Return all keys from the token dict starting with the given
+    Ensembl gene-ID prefix (``ENSG`` for human, ``ENSMUSG`` for mouse),
+    sorted for reproducibility."""
+    return sorted(k for k in token_dict.keys() if k.startswith(gene_id_prefix))
 
 
 def _pick_canonical_protein_sequence(
@@ -238,7 +273,18 @@ def _load_checkpoint(
 def main(args: argparse.Namespace) -> None:
     _setup_logging(args.verbose)
 
+    if args.species not in _SPECIES_SPECS:
+        raise SystemExit(
+            f"Unknown --species={args.species!r}. Supported: "
+            f"{sorted(_SPECIES_SPECS)}. To add another species, extend "
+            "_SPECIES_SPECS at the top of this file.")
+    spec = _SPECIES_SPECS[args.species]
+    pyensembl_species = spec["pyensembl_species"]
+    gene_id_prefix = spec["gene_id_prefix"]
+
     out_prefix = Path(args.output_prefix)
+    logger.info("Species: %s (pyensembl=%s, gene-ID prefix=%s)",
+                args.species, pyensembl_species, gene_id_prefix)
     logger.info("Output prefix: %s", out_prefix)
 
     # 1. Load the NicheJEPA token dictionary.
@@ -249,9 +295,14 @@ def main(args: argparse.Namespace) -> None:
         raise SystemExit(
             f"{args.token_dictionary_file_path}: expected a dict, got "
             f"{type(token_dict)}.")
-    ensembl_ids = _iter_gene_ensembl_ids(token_dict)
-    logger.info("Token dictionary: %d entries, %d Ensembl gene IDs.",
-                len(token_dict), len(ensembl_ids))
+    ensembl_ids = _iter_gene_ensembl_ids(token_dict, gene_id_prefix)
+    logger.info("Token dictionary: %d entries, %d %s-prefixed gene IDs.",
+                len(token_dict), len(ensembl_ids), gene_id_prefix)
+    if not ensembl_ids:
+        raise SystemExit(
+            f"No keys starting with {gene_id_prefix!r} were found in "
+            f"{args.token_dictionary_file_path}. Did you pass the right "
+            f"--species? Human dicts use ENSG, mouse dicts use ENSMUSG.")
 
     if args.limit is not None:
         ensembl_ids = ensembl_ids[: args.limit]
@@ -263,10 +314,11 @@ def main(args: argparse.Namespace) -> None:
     except ImportError as exc:
         raise SystemExit(
             "Could not import pyensembl. `pip install pyensembl`, then "
-            "run `pyensembl download --release "
-            f"{args.ensembl_release} --species human` once.") from exc
-    logger.info("Loading pyensembl release %d (human).", args.ensembl_release)
-    ensembl_data = EnsemblRelease(args.ensembl_release, species="human")
+            f"run `pyensembl download --release {args.ensembl_release} "
+            f"--species {pyensembl_species}` once.") from exc
+    logger.info("Loading pyensembl release %d (%s).",
+                args.ensembl_release, pyensembl_species)
+    ensembl_data = EnsemblRelease(args.ensembl_release, species=pyensembl_species)
 
     # 3. Resume from a previous run if a checkpoint exists.
     embeddings: List[torch.Tensor] = []
@@ -361,11 +413,21 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument(
+        "--species",
+        type=str,
+        default="human",
+        choices=sorted(_SPECIES_SPECS),
+        help="Which species' token dictionary we're aligning to. "
+             "Selects both the pyensembl database and the Ensembl "
+             "gene-ID prefix used to filter the token dictionary "
+             "('ENSG' for human, 'ENSMUSG' for mouse).")
+    parser.add_argument(
         "--token_dictionary_file_path",
         type=str,
-        default="/nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl",
-        help="Path to NicheJEPA's pickled token dictionary "
-             "(token_dictionary_homo_sapiens.pkl).")
+        required=True,
+        help="Path to NicheJEPA's pickled token dictionary, e.g. "
+             "token_dictionary_homo_sapiens.pkl or "
+             "token_dictionary_mus_musculus.pkl.")
     parser.add_argument(
         "--output_prefix",
         type=str,
