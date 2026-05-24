@@ -18,8 +18,10 @@ For each Ensembl gene ID present in the NicheJEPA token dictionary
    not directly expose Ensembl's "canonical" annotation, so longest-
    protein-coding-transcript is the standard pragmatic substitute (and
    for ~95% of human genes matches MANE Select).
-3. Forwards the sequence through ESM-C 600M (Cambrian-600M,
-   EvolutionaryScale, 2024 — 1152-dim embeddings).
+3. Forwards the sequence through an ESM-C variant selected via
+   ``--esm-model`` (default ``esmc_600m`` for 1152-dim embeddings;
+   ``esmc_300m`` for 960-dim if you want to match a smaller encoder
+   dim without any post-hoc dim reduction; ``esmc_6b`` for 2560-dim).
 4. Mean-pools the per-residue embeddings into a single (1152,) vector
    per gene.
 
@@ -47,18 +49,29 @@ Usage
 -----
 ::
 
-    # Human
-    python analysis/data_preparation/compute_protein_embeddings.py \\
-        --species human \\
-        --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl \\
-        --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_human \\
-        --ensembl_release 111
-
-    # Mouse
+    # Mouse, ESM-C 600M (1152-dim, default)
     python analysis/data_preparation/compute_protein_embeddings.py \\
         --species mouse \\
+        --esm-model esmc_600m \\
         --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl \\
         --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_mouse \\
+        --ensembl_release 111
+
+    # Mouse, ESM-C 300M (960-dim) -- match encoder embed_dim=960 to
+    # skip PCA entirely in warm-start mode.
+    python analysis/data_preparation/compute_protein_embeddings.py \\
+        --species mouse \\
+        --esm-model esmc_300m \\
+        --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl \\
+        --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_300m_mouse \\
+        --ensembl_release 111
+
+    # Human, ESM-C 600M
+    python analysis/data_preparation/compute_protein_embeddings.py \\
+        --species human \\
+        --esm-model esmc_600m \\
+        --token_dictionary_file_path /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl \\
+        --output_prefix /nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_human \\
         --ensembl_release 111
 
 Pyensembl needs a one-time per-species download:
@@ -66,8 +79,12 @@ Pyensembl needs a one-time per-species download:
     pyensembl download --release 111 --species human
     pyensembl download --release 111 --species mouse
 
-The resulting ``esm_c_600m_<species>.pt`` / ``.json`` are referenced
-directly from the model YAML under the ``protein_init`` block.
+The resulting ``<output_prefix>.pt`` / ``.json`` are referenced directly
+from the model YAML under the ``protein_init`` block. The encoder's
+``protein_init`` code is dim-agnostic, so any of the ESM-C variants
+plugs in without further changes; pair with NicheJEPA's ``enc_emb_dim``
+to control whether dim reduction happens (warm-start mode auto-skips
+PCA when ``enc_emb_dim`` equals the ESM dim).
 """
 
 import argparse
@@ -151,10 +168,31 @@ def _pick_canonical_protein_sequence(
     return candidates[0][1]
 
 
-def _load_esmc_600m(device: torch.device):
-    """Lazy import + load ESM-C 600M. Kept inside a function so a
-    user running --dry-run / --list-only doesn't pay the import cost.
+# ESM-C model registry. Maps a CLI-friendly short name to the
+# EvolutionaryScale `ESMC.from_pretrained` identifier and the
+# resulting per-residue embedding dimension. Mean-pooled output is
+# the same dim as per-residue.
+_ESMC_MODELS = {
+    "esmc_300m": {"hf_name": "esmc_300m", "embed_dim": 960,
+                  "download_mb": 600},
+    "esmc_600m": {"hf_name": "esmc_600m", "embed_dim": 1152,
+                  "download_mb": 1200},
+    "esmc_6b":   {"hf_name": "esmc_6b",   "embed_dim": 2560,
+                  "download_mb": 12000},
+}
+
+
+def _load_esmc(device: torch.device, esm_model: str):
+    """Lazy import + load an ESM-C model by short name. Kept inside a
+    function so a user running --dry-run / --list-only doesn't pay
+    the import cost.
     """
+    if esm_model not in _ESMC_MODELS:
+        raise SystemExit(
+            f"Unknown --esm-model={esm_model!r}. Supported: "
+            f"{sorted(_ESMC_MODELS)}. Extend _ESMC_MODELS at the top "
+            "of this file to add another variant.")
+    spec = _ESMC_MODELS[esm_model]
     try:
         from esm.models.esmc import ESMC  # type: ignore
     except ImportError as exc:
@@ -162,9 +200,12 @@ def _load_esmc_600m(device: torch.device):
             "Could not import `esm`. Install EvolutionaryScale's ESM "
             "SDK via `pip install esm`, then re-run."
         ) from exc
-    logger.info("Loading ESM-C 600M weights (this is a ~1.2GB download "
-                "on first run, cached afterwards in ~/.cache/...).")
-    model = ESMC.from_pretrained("esmc_600m").to(device).eval()
+    logger.info(
+        "Loading %s weights -> %d-dim per-residue embeddings "
+        "(~%d MB download on first run, cached in ~/.cache/...).",
+        esm_model, spec["embed_dim"], spec["download_mb"],
+    )
+    model = ESMC.from_pretrained(spec["hf_name"]).to(device).eval()
     return model
 
 
@@ -282,9 +323,17 @@ def main(args: argparse.Namespace) -> None:
     pyensembl_species = spec["pyensembl_species"]
     gene_id_prefix = spec["gene_id_prefix"]
 
+    if args.esm_model not in _ESMC_MODELS:
+        raise SystemExit(
+            f"Unknown --esm-model={args.esm_model!r}. Supported: "
+            f"{sorted(_ESMC_MODELS)}.")
+    esm_dim = _ESMC_MODELS[args.esm_model]["embed_dim"]
+
     out_prefix = Path(args.output_prefix)
     logger.info("Species: %s (pyensembl=%s, gene-ID prefix=%s)",
                 args.species, pyensembl_species, gene_id_prefix)
+    logger.info("ESM model: %s (output embedding dim = %d)",
+                args.esm_model, esm_dim)
     logger.info("Output prefix: %s", out_prefix)
 
     # 1. Load the NicheJEPA token dictionary.
@@ -353,7 +402,7 @@ def main(args: argparse.Namespace) -> None:
         logger.warning("No CUDA device available; running on CPU will "
                        "take many hours. Pass --dry-run to estimate "
                        "coverage first.")
-    model = _load_esmc_600m(device)
+    model = _load_esmc(device, args.esm_model)
 
     # 5. Main loop. ESM-C SDK doesn't expose a clean batching API at the
     # ``encode`` step (sequences have variable length); we forward one
@@ -435,6 +484,18 @@ if __name__ == "__main__":
         help="Output prefix; the script writes <prefix>.pt and "
              "<prefix>.json. Example: "
              "/nfs/team361/sb75/DATASETS/protein_embeddings/esm_c_600m_human")
+    parser.add_argument(
+        "--esm-model",
+        dest="esm_model",
+        type=str,
+        default="esmc_600m",
+        choices=sorted(_ESMC_MODELS),
+        help="Which ESM-C variant to use. esmc_300m -> 960-dim "
+             "(matches NicheJEPA enc_emb_dim=960 with no dim "
+             "reduction); esmc_600m -> 1152-dim (default; pair with "
+             "warm-start PCA for 768-dim, or set enc_emb_dim=1152 "
+             "for direct copy); esmc_6b -> 2560-dim (highest quality, "
+             "~12 GB download).")
     parser.add_argument(
         "--ensembl_release",
         type=int,
