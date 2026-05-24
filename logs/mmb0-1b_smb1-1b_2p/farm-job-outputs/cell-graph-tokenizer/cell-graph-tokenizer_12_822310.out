@@ -1,0 +1,66 @@
+Experiment name: mmb0-1b_smb1-1b_2p.
+Experiment description: mmb0-1b_smb1-1b_2p (dataset-id 0 & 1) | 2 batch | 2 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 176.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
+Number of Gene Tokens: 1669.
+Number of Tokens: 2785.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/mmb0-1b_smb1-1b_2p/cProfiler/cell-graph-tokenizer/mmb0-1b_smb1-1b_2p_32_None_None_None_None_None_None_knn_10_176_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 385.891565984
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-10-4-3>
+Subject: Job 822310: <mmb0-1b_smb1-1b_2p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <mmb0-1b_smb1-1b_2p_cell-graph-tokenizer_12> was submitted from host <farm22-head2> by user <sb75> in cluster <farm22> at Mon Apr 13 17:17:34 2026
+Job was executed on host(s) <12*node-10-4-3>, in queue <long>, as user <sb75> in cluster <farm22> at Mon Apr 13 17:17:42 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Apr 13 17:17:42 2026
+Terminated at Mon Apr 13 17:24:58 2026
+Results reported at Mon Apr 13 17:24:58 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mmb0-1b_smb1-1b_2p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1184.29 sec.
+    Max Memory :                                 7622 MB
+    Average Memory :                             3894.27 MB
+    Total Requested Memory :                     204800.00 MB
+    Delta Memory :                               197178.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   441 sec.
+    Turnaround time :                            444 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mmb0-1b_smb1-1b_2p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_822310.err> for stderr output of this job.
+

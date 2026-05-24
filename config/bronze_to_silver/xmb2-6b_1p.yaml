@@ -1,0 +1,43 @@
+experiment:
+  name: xmb2-6b_1p
+  description: Xenium Mouse Brain (dataset-id 2) | 6 batch | 1 panel | Preprocess to silver
+  study: https://www.nature.com/articles/s41592-025-02899-6 (https://mics-lab.github.io/novae/tutorials/main_usage/)
+
+paths:
+  data_directory_path: /nfs/team361/sb75/DATASETS
+
+dataset:
+  overwrite: false
+  source: offline
+  download_params:
+    redownload: false
+    urls: []
+  file_names:
+    - Xenium_V1_FFPE_TgCRND8_17_9_months_outs
+    - Xenium_V1_FFPE_TgCRND8_2_5_months_outs
+    - Xenium_V1_FFPE_TgCRND8_5_7_months_outs
+    - Xenium_V1_FFPE_wildtype_13_4_months_outs
+    - Xenium_V1_FFPE_wildtype_2_5_months_outs
+    - Xenium_V1_FFPE_wildtype_5_7_months_outs
+
+harmonization:
+  uns:
+    dataset_id: 2
+    assay: xenium
+    species: mus_musculus
+    tissue: brain
+    sample_condition_map: {
+      'Xenium_V1_FFPE_TgCRND8_17_9_months_outs': 'alzheimer',
+      'Xenium_V1_FFPE_TgCRND8_5_7_months_outs': 'alzheimer',
+      'Xenium_V1_FFPE_TgCRND8_2_5_months_outs': 'alzheimer',
+      'Xenium_V1_FFPE_wildtype_13_4_months_outs': 'healthy',
+      'Xenium_V1_FFPE_wildtype_5_7_months_outs': 'healthy',
+      'Xenium_V1_FFPE_wildtype_2_5_months_outs': 'healthy',
+      }
+  batch:
+    split_by_batch: false
+    sample_batch_map: {}
+  key_mappings: {}
+  misc:
+    min_genes: 10
+

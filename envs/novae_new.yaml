@@ -1,0 +1,9 @@
+name: novae_new
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - jupyterlab
+  - pip:
+    - novae

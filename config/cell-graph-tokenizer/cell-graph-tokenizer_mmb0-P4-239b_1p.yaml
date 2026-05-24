@@ -2,7 +2,7 @@ experiment:
   experiment_description: MERFISH Mouse Brain Partition 4 (dataset-id = 0) | 239-batch
     | 1-panel
   experiment_name: mmb0-P4-239b_1p
-  model_input_size: 2816
+  model_input_size: 704 # 2816, 704
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
@@ -10,7 +10,7 @@ paths:
   token_dictionary_file_path: /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
 tokenization:
   count_cell_norm_method: null
-  count_count_norm_method: 'analytic_pearson_residuals'
+  count_count_norm_method: null
   count_gene_norm_method: null
   delaunay: false
   include_zero_expr_genes: false
@@ -20,7 +20,7 @@ tokenization:
   processing_mode: parallel
   radius: null
   rank_cell_norm_method: null
-  rank_count_norm_method: 'analytic_pearson_residuals'
+  rank_count_norm_method: null
   rank_gene_norm_method: null
   species: mus_musculus
   use_generator: true
