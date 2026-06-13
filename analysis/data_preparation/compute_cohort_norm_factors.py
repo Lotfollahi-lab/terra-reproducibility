@@ -8,6 +8,7 @@ import datasets
 import numpy as np
 import pandas as pd
 import scanpy as sc
+import scipy.sparse as sp
 
 
 def main(args):
@@ -23,6 +24,34 @@ def main(args):
     running_n_cells = 0
     batchwise_norm_factor_dict = {}
 
+    # ------------------------------------------------------------------
+    # PFlog1pPF corpus targets -- pass 1 of 2.
+    # PFlog1pPF is a per-cell transform whose only cross-cell dependence
+    # is two global scalars: the first-PF target s1 (corpus mean cell
+    # depth) and the second-PF target s2 (corpus mean per-cell log-sum).
+    # Computing them once over the whole cohort lets the tokenizer FREEZE
+    # them instead of recomputing per file, which keeps the value scale
+    # consistent across shards and -- crucially -- between training and
+    # inference (mirrors how gene_corrected_read_depth carries fixed
+    # corpus depth targets). s2 depends on s1, so s1 is computed first in
+    # a lightweight sparse pass here; s2 is accumulated in the main loop.
+    # ------------------------------------------------------------------
+    pf_depth_target = None
+    pf_logsum_sum, pf_logsum_n_cells = 0.0, 0
+    if not args.skip_pf_targets:
+        print("Computing PFlog1pPF first-PF target (corpus mean depth)...")
+        pf_count_sum, pf_n_cells = 0.0, 0
+        for dataset_name, _ in datasets_df.iterrows():
+            silver_dataset_path = silver_data_path / dataset_name
+            for file in silver_dataset_path.glob('*.h5ad'):
+                adata = sc.read_h5ad(file)
+                cell_sums = np.asarray(adata.X.sum(axis=1)).ravel()
+                pf_count_sum += float(cell_sums.sum())
+                pf_n_cells += int(adata.n_obs)
+        pf_depth_target = pf_count_sum / max(pf_n_cells, 1)
+        print(f"  PF depth target s1 = {pf_depth_target:.6f} "
+              f"(over {pf_n_cells} cells)")
+
     print("Computing norm factors...")
     tracemalloc.start()
 
@@ -34,6 +63,27 @@ def main(args):
         for file in silver_dataset_path.glob('*.h5ad'):
             adata = sc.read_h5ad(file)
             running_n_cells += len(adata)
+
+            # PFlog1pPF second-PF target (s2) -- pass 2 of 2. Accumulate
+            # the sum of per-cell log-sums, where each cell is first
+            # depth-equalized to the GLOBAL s1 (pf_depth_target) and
+            # log1p-transformed. Done on the sparse matrix to avoid an
+            # extra dense copy. All cells (incl. zero-count) are counted
+            # so the resulting mean matches what normalize_by_pflog1ppf
+            # computes when applied to the pooled corpus at once.
+            if not args.skip_pf_targets:
+                cell_sums_pf = np.asarray(adata.X.sum(axis=1)).ravel()
+                safe_pf = np.where(cell_sums_pf > 0, cell_sums_pf, 1.0)
+                scale_pf = (pf_depth_target / safe_pf).reshape(-1, 1)
+                if sp.issparse(adata.X):
+                    x_pf = adata.X.multiply(scale_pf).tocsr()
+                    x_pf.data = np.log1p(x_pf.data)
+                    log_sums_pf = np.asarray(x_pf.sum(axis=1)).ravel()
+                else:
+                    x_pf = np.asarray(adata.X, dtype=np.float64) * scale_pf
+                    log_sums_pf = np.log1p(x_pf).sum(axis=1)
+                pf_logsum_sum += float(np.asarray(log_sums_pf).sum())
+                pf_logsum_n_cells += int(adata.n_obs)
 
             # Compute batchwise nonzero means and means per gene
             X_dense = adata.X.toarray()
@@ -123,6 +173,25 @@ def main(args):
     norm_factor_df.to_csv(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_norm_factors.csv',
                         index=False)
 
+    # Write the corpus-wide PFlog1pPF targets (s1, s2) for the tokenizer
+    # to load (via target_size / logsum_target on normalize_by_pflog1ppf),
+    # so the pflog1ppf arm uses frozen corpus scales instead of per-file
+    # statistics.
+    if not args.skip_pf_targets:
+        pf_logsum_target = pf_logsum_sum / max(pf_logsum_n_cells, 1)
+        pf_targets_df = pd.DataFrame([{
+            'pf_depth_target': pf_depth_target,
+            'pf_logsum_target': pf_logsum_target,
+            'n_cells': pf_logsum_n_cells,
+        }])
+        pf_targets_path = (
+            f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/'
+            f'{args.cohort_name}_pf_targets.csv')
+        pf_targets_df.to_csv(pf_targets_path, index=False)
+        print(f"PFlog1pPF targets written to {pf_targets_path}:")
+        print(f"  pf_depth_target  (s1) = {pf_depth_target:.6f}")
+        print(f"  pf_logsum_target (s2) = {pf_logsum_target:.6f}")
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -147,6 +216,13 @@ if __name__ == '__main__':
                         type=float,
                         default=0.04705053555567159, # 0.05644618485013678 (hst_corpus_90m); 0.0646 (hst_corpus_80m)
                         help='Additional read depth increment per probed gene.')
+    parser.add_argument('--skip_pf_targets',
+                        action='store_true',
+                        help='Skip computing the corpus-wide PFlog1pPF '
+                             'targets (first-PF mean depth s1 and second-PF '
+                             'mean log-sum s2). Computing them adds one '
+                             'extra lightweight (sparse) pass over the '
+                             'corpus and writes {cohort}_pf_targets.csv.')
     args = parser.parse_args()
     
     main(args)

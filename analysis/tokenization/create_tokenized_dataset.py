@@ -147,6 +147,9 @@ def main(config: dict):
     # Retrieve paths from config
     token_dictionary_file_path = config["paths"]["token_dictionary_file_path"]
     norm_factor_file_path = config["paths"]["norm_factor_file_path"]
+    # Optional: frozen corpus-wide PFlog1pPF targets (s1, s2) produced by
+    # compute_cohort_norm_factors.py. None -> per-file PF targets (legacy).
+    pf_targets_file_path = config["paths"].get("pf_targets_file_path", None)
         
     # Set data paths
     data_directory_path = Path(config["paths"]["data_directory_path"])
@@ -226,6 +229,7 @@ def main(config: dict):
             count_gene_norm_method=count_gene_norm_method,
             count_count_norm_method=count_count_norm_method,
             norm_factor_file_path=norm_factor_file_path,
+            pf_targets_file_path=pf_targets_file_path,
             token_dictionary_file_path=token_dictionary_file_path)
 
         # Tokenize data 
