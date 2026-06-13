@@ -14,6 +14,13 @@ import scipy.sparse as sp
 def main(args):
     silver_data_path = Path(args.data_directory_path) / 'silver'
 
+    # Output artifacts go into a per-cohort subdirectory:
+    #   {artifacts_base}/{cohort_name}/{cohort_name}_norm_factors.csv
+    #   {artifacts_base}/{cohort_name}/{cohort_name}_pf_targets.csv
+    #   {artifacts_base}/{cohort_name}/{cohort_name}_batchwise_norm_factors.pkl
+    output_dir = Path(args.artifacts_base_path) / args.cohort_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     # Read dataset names
     datasets_df = pd.read_csv(
         args.cohort_dataset_names_file_path,
@@ -138,7 +145,7 @@ def main(args):
             print(f"Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.")
 
             # Write to disk
-            with open(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_batchwise_norm_factors.pkl', 'wb') as file:
+            with open(output_dir / f'{args.cohort_name}_batchwise_norm_factors.pkl', 'wb') as file:
                 pickle.dump(batchwise_norm_factor_dict, file)
 
     # Compute overall nonzero means and means per gene and store cell numbers
@@ -170,7 +177,7 @@ def main(args):
     norm_factor_df = norm_factor_df.rename(columns={'index': 'gene_id'})
 
     # Write to disk
-    norm_factor_df.to_csv(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/{args.cohort_name}_norm_factors.csv',
+    norm_factor_df.to_csv(output_dir / f'{args.cohort_name}_norm_factors.csv',
                         index=False)
 
     # Write the corpus-wide PFlog1pPF targets (s1, s2) for the tokenizer
@@ -184,9 +191,7 @@ def main(args):
             'pf_logsum_target': pf_logsum_target,
             'n_cells': pf_logsum_n_cells,
         }])
-        pf_targets_path = (
-            f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/'
-            f'{args.cohort_name}_pf_targets.csv')
+        pf_targets_path = output_dir / f'{args.cohort_name}_pf_targets.csv'
         pf_targets_df.to_csv(pf_targets_path, index=False)
         print(f"PFlog1pPF targets written to {pf_targets_path}:")
         print(f"  pf_depth_target  (s1) = {pf_depth_target:.6f}")
@@ -204,6 +209,16 @@ if __name__ == '__main__':
                         type=str,
                         default="hst_corpus_110m", # "hst_corpus_90m", "hst_corpus_80m", "hst_corpus_70m"
                         help='Name of the cohort.')
+    parser.add_argument('--artifacts_base_path',
+                        type=str,
+                        default="/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data",
+                        help='Base directory for output artifacts. Outputs '
+                             'are written to '
+                             '{artifacts_base_path}/{cohort_name}/ as '
+                             '{cohort_name}_norm_factors.csv, '
+                             '{cohort_name}_pf_targets.csv and '
+                             '{cohort_name}_batchwise_norm_factors.pkl '
+                             '(the directory is created if missing).')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
                         default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
