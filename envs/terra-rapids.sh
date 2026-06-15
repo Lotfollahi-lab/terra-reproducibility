@@ -21,9 +21,14 @@ uv pip install "setuptools<81" wheel
 # torch and RAPIDS share nvidia-*-cu12 runtime wheels, so they are resolved in
 # a SINGLE pass (NVIDIA + PyTorch indexes both visible) to keep one consistent
 # CUDA-lib set. cu12 wheels run on any CUDA 12.x driver (incl. 12.9).
+# --only-binary rapids-singlecell: force its pre-built (pure-python) wheel.
+# With unsafe-best-match + the NVIDIA index, uv otherwise picks an sdist and
+# tries to BUILD rapids-singlecell from source -> "Failed to find nvcc" ->
+# the whole script aborts (under set -e) before scib_metrics etc. install.
 echo "Installing torch + RAPIDS 25.10 + rapids-singlecell (GPU Leiden) ..."
 uv pip install \
     --index-strategy unsafe-best-match \
+    --only-binary rapids-singlecell \
     --extra-index-url https://pypi.nvidia.com \
     --extra-index-url https://download.pytorch.org/whl/cu128 \
     torch rapids-singlecell \
