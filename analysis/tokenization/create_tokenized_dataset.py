@@ -141,6 +141,9 @@ def main(config: dict):
     n_neighs = config["tokenization"]["n_neighs"]
     radius = config["tokenization"]["radius"]
     delaunay = config["tokenization"]["delaunay"]
+    # Optional: per-file streaming assembly (lower peak memory). Default off
+    # -> legacy single-dict assembly. Verify output equivalence before use.
+    stream_per_file = config["tokenization"].get("stream_per_file", False)
 
     nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
 
@@ -230,6 +233,7 @@ def main(config: dict):
             count_count_norm_method=count_count_norm_method,
             norm_factor_file_path=norm_factor_file_path,
             pf_targets_file_path=pf_targets_file_path,
+            stream_per_file=stream_per_file,
             token_dictionary_file_path=token_dictionary_file_path)
 
         # Tokenize data 
