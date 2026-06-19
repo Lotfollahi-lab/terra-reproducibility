@@ -12,136 +12,268 @@ case $EXPERIMENT_NAME in
         RAM="200G"
         TIME="12:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="normal"
+        ;;
+    mmb0-1b_smb1-1b_1p_coord_aligned)
+        RAM="200G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="normal"
         ;;
     mmb0-1b_smb1-1b_2p)
         RAM="200G"
         TIME="12:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="normal"
+        ;;
+    mmb0-1b_smb1-1b_2p_coord_aligned)
+        RAM="200G"
+        TIME="12:00"
+        CORES=12
+        QUEUE="normal"
         ;;
     xhb1002-AT6-1-1b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xhe1008-8-20b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xho47-S1-1b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xhb1002-AT9-6b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xhp1016-2-18b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
-        QUEUE="long"
+        QUEUE="hugemem"
         ;;
     xhb1002-AT5-1b_1p)    
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhe1008-7-20b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhb1002-AT15-10b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhe1008-6-20b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhb1002-AT6-4-1b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhb1002-AT10-7b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhe1008-9-20b_1p)
-        RAM="512G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xho47-S2-1b_1p)    
-        RAM="512G"
-        TIME="24:00"
-        CORES=12
-        QUEUE="hugemem"
-        ;;
-    xhl1015-R1-28b_1p)    
-        RAM="768G"
+        RAM="1024G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     xhl1015-R6-28b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R1-28b_1p)    
+        RAM="1536G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R3-28b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R4-28b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R5-28b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1015-R7-28b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhk1018-5-23b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhk1018-6-23b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xht43-2b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1020-8-16b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mhp20-2b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1013-4b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mhu21-3b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhb1002-AT16-2-15b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1020-6-16b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1021-1-2b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mhl63-10b_1p)    
         RAM="512G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
-    mmb0-P1-239b_1p)    
+    xho1012-AU16-7b_1p)    
+        RAM="512G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhl1020-3-16b_1p)    
         RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mhc15-2b_1p)    
+        RAM="600G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="long"
+        ;;
+    xhc38-4b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    xhp1017-4b_1p)    
+        RAM="1024G"
+        TIME="24:00"
+        CORES=12
+        QUEUE="hugemem"
+        ;;
+    mmb0-P1-239b_1p)    
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     mmb0-P2-239b_1p)    
-        RAM="1024G"
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     mmb0-P3-239b_1p)    
-        RAM="1024G"
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     mmb0-P4-239b_1p)    
-        RAM="1024G"
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     mmb0-P5-239b_1p)    
-        RAM="1024G"
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
         ;;
     smb1-20b_1p)    
-        RAM="1024G"
+        RAM="1536G"
         TIME="24:00"
         CORES=12
         QUEUE="hugemem"
@@ -151,7 +283,7 @@ case $EXPERIMENT_NAME in
         #TIME="240:00" # "48:00", "120:00"
         #CORES=12
         #QUEUE="teramem" # "long", "hugemem", "teramem"
-        RAM="256G" # "600G", "1000G", "1500G"
+        RAM="512G" # "600G", "1000G", "1500G"
         TIME="24:00" # "48:00", "120:00"
         CORES=12
         QUEUE="long" # "long", "hugemem", "teramem", "basement", "parallel", "week"

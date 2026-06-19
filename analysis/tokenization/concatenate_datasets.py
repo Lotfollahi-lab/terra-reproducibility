@@ -19,7 +19,8 @@ def main(args):
         args.count_gene_norm_method,
         args.count_count_norm_method,
         "knn",
-        args.n_neighs]])
+        args.n_neighs,
+        args.seq_len]])
     print(hparam_prefix)
 
     ds_list = []

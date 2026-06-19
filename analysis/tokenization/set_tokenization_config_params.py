@@ -34,7 +34,8 @@ def main(args):
             dataset_config['experiment']['model_input_size'] = args.model_input_size
 
             dataset_config['paths']['data_directory_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/'
-            dataset_config['paths']['norm_factor_file_path'] = '/lustre/scratch126/cellgen/lotfollahi/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv'
+            dataset_config['paths']['norm_factor_file_path'] = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv'
+            dataset_config['paths']['pf_targets_file_path'] = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_pf_targets.csv'
             dataset_config['paths']['token_dictionary_file_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
 
             dataset_config['tokenization']['rank_cell_norm_method'] = args.rank_cell_norm_method
@@ -65,11 +66,11 @@ if __name__ == '__main__':
                         help='Tokenizer.')
     parser.add_argument('--model_input_size',
                         type=int,
-                        default=2816, # 11264, 7168, 3584, 2816, 1792
+                        default=4352, # 11264, 7168, 4096, 3584, 2816, 1792
                         help='Tokenizer.')
     parser.add_argument('--rank_cell_norm_method',
                         type=none_or_str,
-                        default='read_depth', # None, 'gene_corrected_read_depth', 'read_depth'
+                        default=None, # None, 'gene_corrected_read_depth', 'read_depth'
                         help='Rank cell norm method.')
     parser.add_argument('--rank_gene_norm_method',
                         type=none_or_str,
@@ -77,11 +78,11 @@ if __name__ == '__main__':
                         help='Rank gene norm method.')
     parser.add_argument('--rank_count_norm_method',
                         type=none_or_str,
-                        default='shifted_log', # None, 'shifted_log'
+                        default=None, # None, 'shifted_log'
                         help='Rank count norm method.')
     parser.add_argument('--count_cell_norm_method',
                         type=none_or_str,
-                        default='read_depth', # None, 'gene_corrected_read_depth', 'read_depth'
+                        default=None, # None, 'gene_corrected_read_depth', 'read_depth'
                         help='Count cell norm method.')
     parser.add_argument('--count_gene_norm_method',
                         type=none_or_str,
@@ -89,7 +90,7 @@ if __name__ == '__main__':
                         help='Count gene norm method.')
     parser.add_argument('--count_count_norm_method',
                         type=none_or_str,
-                        default='shifted_log', # None, 'shifted_log'
+                        default='pflog1ppf', # None, 'shifted_log', 'pflog1ppf'
                         help='Count count norm method.')
     parser.add_argument('--include_zero_expr_genes',
                         action=argparse.BooleanOptionalAction,
@@ -97,7 +98,7 @@ if __name__ == '__main__':
                         help='If `True`, zero expression genes are included in the tokenization.')
     parser.add_argument('--n_neighs',
                         type=int,
-                        default="10", # "10", "6"
+                        default=16, # 6, 10, 16
                         help='Number of neighbors.')
     args = parser.parse_args()
     
