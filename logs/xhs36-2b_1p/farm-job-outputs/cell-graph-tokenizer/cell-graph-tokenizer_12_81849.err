@@ -1,0 +1,356 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:754: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:754: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Setting num_proc from 12 back to 1 for the train split to disable multiprocessing as it only contains one shard.
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 1000 examples [00:00, 2483.33 examples/s]Generating train split: 2000 examples [00:00, 2874.83 examples/s]Generating train split: 3000 examples [00:01, 3050.50 examples/s]Generating train split: 4000 examples [00:01, 2810.08 examples/s]Generating train split: 5000 examples [00:01, 2953.36 examples/s]Generating train split: 6000 examples [00:02, 3048.57 examples/s]Generating train split: 7000 examples [00:02, 2834.95 examples/s]Generating train split: 8000 examples [00:02, 2967.39 examples/s]Generating train split: 9000 examples [00:03, 3064.62 examples/s]Generating train split: 10000 examples [00:03, 2868.26 examples/s]Generating train split: 11000 examples [00:03, 2984.52 examples/s]Generating train split: 12000 examples [00:04, 3047.50 examples/s]Generating train split: 13000 examples [00:04, 3080.97 examples/s]Generating train split: 14000 examples [00:04, 3133.94 examples/s]Generating train split: 15000 examples [00:04, 3144.12 examples/s]Generating train split: 16000 examples [00:05, 3155.22 examples/s]Generating train split: 17000 examples [00:05, 3149.55 examples/s]Generating train split: 18000 examples [00:05, 3163.99 examples/s]Generating train split: 19000 examples [00:06, 3152.34 examples/s]Generating train split: 20000 examples [00:06, 3171.64 examples/s]Generating train split: 21000 examples [00:06, 3212.73 examples/s]Generating train split: 22000 examples [00:07, 3242.90 examples/s]Generating train split: 23000 examples [00:07, 3266.23 examples/s]Generating train split: 24000 examples [00:07, 3278.74 examples/s]Generating train split: 25000 examples [00:08, 3236.19 examples/s]Generating train split: 26000 examples [00:08, 3235.10 examples/s]Generating train split: 27000 examples [00:08, 3245.83 examples/s]Generating train split: 28000 examples [00:09, 3239.78 examples/s]Generating train split: 29000 examples [00:09, 3211.25 examples/s]Generating train split: 30000 examples [00:09, 3217.26 examples/s]Generating train split: 31000 examples [00:09, 3150.38 examples/s]Generating train split: 32000 examples [00:10, 3176.94 examples/s]Generating train split: 32780 examples [00:11, 1622.75 examples/s]Generating train split: 34000 examples [00:12, 1764.54 examples/s]Generating train split: 35000 examples [00:12, 2057.00 examples/s]Generating train split: 36000 examples [00:12, 2329.18 examples/s]Generating train split: 37000 examples [00:12, 2562.45 examples/s]Generating train split: 38000 examples [00:13, 2775.62 examples/s]Generating train split: 39000 examples [00:13, 2955.87 examples/s]Generating train split: 40000 examples [00:13, 3092.94 examples/s]Generating train split: 41000 examples [00:14, 3185.12 examples/s]Generating train split: 42000 examples [00:14, 3263.97 examples/s]Generating train split: 43000 examples [00:14, 3287.84 examples/s]Generating train split: 44000 examples [00:14, 3337.02 examples/s]Generating train split: 45000 examples [00:15, 3371.97 examples/s]Generating train split: 46000 examples [00:15, 3393.54 examples/s]Generating train split: 47000 examples [00:15, 3378.67 examples/s]Generating train split: 48000 examples [00:16, 3403.03 examples/s]Generating train split: 49000 examples [00:16, 3397.66 examples/s]Generating train split: 50000 examples [00:16, 3388.31 examples/s]Generating train split: 51000 examples [00:17, 3379.87 examples/s]Generating train split: 52000 examples [00:17, 3388.24 examples/s]Generating train split: 53000 examples [00:17, 3354.80 examples/s]Generating train split: 54000 examples [00:17, 3356.40 examples/s]Generating train split: 55000 examples [00:18, 3333.73 examples/s]Generating train split: 56000 examples [00:18, 3332.93 examples/s]Generating train split: 57000 examples [00:18, 3331.51 examples/s]Generating train split: 58000 examples [00:19, 3332.81 examples/s]Generating train split: 59000 examples [00:19, 3340.70 examples/s]Generating train split: 60000 examples [00:19, 3318.31 examples/s]Generating train split: 61000 examples [00:20, 3316.46 examples/s]Generating train split: 62000 examples [00:20, 3319.70 examples/s]Generating train split: 63000 examples [00:20, 3302.46 examples/s]Generating train split: 64000 examples [00:20, 3312.96 examples/s]Generating train split: 65000 examples [00:21, 3317.62 examples/s]Generating train split: 66000 examples [00:21, 3304.16 examples/s]Generating train split: 67000 examples [00:21, 3255.46 examples/s]Generating train split: 68000 examples [00:22, 3270.38 examples/s]Generating train split: 69000 examples [00:22, 3277.61 examples/s]Generating train split: 70000 examples [00:22, 3278.06 examples/s]Generating train split: 71000 examples [00:23, 3291.76 examples/s]Generating train split: 72000 examples [00:23, 3275.57 examples/s]Generating train split: 73000 examples [00:23, 3271.06 examples/s]Generating train split: 74000 examples [00:23, 3298.34 examples/s]Generating train split: 75000 examples [00:24, 3307.15 examples/s]Generating train split: 76000 examples [00:24, 3285.18 examples/s]Generating train split: 77000 examples [00:24, 3283.78 examples/s]Generating train split: 78000 examples [00:25, 3301.09 examples/s]Generating train split: 79000 examples [00:25, 3169.69 examples/s]Generating train split: 80000 examples [00:25, 3204.19 examples/s]Generating train split: 81000 examples [00:26, 3237.92 examples/s]Generating train split: 82000 examples [00:26, 3215.35 examples/s]Generating train split: 83000 examples [00:26, 3249.41 examples/s]Generating train split: 84000 examples [00:27, 3262.83 examples/s]Generating train split: 85000 examples [00:27, 3239.14 examples/s]Generating train split: 86000 examples [00:27, 3258.34 examples/s]Generating train split: 87000 examples [00:28, 3249.80 examples/s]Generating train split: 88000 examples [00:28, 3221.22 examples/s]Generating train split: 89000 examples [00:28, 3240.06 examples/s]Generating train split: 90000 examples [00:28, 3249.03 examples/s]Generating train split: 90026 examples [00:28, 3109.12 examples/s]
+Map (num_proc=12):   0%|          | 0/90026 [00:00<?, ? examples/s]Map (num_proc=12):   0%|          | 2/90026 [00:02<27:28:24,  1.10s/ examples]Map (num_proc=12):   0%|          | 8/90026 [00:02<5:38:01,  4.44 examples/s] Map (num_proc=12):   0%|          | 14/90026 [00:02<2:53:25,  8.65 examples/s]Map (num_proc=12):   0%|          | 26/90026 [00:02<1:17:57, 19.24 examples/s]Map (num_proc=12):   0%|          | 42/90026 [00:02<42:02, 35.67 examples/s]  Map (num_proc=12):   0%|          | 58/90026 [00:02<28:32, 52.53 examples/s]Map (num_proc=12):   0%|          | 73/90026 [00:02<21:46, 68.85 examples/s]Map (num_proc=12):   0%|          | 101/90026 [00:03<13:58, 107.21 examples/s]Map (num_proc=12):   0%|          | 127/90026 [00:03<11:03, 135.48 examples/s]Map (num_proc=12):   0%|          | 155/90026 [00:03<09:11, 162.93 examples/s]Map (num_proc=12):   0%|          | 190/90026 [00:03<07:32, 198.34 examples/s]Map (num_proc=12):   0%|          | 225/90026 [00:03<06:29, 230.51 examples/s]Map (num_proc=12):   0%|          | 262/90026 [00:03<05:45, 259.84 examples/s]Map (num_proc=12):   0%|          | 301/90026 [00:03<05:08, 290.91 examples/s]Map (num_proc=12):   0%|          | 334/90026 [00:03<05:01, 297.98 examples/s]Map (num_proc=12):   0%|          | 371/90026 [00:03<04:43, 315.93 examples/s]Map (num_proc=12):   0%|          | 406/90026 [00:04<04:55, 303.54 examples/s]Map (num_proc=12):   1%|          | 472/90026 [00:04<03:46, 395.32 examples/s]Map (num_proc=12):   1%|          | 516/90026 [00:04<03:42, 401.68 examples/s]Map (num_proc=12):   1%|          | 563/90026 [00:04<03:37, 410.79 examples/s]Map (num_proc=12):   1%|          | 605/90026 [00:04<03:39, 407.95 examples/s]Map (num_proc=12):   1%|          | 648/90026 [00:04<03:40, 405.22 examples/s]Map (num_proc=12):   1%|          | 689/90026 [00:04<04:02, 369.02 examples/s]Map (num_proc=12):   1%|          | 744/90026 [00:04<03:35, 414.17 examples/s]Map (num_proc=12):   1%|          | 792/90026 [00:04<03:33, 418.40 examples/s]Map (num_proc=12):   1%|          | 836/90026 [00:05<03:39, 406.63 examples/s]Map (num_proc=12):   1%|          | 938/90026 [00:05<02:36, 568.38 examples/s]Map (num_proc=12):   1%|          | 1002/90026 [00:05<02:38, 563.15 examples/s]Map (num_proc=12):   1%|          | 1070/90026 [00:05<02:32, 582.73 examples/s]Map (num_proc=12):   1%|▏         | 1130/90026 [00:05<02:33, 577.98 examples/s]Map (num_proc=12):   1%|▏         | 1190/90026 [00:05<02:34, 574.24 examples/s]Map (num_proc=12):   1%|▏         | 1250/90026 [00:05<02:34, 575.18 examples/s]Map (num_proc=12):   1%|▏         | 1310/90026 [00:05<02:37, 562.77 examples/s]Map (num_proc=12):   2%|▏         | 1368/90026 [00:05<02:48, 524.77 examples/s]Map (num_proc=12):   2%|▏         | 1449/90026 [00:06<02:29, 593.32 examples/s]Map (num_proc=12):   2%|▏         | 1511/90026 [00:06<02:32, 578.54 examples/s]Map (num_proc=12):   2%|▏         | 1572/90026 [00:06<02:37, 563.09 examples/s]Map (num_proc=12):   2%|▏         | 1629/90026 [00:06<02:55, 504.16 examples/s]Map (num_proc=12):   2%|▏         | 1683/90026 [00:06<03:09, 465.24 examples/s]Map (num_proc=12):   2%|▏         | 1793/90026 [00:06<02:22, 618.40 examples/s]Map (num_proc=12):   2%|▏         | 1861/90026 [00:06<02:49, 520.08 examples/s]Map (num_proc=12):   2%|▏         | 1918/90026 [00:06<03:02, 482.00 examples/s]Map (num_proc=12):   2%|▏         | 2038/90026 [00:07<02:15, 649.27 examples/s]Map (num_proc=12):   2%|▏         | 2113/90026 [00:07<02:32, 576.63 examples/s]Map (num_proc=12):   2%|▏         | 2178/90026 [00:07<02:27, 593.77 examples/s]Map (num_proc=12):   2%|▏         | 2244/90026 [00:07<02:31, 580.07 examples/s]Map (num_proc=12):   3%|▎         | 2307/90026 [00:07<02:29, 588.06 examples/s]Map (num_proc=12):   3%|▎         | 2369/90026 [00:07<02:51, 510.16 examples/s]Map (num_proc=12):   3%|▎         | 2471/90026 [00:07<02:19, 628.52 examples/s]Map (num_proc=12):   3%|▎         | 2540/90026 [00:07<02:24, 606.21 examples/s]Map (num_proc=12):   3%|▎         | 2605/90026 [00:08<02:28, 587.81 examples/s]Map (num_proc=12):   3%|▎         | 2666/90026 [00:08<02:28, 587.50 examples/s]Map (num_proc=12):   3%|▎         | 2728/90026 [00:08<02:31, 577.81 examples/s]Map (num_proc=12):   3%|▎         | 2788/90026 [00:08<02:31, 577.45 examples/s]Map (num_proc=12):   3%|▎         | 2847/90026 [00:08<02:33, 567.62 examples/s]Map (num_proc=12):   3%|▎         | 2907/90026 [00:08<02:32, 571.15 examples/s]Map (num_proc=12):   3%|▎         | 2966/90026 [00:08<02:32, 570.03 examples/s]Map (num_proc=12):   3%|▎         | 3026/90026 [00:08<02:35, 559.43 examples/s]Map (num_proc=12):   3%|▎         | 3085/90026 [00:08<02:45, 526.43 examples/s]Map (num_proc=12):   3%|▎         | 3139/90026 [00:09<03:01, 478.03 examples/s]Map (num_proc=12):   4%|▎         | 3189/90026 [00:09<03:14, 446.64 examples/s]Map (num_proc=12):   4%|▎         | 3236/90026 [00:09<03:23, 426.49 examples/s]Map (num_proc=12):   4%|▎         | 3281/90026 [00:09<03:28, 415.50 examples/s]Map (num_proc=12):   4%|▍         | 3446/90026 [00:09<02:00, 721.17 examples/s]Map (num_proc=12):   4%|▍         | 3524/90026 [00:09<02:16, 632.52 examples/s]Map (num_proc=12):   4%|▍         | 3592/90026 [00:09<02:17, 628.52 examples/s]Map (num_proc=12):   4%|▍         | 3663/90026 [00:09<02:14, 642.79 examples/s]Map (num_proc=12):   4%|▍         | 3730/90026 [00:10<02:19, 617.02 examples/s]Map (num_proc=12):   4%|▍         | 3795/90026 [00:10<02:19, 619.28 examples/s]Map (num_proc=12):   4%|▍         | 3860/90026 [00:10<02:23, 601.47 examples/s]Map (num_proc=12):   4%|▍         | 3922/90026 [00:10<02:31, 569.50 examples/s]Map (num_proc=12):   4%|▍         | 3980/90026 [00:10<02:54, 493.89 examples/s]Map (num_proc=12):   5%|▍         | 4058/90026 [00:10<02:33, 558.48 examples/s]Map (num_proc=12):   5%|▍         | 4139/90026 [00:10<02:19, 617.13 examples/s]Map (num_proc=12):   5%|▍         | 4204/90026 [00:10<02:27, 580.40 examples/s]Map (num_proc=12):   5%|▍         | 4273/90026 [00:11<02:23, 598.59 examples/s]Map (num_proc=12):   5%|▍         | 4335/90026 [00:11<02:26, 584.88 examples/s]Map (num_proc=12):   5%|▍         | 4400/90026 [00:11<02:23, 596.62 examples/s]Map (num_proc=12):   5%|▍         | 4462/90026 [00:11<02:23, 596.10 examples/s]Map (num_proc=12):   5%|▌         | 4523/90026 [00:11<02:28, 574.09 examples/s]Map (num_proc=12):   5%|▌         | 4582/90026 [00:11<02:29, 572.03 examples/s]Map (num_proc=12):   5%|▌         | 4644/90026 [00:11<02:27, 579.63 examples/s]Map (num_proc=12):   5%|▌         | 4703/90026 [00:11<02:26, 582.12 examples/s]Map (num_proc=12):   5%|▌         | 4763/90026 [00:11<02:31, 561.38 examples/s]Map (num_proc=12):   5%|▌         | 4822/90026 [00:12<02:48, 506.84 examples/s]Map (num_proc=12):   5%|▌         | 4900/90026 [00:12<02:28, 572.98 examples/s]Map (num_proc=12):   6%|▌         | 4960/90026 [00:12<02:40, 528.62 examples/s]Map (num_proc=12):   6%|▌         | 5037/90026 [00:12<02:23, 591.62 examples/s]Map (num_proc=12):   6%|▌         | 5100/90026 [00:12<02:28, 571.14 examples/s]Map (num_proc=12):   6%|▌         | 5174/90026 [00:12<02:19, 609.90 examples/s]Map (num_proc=12):   6%|▌         | 5238/90026 [00:12<02:20, 604.39 examples/s]Map (num_proc=12):   6%|▌         | 5301/90026 [00:12<02:26, 578.74 examples/s]Map (num_proc=12):   6%|▌         | 5361/90026 [00:12<02:34, 549.49 examples/s]Map (num_proc=12):   6%|▌         | 5422/90026 [00:13<02:34, 548.10 examples/s]Map (num_proc=12):   6%|▌         | 5482/90026 [00:13<02:32, 556.15 examples/s]Map (num_proc=12):   6%|▌         | 5539/90026 [00:13<02:35, 542.11 examples/s]Map (num_proc=12):   6%|▌         | 5595/90026 [00:13<02:36, 540.92 examples/s]Map (num_proc=12):   6%|▋         | 5660/90026 [00:13<02:29, 565.37 examples/s]Map (num_proc=12):   6%|▋         | 5719/90026 [00:13<02:37, 535.87 examples/s]Map (num_proc=12):   6%|▋         | 5791/90026 [00:13<02:25, 580.03 examples/s]Map (num_proc=12):   6%|▋         | 5850/90026 [00:13<02:30, 557.80 examples/s]Map (num_proc=12):   7%|▋         | 5915/90026 [00:13<02:30, 558.28 examples/s]Map (num_proc=12):   7%|▋         | 5979/90026 [00:14<02:26, 574.76 examples/s]Map (num_proc=12):   7%|▋         | 6038/90026 [00:14<02:28, 566.38 examples/s]Map (num_proc=12):   7%|▋         | 6099/90026 [00:14<02:25, 578.31 examples/s]Map (num_proc=12):   7%|▋         | 6159/90026 [00:14<02:31, 553.27 examples/s]Map (num_proc=12):   7%|▋         | 6224/90026 [00:14<02:28, 564.00 examples/s]Map (num_proc=12):   7%|▋         | 6283/90026 [00:14<02:28, 562.36 examples/s]Map (num_proc=12):   7%|▋         | 6342/90026 [00:14<02:28, 563.69 examples/s]Map (num_proc=12):   7%|▋         | 6401/90026 [00:14<02:31, 553.43 examples/s]Map (num_proc=12):   7%|▋         | 6457/90026 [00:14<02:32, 547.92 examples/s]Map (num_proc=12):   7%|▋         | 6520/90026 [00:14<02:27, 564.90 examples/s]Map (num_proc=12):   7%|▋         | 6582/90026 [00:15<02:25, 574.12 examples/s]Map (num_proc=12):   7%|▋         | 6640/90026 [00:15<02:24, 575.80 examples/s]Map (num_proc=12):   7%|▋         | 6699/90026 [00:15<02:25, 573.27 examples/s]Map (num_proc=12):   8%|▊         | 6759/90026 [00:15<02:24, 574.37 examples/s]Map (num_proc=12):   8%|▊         | 6820/90026 [00:15<02:25, 571.40 examples/s]Map (num_proc=12):   8%|▊         | 6878/90026 [00:15<02:30, 554.08 examples/s]Map (num_proc=12):   8%|▊         | 6943/90026 [00:15<02:24, 575.48 examples/s]Map (num_proc=12):   8%|▊         | 7006/90026 [00:15<02:22, 584.46 examples/s]Map (num_proc=12):   8%|▊         | 7066/90026 [00:15<02:22, 582.21 examples/s]Map (num_proc=12):   8%|▊         | 7127/90026 [00:16<02:25, 569.88 examples/s]Map (num_proc=12):   8%|▊         | 7186/90026 [00:16<02:26, 564.20 examples/s]Map (num_proc=12):   8%|▊         | 7245/90026 [00:16<02:31, 545.77 examples/s]Map (num_proc=12):   8%|▊         | 7302/90026 [00:16<02:34, 535.56 examples/s]Map (num_proc=12):   8%|▊         | 7365/90026 [00:16<02:29, 554.74 examples/s]Map (num_proc=12):   8%|▊         | 7431/90026 [00:16<02:26, 565.33 examples/s]Map (num_proc=12):   8%|▊         | 7493/90026 [00:16<02:22, 580.19 examples/s]Map (num_proc=12):   8%|▊         | 7552/90026 [00:16<02:24, 570.45 examples/s]Map (num_proc=12):   8%|▊         | 7611/90026 [00:16<02:27, 558.37 examples/s]Map (num_proc=12):   9%|▊         | 7672/90026 [00:17<02:24, 571.47 examples/s]Map (num_proc=12):   9%|▊         | 7734/90026 [00:17<02:21, 580.67 examples/s]Map (num_proc=12):   9%|▊         | 7793/90026 [00:17<02:23, 574.83 examples/s]Map (num_proc=12):   9%|▊         | 7851/90026 [00:17<02:24, 569.88 examples/s]Map (num_proc=12):   9%|▉         | 7913/90026 [00:17<02:20, 583.89 examples/s]Map (num_proc=12):   9%|▉         | 7974/90026 [00:17<02:26, 559.28 examples/s]Map (num_proc=12):   9%|▉         | 8034/90026 [00:17<02:23, 570.71 examples/s]Map (num_proc=12):   9%|▉         | 8093/90026 [00:17<02:23, 569.69 examples/s]Map (num_proc=12):   9%|▉         | 8157/90026 [00:17<02:20, 584.17 examples/s]Map (num_proc=12):   9%|▉         | 8218/90026 [00:17<02:28, 552.47 examples/s]Map (num_proc=12):   9%|▉         | 8275/90026 [00:18<02:46, 491.51 examples/s]Map (num_proc=12):   9%|▉         | 8327/90026 [00:18<02:59, 456.17 examples/s]Map (num_proc=12):   9%|▉         | 8375/90026 [00:18<03:10, 427.52 examples/s]Map (num_proc=12):   9%|▉         | 8512/90026 [00:18<02:02, 664.07 examples/s]Map (num_proc=12):  10%|▉         | 8586/90026 [00:18<02:24, 564.75 examples/s]Map (num_proc=12):  10%|▉         | 8671/90026 [00:18<02:08, 632.45 examples/s]Map (num_proc=12):  10%|▉         | 8743/90026 [00:18<02:15, 600.10 examples/s]Map (num_proc=12):  10%|▉         | 8809/90026 [00:19<02:22, 569.61 examples/s]Map (num_proc=12):  10%|▉         | 8872/90026 [00:19<02:40, 504.54 examples/s]Map (num_proc=12):  10%|▉         | 8927/90026 [00:19<02:56, 459.29 examples/s]Map (num_proc=12):  10%|█         | 9065/90026 [00:19<02:00, 670.59 examples/s]Map (num_proc=12):  10%|█         | 9141/90026 [00:19<02:06, 641.94 examples/s]Map (num_proc=12):  10%|█         | 9212/90026 [00:19<02:10, 621.50 examples/s]Map (num_proc=12):  10%|█         | 9280/90026 [00:19<02:16, 589.49 examples/s]Map (num_proc=12):  10%|█         | 9343/90026 [00:19<02:18, 582.19 examples/s]Map (num_proc=12):  10%|█         | 9409/90026 [00:20<02:15, 596.04 examples/s]Map (num_proc=12):  11%|█         | 9473/90026 [00:20<02:29, 539.06 examples/s]Map (num_proc=12):  11%|█         | 9530/90026 [00:20<02:38, 509.32 examples/s]Map (num_proc=12):  11%|█         | 9623/90026 [00:20<02:12, 605.60 examples/s]Map (num_proc=12):  11%|█         | 9687/90026 [00:20<02:21, 569.53 examples/s]Map (num_proc=12):  11%|█         | 9746/90026 [00:20<02:23, 560.00 examples/s]Map (num_proc=12):  11%|█         | 9806/90026 [00:20<02:37, 508.09 examples/s]Map (num_proc=12):  11%|█         | 9874/90026 [00:20<02:25, 549.43 examples/s]Map (num_proc=12):  11%|█         | 9932/90026 [00:21<02:43, 490.35 examples/s]Map (num_proc=12):  11%|█         | 9986/90026 [00:21<02:51, 465.65 examples/s]Map (num_proc=12):  11%|█         | 10037/90026 [00:21<02:59, 445.73 examples/s]Map (num_proc=12):  11%|█         | 10084/90026 [00:21<03:05, 430.37 examples/s]Map (num_proc=12):  11%|█▏        | 10251/90026 [00:21<01:49, 728.93 examples/s]Map (num_proc=12):  11%|█▏        | 10329/90026 [00:21<01:51, 711.82 examples/s]Map (num_proc=12):  12%|█▏        | 10403/90026 [00:21<02:02, 651.17 examples/s]Map (num_proc=12):  12%|█▏        | 10472/90026 [00:21<02:12, 599.28 examples/s]Map (num_proc=12):  12%|█▏        | 10537/90026 [00:22<02:20, 567.59 examples/s]Map (num_proc=12):  12%|█▏        | 10624/90026 [00:22<02:07, 623.55 examples/s]Map (num_proc=12):  12%|█▏        | 10689/90026 [00:22<02:13, 594.21 examples/s]Map (num_proc=12):  12%|█▏        | 10752/90026 [00:22<02:34, 513.94 examples/s]Map (num_proc=12):  12%|█▏        | 10806/90026 [00:22<02:38, 500.01 examples/s]Map (num_proc=12):  12%|█▏        | 10910/90026 [00:22<02:07, 619.28 examples/s]Map (num_proc=12):  12%|█▏        | 10977/90026 [00:22<02:18, 570.20 examples/s]Map (num_proc=12):  12%|█▏        | 11038/90026 [00:23<02:24, 547.88 examples/s]Map (num_proc=12):  12%|█▏        | 11095/90026 [00:23<02:36, 503.10 examples/s]Map (num_proc=12):  12%|█▏        | 11149/90026 [00:23<02:49, 466.37 examples/s]Map (num_proc=12):  13%|█▎        | 11256/90026 [00:23<02:11, 600.73 examples/s]Map (num_proc=12):  13%|█▎        | 11322/90026 [00:23<02:16, 578.70 examples/s]Map (num_proc=12):  13%|█▎        | 11382/90026 [00:23<02:23, 547.02 examples/s]Map (num_proc=12):  13%|█▎        | 11439/90026 [00:23<02:37, 497.46 examples/s]Map (num_proc=12):  13%|█▎        | 11502/90026 [00:23<02:31, 519.83 examples/s]Map (num_proc=12):  13%|█▎        | 11570/90026 [00:23<02:19, 560.84 examples/s]Map (num_proc=12):  13%|█▎        | 11630/90026 [00:24<02:19, 562.46 examples/s]Map (num_proc=12):  13%|█▎        | 11690/90026 [00:24<02:20, 557.20 examples/s]Map (num_proc=12):  13%|█▎        | 11747/90026 [00:24<02:33, 510.25 examples/s]Map (num_proc=12):  13%|█▎        | 11801/90026 [00:24<02:45, 472.92 examples/s]Map (num_proc=12):  13%|█▎        | 11879/90026 [00:24<02:24, 540.73 examples/s]Map (num_proc=12):  13%|█▎        | 11956/90026 [00:24<02:11, 594.91 examples/s]Map (num_proc=12):  13%|█▎        | 12018/90026 [00:24<02:16, 572.49 examples/s]Map (num_proc=12):  13%|█▎        | 12077/90026 [00:24<02:30, 517.70 examples/s]Map (num_proc=12):  13%|█▎        | 12132/90026 [00:25<02:29, 522.57 examples/s]Map (num_proc=12):  14%|█▎        | 12187/90026 [00:25<02:34, 503.05 examples/s]Map (num_proc=12):  14%|█▎        | 12240/90026 [00:25<02:50, 456.78 examples/s]Map (num_proc=12):  14%|█▎        | 12289/90026 [00:25<02:55, 442.37 examples/s]Map (num_proc=12):  14%|█▍        | 12384/90026 [00:25<02:16, 567.01 examples/s]Map (num_proc=12):  14%|█▍        | 12444/90026 [00:25<02:32, 510.22 examples/s]Map (num_proc=12):  14%|█▍        | 12499/90026 [00:25<02:37, 493.61 examples/s]Map (num_proc=12):  14%|█▍        | 12551/90026 [00:25<02:35, 498.87 examples/s]Map (num_proc=12):  14%|█▍        | 12605/90026 [00:26<02:40, 482.64 examples/s]Map (num_proc=12):  14%|█▍        | 12656/90026 [00:26<02:46, 465.36 examples/s]Map (num_proc=12):  14%|█▍        | 12726/90026 [00:26<02:29, 516.48 examples/s]Map (num_proc=12):  14%|█▍        | 12779/90026 [00:26<02:52, 447.58 examples/s]Map (num_proc=12):  14%|█▍        | 12828/90026 [00:26<03:00, 428.32 examples/s]Map (num_proc=12):  14%|█▍        | 12917/90026 [00:26<02:22, 539.92 examples/s]Map (num_proc=12):  14%|█▍        | 12983/90026 [00:26<02:16, 566.00 examples/s]Map (num_proc=12):  14%|█▍        | 13042/90026 [00:26<02:33, 500.01 examples/s]Map (num_proc=12):  15%|█▍        | 13097/90026 [00:27<02:34, 497.57 examples/s]Map (num_proc=12):  15%|█▍        | 13190/90026 [00:27<02:06, 609.40 examples/s]Map (num_proc=12):  15%|█▍        | 13255/90026 [00:27<02:26, 524.26 examples/s]Map (num_proc=12):  15%|█▍        | 13312/90026 [00:27<02:32, 504.61 examples/s]Map (num_proc=12):  15%|█▍        | 13412/90026 [00:27<02:03, 622.83 examples/s]Map (num_proc=12):  15%|█▍        | 13481/90026 [00:27<02:14, 569.31 examples/s]Map (num_proc=12):  15%|█▌        | 13555/90026 [00:27<02:05, 611.45 examples/s]Map (num_proc=12):  15%|█▌        | 13621/90026 [00:27<02:11, 582.96 examples/s]Map (num_proc=12):  15%|█▌        | 13688/90026 [00:28<02:06, 604.07 examples/s]Map (num_proc=12):  15%|█▌        | 13753/90026 [00:28<02:06, 601.62 examples/s]Process ForkPoolWorker-7:
+Process ForkPoolWorker-9:
+Process ForkPoolWorker-3:
+Process ForkPoolWorker-6:
+Process ForkPoolWorker-4:
+Process ForkPoolWorker-5:
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "<string>", line 1, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 1, in put
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1022, in _format_examples
+    seg_tokens_neighborhood_segment = [
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1024, in <listcomp>
+    if seg == segment]
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 817, in _callmethod
+    conn.send((self._id, methodname, args, kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 205, in send
+    def send(self, obj):
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 817, in _callmethod
+    conn.send((self._id, methodname, args, kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 209, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/reduction.py", line 54, in dumps
+    cls(buf, protocol, *args, **kwds).dump(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/reduction.py", line 42, in __init__
+    super().__init__(*args, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 351, in __init__
+    def __init__(self, file, *args, **kwds):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+KeyboardInterrupt
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 587, in _write_generator_to_queue
+    queue.put(result)
+  File "<string>", line 2, in put
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 817, in _callmethod
+    conn.send((self._id, methodname, args, kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 209, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/reduction.py", line 54, in dumps
+    cls(buf, protocol, *args, **kwds).dump(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/reduction.py", line 42, in __init__
+    super().__init__(*args, **kwds)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 357, in __init__
+    StockPickler.__init__(self, file, *args, **kwds)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 409, in __init__
+    def __init__(self, file, protocol=None, *, fix_imports=True,
+KeyboardInterrupt
+Process ForkPoolWorker-10:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1017, in _format_examples
+    gene_tokens_neighborhood_segment = [
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1021, in <listcomp>
+    if seg == segment]
+KeyboardInterrupt
+Process ForkPoolWorker-11:
+Process ForkPoolWorker-8:
+Process ForkPoolWorker-1:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1047, in _format_examples
+    example['gene_expr_neighborhood'],
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 284, in __getitem__
+    value = self.format(key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 379, in format
+    return self.formatter.format_column(self.pa_table.select([key]))[0]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 463, in format_column
+    column = self.python_arrow_extractor().extract_column(pa_table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 146, in extract_column
+    return pa_table.column(0).to_pylist()
+KeyboardInterrupt
+Process ForkPoolWorker-12:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1022, in _format_examples
+    seg_tokens_neighborhood_segment = [
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1024, in <listcomp>
+    if seg == segment]
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1047, in _format_examples
+    example['gene_expr_neighborhood'],
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 284, in __getitem__
+    value = self.format(key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 379, in format
+    return self.formatter.format_column(self.pa_table.select([key]))[0]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 463, in format_column
+    column = self.python_arrow_extractor().extract_column(pa_table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 146, in extract_column
+    return pa_table.column(0).to_pylist()
+KeyboardInterrupt
+Process ForkPoolWorker-2:
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1045, in _format_examples
+    gene_expr_neighborhood_segment = [
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 1049, in <listcomp>
+    if seg == segment]
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 314, in _bootstrap
+    self.run()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 125, in worker
+    result = (True, func(*args, **kwds))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 586, in _write_generator_to_queue
+    for i, result in enumerate(func(**kwargs)):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3650, in _map_single
+    for i, example in iter_outputs(shard_iterable):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3624, in iter_outputs
+    yield i, apply_function(example, i, offset=offset)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3547, in apply_function
+    processed_inputs = function(*fn_args, *additional_args, **fn_kwargs)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 995, in _format_examples
+    if len(example['seg_tokens_neighborhood']) > 0:
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 284, in __getitem__
+    value = self.format(key)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 379, in format
+    return self.formatter.format_column(self.pa_table.select([key]))[0]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 463, in format_column
+    column = self.python_arrow_extractor().extract_column(pa_table)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/formatting/formatting.py", line 146, in extract_column
+    return pa_table.column(0).to_pylist()
+KeyboardInterrupt
+Map (num_proc=12):  15%|█▌        | 13806/90026 [00:28<02:39, 476.83 examples/s]
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 612, in iflatmap_unordered
+    yield queue.get(timeout=0.05)
+  File "<string>", line 2, in get
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 818, in _callmethod
+    kind, result = conn.recv()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 253, in recv
+    buf = self._recv_bytes()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 294, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 236, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 329, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 384, in _create_dataset
+    formatted_dataset = dataset.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 770, in get
+    raise TimeoutError
+multiprocess.context.TimeoutError
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 612, in iflatmap_unordered
+    yield queue.get(timeout=0.05)
+  File "<string>", line 2, in get
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/managers.py", line 818, in _callmethod
+    kind, result = conn.recv()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 253, in recv
+    buf = self._recv_bytes()
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 417, in _recv_bytes
+    buf = self._recv(4)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/connection.py", line 382, in _recv
+    chunk = read(handle, remaining)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 294, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 236, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 329, in tokenize_data
+    tokenized_dataset = self._create_dataset(
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 384, in _create_dataset
+    formatted_dataset = dataset.map(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 560, in wrapper
+    out: Union["Dataset", "DatasetDict"] = func(self, *args, **kwargs)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 3309, in map
+    for rank, done, content in iflatmap_unordered(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in iflatmap_unordered
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/py_utils.py", line 626, in <listcomp>
+    [async_result.get(timeout=0.05) for async_result in async_results]
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/multiprocess/pool.py", line 770, in get
+    raise TimeoutError
+multiprocess.context.TimeoutError
+Exception ignored in atexit callback: <function _start_and_connect_service.<locals>.teardown_atexit at 0x1552de96b760>
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/service_connection.py", line 94, in teardown_atexit
+    conn.teardown(hooks.exit_code)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/service_connection.py", line 228, in teardown
+    self._client.send_server_request(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 154, in send_server_request
+    self._send_message(msg)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 151, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe

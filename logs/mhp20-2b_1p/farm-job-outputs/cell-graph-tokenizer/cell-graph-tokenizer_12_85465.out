@@ -1,0 +1,51 @@
+Experiment name: mhp20-2b_1p.
+Experiment description: mhp20-2b_1p (dataset-id 20) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4096.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-11-2-1>
+Subject: Job 85465: <mhp20-2b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <mhp20-2b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 22:27:30 2026
+Job was executed on host(s) <12*node-11-2-1>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 22:27:31 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 22:27:31 2026
+Terminated at Sat Jun 13 23:14:37 2026
+Results reported at Sat Jun 13 23:14:37 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mhp20-2b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   5623.00 sec.
+    Max Memory :                                 262610 MB
+    Average Memory :                             148313.44 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -466.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              18
+    Max Threads :                                51
+    Run time :                                   2831 sec.
+    Turnaround time :                            2827 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhp20-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_85465.err> for stderr output of this job.
+

@@ -1,0 +1,257 @@
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dask/dataframe/__init__.py:31: FutureWarning: The legacy Dask DataFrame implementation is deprecated and will be removed in a future version. Set the configuration option `dataframe.query-planning` to `True` or None to enable the new Dask Dataframe implementation and silence this warning.
+  warnings.warn(
+/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/anndata/utils.py:434: FutureWarning: Importing read_text from `anndata` is deprecated. Import anndata.io.read_text instead.
+  warnings.warn(msg, FutureWarning)
+wandb: Tracking run with wandb version 0.19.11
+wandb: W&B syncing is set to `offline` in this directory. Run `wandb online` or set WANDB_MODE=online to enable cloud syncing.
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:794: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:794: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:794: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py:794: FutureWarning: Series.__getitem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (consistent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  coding_miRNA_ids = adata.var['ensembl_id'][coding_miRNA_idx]
+Exception ignored in: <function _xla_gc_callback at 0x1499e8f43130>
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/jax/_src/lib/__init__.py", line 128, in _xla_gc_callback
+    def _xla_gc_callback(*args):
+KeyboardInterrupt: 
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 294, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 236, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 357, in tokenize_data
+    keep_in_memory=keep_in_memory)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 402, in _create_dataset
+    # Create Hugging Face dataset
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1174, in from_generator
+    return GeneratorDatasetInputStream(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 29, in __init__
+    self.builder = Generator(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 343, in __init__
+    self.config, self.config_id = self._create_builder_config(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 573, in _create_builder_config
+    config_id = builder_config.create_config_id(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 187, in create_config_id
+    suffix = Hasher.hash(config_kwargs_to_add_to_suffix)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/fingerprint.py", line 188, in hash
+    return cls.hash_bytes(dumps(value))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 109, in dumps
+    dump(obj, file)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 103, in dump
+    Pickler(file, recurse=True).dump(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 420, in dump
+    StockPickler.dump(self, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 487, in dump
+    self.save(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1985, in save_function
+    _save_with_postproc(pickler, (_create_function, (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1117, in _save_with_postproc
+    pickler.save_reduce(*reduction)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 932, in save_list
+    self._batch_appends(obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 956, in _batch_appends
+    save(x)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 603, in save
+    self.save_reduce(obj=obj, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 889, in save_tuple
+    if id(obj) in memo:
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 294, in <module>
+    main(config)
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 236, in main
+    tk.tokenize_data(input_directory=input_directory,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 357, in tokenize_data
+    keep_in_memory=keep_in_memory)
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/tokenizers/cell_tokenizers.py", line 402, in _create_dataset
+    # Create Hugging Face dataset
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 1174, in from_generator
+    return GeneratorDatasetInputStream(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/io/generator.py", line 29, in __init__
+    self.builder = Generator(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 343, in __init__
+    self.config, self.config_id = self._create_builder_config(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 573, in _create_builder_config
+    config_id = builder_config.create_config_id(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/builder.py", line 187, in create_config_id
+    suffix = Hasher.hash(config_kwargs_to_add_to_suffix)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/fingerprint.py", line 188, in hash
+    return cls.hash_bytes(dumps(value))
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 109, in dumps
+    dump(obj, file)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 103, in dump
+    Pickler(file, recurse=True).dump(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 420, in dump
+    StockPickler.dump(self, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 487, in dump
+    self.save(obj)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1985, in save_function
+    _save_with_postproc(pickler, (_create_function, (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1117, in _save_with_postproc
+    pickler.save_reduce(*reduction)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 1217, in save_module_dict
+    StockPickler.save_dict(pickler, obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 972, in save_dict
+    self._batch_setitems(obj.items())
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 83, in _batch_setitems
+    dill.Pickler._batch_setitems(self, items)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 998, in _batch_setitems
+    save(v)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 932, in save_list
+    self._batch_appends(obj)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 956, in _batch_appends
+    save(x)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 603, in save
+    self.save_reduce(obj=obj, *rv)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 692, in save_reduce
+    save(args)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 887, in save_tuple
+    save(element)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/utils/_dill.py", line 70, in save
+    dill.Pickler.save(self, obj, save_persistent_id=save_persistent_id)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/dill/_dill.py", line 414, in save
+    StockPickler.save(self, obj, save_persistent_id)
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 560, in save
+    f(self, obj)  # Call unbound method with explicit self
+  File "/software/cellgen/team361/sb75/envs/nichejepa/lib/python3.10/pickle.py", line 889, in save_tuple
+    if id(obj) in memo:
+KeyboardInterrupt
+Exception ignored in atexit callback: <function _start_and_connect_service.<locals>.teardown_atexit at 0x1499eac53880>
+Traceback (most recent call last):
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/service_connection.py", line 94, in teardown_atexit
+    conn.teardown(hooks.exit_code)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/service_connection.py", line 228, in teardown
+    self._client.send_server_request(
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 154, in send_server_request
+    self._send_message(msg)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 151, in _send_message
+    self._sendall_with_error_handle(header + data)
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/wandb/sdk/lib/sock_client.py", line 130, in _sendall_with_error_handle
+    sent = self._sock.send(data)
+BrokenPipeError: [Errno 32] Broken pipe
+Terminated

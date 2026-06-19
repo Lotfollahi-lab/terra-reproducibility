@@ -1,0 +1,72 @@
+Experiment name: xhk1018-1-23b_1p.
+Experiment description: xenium human kidney (dataset-id = 1018) | 23-batch | 1-panel | part1.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4096.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-24>
+Subject: Job 85609: <xhk1018-1-23b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xhk1018-1-23b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 22:28:00 2026
+Job was executed on host(s) <12*node-13-24>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 23:29:59 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 23:29:59 2026
+Terminated at Sat Jun 13 23:47:04 2026
+Results reported at Sat Jun 13 23:47:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhk1018-1-23b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   1152.00 sec.
+    Max Memory :                                 263528 MB
+    Average Memory :                             91007.01 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -1384.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                49
+    Run time :                                   1025 sec.
+    Turnaround time :                            4744 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1018-1-23b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_85609.err> for stderr output of this job.
+

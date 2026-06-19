@@ -1,0 +1,34 @@
+Traceback (most recent call last):
+  File "/nfs/team361/sb75/nichejepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py", line 33, in <module>
+    from nichejepa.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/__init__.py", line 1, in <module>
+    from . import (datasets,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/datasets/__init__.py", line 1, in <module>
+    from .cell_datasets import (CellBaseDataset,
+  File "/nfs/team361/sb75/nichejepa/src/nichejepa/datasets/cell_datasets.py", line 3, in <module>
+    import datasets
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/__init__.py", line 17, in <module>
+    from .arrow_dataset import Column, Dataset
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/datasets/arrow_dataset.py", line 58, in <module>
+    import pandas as pd
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/__init__.py", line 49, in <module>
+    from pandas.core.api import (
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/api.py", line 28, in <module>
+    from pandas.core.arrays import Categorical
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/arrays/__init__.py", line 1, in <module>
+    from pandas.core.arrays.arrow import ArrowExtensionArray
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/arrays/arrow/__init__.py", line 5, in <module>
+    from pandas.core.arrays.arrow.array import ArrowExtensionArray
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/arrays/arrow/array.py", line 65, in <module>
+    from pandas.core.arrays.string_ import StringDtype
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/arrays/string_.py", line 48, in <module>
+    from pandas.core.arrays.numpy_ import NumpyExtensionArray
+  File "/nfs/users/nfs_s/sb75/.venvs/nichejepa/lib/python3.10/site-packages/pandas/core/arrays/numpy_.py", line 29, in <module>
+    from pandas.core.strings.object_array import ObjectStringArrayMixin
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 879, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 975, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1074, in get_data
+KeyboardInterrupt

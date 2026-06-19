@@ -1,0 +1,80 @@
+Experiment name: xhl1015-R1-28b_1p.
+Experiment description: xenium human liver (dataset-id = 1015) | 28-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4352.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (sparse version).
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhl1015-R1-28b_1p/cProfiler/cell-graph-tokenizer/xhl1015-R1-28b_1p_32_None_None_None_None_None_pflog1ppf_knn_16_4352_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 3554.046229715
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@b12-hm-02>
+Subject: Job 122633: <xhl1015-R1-28b_1p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <xhl1015-R1-28b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Jun 14 09:19:59 2026
+Job was executed on host(s) <12*b12-hm-02>, in queue <hugemem>, as user <sb75> in cluster <farm22> at Mon Jun 15 04:08:21 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Mon Jun 15 04:08:21 2026
+Terminated at Mon Jun 15 05:08:36 2026
+Results reported at Mon Jun 15 05:08:36 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhl1015-R1-28b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   12705.04 sec.
+    Max Memory :                                 236071 MB
+    Average Memory :                             136946.25 MB
+    Total Requested Memory :                     1572864.00 MB
+    Delta Memory :                               1336793.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   3616 sec.
+    Turnaround time :                            71317 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhl1015-R1-28b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_122633.err> for stderr output of this job.
+

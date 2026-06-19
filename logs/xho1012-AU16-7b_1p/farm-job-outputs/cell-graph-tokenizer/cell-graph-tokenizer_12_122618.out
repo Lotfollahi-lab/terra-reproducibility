@@ -1,0 +1,103 @@
+Experiment name: xho1012-AU16-7b_1p.
+Experiment description: xenium human ovary (dataset-id = 1012) | 7-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4352.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20260614_111310-2shtes8q[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20260614_111310-2shtes8q/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-16>
+Subject: Job 122618: <xho1012-AU16-7b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <xho1012-AU16-7b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Jun 14 09:19:56 2026
+Job was executed on host(s) <12*node-14-16>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Jun 14 11:12:39 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Jun 14 11:12:39 2026
+Terminated at Sun Jun 14 12:51:06 2026
+Results reported at Sun Jun 14 12:51:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xho1012-AU16-7b_1p.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   11080.13 sec.
+    Max Memory :                                 196540 MB
+    Average Memory :                             94746.23 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               327748.00 MB
+    Max Swap :                                   -
+    Max Processes :                              19
+    Max Threads :                                69
+    Run time :                                   5907 sec.
+    Turnaround time :                            12670 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xho1012-AU16-7b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_122618.err> for stderr output of this job.
+

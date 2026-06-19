@@ -1,0 +1,51 @@
+Experiment name: mhl17-2b_1p.
+Experiment description: mhl17-2b_1p (dataset-id 17) | 2 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4096.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-09>
+Subject: Job 85462: <mhl17-2b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <mhl17-2b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 22:27:30 2026
+Job was executed on host(s) <12*node-13-09>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 22:27:31 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 22:27:31 2026
+Terminated at Sat Jun 13 22:51:43 2026
+Results reported at Sat Jun 13 22:51:43 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mhl17-2b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   2867.00 sec.
+    Max Memory :                                 264938 MB
+    Average Memory :                             96755.62 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -2794.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                55
+    Run time :                                   1453 sec.
+    Turnaround time :                            1453 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhl17-2b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_85462.err> for stderr output of this job.
+

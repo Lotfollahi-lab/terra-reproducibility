@@ -1,0 +1,54 @@
+Experiment name: mmb0-1b_smb1-1b_2p_coord_aligned.
+Experiment description: mmb0-1b_smb1-1b_2p_coord_aligned (dataset-id 0 & 1) | 2 batch | 2 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 704.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
+Number of Gene Tokens: 1669.
+Number of Tokens: 2785.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: You can sync this run to the cloud by running:
+[1;34mwandb[0m: [1mwandb sync /nfs/team361/sb75/nichejepa-reproducibility/wandb/offline-run-20260613_221907-aoorop95[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/offline-run-20260613_221907-aoorop95/logs[0m
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-09>
+Subject: Job 83538: <mmb0-1b_smb1-1b_2p_coord_aligned_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <mmb0-1b_smb1-1b_2p_coord_aligned_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 21:44:34 2026
+Job was executed on host(s) <12*node-14-09>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 22:18:46 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 22:18:46 2026
+Terminated at Sat Jun 13 22:19:10 2026
+Results reported at Sat Jun 13 22:19:10 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mmb0-1b_smb1-1b_2p_coord_aligned.yaml
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   22.73 sec.
+    Max Memory :                                 613 MB
+    Average Memory :                             478.17 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261531.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                56
+    Run time :                                   24 sec.
+    Turnaround time :                            2076 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mmb0-1b_smb1-1b_2p_coord_aligned/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_83538.err> for stderr output of this job.
+

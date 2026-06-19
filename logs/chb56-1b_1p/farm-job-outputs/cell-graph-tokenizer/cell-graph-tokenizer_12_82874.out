@@ -1,0 +1,51 @@
+Experiment name: chb56-1b_1p.
+Experiment description: chb56-1b_1p (dataset-id 56) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4096.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-13-15>
+Subject: Job 82874: <chb56-1b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <chb56-1b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 21:38:25 2026
+Job was executed on host(s) <12*node-13-15>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 21:38:26 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 21:38:26 2026
+Terminated at Sat Jun 13 22:09:41 2026
+Results reported at Sat Jun 13 22:09:41 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_chb56-1b_1p.yaml
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   1809.00 sec.
+    Max Memory :                                 263093 MB
+    Average Memory :                             149782.58 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -949.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                47
+    Run time :                                   1881 sec.
+    Turnaround time :                            1876 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/chb56-1b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_82874.err> for stderr output of this job.
+

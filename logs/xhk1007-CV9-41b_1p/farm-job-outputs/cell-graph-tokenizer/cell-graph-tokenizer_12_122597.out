@@ -1,0 +1,94 @@
+Experiment name: xhk1007-CV9-41b_1p.
+Experiment description: Xenium Human Kidney (dataset-id = 1007) | 41-batch | 1-panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4352.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Profiling stats saved to: logs/xhk1007-CV9-41b_1p/cProfiler/cell-graph-tokenizer/xhk1007-CV9-41b_1p_32_None_None_None_None_None_pflog1ppf_knn_16_4352_12_parallel.prof.
+Function: tokenize_data | Cumulative Time: 26236.053585773003
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-13>
+Subject: Job 122597: <xhk1007-CV9-41b_1p_cell-graph-tokenizer_12> in cluster <farm22> Done
+
+Job <xhk1007-CV9-41b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sun Jun 14 09:19:53 2026
+Job was executed on host(s) <12*node-14-13>, in queue <long>, as user <sb75> in cluster <farm22> at Sun Jun 14 10:37:30 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sun Jun 14 10:37:30 2026
+Terminated at Sun Jun 14 17:57:04 2026
+Results reported at Sun Jun 14 17:57:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_xhk1007-CV9-41b_1p.yaml
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   36193.04 sec.
+    Max Memory :                                 300461 MB
+    Average Memory :                             202680.77 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               223827.00 MB
+    Max Swap :                                   2 MB
+    Max Processes :                              19
+    Max Threads :                                71
+    Run time :                                   26374 sec.
+    Turnaround time :                            31031 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/xhk1007-CV9-41b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_122597.err> for stderr output of this job.
+

@@ -1,0 +1,72 @@
+Experiment name: mhh22-3b_1p.
+Experiment description: mhh22-3b_1p (dataset-id 22) | 1 batch | 1 panel.
+Tokenizer: cell-graph-tokenizer.
+Model input size: 4096.
+Loading token dictionary from /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
+Number of Gene Tokens: 21952.
+Number of Tokens: 23407.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+Filtering cells...
+No 'filter_pass' column in 'adata.obs'; returning full adata.
+Computing spatial neighborhood...
+Normalizing gene expression counts...
+Retrieving gene tokens.
+Ranking gene tokens based on normalized counts (dense version).
+Retrieving tokens for neighborhood cells.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@node-14-25>
+Subject: Job 81835: <mhh22-3b_1p_cell-graph-tokenizer_12> in cluster <farm22> Exited
+
+Job <mhh22-3b_1p_cell-graph-tokenizer_12> was submitted from host <farm22-head1> by user <sb75> in cluster <farm22> at Sat Jun 13 21:18:58 2026
+Job was executed on host(s) <12*node-14-25>, in queue <long>, as user <sb75> in cluster <farm22> at Sat Jun 13 21:18:59 2026
+</nfs/users/nfs_s/sb75> was used as the home directory.
+</nfs/team361/sb75/nichejepa-reproducibility/> was used as the working directory.
+Started at Sat Jun 13 21:18:59 2026
+Terminated at Sat Jun 13 21:31:06 2026
+Results reported at Sat Jun 13 21:31:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+analysis/tokenization/create_tokenized_dataset.sh config/cell-graph-tokenizer/cell-graph-tokenizer_mhh22-3b_1p.yaml
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   1437.00 sec.
+    Max Memory :                                 29217 MB
+    Average Memory :                             14388.89 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               232927.00 MB
+    Max Swap :                                   -
+    Max Processes :                              18
+    Max Threads :                                49
+    Run time :                                   729 sec.
+    Turnaround time :                            728 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/mhh22-3b_1p/farm-job-outputs/cell-graph-tokenizer/cell-graph-tokenizer_12_81835.err> for stderr output of this job.
+
