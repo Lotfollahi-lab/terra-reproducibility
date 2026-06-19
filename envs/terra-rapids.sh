@@ -26,13 +26,24 @@ uv pip install "setuptools<81" wheel
 # tries to BUILD rapids-singlecell from source -> "Failed to find nvcc" ->
 # the whole script aborts (under set -e) before scib_metrics etc. install.
 echo "Installing torch + RAPIDS 25.10 + rapids-singlecell (GPU Leiden) ..."
+# cuvs-cu12 (RAPIDS Vector Search) is needed by rapids-singlecell's neighbors
+# module ('import cuvs') but is NOT pulled by cudf/cuml/cugraph alone.
 uv pip install \
     --index-strategy unsafe-best-match \
     --only-binary rapids-singlecell \
     --extra-index-url https://pypi.nvidia.com \
     --extra-index-url https://download.pytorch.org/whl/cu128 \
     torch rapids-singlecell \
-    "cudf-cu12==25.10.*" "cuml-cu12==25.10.*" "cugraph-cu12==25.10.*"
+    "cudf-cu12==25.10.*" "cuml-cu12==25.10.*" "cugraph-cu12==25.10.*" \
+    "cuvs-cu12==25.10.*"
+
+# Pin scikit-learn into cuml's supported range. cuml 25.10's cuml.accel wraps
+# the sklearn internal BaseEstimator._get_default_requests, which only exists
+# in scikit-learn <1.6; a newer sklearn (pulled by scanpy/scib-metrics/etc.)
+# makes 'import cuml' fail with AttributeError. Pin BEFORE the science stack
+# so those packages resolve against the compatible version.
+echo "Pinning scikit-learn (<1.6) for cuml compatibility ..."
+uv pip install "scikit-learn<1.6"
 
 echo "Installing scanpy + squidpy + spatialdata ..."
 uv pip install scanpy anndata squidpy spatialdata
@@ -81,8 +92,13 @@ PY
 echo "import _squidpy_dask_fix" > "${SITE_PACKAGES}/zzz_squidpy_dask_fix.pth"
 
 if [ -n "${NICHEJEPA_DIR}" ]; then
-    echo "Installing nichejepa (editable) from ${NICHEJEPA_DIR} ..."
-    uv pip install -e "${NICHEJEPA_DIR}"
+    # --no-deps: all dependencies are already installed above with carefully
+    # pinned versions (scikit-learn<1.6 for cuml, the cu12 RAPIDS wheels, the
+    # CUDA torch build). Re-resolving them here would risk upgrading
+    # scikit-learn past 1.6 (via scib-metrics) and re-breaking cuml. Editable
+    # src-layout install exposes both 'nichejepa' and 'app'.
+    echo "Installing nichejepa (editable, --no-deps) from ${NICHEJEPA_DIR} ..."
+    uv pip install -e "${NICHEJEPA_DIR}" --no-deps
 fi
 
 echo "Registering Jupyter kernel 'terra-rapids' ..."
