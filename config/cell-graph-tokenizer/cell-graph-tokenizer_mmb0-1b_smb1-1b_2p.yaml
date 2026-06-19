@@ -1,20 +1,21 @@
 experiment:
   experiment_description: mmb0-1b_smb1-1b_2p (dataset-id 0 & 1) | 2 batch | 2 panel
   experiment_name: mmb0-1b_smb1-1b_2p
-  model_input_size: 88 # 352, 704, 1408, 2816, 5632, 11264
+  model_input_size: 704 # 352, 704, 1088, 1408, 2816, 5632, 11264
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
   norm_factor_file_path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/mst_corpus_10m_norm_factors.csv
-  token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
+  pf_targets_file_path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/mst_corpus_10m_pf_targets.csv
+  token_dictionary_file_path: /nfs/team361/sb75/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
 tokenization:
   count_cell_norm_method: null
-  count_count_norm_method: null
+  count_count_norm_method: null # 'pflog1ppf'
   count_gene_norm_method: null
   delaunay: false
   include_zero_expr_genes: false
   keep_in_memory: false
-  n_neighs: 10
+  n_neighs: 10 # 10, 16
   num_shards: 32
   processing_mode: parallel
   radius: null
