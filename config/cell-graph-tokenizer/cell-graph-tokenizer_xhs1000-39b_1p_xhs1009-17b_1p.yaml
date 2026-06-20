@@ -4,9 +4,9 @@ experiment:
   model_input_size: 1792
   tokenizer: cell-graph-tokenizer
 paths:
-  data_directory_path: /home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data
-  norm_factor_file_path: /lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_70m_norm_factors.csv
-  token_dictionary_file_path: /home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl
+  data_directory_path: /home/aih/sebastian.birk/workspace/projects/terra-reproducibility/data/st_data
+  norm_factor_file_path: /lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_70m_norm_factors.csv
+  token_dictionary_file_path: /home/aih/sebastian.birk/workspace/projects/terra-reproducibility/data/tokenizer_data/token_dictionary_homo_sapiens.pkl
 tokenization:
   count_cell_norm_method: null
   count_count_norm_method: shifted_log
@@ -26,5 +26,5 @@ tokenization:
 wandb:
   job_type: create-tokenized-dataset
   mode: offline
-  project: NicheJEPA
+  project: TERRA
   save_artifact: false

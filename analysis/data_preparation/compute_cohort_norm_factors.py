@@ -211,7 +211,7 @@ if __name__ == '__main__':
                         help='Name of the cohort.')
     parser.add_argument('--artifacts_base_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data",
+                        default="/nfs/team361/sb75/terra-reproducibility/artifacts/data",
                         help='Base directory for output artifacts. Outputs '
                              'are written to '
                              '{artifacts_base_path}/{cohort_name}/ as '
@@ -221,7 +221,7 @@ if __name__ == '__main__':
                              '(the directory is created if missing).')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt", # "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
+                        default="/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt", # "/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_90m/hst_corpus_90m_dataset_names.txt", "/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_80m/hst_corpus_80m_dataset_names.txt", "/nfs/team361/terra-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt",
                         help='Path to the file containing datasets of the cohort.')                        
     parser.add_argument('--basis_target_read_depth',
                         type=float,

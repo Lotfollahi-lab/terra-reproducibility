@@ -31,18 +31,18 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_gene_embed, get_average_gene_embed, infer
 from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from terra.datasets import prepare_dataset
+from terra.utils.config import create_params_from_YAML_wandb_config
+from terra.utils.distributed import init_distributed
+from terra.utils.embedding import collect_adata_from_folder
+from terra.utils.evaluation import clustering_metrics, classification_metrics
 
 from analysis_utils import *
 
 
 def main(args):
     ### Define paths ###
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
@@ -194,7 +194,7 @@ if __name__ == '__main__':
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep2.pth.tar',
+                        default='terra-ep2.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,

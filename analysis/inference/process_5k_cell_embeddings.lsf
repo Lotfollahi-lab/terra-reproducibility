@@ -19,7 +19,7 @@ conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
 python process_5k_cell_embeddings.py \
     --cohort_name 'hst_corpus_110m' \
     --load_timestamp '11012026_190057_836' \
-    --read_checkpoint 'nichejepa-ep0.pth.tar' \
+    --read_checkpoint 'terra-ep0.pth.tar' \
     --use_rapids \
     --n_pcs 50
     #--no-use_rapids \

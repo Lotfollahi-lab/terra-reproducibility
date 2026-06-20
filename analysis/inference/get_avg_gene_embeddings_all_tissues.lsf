@@ -11,7 +11,7 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                                              # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # -------------------------
 # Define tissues array
@@ -24,9 +24,9 @@ TISSUE=${TISSUES[$LSB_JOBINDEX-1]}
 echo "Running for tissue: $TISSUE"
 
 python get_avg_gene_embeddings.py \
-    --dataset_path "/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset" \
+    --dataset_path "/nfs/team361/sb75/terra-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset" \
     --load_timestamp "07112025_054432_709" \
-    --read_checkpoint "nichejepa-ep3.pth.tar" \
+    --read_checkpoint "terra-ep3.pth.tar" \
     --cohort_name "hst_corpus_110m" \
     --save_prefix "5k" \
     --tissues "$TISSUE" \

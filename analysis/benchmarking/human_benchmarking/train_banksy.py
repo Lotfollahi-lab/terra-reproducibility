@@ -19,7 +19,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.linear_model import LogisticRegression
 
 import sys
-sys.path.append('/lustre/scratch126/cellgen/team361/am84/NicheJEPA/third-party-software/banksy')
+sys.path.append('/lustre/scratch126/cellgen/team361/am84/TERRA/third-party-software/banksy')
 from banksy.main import median_dist_to_nearest_neighbour
 from banksy_utils.load_data import load_adata, display_adata
 from banksy_utils.filter_utils import normalize_total, filter_hvg, print_max_min
@@ -257,7 +257,7 @@ def main():
     spatial_key = "spatial"
     adj_key = "spatial_connectivities"    
 
-    st_data_silver_folder_path = "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/silver/sim1_1105fts_10000locs"
+    st_data_silver_folder_path = "/lustre/scratch126/cellgen/team361/am84/TERRA/datasets/am84/st_data/silver/sim1_1105fts_10000locs"
     st_data_results_folder_path = "./temp/datasets/st_data/results" 
     benchmarking_folder_path = "./temp/artifacts/sample_integration_method_benchmarking"
 

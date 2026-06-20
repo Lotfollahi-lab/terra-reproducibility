@@ -379,7 +379,7 @@ def main(args):
     start_time = time.time()
     print("Start time:", start_time)
 
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts' # '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts' # '/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/artifacts'
     steps = int(np.ceil(args.corpus_size / args.step_size))
 
     adata_list = []

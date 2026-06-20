@@ -11,7 +11,7 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Compute step range for this array job
 # Each job covers 10 steps: 0–9, 10–19, ..., 130–139
@@ -25,6 +25,6 @@ echo "Running job index: $LSB_JOBINDEX, steps: $START-$END"
 python get_5k_cell_embeddings.py \
     --cohort_name 'hst_corpus_110m' \
     --load_timestamp '06022026_161017_190' \
-    --read_checkpoint 'nichejepa-ep0.pth.tar' \
+    --read_checkpoint 'terra-ep0.pth.tar' \
     --start_step "$START" \
     --end_step "$END"

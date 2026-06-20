@@ -32,7 +32,7 @@ def main(args):
     test_batch_ids = dataset_split_data['__annotations__']['test_batch_ids']
 
     # Read corpus statistics
-    data_artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data'
+    data_artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts/data'
     dataset_stats_df = pd.read_csv(f'{data_artifacts_folder_path}/{args.cohort_name}/{args.cohort_name}_statistics.csv')
     dataset_stats_df['dataset_id_batch'] = dataset_stats_df['dataset_id'].astype(str) + '_' + dataset_stats_df['batch'].astype(str)
     dataset_stats_df = dataset_stats_df[~dataset_stats_df['dataset_id_batch'].isin(val_batch_ids + test_batch_ids)] # remove test and val batches
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                         help='Path where the training index is stored.')
     parser.add_argument('--dataset_split_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_split.txt',
+                        default='/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_split.txt',
                         help='Path where the dataset split is stored.')
     parser.add_argument('--cohort_name',
                         type=str,

@@ -6,9 +6,9 @@ RUN_ID=$3
 . /usr/share/modules/init/bash
 module load cuda-12.1.1
 module load cellgen/conda
-conda activate nichejepa_new
+conda activate terra_new
 
-python ../nichejepa/main.py \
+python ../terra/main.py \
     --fname ${CONFIG_FILE} \
     --devices ${DEVICES} \
     --run_id ${RUN_ID}

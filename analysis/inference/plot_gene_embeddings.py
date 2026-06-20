@@ -4,7 +4,7 @@ import anndata as ad
 import scanpy as sc
 import rapids_singlecell as rsc
 
-gene_emb_path = f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/{args.cohort_name}/{args.load_timestamp}/ep3_5k_{args.tissue}_{args.tissue}_avg_gene_embed.pkl'
+gene_emb_path = f'/nfs/team361/sb75/terra-reproducibility/artifacts/{args.cohort_name}/{args.load_timestamp}/ep3_5k_{args.tissue}_{args.tissue}_avg_gene_embed.pkl'
 
 with open(gene_emb_path, 'rb') as f:
     output_gene_embed = pickle.load(f)
@@ -42,4 +42,4 @@ sc.pl.umap(adata,
            color=latent_cluster_key,
            show=False)
 
-adata.write(f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/{args.cohort_name}/{args.load_timestamp}/ep3_5k_{args.tissue}_avg_neighborhood_gene_embed.h5ad')
+adata.write(f'/nfs/team361/sb75/terra-reproducibility/artifacts/{args.cohort_name}/{args.load_timestamp}/ep3_5k_{args.tissue}_avg_neighborhood_gene_embed.h5ad')

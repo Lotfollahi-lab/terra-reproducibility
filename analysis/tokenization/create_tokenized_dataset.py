@@ -30,7 +30,7 @@ import yaml
 from typing import Optional
 from pathlib import Path
 
-from nichejepa.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
+from terra.tokenizers.cell_tokenizers import (CellNeighborhoodTokenizer,
                                                   CellGraphTokenizer)
 
 
@@ -271,7 +271,7 @@ def main(config: dict):
         # Add files to artifact
         artifact.add_file(
             local_path=token_dictionary_file,
-            name="NicheJEPA Neighborhood Token Dictionary")
+            name="TERRA Neighborhood Token Dictionary")
         artifact.add_file(
             local_path=profiler_stats_fname,
             name="cProfile Stats")

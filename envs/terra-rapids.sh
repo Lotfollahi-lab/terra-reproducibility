@@ -5,9 +5,9 @@
 set -euo pipefail
 
 VENV_PATH="/nfs/team361/sb75/.venvs/terra-rapids"
-# Optional: editable install of the local nichejepa/terra package. Leave empty
-# to skip, or: NICHEJEPA_DIR=/nfs/team361/sb75/terra ./terra-rapids.sh
-NICHEJEPA_DIR="${NICHEJEPA_DIR:-}"
+# Optional: editable install of the local terra/terra package. Leave empty
+# to skip, or: TERRA_DIR=/nfs/team361/sb75/terra ./terra-rapids.sh
+TERRA_DIR="${TERRA_DIR:-}"
 
 echo "Creating virtual environment at ${VENV_PATH} ..."
 uv venv "${VENV_PATH}" --python 3.12
@@ -91,14 +91,14 @@ except Exception:
 PY
 echo "import _squidpy_dask_fix" > "${SITE_PACKAGES}/zzz_squidpy_dask_fix.pth"
 
-if [ -n "${NICHEJEPA_DIR}" ]; then
+if [ -n "${TERRA_DIR}" ]; then
     # --no-deps: all dependencies are already installed above with carefully
     # pinned versions (scikit-learn<1.6 for cuml, the cu12 RAPIDS wheels, the
     # CUDA torch build). Re-resolving them here would risk upgrading
     # scikit-learn past 1.6 (via scib-metrics) and re-breaking cuml. Editable
-    # src-layout install exposes both 'nichejepa' and 'app'.
-    echo "Installing nichejepa (editable, --no-deps) from ${NICHEJEPA_DIR} ..."
-    uv pip install -e "${NICHEJEPA_DIR}" --no-deps
+    # src-layout install exposes both 'terra' and 'app'.
+    echo "Installing terra (editable, --no-deps) from ${TERRA_DIR} ..."
+    uv pip install -e "${TERRA_DIR}" --no-deps
 fi
 
 echo "Registering Jupyter kernel 'terra-rapids' ..."

@@ -1024,15 +1024,15 @@ if __name__ == '__main__':
                         help='Batch file paths.')
     parser.add_argument("--data_folder_path",
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/artifacts/nichecompass/data",
+                        default="/nfs/team361/sb75/terra-reproducibility/artifacts/nichecompass/data",
                         help="Data folder path.")
     parser.add_argument("--model_folder_path",
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/artifacts/nichecompass/models",
+                        default="/nfs/team361/sb75/terra-reproducibility/artifacts/nichecompass/models",
                         help="Model folder path.")
     parser.add_argument("--result_folder_path",
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/artifacts/nichecompass/results",
+                        default="/nfs/team361/sb75/terra-reproducibility/artifacts/nichecompass/results",
                         help="Result folder path.")
 
     args = parser.parse_args()

@@ -7,9 +7,9 @@ import random
 import torch
 from datasets import load_from_disk
 
-from nichejepa.masks.block_masking  import BlockMaskCollator
-from nichejepa.datasets.cell_datasets import init_cell_dataset
-from nichejepa.datasets.dataloaders import init_dataloader_and_sampler, CustomDistributedLengthGroupedSampler
+from terra.masks.block_masking  import BlockMaskCollator
+from terra.datasets.cell_datasets import init_cell_dataset
+from terra.datasets.dataloaders import init_dataloader_and_sampler, CustomDistributedLengthGroupedSampler
 
 
 def main(args):

@@ -31,11 +31,11 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_gene_embed, get_average_gene_embed, infer
 from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from terra.datasets import prepare_dataset
+from terra.utils.config import create_params_from_YAML_wandb_config
+from terra.utils.distributed import init_distributed
+from terra.utils.embedding import collect_adata_from_folder
+from terra.utils.evaluation import clustering_metrics, classification_metrics
 
 from analysis_utils import *
 
@@ -44,7 +44,7 @@ def main(args):
     ### Define paths ###
     global artifacts_folder_path
     global folder_path
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
@@ -153,8 +153,13 @@ def main(args):
         if os.path.exists(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad') and not rerun_inference:
             adata = sc.read_h5ad(f'{folder_path}/adata_{read_checkpoint.split("-")[1].split(".")[0]}_{dataset_name}.h5ad')
         else:
-            # Load data
-            dataset = load_from_disk(f'/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/{dataset_name}/{dataset_name}_32_None_None_None_None_None_shifted_log_knn_10_2816.dataset')
+            # Load the PRE-TOKENIZED dataset that matches THIS model. The path
+            # must reflect the model's tokenization config (normalization
+            # methods + model_input_size), so read it from params rather than
+            # hardcoding it -- a hardcoded '..._shifted_log_..._2816' path
+            # silently feeds a None-norm / 704 model the wrong values and the
+            # wrong sequence length, producing garbage embeddings.
+            dataset = load_from_disk(params['data']['tokenized_data_folder_path'])
 
             columns = list(dataset.features.keys())
             columns.remove("cell_id")
@@ -217,7 +222,7 @@ if __name__ == '__main__':
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep3.pth.tar',
+                        default='terra-ep3.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,

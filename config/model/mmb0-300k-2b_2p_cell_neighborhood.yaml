@@ -1,6 +1,6 @@
 data:
   batch_size: 64 # 64
-  data_path: '/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/gold/cell-neighborhood-tokenizer/merfish_mouse_brain_300k_2-gene-panels/16-shards/merfish_mouse_brain_300k_2-gene-panels_4_False_read_depth_shifted_log_2170.dataset'
+  data_path: '/lustre/scratch126/cellgen/team361/am84/TERRA/datasets/am84/st_data/gold/cell-neighborhood-tokenizer/merfish_mouse_brain_300k_2-gene-panels/16-shards/merfish_mouse_brain_300k_2-gene-panels_4_False_read_depth_shifted_log_2170.dataset'
   split: 0.2
   stratify: False
   data_set_name: 'merfish_300k_2_gene_panels'

@@ -21,12 +21,12 @@ tokenization:
   delaunay: False
 
 wandb:
-  project: "NicheJEPA"
+  project: "TERRA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
   mode: "offline"
 
 paths:
   data_directory_path: "/lustre/scratch126/cellgen/team361/DATASETS/"
-  token_dictionary_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl"
-  norm_factor_file_path: "/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/artifacts/data/human_cohort1_60m_norm_factors.csv"
+  token_dictionary_file_path: "/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/artifacts/data/token_dictionary_cell_graph_homo_sapiens.pkl"
+  norm_factor_file_path: "/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/artifacts/data/human_cohort1_60m_norm_factors.csv"

@@ -29,11 +29,11 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_average_gene_embed, get_gene_embed, infer
 from app.train import train
-from nichejepa.datasets_new import prepare_dataset
-from nichejepa.utils_new.config import create_params_from_YAML_wandb_config
-from nichejepa.utils_new.distributed import init_distributed
-from nichejepa.utils_new.embedding import collect_adata_from_folder
-from nichejepa.utils_new.evaluation import classification_metrics, clustering_metrics
+from terra.datasets_new import prepare_dataset
+from terra.utils_new.config import create_params_from_YAML_wandb_config
+from terra.utils_new.distributed import init_distributed
+from terra.utils_new.embedding import collect_adata_from_folder
+from terra.utils_new.evaluation import classification_metrics, clustering_metrics
 
 sys.path.append("../../utils")
 
@@ -42,7 +42,7 @@ from analysis_utils import *
 
 def main(args):
     ### Define paths ###
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
@@ -185,7 +185,7 @@ if __name__ == '__main__':
                         help='Number of workers.')
     parser.add_argument('--filtered_dataset_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/03112025_004451_930/5k.dataset',
+                        default='/nfs/team361/sb75/terra-reproducibility/artifacts/hst_corpus_110m/03112025_004451_930/5k.dataset',
                         help='Path where the filtered Huggingface dataset will be stored.')    
     args = parser.parse_args()
     

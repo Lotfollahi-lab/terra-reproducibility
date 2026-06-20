@@ -3,7 +3,7 @@ import yaml
 import os
 
 # Read metadata csv and filter out non-xenium datasets
-meta0 = pd.read_csv('/lustre/scratch126/cellgen/team361/bc8/cytoweave/nichejepa/actions/nichejepa_updated_meta.csv', index_col=0)
+meta0 = pd.read_csv('/lustre/scratch126/cellgen/team361/bc8/cytoweave/terra/actions/terra_updated_meta.csv', index_col=0)
 meta0 = meta0.drop(columns=['data_access_link', 'raw_on_farm', 'H&E_on_farm'])
 meta0 = meta0.loc[~meta0['dataset_id'].isna()]
 meta0 = meta0.loc[~meta0['source'].isna()]

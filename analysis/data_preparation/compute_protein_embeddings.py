@@ -1,4 +1,4 @@
-"""Compute ESM-C 600M protein embeddings for the NicheJEPA gene-token
+"""Compute ESM-C 600M protein embeddings for the TERRA gene-token
 vocabulary.
 
 Supports human and mouse out of the box (``--species human`` / ``mouse``),
@@ -6,9 +6,9 @@ and is straightforward to extend to other pyensembl-supported species
 by adding an entry to ``_SPECIES_SPECS``. ESM-C is species-agnostic at
 the protein-sequence level, so the only species-specific parts are
 (1) which pyensembl database we query and (2) which Ensembl gene-ID
-prefix we use to filter NicheJEPA's token dictionary.
+prefix we use to filter TERRA's token dictionary.
 
-For each Ensembl gene ID present in the NicheJEPA token dictionary
+For each Ensembl gene ID present in the TERRA token dictionary
 (e.g. ``token_dictionary_homo_sapiens.pkl`` or
 ``token_dictionary_mus_musculus.pkl``), this script:
 
@@ -25,7 +25,7 @@ For each Ensembl gene ID present in the NicheJEPA token dictionary
 4. Mean-pools the per-residue embeddings into a single (1152,) vector
    per gene.
 
-The output is two files consumed by NicheJEPA's
+The output is two files consumed by TERRA's
 ``protein_init`` config block:
 
 - ``<out>.pt`` : ``torch.Tensor[N_covered_genes, 1152]``, float32.
@@ -33,7 +33,7 @@ The output is two files consumed by NicheJEPA's
 
 Non-protein-coding genes (lncRNAs, miRNAs, pseudogenes, deprecated
 Ensembl IDs) are skipped here — at training time those token IDs
-route through NicheJEPA's learnable special-token branch with random
+route through TERRA's learnable special-token branch with random
 init (frozen). The script logs coverage so you know how many vocab
 tokens got a protein embedding.
 
@@ -82,7 +82,7 @@ Pyensembl needs a one-time per-species download:
 The resulting ``<output_prefix>.pt`` / ``.json`` are referenced directly
 from the model YAML under the ``protein_init`` block. The encoder's
 ``protein_init`` code is dim-agnostic, so any of the ESM-C variants
-plugs in without further changes; pair with NicheJEPA's ``enc_emb_dim``
+plugs in without further changes; pair with TERRA's ``enc_emb_dim``
 to control whether dim reduction happens (warm-start mode auto-skips
 PCA when ``enc_emb_dim`` equals the ESM dim).
 """
@@ -103,7 +103,7 @@ logger = logging.getLogger("compute_protein_embeddings")
 
 # Per-species configuration: which pyensembl species to query and which
 # Ensembl gene-ID prefix to filter the token dictionary on. The prefix
-# also appears in NicheJEPA's `protein_init.py` defaults; keep this in
+# also appears in TERRA's `protein_init.py` defaults; keep this in
 # sync if you extend either side.
 _SPECIES_SPECS = {
     "human": {
@@ -336,7 +336,7 @@ def main(args: argparse.Namespace) -> None:
                 args.esm_model, esm_dim)
     logger.info("Output prefix: %s", out_prefix)
 
-    # 1. Load the NicheJEPA token dictionary.
+    # 1. Load the TERRA token dictionary.
     logger.info("Loading token dictionary from %s", args.token_dictionary_file_path)
     with open(args.token_dictionary_file_path, "rb") as f:
         token_dict = pickle.load(f)
@@ -474,7 +474,7 @@ if __name__ == "__main__":
         "--token_dictionary_file_path",
         type=str,
         required=True,
-        help="Path to NicheJEPA's pickled token dictionary, e.g. "
+        help="Path to TERRA's pickled token dictionary, e.g. "
              "token_dictionary_homo_sapiens.pkl or "
              "token_dictionary_mus_musculus.pkl.")
     parser.add_argument(
@@ -491,7 +491,7 @@ if __name__ == "__main__":
         default="esmc_600m",
         choices=sorted(_ESMC_MODELS),
         help="Which ESM-C variant to use. esmc_300m -> 960-dim "
-             "(matches NicheJEPA enc_emb_dim=960 with no dim "
+             "(matches TERRA enc_emb_dim=960 with no dim "
              "reduction); esmc_600m -> 1152-dim (default; pair with "
              "warm-start PCA for 768-dim, or set enc_emb_dim=1152 "
              "for direct copy); esmc_6b -> 2560-dim (highest quality, "

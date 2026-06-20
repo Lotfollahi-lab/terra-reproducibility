@@ -31,21 +31,21 @@ from sklearn.model_selection import train_test_split
 
 from app.infer import get_gene_embed, get_average_gene_embed, infer
 from app.train import train
-from nichejepa.datasets import prepare_dataset
-from nichejepa.utils.config import create_params_from_YAML_wandb_config
-from nichejepa.utils.distributed import init_distributed
-from nichejepa.utils.embedding import collect_adata_from_folder
-from nichejepa.utils.evaluation import clustering_metrics, classification_metrics
+from terra.datasets import prepare_dataset
+from terra.utils.config import create_params_from_YAML_wandb_config
+from terra.utils.distributed import init_distributed
+from terra.utils.embedding import collect_adata_from_folder
+from terra.utils.evaluation import clustering_metrics, classification_metrics
 
 from analysis_utils import *
 
 
 def main(args):
     ### Define paths ###
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
-    model_folder_path = f'/nfs/team361/sb75/nichejepa-reproducibility/artifacts/models/{args.load_timestamp}'
+    model_folder_path = f'/nfs/team361/sb75/terra-reproducibility/artifacts/models/{args.load_timestamp}'
     raw_data_folder_path = f'/nfs/team361/sb75/DATASETS/silver/{args.cohort_name}'
     ####################
 
@@ -222,7 +222,7 @@ if __name__ == '__main__':
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep16_0.pth.tar',
+                        default='terra-ep16_0.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,
@@ -234,7 +234,7 @@ if __name__ == '__main__':
                         help='Name of data cohort.')
     parser.add_argument('--dataset_path',
                         type=str,
-                        default='/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset',
+                        default='/nfs/team361/sb75/terra-reproducibility/artifacts/hst_corpus_80m/18062025_082526_412/ep16_0_5k_myeloid.dataset',
                         help='Path to the Huggingface dataset for which to retrieve the gene program embeddings.')    
     parser.add_argument('--emb_layer',
                         type=int,

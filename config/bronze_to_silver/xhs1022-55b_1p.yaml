@@ -1,7 +1,7 @@
 experiment:
   name: "xhs1022-55b_1p"
   description: "Xenium Human Skin (dataset-id 1022) | 55 batch | 1 panel | Preprocess to silver"
-  study: "Beacon Data from Lloyd Steele (Validation Set + Psoriasis + 3D - nichejepa-reproducibility/analysis/data_preparation/harmonize_xhs1022-55b_1p.ipynb)"
+  study: "Beacon Data from Lloyd Steele (Validation Set + Psoriasis + 3D - terra-reproducibility/analysis/data_preparation/harmonize_xhs1022-55b_1p.ipynb)"
 
 paths:
   data_directory_path: "/nfs/team361/sb75/DATASETS"

@@ -13,7 +13,7 @@ def none_or_str(value):
 
 
 def main(args):
-    config_path = Path('/nfs/team361/sb75/nichejepa-reproducibility/config') / args.tokenizer
+    config_path = Path('/nfs/team361/sb75/terra-reproducibility/config') / args.tokenizer
 
     # Read datasets
     datasets_df = pd.read_csv(
@@ -34,8 +34,8 @@ def main(args):
             dataset_config['experiment']['model_input_size'] = args.model_input_size
 
             dataset_config['paths']['data_directory_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/'
-            dataset_config['paths']['norm_factor_file_path'] = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv'
-            dataset_config['paths']['pf_targets_file_path'] = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/hst_corpus_110m_pf_targets.csv'
+            dataset_config['paths']['norm_factor_file_path'] = '/nfs/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv'
+            dataset_config['paths']['pf_targets_file_path'] = '/nfs/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_110m_pf_targets.csv'
             dataset_config['paths']['token_dictionary_file_path'] = '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
 
             dataset_config['tokenization']['rank_cell_norm_method'] = args.rank_cell_norm_method
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--cohort_dataset_names_file_path',
                         type=str,
-                        default="/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt",
+                        default="/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt",
                         help='Path to the file containing all datasets in the cohort.')
     parser.add_argument('--tokenizer',
                         type=str,

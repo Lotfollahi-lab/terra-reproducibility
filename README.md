@@ -1,4 +1,4 @@
-# nichejepa-reproducibility
+# terra-reproducibility
 
 ## Datasets
 
@@ -103,7 +103,7 @@ This can also be achieved by an LSF job using `./scripts/collect_cohort_statisti
 Set tokenization configs for each dataset.
 ```
 python analysis/tokenization/set_tokenization_config_params.py \
---cohort_dataset_names_file_path '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt' \
+--cohort_dataset_names_file_path '/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_70m/hst_corpus_70m_dataset_names.txt' \
 --tokenizer "cell-graph-tokenizer" \
 --model_input_size 1792 \
 --rank_cell_norm_method None \

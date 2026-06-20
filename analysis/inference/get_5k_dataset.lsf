@@ -11,9 +11,9 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                             # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Run your Python script
 python get_5k_dataset.py \
     --load_timestamp 29102025_142759_837 \
-    --filtered_dataset_path '/nfs/team361/sb75/nichejepa-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset' \
+    --filtered_dataset_path '/nfs/team361/sb75/terra-reproducibility/artifacts/hst_corpus_110m/29102025_142759_837/5k.dataset' \

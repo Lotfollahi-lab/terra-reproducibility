@@ -125,7 +125,7 @@ dataset_ids = [
 'xho1012-M23-4b_1p',
 'xhl1013-4b_1p']
 
-config_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/config/bronze_to_silver'
+config_folder_path = '/nfs/team361/sb75/terra-reproducibility/config/bronze_to_silver'
 silver_folder_path = '/nfs/team361/sb75/DATASETS/silver'
 
 yaml_data = []

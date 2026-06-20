@@ -8,16 +8,16 @@ experiment:
   # model_input_size: 2244 # uncomment to manually set the model input size
 
 wandb:
-  project: "NicheJEPA"
+  project: "TERRA"
   job_type: "measure_batch_integration"
   save_artifact: False
   tags: ["measure-batch-integration", "merfish-mouse-brain-2batch", "read-depth", "shifted-log"]
   mode: "offline"
 
 paths:
-  data_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/st_data/"
-  tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/datasets/am84/tokenizer/"
-  profiler_path: "/lustre/scratch126/cellgen/team361/am84/NicheJEPA/logs/"
+  data_directory_path: "/lustre/scratch126/cellgen/team361/am84/TERRA/datasets/am84/st_data/"
+  tokenizer_directory_path: "/lustre/scratch126/cellgen/team361/am84/TERRA/datasets/am84/tokenizer/"
+  profiler_path: "/lustre/scratch126/cellgen/team361/am84/TERRA/logs/"
 
 tokenization:
   use_generator: True

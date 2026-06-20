@@ -1,4 +1,4 @@
-name: nichejepa-reproducibility
+name: terra-reproducibility
 channels:
   - conda-forge
 dependencies:

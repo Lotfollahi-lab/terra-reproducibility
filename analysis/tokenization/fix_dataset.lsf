@@ -10,7 +10,7 @@
 #BSUB -W 48:00                                                     # Walltime (hh:mm)
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Run your Python script
 python fix_dataset.py \

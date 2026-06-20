@@ -19,5 +19,5 @@ conda activate /nfs/team361/sb75/ENVS/rapids-singlecell
 python get_5k_tissue_clusters.py \
     --cohort_name 'hst_corpus_110m' \
     --load_timestamp '07112025_054432_709' \
-    --read_checkpoint 'nichejepa-ep3.pth.tar' \
+    --read_checkpoint 'terra-ep3.pth.tar' \
     --n_pcs 50

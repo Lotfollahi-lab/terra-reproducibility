@@ -30,7 +30,7 @@ from analysis_utils import *
 
 def main(args):
     ### Define paths ###
-    artifacts_folder_path = '/nfs/team361/sb75/nichejepa-reproducibility/artifacts'
+    artifacts_folder_path = '/nfs/team361/sb75/terra-reproducibility/artifacts'
     datasets_folder_path = '/nfs/team361/sb75/DATASETS'
     token_dict_path = f'{datasets_folder_path}/tokenizer/token_dictionary_homo_sapiens.pkl'
     folder_path = f'{artifacts_folder_path}/{args.cohort_name}/{args.load_timestamp}'
@@ -130,7 +130,7 @@ if __name__ == '__main__':
                         help='Model load timestamp.')
     parser.add_argument('--read_checkpoint',
                         type=str,
-                        default='nichejepa-ep2.pth.tar',
+                        default='terra-ep2.pth.tar',
                         help='Model read checkpoint.')
     parser.add_argument("--aws_run",
                         action=argparse.BooleanOptionalAction,

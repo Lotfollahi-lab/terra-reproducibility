@@ -1,4 +1,4 @@
-name: rapids_singlecell_nichejepa
+name: rapids_singlecell_terra
 channels:
  - rapidsai
  - nvidia
@@ -29,6 +29,6 @@ dependencies:
     - cellphonedb
     #-pip install torch --index-url https://download.pytorch.org/whl/cu129
     #-pip install scib-metrics
-    #-pip install -e . (in nichejepa directory)
+    #-pip install -e . (in terra directory)
     #-pip install dask[dataframe]==2025.9.1 distributed
     #-pip install peft

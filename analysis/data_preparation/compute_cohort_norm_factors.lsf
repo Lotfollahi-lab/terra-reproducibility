@@ -10,11 +10,11 @@
 #BSUB -W 24:00                                                                                         # Walltime (hh:mm)
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Run the Python script
 python compute_cohort_norm_factors.py \
     --cohort_name 'hst_corpus_110m' \
-    --cohort_dataset_names_file_path '/nfs/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
+    --cohort_dataset_names_file_path '/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
     --basis_target_read_depth \
     --target_read_depth_per_gene \

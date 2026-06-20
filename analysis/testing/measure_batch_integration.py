@@ -15,7 +15,7 @@ from typing import Tuple, Dict, Iterable
 
 from datasets import load_from_disk
 from sklearn.neighbors import NearestNeighbors
-from nichejepa.datasets.cell_neighborhood_dataset import CellNeighborhoodDataset
+from terra.datasets.cell_neighborhood_dataset import CellNeighborhoodDataset
 
 
 def compute_lisi(X: np.array,

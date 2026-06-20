@@ -15,7 +15,7 @@ tokenization:
   keep_in_memory: False
 
 wandb:
-  project: "NicheJEPA"
+  project: "TERRA"
   job_type: "create-tokenized-dataset"
   save_artifact: False
   mode: "offline"

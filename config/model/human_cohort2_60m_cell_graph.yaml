@@ -9,7 +9,7 @@ data:
   random_state: 0
   sample_subset: False
   split: 0
-  precomputed_split: '/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/tokenization/precomputed_split'
+  precomputed_split: '/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/analysis/tokenization/precomputed_split'
   precomputed_n_nonzero_tokens: False
   stratify: False
   seq_len_cell: 64
@@ -55,8 +55,8 @@ optimization:
 state:
   log_freq: 20
   checkpoint_freq: 1
-  write_tag: nichejepa
+  write_tag: terra
   read_timestamp: ''
   folder_path: null
   load_checkpoint: False # true, false
-  read_checkpoint: null # null, 'nichejepa-ep5.pth.tar'
+  read_checkpoint: null # null, 'terra-ep5.pth.tar'

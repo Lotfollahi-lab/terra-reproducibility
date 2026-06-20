@@ -11,12 +11,12 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                                # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Run your Python script
 python get_5k_cell_embeddings.py \
     --cohort_name 'hst_corpus_110m' \
     --load_timestamp '19122025_101304_096' \
-    --read_checkpoint 'nichejepa-ep2.pth.tar' \
+    --read_checkpoint 'terra-ep2.pth.tar' \
     --start_step 90 \
     --end_step 99

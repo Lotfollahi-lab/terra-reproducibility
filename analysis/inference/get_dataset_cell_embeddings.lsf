@@ -11,7 +11,7 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                                         # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/nichejepa/bin/activate
+source ~/.venvs/terra/bin/activate
 
 # Define datasets and batches (index 1-based)
 DATASETS=(
@@ -54,7 +54,7 @@ echo "Running job index $LSB_JOBINDEX with dataset: $DATASET_NAME and batch: $BA
 python get_dataset_cell_embeddings.py \
     --cohort_name hst_corpus_110m \
     --load_timestamp 03112025_004451_930 \
-    --read_checkpoint nichejepa-ep3.pth.tar \
+    --read_checkpoint terra-ep3.pth.tar \
     --datasets_path /nfs/team361/sb75/DATASETS \
     --dataset_name "$DATASET_NAME" \
     --batch_id "$BATCH_ID"

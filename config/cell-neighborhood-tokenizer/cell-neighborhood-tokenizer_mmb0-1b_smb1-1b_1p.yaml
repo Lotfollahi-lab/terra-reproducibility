@@ -5,7 +5,7 @@ experiment:
   tokenizer: cell-neighborhood-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
-  norm_factor_file_path: /nfs/team361/sb75/nichejepa-reproducibility/artifacts/data/mst_corpus_10m_norm_factors.csv
+  norm_factor_file_path: /nfs/team361/sb75/terra-reproducibility/artifacts/data/mst_corpus_10m_norm_factors.csv
   token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl
 tokenization:
   count_cell_norm_method: null
@@ -26,5 +26,5 @@ tokenization:
 wandb:
   job_type: create-tokenized-dataset
   mode: offline
-  project: NicheJEPA
+  project: TERRA
   save_artifact: false

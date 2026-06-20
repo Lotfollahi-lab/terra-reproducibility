@@ -4,7 +4,7 @@ experiment:
   study: Unspecified
 
 paths:
-  data_directory_path: /home/aih/sebastian.birk/workspace/projects/nichejepa-reproducibility/data/st_data
+  data_directory_path: /home/aih/sebastian.birk/workspace/projects/terra-reproducibility/data/st_data
 
 dataset:
   source: "nichecompass"

@@ -15,7 +15,7 @@ def parse_arguments() -> argparse.Namespace:
     
     parser.add_argument('--config_file', 
                         type=str,
-                        default='/lustre/scratch126/cellgen/team361/am84/NicheJEPA/reproducibility/config/bronze_to_silver/xhs1000-39b_1p.yaml',
+                        default='/lustre/scratch126/cellgen/team361/am84/TERRA/reproducibility/config/bronze_to_silver/xhs1000-39b_1p.yaml',
                         help='Path to the config file')
     parser.add_argument('--override', 
                         nargs='+', 

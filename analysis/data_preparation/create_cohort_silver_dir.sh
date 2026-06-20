@@ -3,7 +3,7 @@
 cohort_name="hst_corpus_70m"
 
 # File containing the list of DATASETS names
-DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/sb75/nichejepa-reproducibility/analysis/data_preparation/${cohort_name}/${cohort_name}_dataset_names.txt"
+DATASET_NAMES_FILE="/lustre/scratch126/cellgen/team361/sb75/terra-reproducibility/analysis/data_preparation/${cohort_name}/${cohort_name}_dataset_names.txt"
 
 # Check if the file exists
 if [[ ! -f $DATASET_NAMES_FILE ]]; then
