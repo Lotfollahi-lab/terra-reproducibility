@@ -1,0 +1,54 @@
+# Configuration for terra-finetune_single-outer-fold.py
+#
+# Usage:
+#   python analysis/finetune/terra-finetune_single-outer-fold.py \
+#       --config config/finetuning/terra-finetune_xhs-cell-transfer.yaml \
+#       --outer-fold 1
+
+# Data paths
+data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_cell-transfer
+
+# Override split metadata label column
+label_column: lvl1_new
+
+# Model checkpoint path
+pretrained_checkpoint_path: /nfs/team361/sb75/terra-reproducibility/artifacts/models/01112025_081731_614/
+
+# Output directory (defaults to data_root/model_artifacts/pantheome-lora-linear-probing if omitted)
+output_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_cell-transfer/model_artifacts/terra-finetune
+
+# Data config
+data_config:
+  batch_size: 500
+  mega_batch_mult_max: 1000
+  num_workers: 4  # Will use LSB_DJOB_NUMPROC if available
+  pin_memory: false
+
+# Finetune config
+finetune_config:
+  # Training parameters
+  num_epochs_inner: 2
+  num_epochs_outer: 5
+  patience: 2
+
+  # Learning rate values to search over
+  lr_values:
+    - 0.0001
+    - 0.001
+
+  # Selective unfreezing (no PEFT)
+  use_peft: false
+  peft_target_modules:
+    - "11.attn.qkv"
+    - "11.attn.proj"
+    - "11.mlp.fc1"
+    - "11.mlp.fc2"
+
+  # Head settings
+  use_mlp: false
+  hidden_dim: 256
+
+  # Feature selection
+  selection_type: agg_cell
+  excluded_tokens: null
+  top_k: null
