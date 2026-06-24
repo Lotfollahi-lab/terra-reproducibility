@@ -1,0 +1,84 @@
+# Configuration file for I-JEPA finetuning on Visium data (pretrained on Xenium)
+
+# Model paths
+model:
+  # Path to pretrained checkpoint directory 
+  pretrained_checkpoint_path: '/lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuned_models/01112025_081731_614'
+  
+  # Path where finetuned checkpoints will be saved
+  finetune_checkpoint_path: '/lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuned_models'
+
+# Data configuration
+data:
+  # Path to tokenized Visium dataset(s) 
+  finetune_dataset:
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_022_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_061_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_101_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_145_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_212_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_029_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_064_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_106_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_154_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_221_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_031_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_068_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_121_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_161_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_231_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_035_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_071_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_124_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_165_QC_tokenised
+    - /lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuning/Tokenised_data/Un_norm/section_241_QC_tokenised
+
+
+
+  # Dataloader settings (from pretraining config)
+  batch_size: 144  
+  pin_memory: true
+  num_workers: 16  
+  drop_last: true
+
+  # Masking strategy 
+  sample_segments: false  
+  sample_gene_masks: true
+
+# Finetuning hyperparameters
+finetune:
+  # Training settings 
+  num_epochs: 20  
+  lr: 0.001  
+  warmup_epochs: 2  
+  start_lr: 0.00001  
+  final_lr: 0.00001 
+  weight_decay: 0.04  
+  final_weight_decay: 0.4  
+  
+  # EMA (Exponential Moving Average) for target encoder 
+  ema_momentum: 0.9995  
+  final_ema_momentum: 1.0  
+  
+  # Loss functio
+  loss_fn_type: 'smooth_l1'  
+  
+  # Gradient clipping 
+  clip_grad: 2.0  
+  
+  # Mixed precision training 
+  use_bfloat16: true  
+  
+  # PEFT (Parameter-Efficient Fine-Tuning) - LoRA 
+  use_peft: true
+  peft_method: 'lora'
+  peft_rank: 16  
+  peft_alpha:  256 
+  peft_dropout: 0.1
+  peft_bias: 'none'  
+  peft_target_modules: ['qkv', 'proj', 'fc1', 'fc2']  
+  #peft_target_modules: ['qkv', 'proj'] 
+
+  # Checkpoint saving
+  save_every: 1  # Save every epoch 
+
