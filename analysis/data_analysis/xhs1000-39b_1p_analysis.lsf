@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -G team361                                                                       # LSF group
+#BSUB -G s10396                                                                        # LSF group
 #BSUB -J xhs1000-39b_1p_analysis                                                       # Job name
 #BSUB -o ../../logs/analysis/xhs1000-39b_1p_analysis/xhs1000-39b_1p_analysis_%J.out    # Standard output (%J = job ID)
 #BSUB -e ../../logs/analysis/xhs1000-39b_1p_analysis/xhs1000-39b_1p_analysis_%J.err    # Standard error
