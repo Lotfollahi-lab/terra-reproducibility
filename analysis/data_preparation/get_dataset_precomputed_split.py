@@ -15,7 +15,7 @@ def main(args):
         ) in args.keep_batch_ids for cell_id in cell_ids]
     keep_idx = [i for i, b in enumerate(keep_mask) if b]
 
-    with open(f'{tokenizer_folder_path}/{args.dataset_name}_precomputed_split.pkl', 'wb') as f:
+    with open(f"{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.split('/')[-1].split('.')[0]}_precomputed_split_{args.dataset_name}.pkl", 'wb') as f:
         pickle.dump(keep_idx, f)
     print(f"Saved dataset indices for dataset {args.dataset_name}.")
 
@@ -25,7 +25,7 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--tokenizer_folder_path',
                         type=str,
-                        default='/nfs/team361/sb75/DATASETS/tokenizer',
+                        default='/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer',
                         help='Tokenizer folder path.')
     parser.add_argument('--tokenized_data_folder_path',
                         type=str,
@@ -33,7 +33,7 @@ if __name__ == '__main__':
                         help='Tokenized data directory path.')
     parser.add_argument('--dataset_name',
                         type=str,
-                        default="xhs1000_test",
+                        default="xhs1000-39b_1p",
                         help='Name of the dataset.')
     parser.add_argument('--keep_batch_ids',
                         type=str,
