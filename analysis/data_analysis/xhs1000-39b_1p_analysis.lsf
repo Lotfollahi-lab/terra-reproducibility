@@ -18,7 +18,12 @@ source /nfs/team361/sb75/.venvs/terra-rapids/bin/activate
 
 # Run the analysis (submit this job from analysis/data_analysis/ so the script's
 # relative paths, e.g. sys.path.append("../../utils"), resolve).
-# Edit --model_timestamp / --checkpoint to point at the model run you want.
+#
+# Pick the model run per submission via MODEL_TIMESTAMP / CHECKPOINT env vars
+# (LSF forwards the submission environment to the job), e.g.:
+#   MODEL_TIMESTAMP=24062026_143932_756 CHECKPOINT=terra-ep19.pth.tar \
+#       bsub < xhs1000-39b_1p_analysis.lsf
+# The values below are the defaults used when those vars are not set.
 python xhs1000-39b_1p_analysis.py \
-    --model_timestamp 24062026_143538_479 \
-    --checkpoint terra-ep49.pth.tar
+    --model_timestamp "${MODEL_TIMESTAMP:-24062026_143538_479}" \
+    --checkpoint "${CHECKPOINT:-terra-ep49.pth.tar}"
