@@ -10,7 +10,7 @@ split:
   k_inner: 1
   shuffle: true
   seed: 42
-  root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-transfer
+  root_save_dir: /nfs/team361/am84/TERRA/tasks/xhs_niche-transfer
   require_all_labels: false
-  group_balance_tolerance: 1
+  group_balance_tolerance: 25
   max_retries: 1

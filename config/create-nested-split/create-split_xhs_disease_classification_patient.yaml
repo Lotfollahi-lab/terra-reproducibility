@@ -6,11 +6,11 @@ split:
   in_patient: false
   stratify_group: "Patient ID"
   label_column: disease_overall
-  k_outer: 2
+  k_outer: 5
   k_inner: 1
   shuffle: true
   seed: 1
   root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_disease-classification-patient
   require_all_labels: true
-  group_balance_tolerance: 1
+  group_balance_tolerance: 25
   max_retries: 10

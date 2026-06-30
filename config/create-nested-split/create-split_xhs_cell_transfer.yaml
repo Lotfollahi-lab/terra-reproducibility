@@ -1,0 +1,16 @@
+data:
+  adata_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+  dataset_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.dataset
+
+split:
+  in_patient: false
+  stratify_group: "Patient ID"
+  label_column: lvl1_new
+  k_outer: 4
+  k_inner: 1
+  shuffle: true
+  seed: 42
+  root_save_dir: /nfs/team361/am84/TERRA/tasks/xhs_cell-transfer
+  require_all_labels: false
+  group_balance_tolerance: 15
+  max_retries: 1

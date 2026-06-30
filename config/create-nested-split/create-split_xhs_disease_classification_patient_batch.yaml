@@ -10,7 +10,7 @@ split:
   k_inner: 1
   shuffle: true
   seed: 1
-  root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_disease-classification-patient-batch_5-folds
+  root_save_dir: /nfs/team361/am84/TERRA/tasks/xhs_disease-classification-patient-batch
   require_all_labels: true
   group_balance_tolerance: 25
   max_retries: 10
