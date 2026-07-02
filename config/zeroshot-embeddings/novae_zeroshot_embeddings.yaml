@@ -1,0 +1,20 @@
+# Configuration file for computing zero-shot embeddings using Novae model
+# Usage: python reproducibility/analysis/benchmarking/compute_zeroshot_embeddings.py --config reproducibility/config/zeroshot-embeddings/novae_zeroshot_embeddings.yaml
+
+model:
+  name: novae
+  # HuggingFace model identifier for pretrained Novae model
+  # Available models: 'MICS-Lab/novae-human-0', 'MICS-Lab/novae-mouse-0', etc.
+  pretrained_model: MICS-Lab/novae-human-0
+
+data:
+  # Path to input AnnData object (.h5ad file)
+  input_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+
+  # Optional: Directory path where embeddings will be saved as .npy files
+  # Files will be named: novae_emb.npy
+  # If not specified, embeddings will not be saved
+  output_path: /nfs/team361/am84/TERRA/data/xhs/
+
+# Note: Novae model does not require additional embedding parameters
+# The model automatically handles preprocessing and embedding computation

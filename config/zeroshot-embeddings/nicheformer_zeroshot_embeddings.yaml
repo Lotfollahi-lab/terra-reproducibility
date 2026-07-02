@@ -1,0 +1,53 @@
+# Configuration file for computing zero-shot embeddings using Nicheformer model
+# Usage: python reproducibility/analysis/benchmarking/compute_zeroshot_embeddings.py --config reproducibility/config/zeroshot-embeddings/nicheformer_zeroshot_embeddings.yaml
+
+model:
+  name: nicheformer
+
+  # Path to nicheformer source code
+  model_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/reproducibility/analysis/benchmarking/nicheformer/
+  
+  # Name of technology-specific mean file (.npy)
+  # Used for normalization (e.g., xenium_mean_script.npy)
+  technology_mean_name: xenium_mean_script.npy
+  
+  # Name of Nicheformer checkpoint file (.ckpt)
+  checkpoint_name: nicheformer.ckpt
+
+data:
+  # Path to input AnnData object (.h5ad file)
+  input_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+
+  # Optional: Directory path where embeddings will be saved as .npy files
+  # Files will be named: nicheformer_emb.npy
+  # If not specified, embeddings will not be saved
+  output_path: /nfs/team361/am84/TERRA/data/xhs/
+
+embed:
+  # Number of workers for data loading
+  num_workers: 4
+  
+  # Batch size for model inference
+  batch_size: 32
+  
+  # Chunk size for processing (to prevent OOM)
+  chunk_size: 1000
+  
+  # Maximum sequence length
+  max_seq_len: 1500
+  
+  # Number of auxiliary tokens
+  aux_tokens: 30
+  
+  # Layer index for embedding extraction (-1 for last layer)
+  embedding_layer: -1
+  
+  # Metadata values (used for model formatting)
+  # Modality: 4 = spatial
+  modality: 4
+  
+  # Specie: 5 = human
+  specie: 5
+  
+  # Technology: 9 = xenium (see Nicheformer documentation for other values)
+  technology: 9

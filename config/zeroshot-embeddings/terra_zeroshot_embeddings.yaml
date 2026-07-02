@@ -1,0 +1,45 @@
+# Configuration file for computing zero-shot embeddings using TERRA model
+# Usage: python reproducibility/analysis/benchmarking/compute_zeroshot_embeddings.py --config reproducibility/config/zeroshot-embeddings/terra_zeroshot_embeddings.yaml
+
+model:
+  name: terra
+  # Path to TERRA model folder containing:
+  # - model_config.yaml
+  # - token_dictionary.pkl
+  # - norm_factors.csv
+  # - model_checkpoint.pt
+  model_path: /nfs/team361/sb75/terra-reproducibility/artifacts/models/01112025_081731_614/
+
+data:
+  # Input type: 'adata' for AnnData object (.h5ad file) or 'dataset' for HuggingFace dataset
+  input_type: dataset  # Options: 'adata' or 'dataset'
+  
+  # Path to input data
+  # For adata: path to .h5ad file
+  # For dataset: path to HuggingFace dataset directory
+  input_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.dataset
+  adata_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+
+  # Optional: Directory path where embeddings will be saved as .npy files
+  # Files will be named: terra_cell_emb.npy, terra_nbr_emb.npy, terra_spatial_cell_emb.npy
+  # If not specified, embeddings will not be saved
+  output_path: /nfs/team361/am84/TERRA/data/xhs/
+
+embed:
+  # Batch size for model inference
+  batch_size: 128
+  
+  # Number of workers for data loading
+  num_workers: 12
+  
+  # Optional: Layer index for embedding extraction (None uses default)
+  # emb_layer: null
+  
+  # Optional: List of token IDs to exclude from aggregation
+  # agg_excluded_genes: null
+  
+  # Optional: Top k genes to include in aggregation
+  # top_k: null
+  
+  # Whether to include spatial cell embeddings (embeddings that attend to neighborhood)
+  include_spatial_cell_emb: false

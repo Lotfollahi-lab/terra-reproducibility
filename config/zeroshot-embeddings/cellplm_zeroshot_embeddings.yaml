@@ -1,0 +1,25 @@
+# Configuration file for computing zero-shot embeddings using CellPLM model
+# Usage: python reproducibility/analysis/benchmarking/compute_zeroshot_embeddings.py --config reproducibility/config/zeroshot-embeddings/cellplm_zeroshot_embeddings.yaml
+
+model:
+  name: cellplm
+  # Model prefix/version identifier (e.g., '20230926_85M')
+  # This identifies which pretrained checkpoint to load
+  pretrain_prefix: 20230926_85M
+  
+  # Directory containing pretrained checkpoints
+  # Should contain checkpoint files matching the pretrain_prefix
+  pretrain_directory: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/reproducibility/analysis/benchmarking/CellPLM/ckpt
+  
+data:
+  # Path to input AnnData object (.h5ad file)
+  input_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+
+  # Optional: Directory path where embeddings will be saved as .npy files
+  # Files will be named: cellplm_emb.npy
+  # If not specified, embeddings will not be saved
+  output_path: /nfs/team361/am84/TERRA/data/xhs/
+
+
+# Note: CellPLM model does not require additional embedding parameters
+# The model automatically handles preprocessing and embedding computation

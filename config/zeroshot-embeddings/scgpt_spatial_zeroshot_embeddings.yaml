@@ -1,0 +1,28 @@
+# Configuration file for computing zero-shot embeddings using scGPT-spatial model
+# Usage: python reproducibility/analysis/benchmarking/compute_zeroshot_embeddings.py --config reproducibility/config/zeroshot-embeddings/scgpt_spatial_zeroshot_embeddings.yaml
+
+model:
+  name: scgpt_spatial
+  # Path to scGPT-spatial model directory containing:
+  # - model.pt or best_model.pt
+  # - vocab.json
+  # - args.json (optional)
+  model_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/reproducibility/analysis/benchmarking/scGPT-spatial/checkpoints/scGPT_spatial_v1
+
+data:
+  # Path to input AnnData object (.h5ad file)
+  input_path: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_harmonized_nemo_heldout.h5ad
+
+  # Optional: Directory path where embeddings will be saved as .npy files
+  # Files will be named: scgpt-spatial_emb.npy
+  # If not specified, embeddings will not be saved
+  output_path: /nfs/team361/am84/TERRA/data/xhs/
+
+embed:
+  # Batch size for model inference
+  batch_size: 64
+  
+  # Column name in adata.var that contains gene names
+  # If 'index', uses adata.var.index as gene names
+  # If column doesn't exist, will be created from adata.var.index
+  gene_col: feature_name
