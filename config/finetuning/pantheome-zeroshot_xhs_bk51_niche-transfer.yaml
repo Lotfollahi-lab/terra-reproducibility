@@ -1,5 +1,6 @@
 # Data paths
-data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_bk51_niche-transfer
+data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_cell-transfer
+# data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_bk51_niche-transfer
 
 # Model config
 model:
@@ -8,7 +9,7 @@ model:
 # Data config
 data:
   batch_size: 100
-  num_workers: 6
+  num_workers: 4
   pin_memory: false
 
 # Embed cells
@@ -25,4 +26,4 @@ evaluation:
     - 12
     - 16
     - 20
-  knn_batch_size: null
+  knn_batch_size: 100

@@ -1,0 +1,17 @@
+# Data paths
+data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_cell-transfer
+
+model:
+  model_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/reproducibility/analysis/benchmarking/scGPT-spatial/checkpoints/scGPT_spatial_v1
+
+# Evaluation config
+evaluation:
+  k_values:
+    - 4
+    - 8
+    - 12
+    - 16
+    - 20
+  knn_batch_size: 100
+
+output_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_cell-transfer/model_artifacts/scgpt-spatial-zeroshot

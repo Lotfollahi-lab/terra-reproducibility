@@ -282,7 +282,8 @@ def main():
         gc.collect()
 
     else:
-        test_features = np.load(output_outer_dir / "test_features.npy")
+        # test_features = np.load(output_outer_dir / "test_features.npy")
+        test_features = np.load(test_feature_path)
         test_labels = np.load(output_outer_dir / "test_labels.npy")
         print(f"Loaded test features: {test_features.shape}, labels: {test_labels.shape}")
 
@@ -338,11 +339,15 @@ def main():
         gc.collect()
     
     else:
-        train_cell_ids = []
-        for _, (udata, _, _, _) in tqdm(enumerate(train_loader), desc="Iterating over train loader..."):
-            train_cell_ids.extend(udata['cell_id'])
+        # train_cell_ids = []
+        # for _, (udata, _, _, _) in tqdm(enumerate(train_loader), desc="Iterating over train loader..."):
+        #     train_cell_ids.extend(udata['cell_id'])
+        train_adata = sc.read_h5ad(train_adata_path)
+        train_cell_ids = train_adata.obs['cell_id'].tolist()
+        del train_adata
         
-        train_features = np.load(output_outer_dir / "train_features.npy")
+        # train_features = np.load(output_outer_dir / "train_features.npy")
+        train_features = np.load(train_feature_path)
         train_labels = np.load(output_outer_dir / "train_labels.npy")
         print(f"Loaded train features: {train_features.shape}, labels: {train_labels.shape}")    
     

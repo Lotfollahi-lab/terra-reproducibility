@@ -477,104 +477,104 @@ def main():
         np.save(output_inner_dir / "train_labels.npy", train_inner_labels)
         print(f"    Saved train features: {train_inner_features.shape}, labels: {train_inner_labels.shape}")
 
-        # KNN evaluation: Test different k values on val set
-        print(f"    Evaluating KNN with k values {k_values} on val set...")
-        val_accuracies = {}
-        best_k_predictions = None
+    #     # KNN evaluation: Test different k values on val set
+    #     print(f"    Evaluating KNN with k values {k_values} on val set...")
+    #     val_accuracies = {}
+    #     best_k_predictions = None
         
-        for k in k_values:
-            val_predictions = knn_classifier(
-                features_train=train_inner_features,
-                labels_train=train_inner_labels,
-                features_test=val_features,
-                labels_test=val_labels,
-                k=k,
-                batch_size=knn_batch_size
-            )
-            val_acc = accuracy_score(val_labels, val_predictions)
-            val_accuracies[k] = val_acc
-            print(f"      k={k}: val_accuracy={val_acc:.4f}")
+    #     for k in k_values:
+    #         val_predictions = knn_classifier(
+    #             features_train=train_inner_features,
+    #             labels_train=train_inner_labels,
+    #             features_test=val_features,
+    #             labels_test=val_labels,
+    #             k=k,
+    #             batch_size=knn_batch_size
+    #         )
+    #         val_acc = accuracy_score(val_labels, val_predictions)
+    #         val_accuracies[k] = val_acc
+    #         print(f"      k={k}: val_accuracy={val_acc:.4f}")
             
-            # Store predictions for best k
-            if best_k_predictions is None or val_acc > max(val_accuracies.values()):
-                best_k_predictions = val_predictions
+    #         # Store predictions for best k
+    #         if best_k_predictions is None or val_acc > max(val_accuracies.values()):
+    #             best_k_predictions = val_predictions
         
-        # Pick best k based on val accuracy for this inner fold
-        best_k = max(val_accuracies, key=val_accuracies.get)
-        best_val_acc = val_accuracies[best_k]
-        print(f"    Best k={best_k} with val_accuracy={best_val_acc:.4f}")
+    #     # Pick best k based on val accuracy for this inner fold
+    #     best_k = max(val_accuracies, key=val_accuracies.get)
+    #     best_val_acc = val_accuracies[best_k]
+    #     print(f"    Best k={best_k} with val_accuracy={best_val_acc:.4f}")
         
-        # Save classification report for best k on val set
-        val_report_path = output_inner_dir / f"val_cls_report_k={best_k}.csv"
-        save_classification_report_csv(
-            labels_true=val_labels,
-            labels_pred=best_k_predictions,
-            save_path=val_report_path,
-            k=best_k
-        )
+    #     # Save classification report for best k on val set
+    #     val_report_path = output_inner_dir / f"val_cls_report_k={best_k}.csv"
+    #     save_classification_report_csv(
+    #         labels_true=val_labels,
+    #         labels_pred=best_k_predictions,
+    #         save_path=val_report_path,
+    #         k=best_k
+    #     )
         
-        # Store best k and results for this inner fold
-        inner_fold_best_ks.append(best_k)
-        inner_fold_results.append({
-            'outer_fold': outer_fold,
-            'inner_fold': inner_fold,
-            'best_k': best_k,
-            'val_accuracy': best_val_acc,
-            **{f'k_{k}_val_acc': val_accuracies.get(k, np.nan) for k in k_values},
-        })
+    #     # Store best k and results for this inner fold
+    #     inner_fold_best_ks.append(best_k)
+    #     inner_fold_results.append({
+    #         'outer_fold': outer_fold,
+    #         'inner_fold': inner_fold,
+    #         'best_k': best_k,
+    #         'val_accuracy': best_val_acc,
+    #         **{f'k_{k}_val_acc': val_accuracies.get(k, np.nan) for k in k_values},
+    #     })
     
-    # After all inner folds, aggregate best k (use most common, or mode)
-    if len(inner_fold_best_ks) > 0:
-        best_k_counts = Counter(inner_fold_best_ks)
-        aggregated_best_k = best_k_counts.most_common(1)[0][0]
-        print(f"\n  Aggregated best k across all inner folds: {aggregated_best_k} (chosen {best_k_counts[aggregated_best_k]} times)")
+    # # After all inner folds, aggregate best k (use most common, or mode)
+    # if len(inner_fold_best_ks) > 0:
+    #     best_k_counts = Counter(inner_fold_best_ks)
+    #     aggregated_best_k = best_k_counts.most_common(1)[0][0]
+    #     print(f"\n  Aggregated best k across all inner folds: {aggregated_best_k} (chosen {best_k_counts[aggregated_best_k]} times)")
         
-        avg_val_accuracy = np.mean([r['val_accuracy'] for r in inner_fold_results])
-        print(f"  Average validation accuracy across inner folds: {avg_val_accuracy:.4f}")
+    #     avg_val_accuracy = np.mean([r['val_accuracy'] for r in inner_fold_results])
+    #     print(f"  Average validation accuracy across inner folds: {avg_val_accuracy:.4f}")
         
-        # Evaluate on outer fold test set using aggregated best k
-        print(f"\n  Evaluating on outer fold test set with aggregated best k={aggregated_best_k}...")
-        test_predictions = knn_classifier(
-            features_train=train_features,
-            labels_train=train_labels,
-            features_test=test_features,
-            labels_test=test_labels,
-            k=aggregated_best_k,
-            batch_size=knn_batch_size
-        )
+    #     # Evaluate on outer fold test set using aggregated best k
+    #     print(f"\n  Evaluating on outer fold test set with aggregated best k={aggregated_best_k}...")
+    #     test_predictions = knn_classifier(
+    #         features_train=train_features,
+    #         labels_train=train_labels,
+    #         features_test=test_features,
+    #         labels_test=test_labels,
+    #         k=aggregated_best_k,
+    #         batch_size=knn_batch_size
+    #     )
         
-        test_accuracy = accuracy_score(test_labels, test_predictions)
-        print(f"  Test accuracy with k={aggregated_best_k}: {test_accuracy:.4f}")
+    #     test_accuracy = accuracy_score(test_labels, test_predictions)
+    #     print(f"  Test accuracy with k={aggregated_best_k}: {test_accuracy:.4f}")
         
-        # Save classification report for test set
-        test_report_path = output_outer_dir / f"test_cls_report_k={aggregated_best_k}.csv"
-        save_classification_report_csv(
-            labels_true=test_labels,
-            labels_pred=test_predictions,
-            save_path=test_report_path,
-            k=aggregated_best_k
-        )
+    #     # Save classification report for test set
+    #     test_report_path = output_outer_dir / f"test_cls_report_k={aggregated_best_k}.csv"
+    #     save_classification_report_csv(
+    #         labels_true=test_labels,
+    #         labels_pred=test_predictions,
+    #         save_path=test_report_path,
+    #         k=aggregated_best_k
+    #     )
         
-        # Update all inner fold results with test accuracy and aggregated best k
-        for result in inner_fold_results:
-            result['aggregated_best_k'] = aggregated_best_k
-            result['test_accuracy'] = test_accuracy
-            result['avg_val_accuracy'] = avg_val_accuracy
+    #     # Update all inner fold results with test accuracy and aggregated best k
+    #     for result in inner_fold_results:
+    #         result['aggregated_best_k'] = aggregated_best_k
+    #         result['test_accuracy'] = test_accuracy
+    #         result['avg_val_accuracy'] = avg_val_accuracy
         
-        all_results.extend(inner_fold_results)
+    #     all_results.extend(inner_fold_results)
     
-    # Save summary CSV for this outer fold
-    if len(all_results) > 0:
-        summary_df = pd.DataFrame(all_results)
-        summary_path = output_outer_dir / f"cv_results_outer_fold_{outer_fold}.csv"
-        summary_df.to_csv(summary_path, index=False)
-        print(f"\n{'='*60}")
-        print(f"Outer fold {outer_fold} complete!")
-        print(f"Results saved to: {output_outer_dir}")
-        print(f"Summary CSV saved to: {summary_path}")
-        print(f"{'='*60}")
-    else:
-        print(f"\nNo results to save for outer fold {outer_fold}. Please check that data exists.")
+    # # Save summary CSV for this outer fold
+    # if len(all_results) > 0:
+    #     summary_df = pd.DataFrame(all_results)
+    #     summary_path = output_outer_dir / f"cv_results_outer_fold_{outer_fold}.csv"
+    #     summary_df.to_csv(summary_path, index=False)
+    #     print(f"\n{'='*60}")
+    #     print(f"Outer fold {outer_fold} complete!")
+    #     print(f"Results saved to: {output_outer_dir}")
+    #     print(f"Summary CSV saved to: {summary_path}")
+    #     print(f"{'='*60}")
+    # else:
+    #     print(f"\nNo results to save for outer fold {outer_fold}. Please check that data exists.")
 
 
 if __name__ == "__main__":
