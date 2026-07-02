@@ -1,0 +1,10 @@
+task_dir: /nfs/team361/am84/TERRA/tasks/xhs_niche-transfer
+
+evaluation:
+  k_values:
+    - 4
+    - 8
+    - 12
+    - 16
+    - 20
+  knn_batch_size: 10000

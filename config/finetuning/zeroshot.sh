@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODEL_NAME=$1       # model name: pantheome-zeroshot, novae-zeroshot, scgpt-spatial-zeroshot
+MODEL_NAME=$1       # model name
 CONFIG_FILE=$2      # path to the config file
 
 # Get outer fold from argument or LSB_JOBINDEX (for array jobs)
@@ -16,28 +16,22 @@ fi
 echo "Running ${MODEL_NAME} evaluation for outer fold ${OUTER_FOLD}..."
 echo "Config file: ${CONFIG_FILE}"
 
-# Modify to match your python environment activation command(s)
 source /etc/profile.d/modules.sh
 
 if [ "$USER" == "am84" ]; then
-    module load cellgen/conda
-    
-    # Load appropriate environment based on model
+    module load ISG/conda
+
     case "${MODEL_NAME}" in
-        pantheome-zeroshot)
-            echo "Loading Pantheome/NEMO environment..."
+        terra-zeroshot|nicheformer-zeroshot|scgpt-spatial-zeroshot|cellplm-zeroshot|novae-zeroshot)
+            echo "Loading TERRA environment..."
             conda activate /software/cellgen/team361/am84/envs/nemo
-            PYTHON_SCRIPT="reproducibility/analysis/finetune/pantheome-zeroshot_single-outer-fold.py"
+            PYTHON_SCRIPT="analysis/finetune/zeroshot-transfer_outer-fold.py"
             ;;
-        novae-zeroshot)
-            echo "Loading Novae environment..."
-            conda activate /software/cellgen/team361/am84/envs/novae
-            PYTHON_SCRIPT="reproducibility/analysis/finetune/novae-zeroshot_single-outer-fold.py"
-            ;;
-        scgpt-spatial-zeroshot)
-            echo "Loading scGPT-spatial environment..."
-            conda activate /software/cellgen/team361/am84/envs/scgpt-spatial
-            PYTHON_SCRIPT="reproducibility/analysis/finetune/scgpt-spatial-zeroshot_single-outer-fold.py"
+        *)
+            echo "Error: Invalid MODEL_NAME '${MODEL_NAME}'"
+            echo "Supported models: terra-zeroshot, nicheformer-zeroshot,"
+            echo "                  scgpt-spatial-zeroshot, cellplm-zeroshot, novae-zeroshot"
+            exit 1
             ;;
     esac
 else
@@ -50,4 +44,5 @@ echo ""
 
 python "${PYTHON_SCRIPT}" \
     --config "${CONFIG_FILE}" \
+    --model "${MODEL_NAME}" \
     --outer-fold "${OUTER_FOLD}"

@@ -1,7 +1,5 @@
-# Data paths
-data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_niche-transfer
+task_dir: /nfs/team361/am84/TERRA/tasks/xhs_niche-transfer
 
-# Evaluation config
 evaluation:
   k_values:
     - 4
@@ -9,4 +7,4 @@ evaluation:
     - 12
     - 16
     - 20
-  knn_batch_size: null
+  knn_batch_size: 10000
