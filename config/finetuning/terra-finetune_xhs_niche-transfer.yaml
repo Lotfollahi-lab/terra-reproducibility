@@ -28,13 +28,13 @@ data_config:
 finetune_config:
   # Training parameters
   num_epochs_inner: 2
-  num_epochs_outer: 5
+  num_epochs_outer: 20
   patience: 2
 
   # Learning rate values to search over
   lr_values:
-    - 0.0001
     - 0.001
+    - 0.01
 
   # Selective unfreezing (no PEFT)
   use_peft: false
@@ -46,7 +46,7 @@ finetune_config:
 
   # Head settings
   use_mlp: false
-  hidden_dim: 128
+  hidden_dim: 256
 
   # Feature selection
   selection_type: agg_graph

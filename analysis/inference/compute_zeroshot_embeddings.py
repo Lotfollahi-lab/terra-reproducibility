@@ -356,20 +356,52 @@ def compute_novae_embeddings(
     print("Loading AnnData object...")
     adata = sc.read_h5ad(input_path)
 
+    # Derive per-slide key from cell_id (e.g. '1000_batch1_0' -> '1000batch1')
+    adata.obs['batch'] = adata.obs['cell_id'].apply(
+        lambda x: x.split('_')[0] + x.split('_')[1]
+    )
+
+    # Identify slides too small for Delaunay triangulation (qhull with -Qz needs >= 4 points).
+    # Rather than dropping these cells entirely (which would break per-fold splits that
+    # reference them), we exclude them from inference and fill their embeddings with zeros.
+    all_cell_ids = adata.obs['cell_id'].values.copy()
+    slide_counts = adata.obs['batch'].value_counts()
+    small_slides = slide_counts[slide_counts < 4].index.tolist()
+    if small_slides:
+        dropped = adata.obs[adata.obs['batch'].isin(small_slides)]
+        print(f"WARNING: {len(dropped)} cell(s) from {len(small_slides)} slide(s) have < 4 cells "
+              f"and cannot be triangulated. Their embeddings will be set to zero.")
+        for slide in small_slides:
+            ids = dropped[dropped['batch'] == slide]['cell_id'].tolist()
+            print(f"  slide={slide!r}: {ids}")
+        adata_infer = adata[~adata.obs['batch'].isin(small_slides)].copy()
+    else:
+        adata_infer = adata
+
     print("Loading Novae model...")
     model = novae.Novae.from_pretrained(model_name)
 
     print("Computing Novae embeddings...")
     model.compute_representations(
-        adata,
-        zero_shot=True
+        adata_infer,
+        zero_shot=True,
+        slide_key='batch'
     )
+
+    # Build full embedding array in original cell order, zeros for excluded cells
+    emb_dim = adata_infer.obsm['novae_latent'].shape[1]
+    full_emb = np.zeros((len(all_cell_ids), emb_dim), dtype=np.float32)
+    infer_cell_ids = adata_infer.obs['cell_id'].values
+    infer_id_to_idx = {cid: i for i, cid in enumerate(infer_cell_ids)}
+    for out_idx, cid in enumerate(all_cell_ids):
+        if cid in infer_id_to_idx:
+            full_emb[out_idx] = adata_infer.obsm['novae_latent'][infer_id_to_idx[cid]]
 
     output_path.mkdir(parents=True, exist_ok=True)
     filename = output_path / "novae_emb.npy"
-    np.save(filename, adata.obsm['novae_latent'])
+    np.save(filename, full_emb)
     print(f"Saved Novae embeddings to: {filename}")
-    np.save(output_path / "novae_cell_ids.npy", adata.obs['cell_id'].values)
+    np.save(output_path / "novae_cell_ids.npy", all_cell_ids)
     print(f"Saved Novae cell IDs to: {output_path / 'novae_cell_ids.npy'}")
 
     return adata
