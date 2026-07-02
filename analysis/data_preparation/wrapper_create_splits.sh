@@ -8,7 +8,7 @@
 # Supported tasks:
 #   niche-transfer
 #   cell-transfer
-#   disease-classification-patient+batch
+#   disease-classification-patient-batch
 #   disease-classification-sample
 #
 # Flags:
@@ -29,7 +29,7 @@ MODE_FLAG="--lightweight"
 
 if [[ -z "${TASK}" ]]; then
     echo "Usage: $0 <task> [--full]"
-    echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient+batch | disease-classification-sample"
+    echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient-batch | disease-classification-sample"
     exit 1
 fi
 
@@ -56,7 +56,7 @@ case "${TASK}" in
         ;;
     *)
         echo "Error: Unknown task '${TASK}'"
-        echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient+batch | disease-classification-sample"
+        echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient-batch | disease-classification-sample"
         exit 1
         ;;
 esac
@@ -86,7 +86,7 @@ bsub \
     -cwd "${CWD}" \
     -o  "${LOG_DIR}/%J.out" \
     -e  "${LOG_DIR}/%J.err" \
-    bash -c "source /software/cellgen/team361/am84/miniconda3/etc/profile.d/conda.sh && \
+    bash -c "module load ISG/conda && \
              conda activate ${CONDA_ENV} && \
              python ${SCRIPT} --config ${CONFIG} ${MODE_FLAG}"
 
