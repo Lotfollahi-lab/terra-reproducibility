@@ -1,0 +1,19 @@
+# Task directory (matches terra-zeroshot_xhs_niche-transfer.yaml)
+task_dir: /nfs/team361/am84/TERRA/tasks/xhs_niche-transfer
+
+# Source embeddings are read from {task_dir}/model_artifacts/{model}/outer-fold_N/
+# (--model is passed on the command line, e.g. terra-zeroshot). Results are
+# written to a sibling dir with '-zeroshot' replaced by '-linear-probing'.
+#
+# terra-zeroshot artifacts use generic train_features.npy/test_features.npy
+# (no cell/neighborhood split), so no embed.selection_type is needed here.
+
+# Linear probing config
+linear_config:
+  n_epochs: 50
+  batch_size: 100
+  patience: 10
+  lr_values:
+    - 0.001
+    - 0.01
+    - 0.1
