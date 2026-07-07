@@ -7,6 +7,9 @@ artifacts
 data
 #logs
 analysis/statistics/results/
+scvi_log/
+logs/
+scratch-diagnostics
 
 *__pycache__*
 .ipynb_checkpoints
