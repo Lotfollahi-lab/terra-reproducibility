@@ -17,9 +17,11 @@ Two source modes:
         --source-dir /lustre/.../xhs_niche-transfer \
         --target-dir /lustre/.../xhs_disease-classification-patient
 
-Valid --models choices: terra, scgpt-spatial, novae, cellplm, nicheformer
+Valid --models choices: terra, terra-cell, terra-nbr, scgpt-spatial, novae, cellplm, nicheformer
 Model name to output directory mapping:
   terra        -> model_artifacts/terra-zeroshot/
+  terra-cell   -> model_artifacts/terra-cell/
+  terra-nbr    -> model_artifacts/terra-nbr/
   scgpt-spatial -> model_artifacts/scgpt-spatial-zeroshot/
   novae        -> model_artifacts/novae-zeroshot/
   cellplm      -> model_artifacts/cellplm-zeroshot/
@@ -46,6 +48,8 @@ def get_model_dir_name(model_name: str) -> str:
     """Map short model name to full directory name."""
     mapping = {
         "terra": "terra-zeroshot",
+        "terra-cell": "terra-cell",
+        "terra-nbr": "terra-nbr",
         "scgpt-spatial": "scgpt-spatial-zeroshot",
         "novae": "novae-zeroshot",
         "cellplm": "cellplm-zeroshot",
@@ -405,7 +409,7 @@ def main():
         "--models",
         nargs="+",
         required=True,
-        choices=["terra", "scgpt-spatial", "novae", "cellplm", "nicheformer"],
+        choices=["terra", "terra-cell", "terra-nbr", "scgpt-spatial", "novae", "cellplm", "nicheformer"],
         help="Model names to transfer (can specify multiple)",
     )
     parser.add_argument(
