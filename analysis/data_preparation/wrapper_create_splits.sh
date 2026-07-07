@@ -8,8 +8,9 @@
 # Supported tasks:
 #   niche-transfer
 #   cell-transfer
-#   disease-classification-patient-batch
-#   disease-classification-sample
+#   disease-classification-patient          (unseen-patient holdout, group by Patient ID)
+#   disease-classification-sample           (unseen-sample holdout, group by dataset_id+batch)
+#   disease-classification-patient-batch    (DEPRECATED -- superseded by disease-classification-patient)
 #
 # Flags:
 #   --full   Run full dataset build (h5ad + dataset files per fold).
@@ -22,14 +23,15 @@ CONFIG_DIR="config/create-nested-split"
 SCRIPT="analysis/data_preparation/create_nested_stratified_group_splits.py"
 RAM="80G"
 CORES=4
-QUEUE="normal"
+QUEUE="transfer"
+USER_GROUP=""
 
 TASK="${1:-}"
 MODE_FLAG="--lightweight"
 
 if [[ -z "${TASK}" ]]; then
     echo "Usage: $0 <task> [--full]"
-    echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient-batch | disease-classification-sample"
+    echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient | disease-classification-sample | disease-classification-patient-batch (deprecated)"
     exit 1
 fi
 
@@ -48,15 +50,19 @@ case "${TASK}" in
     cell-transfer)
         CONFIG="${CONFIG_DIR}/create-split_xhs_cell_transfer.yaml"
         ;;
-    disease-classification-patient-batch)
-        CONFIG="${CONFIG_DIR}/create-split_xhs_disease_classification_patient_batch.yaml"
+    disease-classification-patient)
+        CONFIG="${CONFIG_DIR}/create-split_xhs_disease_classification_patient.yaml"
         ;;
     disease-classification-sample)
         CONFIG="${CONFIG_DIR}/create-split_xhs_disease_classification_sample.yaml"
         ;;
+    disease-classification-patient-batch)
+        echo "Warning: 'disease-classification-patient-batch' is deprecated -- superseded by 'disease-classification-patient' (grouped by Patient ID alone for a true unseen-patient holdout). Proceeding with the deprecated config anyway."
+        CONFIG="${CONFIG_DIR}/create-split_xhs_disease_classification_patient_batch.yaml"
+        ;;
     *)
         echo "Error: Unknown task '${TASK}'"
-        echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient-batch | disease-classification-sample"
+        echo "Tasks: niche-transfer | cell-transfer | disease-classification-patient | disease-classification-sample | disease-classification-patient-batch (deprecated)"
         exit 1
         ;;
 esac
@@ -82,6 +88,7 @@ bsub \
     -J  "${JOB_NAME}" \
     -n  "${CORES}" \
     -q  "${QUEUE}" \
+    ${USER_GROUP:+-U "${USER_GROUP}"} \
     -M  "${RAM}" -R "select[mem>${RAM}] rusage[mem=${RAM}]" \
     -cwd "${CWD}" \
     -o  "${LOG_DIR}/%J.out" \

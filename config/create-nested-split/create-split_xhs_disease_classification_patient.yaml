@@ -4,13 +4,24 @@ data:
 
 split:
   in_patient: false
+  # Group by Patient ID alone: every cell from a given patient (across all their
+  # samples/batches) lands on the same side of the split, so this is a genuine
+  # unseen-patient holdout. Do not add dataset_id/batch here -- that would let a
+  # multi-sample patient's cells land on both sides, defeating the purpose.
   stratify_group: "Patient ID"
   label_column: disease_overall
-  k_outer: 5
+  # Psoriasis has only 4 patients total, so k_outer cannot exceed 4 (require_all_labels
+  # needs each label present in >= k_outer groups). Each fold holds out exactly 1
+  # Psoriasis patient, leaving 3 for inner-fold splitting (tight but workable).
+  k_outer: 4
   k_inner: 1
   shuffle: true
-  seed: 1
-  root_save_dir: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_disease-classification-patient
+  # seed=2 verified to give a fully clean 4-way partition (no per-fold seed drift):
+  # all outer AND inner folds validate on attempt 1, so the 4 outer test sets are a
+  # true exhaustive, non-overlapping cover of all 19 patients (unlike seed=1, which
+  # needed a retry on fold 3 and left 3 patients untested / 3 patients tested twice).
+  seed: 2
+  root_save_dir: /nfs/team361/am84/TERRA/tasks/xhs_disease-classification-patient
   require_all_labels: true
   group_balance_tolerance: 25
   max_retries: 10

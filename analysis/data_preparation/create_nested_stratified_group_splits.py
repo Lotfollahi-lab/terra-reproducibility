@@ -63,6 +63,7 @@ def save_lightweight_splits(adata, cfg, split_info):
 
     vd = split_info["_validation_data"]
     global_indices = vd["global_indices"]
+    groups = vd["groups"]
     outer_fold_validations = vd["outer_fold_validations"]
     inner_fold_validations = vd["inner_fold_validations"]
 
@@ -70,8 +71,10 @@ def save_lightweight_splits(adata, cfg, split_info):
 
     for outer_val in outer_fold_validations:
         fold_num = outer_val["outer_fold"] + 1  # 0-based → 1-based
-        trainval_obs = global_indices[outer_val["trainval_pos"]]
-        test_obs = global_indices[outer_val["test_pos"]]
+        trainval_pos = outer_val["trainval_pos"]
+        test_pos = outer_val["test_pos"]
+        trainval_obs = global_indices[trainval_pos]
+        test_obs = global_indices[test_pos]
 
         trainval_adata = adata[trainval_obs]
         test_adata = adata[test_obs]
@@ -86,15 +89,36 @@ def save_lightweight_splits(adata, cfg, split_info):
 
         print(f"  outer-fold_{fold_num}: {len(trainval_obs)} train, {len(test_obs)} test cells")
 
+        # Same fields as build_split_data's outer_fold_info, so split_metadata.pkl has the same
+        # schema in lightweight and --full mode (this list used to stay empty in lightweight
+        # mode -- see notes/xhs-disease-classification-pipeline.md for the consumer-side bug
+        # this caused).
+        test_groups = sorted(set(groups[test_pos]))
+        trainval_groups = sorted(set(groups[trainval_pos]))
+        outer_fold_info = {
+            'outer_fold': fold_num,
+            'test_groups': list(test_groups),
+            'trainval_groups': list(trainval_groups),
+            'test_groups_count': len(test_groups),
+            'trainval_groups_count': len(trainval_groups),
+            'test_cells': len(test_obs),
+            'trainval_cells': len(trainval_obs),
+            'effective_seed': outer_val['effective_seed'],
+            'inner_folds': [],
+        }
+
         # Inner folds — positions are relative to the outer trainval subset
         inner_folds = inner_fold_validations[outer_val["outer_fold"]]
         if K_inner == 1:
             inner_folds = inner_folds[:1]
+        trainval_groups_local = groups[trainval_pos]
 
         for inner_val in inner_folds:
             inner_num = inner_val["inner_fold"] + 1  # 0-based → 1-based
-            inner_train_obs = trainval_obs[inner_val["train_pos"]]
-            inner_val_obs = trainval_obs[inner_val["val_pos"]]
+            train_pos_inner = inner_val["train_pos"]
+            val_pos_inner = inner_val["val_pos"]
+            inner_train_obs = trainval_obs[train_pos_inner]
+            inner_val_obs = trainval_obs[val_pos_inner]
 
             inner_dir = fold_dir / f"inner-fold_{inner_num}"
             inner_dir.mkdir(exist_ok=True)
@@ -103,6 +127,21 @@ def save_lightweight_splits(adata, cfg, split_info):
             np.save(inner_dir / "val_cell_ids.npy", adata[inner_val_obs].obs["cell_id"].values)
 
             print(f"    inner-fold_{inner_num}: {len(inner_train_obs)} train, {len(inner_val_obs)} val cells")
+
+            val_groups = sorted(set(trainval_groups_local[val_pos_inner]))
+            train_groups = sorted(set(trainval_groups_local[train_pos_inner]))
+            outer_fold_info['inner_folds'].append({
+                'inner_fold': inner_num,
+                'val_groups': list(val_groups),
+                'train_groups': list(train_groups),
+                'val_groups_count': len(val_groups),
+                'train_groups_count': len(train_groups),
+                'val_cells': len(inner_val_obs),
+                'train_cells': len(inner_train_obs),
+                'effective_seed': inner_val['effective_seed'],
+            })
+
+        split_info['outer_folds'].append(outer_fold_info)
 
     # Save clean metadata (strip _validation_data as build_split_data does)
     split_info_clean = {k: v for k, v in split_info.items() if k != "_validation_data"}

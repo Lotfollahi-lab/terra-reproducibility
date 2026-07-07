@@ -4,12 +4,24 @@ data:
 
 split:
   in_patient: false
-  stratify_group: batch
+  # Group by (dataset_id, batch), NOT raw batch alone: batch values (batch0..batch37)
+  # are only unique WITHIN a source dataset_id -- they are reused across the 4
+  # dataset_id values in this cohort, so grouping by batch alone conflates unrelated
+  # specimens (even across different patients/diseases) that happen to share a batch
+  # number. (dataset_id, batch) is the disambiguated per-specimen key (bijective with
+  # sample_id). Patient ID is intentionally NOT included here: this is a
+  # patient-agnostic unseen-sample holdout, so a patient's other specimens may
+  # legitimately remain in train while one of their specimens is held out in test.
+  stratify_group: ["dataset_id", "batch"]
   label_column: disease_overall
-  k_outer: 5
+  k_outer: 4
   k_inner: 1
   shuffle: true
-  seed: 1
+  # seed=12 verified to give a fully clean 4-way partition (no per-fold seed drift):
+  # all outer AND inner folds validate on attempt 1, so the 4 outer test sets are a
+  # true exhaustive, non-overlapping cover of all 79 specimens (seed=1 needed retries
+  # on 2/4 outer folds, leaving 21 specimens untested and 21 double-tested).
+  seed: 12
   root_save_dir: /nfs/team361/am84/TERRA/tasks/xhs_disease-classification-sample
   require_all_labels: true
   group_balance_tolerance: 25
