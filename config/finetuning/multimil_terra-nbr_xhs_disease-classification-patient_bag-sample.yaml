@@ -1,0 +1,22 @@
+# Test A: patient split (unseen patient), sample-level bagging.
+# One bag per specimen (sample_id); no patient appears in both train and test.
+task_dir: /nfs/team361/am84/TERRA/tasks/xhs_disease-classification-patient
+source_adata: /nfs/team361/am84/TERRA/data/xhs/xhs_harmonized_nemo_heldout.h5ad
+sample_key: sample_id
+output_suffix: bag-sample
+
+hyperparameters:
+  dropout: [0.1]
+  n_layers_classifier: [1]
+  n_hidden_classifier: [384]
+  n_layers_cell_aggregator: [1]
+  n_hidden_cell_aggregator: [128, 384]
+  attn_dim: [16]
+  scoring: ["attn"]
+  lr: [1e-4, 5e-4]
+
+training:
+  max_epochs: 100
+  early_stopping_patience: 10
+  batch_size: 256
+  validation_size: 0.2

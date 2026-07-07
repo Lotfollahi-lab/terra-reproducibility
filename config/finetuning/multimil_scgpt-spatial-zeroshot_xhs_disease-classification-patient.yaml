@@ -1,0 +1,25 @@
+# Data paths
+data_root: /lustre/scratch126/cellgen/lotfollahi/am84/NEMO/data/xhs_disease-classification-patient
+embeddings_root: null  # Will default to data_root/model_artifacts/scgpt-spatial-zeroshot
+output_root: null  # Will default to data_root/model_artifacts/multimil
+
+# Sample key for grouping
+sample_key: Patient ID
+
+# Hyperparameter search space
+hyperparameters:
+  dropout: [0.1]
+  n_layers_classifier: [1]
+  n_hidden_classifier: [64, 128]
+  n_layers_cell_aggregator: [1]
+  n_hidden_cell_aggregator: [64, 128]
+  attn_dim: [16]
+  scoring: ["gated_attn"]
+  lr: [1e-4, 5e-4]
+
+# Training parameters
+training:
+  max_epochs: 100
+  early_stopping_patience: 5
+  batch_size: 256
+
