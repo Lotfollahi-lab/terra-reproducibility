@@ -9,6 +9,7 @@ Usage:
 """
 
 import argparse
+import pickle
 import sys
 from pathlib import Path
 
@@ -17,6 +18,7 @@ import scanpy as sc
 import anndata as ad
 import yaml
 import torch
+from tqdm import tqdm
 # Add paths for model imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "source-code" / "src"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "benchmarking" / "scGPT-spatial"))
@@ -442,14 +444,32 @@ def compute_nicheformer_embeddings(
 
     print("Loading AnnData object...")
     adata = sc.read_h5ad(input_path)
-    
+
+    # Nicheformer's reference vocabulary is indexed by Ensembl gene ID, but our
+    # input adata uses gene symbols -- remap var_names to Ensembl IDs first, or
+    # the isin() mask below matches zero genes and every cell gets an identical
+    # (empty) input, tokenizes identically, and produces identical embeddings.
+    gene_map_path = Path(config['model'].get(
+        'gene_ensembl_map_path',
+        '/nfs/team361/sb75/DATASETS/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl'
+    ))
+    with open(gene_map_path, 'rb') as f:
+        gene_name_to_ensembl_id = pickle.load(f)
+    matched = adata.var_names.isin(gene_name_to_ensembl_id.keys())
+    n_dropped = int((~matched).sum())
+    if n_dropped:
+        print(f"Dropping {n_dropped} gene(s) with no Ensembl ID mapping "
+              f"(of {adata.n_vars} total).")
+    adata = adata[:, matched].copy()
+    adata.var_names = [gene_name_to_ensembl_id[g] for g in adata.var_names]
+
     # Load model reference data if needed (for formatting)
     model_ref = ad.read_h5ad(model_ref_path)
     adata = ad.concat([model_ref, adata], join='outer', axis=0)
     adata = adata[1:].copy()
     mask = adata.var_names.isin(model_ref.var_names)
     adata = adata[:, mask].copy()
-    
+
     # Set metadata columns
     adata.obs['modality'] = config['embed'].get('modality', 4)  # spatial
     adata.obs['specie'] = config['embed'].get('specie', 5)  # human
@@ -486,14 +506,14 @@ def compute_nicheformer_embeddings(
     print("Computing Nicheformer embeddings...")
     embeddings = []
     device = model.embeddings.weight.device
-    
+
     try:
         with torch.no_grad():
-            for batch in dataloader:
+            for batch in tqdm(dataloader, desc="Computing Nicheformer embeddings"):
                 # Move batch to device
                 batch = {k: v.to(device) if isinstance(v, torch.Tensor) else v
                         for k, v in batch.items()}
-                
+
                 # Get embeddings from the model
                 emb = model.get_embeddings(
                     batch=batch,
@@ -502,11 +522,11 @@ def compute_nicheformer_embeddings(
                 embeddings.append(emb.cpu().numpy())
     except Exception as e:
         raise RuntimeError(f"Failed to compute Nicheformer embeddings: {e}")
-    
+
     # Concatenate all embeddings
     embeddings = np.concatenate(embeddings, axis=0)
     adata.obsm['X_nicheformer'] = embeddings
-    
+
     output_path.mkdir(parents=True, exist_ok=True)
     filename = output_path / "nicheformer_emb.npy"
     np.save(filename, embeddings)

@@ -25,8 +25,8 @@ data:
 
 embed:
   # Number of workers for data loading
-  num_workers: 4
-  
+  num_workers: 0
+
   # Batch size for model inference
   batch_size: 32
   
