@@ -5,8 +5,9 @@
 set -euo pipefail
 
 VENV_PATH="/nfs/team361/sb75/.venvs/terra-rapids"
-# Optional: editable install of the local terra/terra package. Leave empty
-# to skip, or: TERRA_DIR=/nfs/team361/sb75/terra ./terra-rapids.sh
+# TERRA is installed from PyPI (terra-st) by default. Set TERRA_DIR to a local
+# clone to editable-install that instead (for development), e.g.:
+#   TERRA_DIR=/nfs/team361/sb75/terra ./terra-rapids.sh
 TERRA_DIR="${TERRA_DIR:-}"
 
 echo "Creating virtual environment at ${VENV_PATH} ..."
@@ -100,13 +101,16 @@ except Exception:
 PY
 echo "import _squidpy_dask_fix" > "${SITE_PACKAGES}/zzz_squidpy_dask_fix.pth"
 
+# Install TERRA. --no-deps in both cases: TERRA's dependencies are already
+# installed above, and the CUDA torch / cu12 RAPIDS wheels must not be
+# re-resolved (a plain resolve could swap them for default wheels).
+# scikit-learn stays <1.8 via UV_CONSTRAINT regardless.
 if [ -n "${TERRA_DIR}" ]; then
-    # --no-deps: TERRA's dependencies are already installed above, and the CUDA
-    # torch / cu12 RAPIDS wheels must not be re-resolved (a plain resolve could
-    # swap them for default wheels). scikit-learn stays <1.8 via UV_CONSTRAINT
-    # regardless. The editable src-layout install exposes the 'terra' package.
     echo "Installing terra (editable, --no-deps) from ${TERRA_DIR} ..."
     uv pip install -e "${TERRA_DIR}" --no-deps
+else
+    echo "Installing terra-st from PyPI (--no-deps) ..."
+    uv pip install terra-st --no-deps
 fi
 
 echo "Registering Jupyter kernel 'terra-rapids' ..."
