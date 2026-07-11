@@ -10,6 +10,17 @@ VENV_PATH="/nfs/team361/sb75/.venvs/terra-rapids"
 #   TERRA_DIR=/nfs/team361/sb75/terra ./terra-rapids.sh
 TERRA_DIR="${TERRA_DIR:-}"
 
+# CUDA toolkit for cupy's runtime JIT. rapids-singlecell's neighbors JIT-compiles
+# CUDA kernels via cupy, which needs a real toolkit (headers + nvrtc) at runtime;
+# the pip cu12 wheels ship none, so cupy fails with "Failed to find CUDA headers"
+# / "failed to open libnvrtc-builtins.so". We bake CUDA_PATH + LD_LIBRARY_PATH
+# (this path + /lib64) into the Jupyter kernelspec below so the kernel finds them
+# without a manual `module load`. Defaults to the cuda-12.1.1 spack module (its
+# nvrtc compiles fine for a 12.4 driver; the path is on the shared /software
+# filesystem, stable across nodes). Override CUDA_TOOLKIT if that path changes,
+# or point it at any other CUDA 12.x toolkit.
+CUDA_TOOLKIT="${CUDA_TOOLKIT:-/software/spack_environments/default/00/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/cuda-12.1.1-5xymjb2qc4qsjuazbljh4gcox2bvafhi}"
+
 echo "Creating virtual environment at ${VENV_PATH} ..."
 uv venv "${VENV_PATH}" --python 3.12
 
@@ -42,10 +53,9 @@ uv pip install "setuptools<81" wheel
 echo "Installing torch + RAPIDS 25.10 + rapids-singlecell (GPU Leiden) ..."
 # cuvs-cu12 (RAPIDS Vector Search) is needed by rapids-singlecell's neighbors
 # module ('import cuvs') but is NOT pulled by cudf/cuml/cugraph alone.
-# cupy-cuda12x[ctk]: rapids-singlecell's neighbors JIT-compiles CUDA kernels via
-# cupy, which needs the CUDA toolkit HEADERS at runtime -- the base cupy wheel
-# omits them (RuntimeError "Failed to find CUDA headers"), so pull the [ctk]
-# extra (the nvidia-cuda-* header wheels).
+# (cupy's runtime JIT needs a CUDA toolkit for headers/nvrtc -- that is handled
+# by the kernelspec CUDA_PATH/LD_LIBRARY_PATH below, not a pip extra: the
+# cupy-cuda12x[ctk] header wheels do not satisfy nvrtc here.)
 uv pip install \
     --index-strategy unsafe-best-match \
     --only-binary rapids-singlecell \
@@ -53,7 +63,7 @@ uv pip install \
     --extra-index-url https://download.pytorch.org/whl/cu128 \
     torch rapids-singlecell \
     "cudf-cu12==25.10.*" "cuml-cu12==25.10.*" "cugraph-cu12==25.10.*" \
-    "cuvs-cu12==25.10.*" "cupy-cuda12x[ctk]"
+    "cuvs-cu12==25.10.*"
 
 echo "Installing scanpy + squidpy + spatialdata ..."
 uv pip install scanpy anndata squidpy spatialdata
@@ -116,6 +126,32 @@ fi
 echo "Registering Jupyter kernel 'terra-rapids' ..."
 python -m ipykernel install --user --name terra-rapids \
     --display-name "Python (terra-rapids)"
+
+# Bake the CUDA toolkit into the kernel's environment so cupy's runtime JIT
+# (rapids-singlecell neighbors -> compute_umap) can compile without a manual
+# `module load`. The kernelspec env is applied when the kernel process is
+# launched, so LD_LIBRARY_PATH is set before the dynamic linker runs (unlike
+# setting it from inside Python, which is too late for nvrtc's builtins .so).
+echo "Baking CUDA_PATH/LD_LIBRARY_PATH into the terra-rapids kernelspec ..."
+CUDA_TOOLKIT="${CUDA_TOOLKIT}" python - <<'PY'
+import json, os, pathlib
+from jupyter_client.kernelspec import KernelSpecManager
+
+toolkit = os.environ["CUDA_TOOLKIT"]
+spec_path = pathlib.Path(
+    KernelSpecManager().get_kernel_spec("terra-rapids").resource_dir
+) / "kernel.json"
+spec = json.loads(spec_path.read_text())
+spec.setdefault("env", {}).update({
+    "CUDA_PATH": toolkit,
+    # Prepend so nvrtc finds libnvrtc-builtins.so.* in the toolkit's lib64.
+    # The ${LD_LIBRARY_PATH} tail keeps any inherited entries (harmless if the
+    # launcher does not expand it -- a bogus path component is simply ignored).
+    "LD_LIBRARY_PATH": f"{toolkit}/lib64:${{LD_LIBRARY_PATH}}",
+})
+spec_path.write_text(json.dumps(spec, indent=1))
+print(f"Patched {spec_path} with CUDA_PATH={toolkit}")
+PY
 
 echo "Done. Environment terra-rapids is ready."
 echo "To activate it in your shell, run:"
