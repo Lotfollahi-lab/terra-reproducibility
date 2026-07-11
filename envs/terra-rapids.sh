@@ -15,6 +15,19 @@ uv venv "${VENV_PATH}" --python 3.12
 echo "Activating virtual environment ..."
 source "${VENV_PATH}/bin/activate"
 
+# cuml 25.10's cuml.accel wraps a scikit-learn internal (BaseEstimator.
+# _get_default_requests) that scikit-learn removed in 1.8, so `import cuml` /
+# rapids-singlecell break on a newer scikit-learn. Constrain scikit-learn <1.8
+# for the WHOLE build via UV_CONSTRAINT, so every install below (RAPIDS, scanpy,
+# scib-metrics, ...) resolves against a compatible version. A one-off
+# `uv pip install "scikit-learn<1.x"` does NOT hold -- a later `uv pip install
+# scanpy` re-resolves and pulls scikit-learn forward again. (RAPIDS 25.10 works
+# with scikit-learn 1.6-1.7; <1.8 also keeps scanpy modern, avoiding a needless
+# scanpy downgrade that <1.6 would force.)
+echo "Constraining scikit-learn<1.8 (cuml compatibility) for the whole build ..."
+echo "scikit-learn<1.8" > "${VENV_PATH}/constraints.txt"
+export UV_CONSTRAINT="${VENV_PATH}/constraints.txt"
+
 echo "Installing setuptools (<81, provides pkg_resources) + wheel ..."
 uv pip install "setuptools<81" wheel
 
@@ -28,6 +41,10 @@ uv pip install "setuptools<81" wheel
 echo "Installing torch + RAPIDS 25.10 + rapids-singlecell (GPU Leiden) ..."
 # cuvs-cu12 (RAPIDS Vector Search) is needed by rapids-singlecell's neighbors
 # module ('import cuvs') but is NOT pulled by cudf/cuml/cugraph alone.
+# cupy-cuda12x[ctk]: rapids-singlecell's neighbors JIT-compiles CUDA kernels via
+# cupy, which needs the CUDA toolkit HEADERS at runtime -- the base cupy wheel
+# omits them (RuntimeError "Failed to find CUDA headers"), so pull the [ctk]
+# extra (the nvidia-cuda-* header wheels).
 uv pip install \
     --index-strategy unsafe-best-match \
     --only-binary rapids-singlecell \
@@ -35,15 +52,7 @@ uv pip install \
     --extra-index-url https://download.pytorch.org/whl/cu128 \
     torch rapids-singlecell \
     "cudf-cu12==25.10.*" "cuml-cu12==25.10.*" "cugraph-cu12==25.10.*" \
-    "cuvs-cu12==25.10.*"
-
-# Pin scikit-learn into cuml's supported range. cuml 25.10's cuml.accel wraps
-# the sklearn internal BaseEstimator._get_default_requests, which only exists
-# in scikit-learn <1.6; a newer sklearn (pulled by scanpy/scib-metrics/etc.)
-# makes 'import cuml' fail with AttributeError. Pin BEFORE the science stack
-# so those packages resolve against the compatible version.
-echo "Pinning scikit-learn (<1.6) for cuml compatibility ..."
-uv pip install "scikit-learn<1.6"
+    "cuvs-cu12==25.10.*" "cupy-cuda12x[ctk]"
 
 echo "Installing scanpy + squidpy + spatialdata ..."
 uv pip install scanpy anndata squidpy spatialdata
@@ -92,11 +101,10 @@ PY
 echo "import _squidpy_dask_fix" > "${SITE_PACKAGES}/zzz_squidpy_dask_fix.pth"
 
 if [ -n "${TERRA_DIR}" ]; then
-    # --no-deps: all dependencies are already installed above with carefully
-    # pinned versions (scikit-learn<1.6 for cuml, the cu12 RAPIDS wheels, the
-    # CUDA torch build). Re-resolving them here would risk upgrading
-    # scikit-learn past 1.6 (via scib-metrics) and re-breaking cuml. Editable
-    # src-layout install exposes both 'terra' and 'app'.
+    # --no-deps: TERRA's dependencies are already installed above, and the CUDA
+    # torch / cu12 RAPIDS wheels must not be re-resolved (a plain resolve could
+    # swap them for default wheels). scikit-learn stays <1.8 via UV_CONSTRAINT
+    # regardless. The editable src-layout install exposes the 'terra' package.
     echo "Installing terra (editable, --no-deps) from ${TERRA_DIR} ..."
     uv pip install -e "${TERRA_DIR}" --no-deps
 fi
