@@ -8,11 +8,7 @@ import json
 import matplotlib.image as mpimg
 import glob
 
-sys.path.append(os.environ.get(
-    'TERRA_SRC',
-    '/lustre/scratch126/cellgen/lotfollahi/zh4/Codebase_of_Zichen/terra-main 3/src'))
-
-from app.inference import (
+from terra import (
     embed_dataset,
     harmonize_adata,
     tokenize_adata,

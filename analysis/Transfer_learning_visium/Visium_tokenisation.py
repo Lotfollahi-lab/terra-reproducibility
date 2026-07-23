@@ -1,13 +1,8 @@
     #Tokeniser of Visium data for NicheJEPA finetuning
 
 ###Setup
-#Set utils path
-import sys, os
-sys.path.append(os.environ.get(
-    'TERRA_SRC',
-    '/lustre/scratch126/cellgen/lotfollahi/zh4/Codebase_of_Zichen/terra-main 3/src'))
-
 #Import libraries
+import sys
 import os
 import warnings
 import gc
@@ -15,9 +10,8 @@ from pathlib import Path
 
 import pandas as pd
 import scanpy as sc
-from app.inference import (harmonize_adata,
-                           tokenize_adata)
 import numpy as np
+from terra import harmonize_adata, tokenize_adata
 
 #Set model paths 
 model_folder_path = '/lustre/scratch126/cellgen/lotfollahi/zh4/NicheJEPA/Data/Visium_Embryo_Figure/Finetuned_models/01112025_081731_614'
