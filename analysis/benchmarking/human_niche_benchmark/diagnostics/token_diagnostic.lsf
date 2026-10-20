@@ -1,0 +1,19 @@
+#!/bin/bash
+# Token-budget diagnostic for TERRA (diagnostics/token_diagnostic.py), all
+# datasets as an array. Submit from the benchmark folder (one level up):
+#   bsub -q normal -n 4 -M 96GB -R "select[mem>96GB] rusage[mem=96GB] span[hosts=1]" \
+#       -W 6:00 < diagnostics/token_diagnostic.lsf
+#
+#BSUB -G team361
+#BSUB -J human_niche_token_diag[1-4]
+#BSUB -o ../../../artifacts/benchmarking/human/logs/token_diag_%J_%I.out
+#BSUB -e ../../../artifacts/benchmarking/human/logs/token_diag_%J_%I.err
+set -euo pipefail
+source "$LS_SUBCWD/config.sh"
+
+DATASETS=(xhs1000-39b_1p xhs49-1b_1p chr78-11b_1p chl59-8b_1p)
+DATASET=${DATASETS[$((LSB_JOBINDEX - 1))]}
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-4}
+
+echo "Host: $(hostname) | Job: $LSB_JOBID[$LSB_JOBINDEX] | Dataset: $DATASET"
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON_TERRA" diagnostics/token_diagnostic.py --dataset "$DATASET"

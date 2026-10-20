@@ -1,0 +1,18 @@
+#!/bin/bash
+# Re-score a finished result with the current protocol (score.py), no
+# re-embedding, e.g. after a change to the clustering protocol.
+# Submit from this folder (logs and config are resolved relative to it):
+#   METHOD=terra DATASET=chr78-11b_1p bsub -q normal -n 8 -M 48GB \
+#       -R "select[mem>48GB] rusage[mem=48GB] span[hosts=1]" -W 12:00 < score.lsf
+#
+#BSUB -G team361
+#BSUB -J human_niche_score
+#BSUB -o ../../../artifacts/benchmarking/human/logs/score_%J.out
+#BSUB -e ../../../artifacts/benchmarking/human/logs/score_%J.err
+set -euo pipefail
+: "${METHOD:?Set METHOD}"
+: "${DATASET:?Set DATASET}"
+source "$LS_SUBCWD/config.sh"
+
+echo "Host: $(hostname) | Job: $LSB_JOBID | Method: $METHOD | Dataset: $DATASET"
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON_BANKSY" score.py --method "$METHOD" --dataset "$DATASET"

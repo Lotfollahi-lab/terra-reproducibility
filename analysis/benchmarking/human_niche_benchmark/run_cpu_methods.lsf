@@ -1,0 +1,22 @@
+#!/bin/bash
+# CPU baselines for one dataset. Array element 1 = BANKSY, 2 = neighbourhood PCA.
+# Submit from this folder (logs and config are resolved relative to it):
+#   DATASET=xhs1000-39b_1p bsub -q normal -n 8 -M 64GB \
+#       -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]" -W 12:00 < run_cpu_methods.lsf
+#
+#BSUB -G team361
+#BSUB -J human_niche_cpu[1-2]
+#BSUB -o ../../../artifacts/benchmarking/human/logs/cpu_%J_%I.out
+#BSUB -e ../../../artifacts/benchmarking/human/logs/cpu_%J_%I.err
+set -euo pipefail
+: "${DATASET:?Set DATASET, e.g. DATASET=xhs1000-39b_1p}"
+source "$LS_SUBCWD/config.sh"
+
+SCRIPTS=(run_banksy.py run_neigh_expr_pca.py)
+SCRIPT=${SCRIPTS[$((LSB_JOBINDEX - 1))]}
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
+export MKL_NUM_THREADS=$OMP_NUM_THREADS
+export OPENBLAS_NUM_THREADS=$OMP_NUM_THREADS
+
+echo "Host: $(hostname) | Job: $LSB_JOBID[$LSB_JOBINDEX] | Dataset: $DATASET | Script: $SCRIPT"
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON_BANKSY" "$SCRIPT" --dataset "$DATASET"

@@ -1,0 +1,30 @@
+#!/bin/bash
+# GPU baselines (CellCharter, NicheCompass) for one dataset.
+# Submit from this folder (logs and config are resolved relative to it):
+#   METHOD=cellcharter DATASET=xhs1000-39b_1p bsub -q gpu -n 8 -M 64GB \
+#       -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]" \
+#       -gpu "num=1:mode=exclusive_process" -W 12:00 < run_gpu_method.lsf
+# NicheCompass needs a >= 40 GB GPU: -gpu "num=1:gmem=40G:mode=exclusive_process".
+# Optional: EXTRA_ARGS="--subsample 3000" (and --n_epochs 5 for NicheCompass)
+# for a smoke test.
+#
+#BSUB -G team361
+#BSUB -J human_niche_gpu
+#BSUB -o ../../../artifacts/benchmarking/human/logs/gpu_%J.out
+#BSUB -e ../../../artifacts/benchmarking/human/logs/gpu_%J.err
+set -euo pipefail
+: "${METHOD:?Set METHOD (cellcharter | nichecompass)}"
+: "${DATASET:?Set DATASET, e.g. DATASET=xhs1000-39b_1p}"
+EXTRA_ARGS=${EXTRA_ARGS:-}
+source "$LS_SUBCWD/config.sh"
+
+case "$METHOD" in
+    cellcharter)  PYTHON=$PYTHON_CELLCHARTER ;;
+    nichecompass) PYTHON=$PYTHON_NICHECOMPASS ;;
+    *) echo "Unknown METHOD $METHOD" >&2; exit 1 ;;
+esac
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
+
+echo "Host: $(hostname) | Job: $LSB_JOBID | Method: $METHOD | Dataset: $DATASET | Extra: $EXTRA_ARGS"
+nvidia-smi --query-gpu=name,memory.total --format=csv
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON" "run_${METHOD}.py" --dataset "$DATASET" $EXTRA_ARGS
