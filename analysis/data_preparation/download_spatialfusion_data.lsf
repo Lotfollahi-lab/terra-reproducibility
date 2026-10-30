@@ -10,7 +10,7 @@
 #BSUB -W 4:00                                                                                           # Walltime (hh:mm)
 
 # Load your environment
-source ~/.venvs/terra/bin/activate
+source /nfs/team361/sb75/.venvs/terra/bin/activate
 
 # Run the Python script (unbuffered so that download progress shows up in the log)
 python -u download_spatialfusion_data.py \
