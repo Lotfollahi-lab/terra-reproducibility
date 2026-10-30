@@ -1,0 +1,85 @@
+Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Apply with: git apply stjepa_ovca_ablation.patch
+1. Opt-in training seed: an optional top-level 'seed' key in the model config replaces the hard-coded _GLOBAL_SEED = 0
+   for numpy/torch seeding and the length-grouped sampler (and thereby DataLoader worker seeds, i.e. masks and gene
+   sampling). Without the key, behaviour is unchanged.
+2. stjepa-latest.pth.tar is written to a temporary file and renamed, so a kill during saving keeps the previous
+   checkpoint instead of leaving a truncated file that silently restarts training from epoch 0.
+
+--- a/src/app/training/train.py
++++ b/src/app/training/train.py
+@@ -84,11 +84,12 @@
+     WORLD_RANK:
+         World rank of the process.
+     """
+-    # Set random seeds
+-    np.random.seed(_GLOBAL_SEED)
+-    torch.manual_seed(_GLOBAL_SEED)
++    # Set random seeds (opt-in top-level `seed` key; absent -> 0 as before)
++    seed = int(args.get('seed', _GLOBAL_SEED))
++    np.random.seed(seed)
++    torch.manual_seed(seed)
+     if torch.cuda.is_available():
+-        torch.cuda.manual_seed_all(_GLOBAL_SEED)
++        torch.cuda.manual_seed_all(seed)
+     torch.backends.cudnn.deterministic = False # set to True for reproducibility
+     torch.backends.cudnn.benchmark = True # set to False for reproducibility
+ 
+@@ -432,7 +433,8 @@
+                 drop_last=True,
+                 prefetch_factor=(4 if num_workers > 0 else None),
+                 persistent_workers=False,
+-                mega_batch_mult_max=mega_batch_mult_max)
++                mega_batch_mult_max=mega_batch_mult_max,
++                seed=seed)
+             train_loaders.append(train_loader)
+             train_samplers.append(train_sampler)
+ 
+@@ -449,7 +451,8 @@
+             drop_last=True,
+             prefetch_factor=(4 if num_workers > 0 else None),
+             persistent_workers=False,
+-            mega_batch_mult_max=mega_batch_mult_max)
++            mega_batch_mult_max=mega_batch_mult_max,
++            seed=seed)
+ 
+     print(f"Length of train loader: {len(train_loader)}.")
+     ipe = len(train_loader)
+@@ -558,7 +561,9 @@
+         if iter_number is not None:
+             save_dict['iter_number'] = iter_number
+         if rank == 0:
+-            torch.save(save_dict, latest_path)
++            # Write to a temporary file and rename, so that a kill during saving keeps the previous checkpoint
++            torch.save(save_dict, f'{latest_path}.tmp')
++            os.replace(f'{latest_path}.tmp', latest_path)
+             if (epoch + 1) % checkpoint_freq == 0:
+                 if iter_number is None:
+                     torch.save(save_dict, save_path.format(epoch=f'{epoch}'))
+--- a/src/stjepa/datasets/dataloaders.py
++++ b/src/stjepa/datasets/dataloaders.py
+@@ -184,6 +184,7 @@
+                                 world_size: int,
+                                 rank: int,
+                                 mega_batch_mult_max: int,
++                                seed: int = _GLOBAL_SEED,
+                                 **dataloader_kwargs,
+     ) -> tuple[torch.utils.data.DataLoader,
+                torch.utils.data.distributed.DistributedSampler | None]:
+@@ -218,7 +219,7 @@
+             batch_size=batch_size,
+             num_replicas=world_size,
+             rank=rank,
+-            seed=_GLOBAL_SEED,
++            seed=seed,
+             mega_batch_mult_max=mega_batch_mult_max)
+     else:
+         dist_sampler = DistributedSampler(
+@@ -226,7 +227,7 @@
+             num_replicas=world_size,
+             rank=rank,
+             shuffle=False,
+-            seed=_GLOBAL_SEED,
++            seed=seed,
+         )
+         
+     dataloader = DataLoader(cell_dataset,
