@@ -35,6 +35,7 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 | Item | Mouse | OVCA | Reason |
 |---|---|---|---|
 | Code | farm checkout of the time | copy of stjepa `b433d5e` + `stjepa_ovca_ablation.patch` (`setup_code.sh`) | Same code as the April runs; v2 later only added debug prints. A separate copy, so branch switches of `/nfs/team361/sb75/stjepa` cannot change running jobs. The patch adds an opt-in seed and writes the latest checkpoint atomically. |
+| Schedule | 300 epochs, 3 warmup (216,600 steps) | 82 epochs, 1 warmup (216,972 steps) | Matched in optimizer steps: OVCA has 3.66× the iterations per epoch. All epoch-based schedules (LR, WD, EMA) scale with it. |
 | Replicate seeds | all seed 0 (`_GLOBAL_SEED`), so replicates differed only by GPU non-determinism | seed = 1000 × (replicate − 1) | Real seed variance (rebuttal E10). Replicate 1 equals the mouse seed; the spacing keeps the samplers' per-epoch seeds (seed + epoch) disjoint. |
 | `n_special_values` | 200 | 1448 | The human batch special value (about 213) exceeds 200 rows and would crash training. |
 | Checkpoints | every 5 epochs (about 90 GB per run) | only `stjepa-latest.pth.tar`, in `runs/<run>_<config hash>`; killed runs resume on all ranks | Storage and walltime safety. A changed config gets a new folder instead of resuming an old one. |
@@ -58,7 +59,7 @@ cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/o
 bash setup_code.sh                                   # pinned code at /nfs/team361/sb75/stjepa_ovca_ablation
 mkdir -p ../../../logs/ablation/ovca_ablation && bsub < prepare_ovca_data.lsf   # silver + norm factors (terra env)
 source /nfs/team361/sb75/.venvs/stjepa_v2/bin/activate && export PYTHONPATH=/nfs/team361/sb75/stjepa_ovca_ablation/src
-python generate_ablation_runs.py                     # 92 configs + manifest.tsv (add --epochs/--warmup to change)
+python generate_ablation_runs.py                     # 92 configs + manifest.tsv (82 epochs, 1 warmup)
 bash submit_tokenization.sh standard                 # 10 datasets, normal queue, ~35 min each
 bash submit_tokenization.sh large                    # 17 datasets, hugemem queue, ~0.6 TB peak each
 python check_setup.py                                # config parity with mouse runs (review), special values, datasets (fails on errors)
@@ -82,10 +83,11 @@ python compare_ablations.py                          # results/ and figures/ und
 |---|---|---|
 | Cells in training data | 92,520 | 338,695 |
 | Iterations per epoch on 4 GPUs | 722 | 2,646 (3.66× mouse) |
-| Time per run at 300 epochs | about 3 h | about 8–11 h |
-| All 92 runs, 2 at a time | — | about 2.5–3 weeks |
+| Training schedule | 300 epochs (216,600 steps) | 82 epochs (216,972 steps) |
+| Time per run | about 3 h | about 2.5–3 h |
+| All 92 runs, 2 at a time | — | about 5 days |
 
-- **Iteration-matched alternative:** `--epochs 82 --warmup 1` gives the same number of optimizer steps as the mouse runs, about 2.5–3 h per run and about 5 days in total.
+- **Epoch-matched alternative:** `--epochs 300 --warmup 3` takes about 8–11 h per run and 2.5–3 weeks in total.
 - **Storage:**
   - About 0.75 GB checkpoint plus 0.5 GB embeddings per run, so about 115 GB in total.
   - Tokenized datasets go to `/lustre/.../DATASETS/gold/*/xho50-1b_1p_spatialfusion/`.

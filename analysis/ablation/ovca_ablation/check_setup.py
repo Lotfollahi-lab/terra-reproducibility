@@ -2,7 +2,7 @@
 This script checks the OVCA ablation setup on the farm before launching the job array:
 1. Config parity: every variant's generated config is compared with the params of its mouse runs (model_config.yaml
    or params.yaml under the stjepa-reproducibility artifacts). Expected differences (OVCA data paths, special value
-   rows, run folder and resumption, seed) are ignored; any other difference means the plan does not reproduce the
+   rows, run folder and resumption, seed, step-matched epochs) are ignored; any other difference means the plan does not reproduce the
    mouse experiment and should be resolved first. Inferred overrides (cell-neighborhood layout, dimension ablations)
    are verified here.
 2. Special values: the human batch special value fits into the special value embedding of the configs, and the
@@ -47,7 +47,10 @@ IGNORED_KEYS = {"data.dataset_name",
                 "state.load_checkpoint",
                 "state.read_checkpoint",
                 "state.read_timestamp",
-                "state.checkpoint_freq"}
+                "state.checkpoint_freq",
+                # Matched to the mouse runs in optimizer steps instead of epochs
+                "optimization.epochs",
+                "optimization.warmup"}
 # RoPE keys (added on 21 Apr, after the plotted runs) are ignored by the pinned v2 code
 IGNORED_KEY_PREFIXES = ("meta.rope_",)
 # Special token offset hard-coded for `gt_type: rank` with a non-mouse vocabulary (cell_datasets.py)

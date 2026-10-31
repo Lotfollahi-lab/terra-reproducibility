@@ -9,11 +9,12 @@ mouse base config (`base_config.yaml`). Every run config is the base config with
   gets a new folder instead of resuming or reusing an earlier one,
 - `seed: 1000 * (replicate - 1)` (stjepa_ovca_ablation.patch; without it all replicates use seed 0 like the mouse runs),
 - the variant overrides (dotted keys that must exist in the base config).
-The manifest lists the runs in launch order for the job array.
+The schedule is matched to the mouse runs in optimizer steps (82 epochs with 1 warmup epoch on OVCA = 300 epochs
+with 3 warmup epochs on the mouse data). The manifest lists the runs in launch order for the job array.
 
 Usage:
 ```bash
-python generate_ablation_runs.py [--epochs 300 --warmup 3]
+python generate_ablation_runs.py [--epochs 82 --warmup 1]
 ```
 """
 
@@ -151,12 +152,13 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--epochs',
                         type=int,
-                        default=300,
-                        help='Training epochs (mouse: 300; OVCA has 3.66x the iterations per epoch).')
+                        default=82,
+                        help='Training epochs. OVCA has 3.66x the iterations per epoch of the mouse data, so 82 epochs '
+                             '(216,972 steps) match the 300 mouse epochs (216,600 steps).')
     parser.add_argument('--warmup',
                         type=int,
-                        default=3,
-                        help='Warmup epochs (mouse: 3).')
+                        default=1,
+                        help='Warmup epochs (mouse: 3, i.e. 2,166 steps; OVCA: 1, i.e. 2,646 steps).')
     parser.add_argument('--n_special_values',
                         type=int,
                         default=1448,
