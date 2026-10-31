@@ -92,14 +92,15 @@ def get_runs(variants: dict) -> list[dict]:
     """
     Runs in launch order: the first replicate of every variant (base first, then figure order), then all second
     replicates, then all third replicates, so that a complete single-replicate picture is available early. Replicate
-    `r` is trained with seed `1000 * (r - 1)`: the first replicate uses the default seed of the mouse runs, and the
-    spacing keeps the samplers' per-epoch seeds (seed + epoch) of different replicates disjoint.
+    `r` is trained with seed `1000 * r` (1000, 2000, 3000): it seeds weight initialization, data order and, through
+    the DataLoader worker seeds, masks and segment sampling. None equals the hard-coded seed 0 of the mouse runs, and
+    the spacing keeps the samplers' per-epoch seeds (seed + epoch) of different replicates disjoint.
     """
     variant_order = {name: idx for idx, name in enumerate(variants)}
     runs = [{"run_name": f"{name}_rep{replicate}",
              "variant": name,
              "replicate": replicate,
-             "seed": 1000 * (replicate - 1),
+             "seed": 1000 * replicate,
              **variant}
             for name, variant in variants.items()
             for replicate in range(1, variant["replicates"] + 1)]

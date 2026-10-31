@@ -7,7 +7,7 @@ mouse base config (`base_config.yaml`). Every run config is the base config with
 - a fixed run folder `runs/<run name>_<config hash>` that is resumed from `stjepa-latest.pth.tar` (on the first
   launch the file is missing and training starts from scratch), and only the latest checkpoint kept; a changed config
   gets a new folder instead of resuming or reusing an earlier one,
-- `seed: 1000 * (replicate - 1)` (stjepa_ovca_ablation.patch; without it all replicates use seed 0 like the mouse runs),
+- `seed: 1000 * replicate` (stjepa_ovca_ablation.patch; without it all replicates use seed 0 like the mouse runs),
 - the variant overrides (dotted keys that must exist in the base config).
 The schedule is matched to the mouse runs in optimizer steps (82 epochs with 1 warmup epoch on OVCA = 300 epochs
 with 3 warmup epochs on the mouse data). The manifest lists the runs in launch order for the job array.
