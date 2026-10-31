@@ -57,6 +57,7 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 **Caveats:**
 - **Not held out from TERRA-112M pretraining.** This section is `xho50-1b_1p` in the TERRA-112M corpus. That doesn't matter here, because every arm is trained from scratch on this section alone.
 - **Known code issues** are listed in `CODE_REVIEW.md` with their resolution. The OVCA tokenizations use the tokenizer fixes, which the mouse tokenizations lacked, so arm-level differences between mouse and OVCA can partly reflect them (most for the Seurat / Pearson and cell-neighborhood arms).
+- **Schedules end at 80%:** `ipe_scale: 1.25` (the V-JEPA value; I-JEPA's configs use 1.0) stretches the LR, weight decay and EMA schedules over 1.25 x epochs, and training stops after `epochs`. They end at LR 2.39e-5 (configured 2e-5), weight decay 0.366 (0.4) and EMA 0.999 (1.0), as in the mouse runs and TERRA-112M/96M. `check_setup.py` prints these values for Methods.
 - **Gene-corrected read depth on one section:** with a single panel the gene correction is a constant, so the "Gene Corr. RD" arms are read-depth arms here (the mean / nonzero-mean ones are exactly read-depth-then-gene-mean; the shifted-log one normalizes to about 400 counts instead of 10,000). The panel-size correction needs two or more panels.
 
 ## Steps (on the farm)

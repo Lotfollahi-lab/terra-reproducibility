@@ -12,6 +12,8 @@ This script checks the OVCA ablation setup on the farm before launching the job 
 3. Tokenized datasets: each exists and has one row per silver cell.
 4. Normalization factors: the gene-corrected read depth columns of the OVCA factor file match the tokenizer's own
    normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`).
+5. Schedule end values (report): the LR, weight decay and EMA schedules span `ipe_scale` x epochs (1.25, as in
+   V-JEPA), but training stops after `epochs`, so they end at 80% of their path; the values to state in Methods.
 0. Pinned code: the patch is applied (predictor fix, metatoken inference option).
 Exits with an error if check 0, 2, 3 or 4 fails; check 1 differences have to be reviewed by eye.
 
@@ -25,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import glob
+import math
 import pickle
 import sys
 from pathlib import Path
@@ -163,6 +166,28 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
     return fits
 
 
+def report_schedule_end_values(config_file_paths: dict):
+    print("== 5. Schedule end values (schedules span ipe_scale x epochs; training stops after epochs)")
+    schedules = {}
+    for variant, config_file_path in config_file_paths.items():
+        with open(config_file_path) as file:
+            optimization = yaml.safe_load(file)["optimization"]
+        schedules.setdefault(yaml.safe_dump(optimization, sort_keys=True), []).append(variant)
+    for optimization, variants in schedules.items():
+        opt = yaml.safe_load(optimization)
+        epochs, warmup, scale = opt["epochs"], opt["warmup"], opt["ipe_scale"]
+        # Progress of WarmupCosineSchedule (after warmup), CosineWDSchedule and the EMA schedule at the last step
+        lr_end = opt["final_lr"] + (opt["lr"] - opt["final_lr"]) * 0.5 * (
+            1 + math.cos(math.pi * (epochs - warmup) / (scale * epochs - warmup)))
+        wd_end = opt["final_weight_decay"] + (opt["weight_decay"] - opt["final_weight_decay"]) * 0.5 * (
+            1 + math.cos(math.pi / scale))
+        ema_end = opt["ema"][0] + (opt["ema"][1] - opt["ema"][0]) / scale
+        print(f"{len(variants)} variants (e.g. {variants[0]}), {epochs} epochs, ipe_scale {scale}: "
+              f"LR {opt['lr']:g} -> {lr_end:.3g} (configured {opt['final_lr']:g}); "
+              f"WD {opt['weight_decay']:g} -> {wd_end:.3g} (configured {opt['final_weight_decay']:g}); "
+              f"EMA {opt['ema'][0]:g} -> {ema_end:.4g} (configured {opt['ema'][1]:g})")
+
+
 def check_tokenized_datasets(tokenizations: dict, silver_file_path: str) -> bool:
     print("== 3. Tokenized datasets")
     import scanpy as sc
@@ -193,6 +218,7 @@ def main(args):
                                args.mouse_token_dictionary_file_path)
     if not args.skip_datasets:
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_path)
+    report_schedule_end_values(config_file_paths)
     print("== 4. Normalization factors")
     from norm_factors import check_norm_factors
     from stjepa.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
