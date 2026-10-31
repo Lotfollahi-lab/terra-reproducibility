@@ -12,6 +12,7 @@
 tokenizer_options:
   stable_rank_ties: true           # top-k ties: rank score, count value, reference nonzero mean (ascending), token id
   zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
+  exact_n_nonzero_tokens: true     # n_nonzero_tokens = real gene tokens (dense path: was the full length), for batching
   aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)
 
 # Opt-in training fixes of stjepa_ovca_ablation.patch, set in every run config (dotted keys; the mouse runs had

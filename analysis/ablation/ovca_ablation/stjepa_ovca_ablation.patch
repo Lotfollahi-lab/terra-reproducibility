@@ -43,8 +43,12 @@ Tokenizers (opt-in constructor arguments, default off = output unchanged)
 13. zero_expr_from_raw_counts: the candidate genes of a cell (neighborhood) are the genes with raw (aggregated) count
     > 0, whatever their normalized score (Seurat v3 / Pearson residuals no longer select undetected genes).
     With 12 or 13, ranked gene lists are cut at model_input_size (lossless; 6-14x less memory on the dense path).
-14. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
-15. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
+14. exact_n_nonzero_tokens: n_nonzero_tokens (read only by the length-grouped sampler) is the number of gene tokens
+    of the sequence; it was the number of ranked-list entries, which on the dense path (rank and count normalized
+    differently) includes pad entries, so every cell had the full length and batches were not grouped by size. With
+    12 or 13, the dense path also drops trailing pad entries of the ranked lists (lossless; about 2x less memory).
+15. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
+16. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
     (connectivities @ X) instead of the cells that have it among their kNN (connectivities.T @ X).
 
 diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
@@ -347,10 +351,10 @@ index 98eb00e..cddac5a 100644
  
              cell_emb_list = []
 diff --git a/src/app/inference/tokenize.py b/src/app/inference/tokenize.py
-index eaa8308..683f641 100644
+index eaa8308..f33f9e1 100644
 --- a/src/app/inference/tokenize.py
 +++ b/src/app/inference/tokenize.py
-@@ -95,9 +95,20 @@ def tokenize_adata(adata: ad.AnnData,
+@@ -95,9 +95,22 @@ def tokenize_adata(adata: ad.AnnData,
      print('==================================================')
      print('STEP 2: TOKENIZING ANNDATA OBJECT...')
      print('==================================================')
@@ -361,7 +365,9 @@ index eaa8308..683f641 100644
 +        'stable_rank_ties': model_config['data'].get(
 +            'stable_rank_ties', False),
 +        'zero_expr_from_raw_counts': model_config['data'].get(
-+            'zero_expr_from_raw_counts', False)}
++            'zero_expr_from_raw_counts', False),
++        'exact_n_nonzero_tokens': model_config['data'].get(
++            'exact_n_nonzero_tokens', False)}
      if model_config['data']['tokenizer_type'] == 'cell_neigh':
          Tokenizer = cell_tokenizers.CellNeighborhoodTokenizer
 +        # Split index-cell and neighborhood tokens as the model was trained
@@ -372,7 +378,7 @@ index eaa8308..683f641 100644
      elif model_config['data']['tokenizer_type'] == 'cell_graph':
          Tokenizer = cell_tokenizers.CellGraphTokenizer
      tk = Tokenizer(
-@@ -116,7 +127,8 @@ def tokenize_adata(adata: ad.AnnData,
+@@ -116,7 +129,8 @@ def tokenize_adata(adata: ad.AnnData,
          norm_factor_file_path=norm_factor_file_path,
          token_dictionary_file_path=token_dictionary_file_path,
          add_neigh_cell_ids=add_neigh_cell_ids,
@@ -1105,7 +1111,7 @@ index 80139af..a73aa43 100755
 +                       rank_gene_tokens)
 \ No newline at end of file
 diff --git a/src/stjepa/tokenizers/cell_tokenizers.py b/src/stjepa/tokenizers/cell_tokenizers.py
-index c9cbe8b..bc7a729 100755
+index c9cbe8b..393a45e 100755
 --- a/src/stjepa/tokenizers/cell_tokenizers.py
 +++ b/src/stjepa/tokenizers/cell_tokenizers.py
 @@ -85,7 +85,10 @@ from ..preprocessors.normalizers import normalize_by_factor
@@ -1120,7 +1126,7 @@ index c9cbe8b..bc7a729 100755
  
  
  warnings.filterwarnings('ignore', message=".*The 'nopython' keyword.*") # noqa
-@@ -145,6 +148,23 @@ class CellBaseTokenizer(ABC):
+@@ -145,6 +148,31 @@ class CellBaseTokenizer(ABC):
          If `True`, add neighbor cell IDs.
      include_special_tokens:
          If `True`, include special tokens.
@@ -1141,24 +1147,34 @@ index c9cbe8b..bc7a729 100755
 +        v3, Pearson residuals) are candidates and detected genes with a
 +        score of exactly 0 are not. Requires
 +        `include_zero_expr_genes=False`.
++    exact_n_nonzero_tokens:
++        If `True`, `n_nonzero_tokens` (used by the length-grouped sampler)
++        is the number of gene tokens in the tokenized sequence. If `False`,
++        it is the number of ranked-list entries that fit into the blocks,
++        which on the dense path (rank and count normalized differently)
++        includes pad entries, so every cell gets the full length. With
++        `stable_rank_ties` or `zero_expr_from_raw_counts`, the dense path
++        then also drops trailing pad entries of the ranked lists (lossless).
      """
      def __init__(
              self,
-@@ -188,6 +208,8 @@ class CellBaseTokenizer(ABC):
+@@ -188,6 +216,9 @@ class CellBaseTokenizer(ABC):
              token_dictionary_file_path: Path | str = token_dictionary_file_path,
              add_neigh_cell_ids: bool = False,
              include_special_tokens: bool = True,
 +            stable_rank_ties: bool = False,
 +            zero_expr_from_raw_counts: bool = False,
++            exact_n_nonzero_tokens: bool = False,
              ):
          self.nproc = nproc
          self.processing_mode = processing_mode
-@@ -207,6 +229,14 @@ class CellBaseTokenizer(ABC):
+@@ -207,6 +238,15 @@ class CellBaseTokenizer(ABC):
          self.token_dictionary_file_path = token_dictionary_file_path
          self.add_neigh_cell_ids = add_neigh_cell_ids
          self.include_special_tokens = include_special_tokens
 +        self.stable_rank_ties = stable_rank_ties
 +        self.zero_expr_from_raw_counts = zero_expr_from_raw_counts
++        self.exact_n_nonzero_tokens = exact_n_nonzero_tokens
 +
 +        if self.zero_expr_from_raw_counts and self.include_zero_expr_genes:
 +            raise ValueError(
@@ -1168,7 +1184,7 @@ index c9cbe8b..bc7a729 100755
  
          # TODO fix this for radius and delaunay
          self.seq_len_cell = int(self.model_input_size / (self.n_neighs + 1))
-@@ -243,6 +273,182 @@ class CellBaseTokenizer(ABC):
+@@ -243,6 +283,201 @@ class CellBaseTokenizer(ABC):
          self.coding_miRNA_dict = dict(
              zip(self.coding_miRNA_ids, [True] * len(self.vocab)))
  
@@ -1226,6 +1242,18 @@ index c9cbe8b..bc7a729 100755
 +        genes.
 +        """
 +        return self.model_input_size
++
++    @staticmethod
++    def _drop_trailing_pads(tokens: np.ndarray,
++                            expr: np.ndarray,
++                            ) -> tuple[np.ndarray, np.ndarray]:
++        """
++        Drop the pad entries after the last gene token of a ranked list,
++        keeping at least one entry.
++        """
++        nonzero_idx = np.flatnonzero(tokens)
++        keep = max(int(nonzero_idx[-1]) + 1 if len(nonzero_idx) else 0, 1)
++        return tokens[:keep], expr[:keep]
 +
 +    def _rank_genes_chunk(self,
 +                          rank_block: np.ndarray | sp.spmatrix,
@@ -1343,6 +1371,13 @@ index c9cbe8b..bc7a729 100755
 +                zero_mask = rank_scores[order] == 0
 +                sorted_tokens[:n_ranked][zero_mask] = 0
 +                sorted_expr[:n_ranked][zero_mask] = 0.0
++            if self.exact_n_nonzero_tokens:
++                # Trailing pad entries carry no information (blocks are
++                # padded again when formatted) and no longer count as
++                # tokens; keep one entry so that a cell without genes keeps
++                # its (empty) neighbor segment, as before
++                sorted_tokens, sorted_expr = self._drop_trailing_pads(
++                    sorted_tokens, sorted_expr)
 +            gene_tokens_list.append(sorted_tokens.tolist())
 +            gene_expr_list.append(sorted_expr.tolist())
 +
@@ -1351,7 +1386,7 @@ index c9cbe8b..bc7a729 100755
      def tokenize_data(self,
                        input_directory: Path | str,
                        output_directory: Path | str,
-@@ -692,7 +898,25 @@ class CellGraphTokenizer(CellBaseTokenizer):
+@@ -692,7 +927,25 @@ class CellGraphTokenizer(CellBaseTokenizer):
          adata_dict['gene_tokens_neighborhood'] = []
          adata_dict['gene_expr_neighborhood'] = []
              
@@ -1378,7 +1413,19 @@ index c9cbe8b..bc7a729 100755
              print('Ranking gene tokens based on normalized counts (sparse version).')
              for i in range(0, len(adata), self.chunk_size):
                  if self.include_zero_expr_genes:
-@@ -1040,6 +1264,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
+@@ -994,6 +1247,11 @@ class CellGraphTokenizer(CellBaseTokenizer):
+         # Retrieve attributes
+         example['n_nonzero_tokens'] = (
+             n_nonzero_cell_tokens + n_nonzero_neighborhood_tokens)
++        if self.exact_n_nonzero_tokens:
++            # Gene tokens of the sequence (the count above includes pad
++            # entries of dense-path ranked lists)
++            example['n_nonzero_tokens'] = int(
++                np.count_nonzero(example['gene_tokens']))
+ 
+         # Add padding to make all sequences have length 'model_input_size'
+         if len(example['gene_tokens']) < self.model_input_size:
+@@ -1040,6 +1298,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
  
  class CellNeighborhoodTokenizer(CellBaseTokenizer):
      def __init__(self,
@@ -1387,7 +1434,7 @@ index c9cbe8b..bc7a729 100755
                   **base_tokenizer_kwargs,
                   ):
          """
-@@ -1047,11 +1273,32 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1047,11 +1307,32 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
  
          Parameters
          -----------
@@ -1420,7 +1467,7 @@ index c9cbe8b..bc7a729 100755
  
      def _tokenize_adata(self,
                          adata_file_path: Path | str | None = None,
-@@ -1123,7 +1370,8 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1123,7 +1404,8 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
              radius=self.radius,
              delaunay=self.delaunay,
              include_self_loop=True,
@@ -1430,7 +1477,7 @@ index c9cbe8b..bc7a729 100755
  
          print('Normalizing gene expression counts...')
          # Perform normalization of counts per cell for rank and count
-@@ -1345,7 +1593,35 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1345,7 +1627,35 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
          adata_dict['gene_expr_neighborhood'] = []
              
          # Divide cells into chunks and loop through chunks
@@ -1467,7 +1514,7 @@ index c9cbe8b..bc7a729 100755
              print('Ranking gene tokens based on normalized counts (sparse version).')
              for i in range(0, len(adata), self.chunk_size):
                  if self.include_zero_expr_genes:
-@@ -1565,7 +1841,7 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1565,7 +1875,7 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
          Format examples.
          """
          # Retrieve gene tokens
@@ -1476,6 +1523,18 @@ index c9cbe8b..bc7a729 100755
          seq_len_neighborhood = self.model_input_size - seq_len_cell
  
          gene_tokens_cell, n_nonzero_cell_tokens = process_gene_tokens(
+@@ -1599,6 +1909,11 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+         # Retrieve attributes
+         example['n_nonzero_tokens'] = (
+             n_nonzero_cell_tokens + n_nonzero_neighborhood_tokens)
++        if self.exact_n_nonzero_tokens:
++            # Gene tokens of the sequence (the count above includes pad
++            # entries of dense-path ranked lists)
++            example['n_nonzero_tokens'] = int(
++                np.count_nonzero(example['gene_tokens']))
+ 
+         # Define segments (leave space for special token segments)
+         #example['seg_tokens'] = np.concatenate(
 diff --git a/src/stjepa/tokenizers/tokenize.py b/src/stjepa/tokenizers/tokenize.py
 index 4298add..f428dcb 100755
 --- a/src/stjepa/tokenizers/tokenize.py

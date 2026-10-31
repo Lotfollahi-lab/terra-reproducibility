@@ -31,6 +31,7 @@ NORM_METHOD_KEYS = ["rank_cell_norm_method",
 # them for all tokenizations under `tokenizer_options`. The last two only apply to the cell-neighborhood tokenizer.
 TOKENIZER_OPTION_DEFAULTS = {"stable_rank_ties": False,
                              "zero_expr_from_raw_counts": False,
+                             "exact_n_nonzero_tokens": False,
                              "aggregate_own_neighbors": False,
                              "seq_len_cell": None}
 TOKENIZATION_DEFAULTS = {"tokenizer": "cell-graph-tokenizer",
@@ -89,6 +90,8 @@ def get_tokenized_dataset_path(tokenization: dict,
         options.append("ties")
     if tokenization["zero_expr_from_raw_counts"]:
         options.append("detected")
+    if tokenization["exact_n_nonzero_tokens"]:
+        options.append("nnz")
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
         if tokenization["aggregate_own_neighbors"]:
             options.append("ownknn")
@@ -105,7 +108,7 @@ def needs_large_memory(tokenization: dict) -> bool:
     count normalizations differ, see `CellBaseTokenizer.rank_differs_from_count`) and Seurat v3 / Pearson residuals keep
     every gene per cell (about 1.3 MB per cell, 0.5-0.6 TB for the OVCA section); with `stable_rank_ties` or
     `zero_expr_from_raw_counts`, ranked gene lists are cut at `model_input_size` (lossless; about 0.09-0.21 MB per cell,
-    at most about 70 GB). Long sequences always use the large class.
+    0.09-0.10 MB with `exact_n_nonzero_tokens`, at most about 70 GB). Long sequences always use the large class.
     """
     rank_differs_from_count = not (
         tokenization["rank_cell_norm_method"] == tokenization["count_cell_norm_method"]

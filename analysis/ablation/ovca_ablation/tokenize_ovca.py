@@ -3,9 +3,9 @@ This script creates one tokenized dataset of the OVCA ablation plan from the OVC
 `stjepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py` created the mouse ablation datasets (same
 tokenizer arguments and output naming), but with the pinned ST-JEPA v2 tokenizer (`stjepa.tokenizers`), sequential
 processing of the single silver file (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
-(`tokenizer_options`: deterministic top-k ties, detected genes only, own-neighbor aggregation and an explicit
-index-cell/neighborhood split for the cell-neighborhood tokenizer; their names are appended to the dataset name) and
-without wandb logging. The dataset is written under a temporary name and renamed when
+(`tokenizer_options`: deterministic top-k ties, detected genes only, the real gene token count for the sampler,
+own-neighbor aggregation and an explicit index-cell/neighborhood split for the cell-neighborhood tokenizer; their names
+are appended to the dataset name) and without wandb logging. The dataset is written under a temporary name and renamed when
 complete, so that interrupted jobs are never mistaken for finished datasets.
 
 Usage:
@@ -61,7 +61,8 @@ def main(args):
     Tokenizer = {"cell-graph-tokenizer": CellGraphTokenizer,
                  "cell-neighborhood-tokenizer": CellNeighborhoodTokenizer}[tokenization["tokenizer"]]
     tokenizer_kwargs = {"stable_rank_ties": tokenization["stable_rank_ties"],
-                        "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"]}
+                        "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"],
+                        "exact_n_nonzero_tokens": tokenization["exact_n_nonzero_tokens"]}
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
         tokenizer_kwargs["seq_len_cell"] = tokenization["seq_len_cell"]
         tokenizer_kwargs["aggregate_own_neighbors"] = tokenization["aggregate_own_neighbors"]
