@@ -64,7 +64,7 @@ or limited to code paths that were broken, so mouse configs and the default infe
 | 9 | Opt-in `exact_n_nonzero_tokens`: `n_nonzero_tokens`, which only the length-grouped sampler reads, is the number of gene tokens; on the dense path it was the full length for every cell, so the 14 dense-path normalization arms trained on batches not grouped by size (more trimming before padding). With the ranked-list options, the dense path also drops trailing pad entries (lossless; 0.10 instead of 0.21 MB per cell). Verified on all 27 plan tokenizations: only `n_nonzero_tokens` of the 14 dense-path datasets changes, and it equals the gene token count. | On. | Reruns re-tokenize with it. |
 | 10 | Opt-in `seurat_loess_span` (tokenizer and `normalize_by_seurat`): the LOESS fit uses the given span, on genes ordered by log mean and log variance, so scores no longer depend on the gene order (the old fit did, at about 1e-12). On OVCA (50,000 cells), span 0.3 instead of the effective 0.75 changes the expected SDs by up to 2-5%; the top-64 gene sets are the same in 86% of cells, but their order changes in 87%. | Span 0.3 (Seurat v3 / scanpy). | Reruns re-tokenize with it. |
 | 11 | Kept `ipe_scale: 1.25`, the V-JEPA value (I-JEPA's configs use 1.0), as in the mouse runs and TERRA-112M/96M; it is not a code error, but Methods must state the actual end values. `check_setup.py` reports them: LR 2.39e-5 (configured 2e-5), weight decay 0.366 (0.4), EMA 0.999 (1.0). | Same recipe. | Same. |
-| 12 | Under review. | | |
+| 12 | Every rank uses rank 0's run folder (`main.py` passes it to rank 0 only); `load_checkpoint` starts training from scratch only if there is no checkpoint and raises if one exists but cannot be loaded (always at inference); all ranks must resume from the same epoch. Reproduced on the old code: with `read_checkpoint: null`, rank 1 looked for the checkpoint in a folder of its own, started from scratch while rank 0 resumed, and the job hung. Rank 1's load error is invisible because ranks > 0 only log errors. | Fresh runs bit-identical to before; resuming verified on 2 processes (same checkpoint, same epoch, identical weights on both ranks). | Unlikely to be affected: the mouse base config has `load_checkpoint: false`, so killed runs restarted from scratch instead of resuming (farm check below). The reruns resume, so they need the fix. |
 | 13 | Predictor segment table: one special segment per special token. | | |
 
 Metatoken review (31 Oct), all fixed in the patch:
@@ -127,8 +127,10 @@ for ts in 11042026_110853_342 11042026_142119_393 11042026_142613_749; do
   grep -E 'seq_len_cell|seq_len_neighborhood|model_input_size|n_segments|tokenized_data' $A/models/$ts/model_config.yaml
   ls -l --time-style=long-iso $A/ablation/stjepa_v2_cell_neigh_tokenizer_*/$ts/*res_sweep.csv
 done
-# Resumed runs (finding 12)
-grep -l "Loaded pretrained encoder\|Encountered exception when loading" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
+# Resumed runs (finding 12): ranks > 0 log errors only, so their failed loads are invisible; a resumed run shows
+# "Loaded pretrained encoder" in the rank-0 output (with read_checkpoint: null, its ranks 1-3 trained from scratch).
+# The mouse base config has load_checkpoint: false, so none is expected.
+grep -l "Loaded pretrained encoder" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
 ```
 
 `check_setup.py` compares every OVCA config with the mouse `params.yaml` of its runs. That settles the inferred overrides (cell-neighborhood layout, predictor width, coordinate encoding).
