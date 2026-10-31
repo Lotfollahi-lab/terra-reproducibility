@@ -1,13 +1,397 @@
-Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Apply with: git apply stjepa_ovca_ablation.patch
-1. Opt-in training seed: an optional top-level 'seed' key in the model config replaces the hard-coded _GLOBAL_SEED = 0
-   for numpy/torch seeding and the length-grouped sampler (and thereby DataLoader worker seeds, i.e. masks and gene
-   sampling). Without the key, behaviour is unchanged.
-2. stjepa-latest.pth.tar is written to a temporary file and renamed, so a kill during saving keeps the previous
-   checkpoint instead of leaving a truncated file that silently restarts training from epoch 0.
+Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations and the mouse reruns.
+Apply with: git apply stjepa_ovca_ablation.patch (setup_code.sh does this). Changes that alter results are opt-in or
+limited to code paths that were broken. With the default config keys and arguments, tokenized data and training are
+unchanged, except the `gt_type: rank` metatoken if the token dictionary's offset differs from the hard-coded one (7);
+so is the default inference (metatoken removed), except cell embeddings of cell-neighborhood models (9).
 
+Training
+ 1. Opt-in seed: a top-level 'seed' key replaces the hard-coded _GLOBAL_SEED = 0 for numpy/torch seeding and the
+    length-grouped sampler (and thereby the DataLoader worker seeds: masks and gene sampling).
+ 2. stjepa-latest.pth.tar is written to a temporary file and renamed, so a kill during saving keeps the previous
+    checkpoint instead of leaving a truncated file that silently restarts training.
+ 3. Predictor in batches whose special tokens are padded (mask.special_token_pad_ratio > 0): the new_spc layout put
+    the first context gene in the first target's slot; such batches now use the plain concatenation. Batches with
+    special tokens are unchanged.
+ 4. Predictor segment table: one special segment per special token, as in the encoder (crashed with >= 2).
+ 5. restrict_special_attention: a padded special token attends to itself instead of to nothing (NaN outputs that
+    spread to all tokens without flash attention).
+
+Datasets
+ 6. Dataset-level special token padding: one pad token per special token (was n_special_tokens per special token),
+    and padded `gt_type: rank` special tokens stay 0.
+ 7. `gt_type: rank` special tokens use the special value token offset of the token dictionary
+    (spv_start - 2 - n_cls) instead of the offset hard-coded by vocabulary size; a warning is printed if they differ.
+
+Inference
+ 8. keep_special_tokens (embed_dataset, harmonize_tokenize_embed_pipeline, gene_embed_dataset, infer): keep the batch
+    metatoken as in training. Default False: removed, as before.
+ 9. Inference reads restrict_special_attention from `mask` like training (fallback `meta`), passes data.nz_spc to the
+    dataset, gene_embed_dataset uses data.n_special_values like training, and the cell-only context uses
+    data.seq_len_cell (was (seq_len - n_special_tokens) // n_segments, which gave wrong cell embeddings for
+    cell-neighborhood models; neighborhood embeddings are unchanged).
+10. tokenize_adata (re-tokenization from a model folder) passes data.seq_len_cell for cell-neighborhood models and the
+    tokenizer options recorded in the model config (absent keys: off).
+
+Tokenizers (opt-in constructor arguments, default off = output unchanged)
+11. stable_rank_ties: genes are ordered by rank-stream score (descending), count-stream value (descending), reference
+    nonzero mean (ascending; 'nonzero_mean' of the norm factor file) and token id (ascending), independently of gene
+    order and sort algorithm, in all paths and both cell-neighborhood blocks.
+12. zero_expr_from_raw_counts: the candidate genes of a cell (neighborhood) are the genes with raw (aggregated) count
+    > 0, whatever their normalized score (Seurat v3 / Pearson residuals no longer select undetected genes).
+    With 11 or 12, ranked gene lists are cut at model_input_size (lossless; 6-14x less memory on the dense path).
+13. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
+14. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
+    (connectivities @ X) instead of the cells that have it among their kNN (connectivities.T @ X).
+
+diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
+index 9f1ad7b..dec36a2 100644
+--- a/src/app/inference/embed.py
++++ b/src/app/inference/embed.py
+@@ -22,7 +22,9 @@ from pyensembl import EnsemblRelease
+ from scipy.sparse import issparse
+ 
+ from app.utils import init_model, load_checkpoint
+-from stjepa.datasets.cell_datasets import CellBaseDataset, init_cell_dataset
++from stjepa.datasets.cell_datasets import (CellBaseDataset,
++                                           get_spv_token_offset,
++                                           init_cell_dataset)
+ from stjepa.datasets.dataloaders import init_dataloader_and_sampler
+ from stjepa.masks.block_masking  import BlockMaskCollator
+ from stjepa.masks.cell_masking import CellMaskCollator
+@@ -42,6 +44,30 @@ from .tokenize import tokenize_adata
+ from typing import Dict, List
+ 
+ 
++def get_restrict_special_attention(model_config: dict) -> bool:
++    """
++    `restrict_special_attention` as used in training (the `mask` section of
++    the config; older configs only have it in `meta`).
++    """
++    if 'restrict_special_attention' in model_config.get('mask', {}):
++        return model_config['mask']['restrict_special_attention']
++    return model_config.get('meta', {}).get(
++        'restrict_special_attention', False)
++
++
++def set_cell_only_context_length(encoder: torch.nn.Module,
++                                 model_config: dict):
++    """
++    Set the number of index-cell tokens of the cell-only context to the
++    configured `seq_len_cell`. The encoder derives it as
++    `(seq_len - n_special_tokens) // n_segments`, which is only right for
++    the cell graph layout (e.g. 128 // 11 for a 64/64 cell neighborhood
++    model).
++    """
++    encoder = encoder.backbone if hasattr(encoder, 'backbone') else encoder
++    encoder.seq_len_cell = model_config['data']['seq_len_cell']
++
++
+ _GLOBAL_SEED = 0
+ np.random.seed(_GLOBAL_SEED)
+ torch.manual_seed(_GLOBAL_SEED)
+@@ -66,6 +92,7 @@ def embed_dataset(dataset: Dataset,
+                   ignore_spc_tokens: bool = True,
+                   agg_type: Literal['avg',
+                                     'softmax'] = 'avg',
++                  keep_special_tokens: bool = False,
+                   ) -> dict:
+     """
+     Parameters
+@@ -93,6 +120,12 @@ def embed_dataset(dataset: Dataset,
+     return_token_embeddings:
+         If `True`, also return per-token embeddings for each sequence position
+         (cell and neighborhood tokens; special tokens are excluded).
++    keep_special_tokens:
++        If `True`, keep the special tokens (e.g. the batch metatoken) in the
++        input sequence as in training, so that gene tokens attend to them.
++        By default (`False`), special tokens are removed at inference.
++        Special token embeddings are never part of the aggregated cell and
++        neighborhood embeddings.
+ 
+     Returns:
+     -----------
+@@ -173,12 +206,13 @@ def embed_dataset(dataset: Dataset,
+         nz_spc=model_config['data'].get('nz_spc', False),
+         mlp_bias=model_config['meta'].get('mlp_bias', True))
+ 
++    set_cell_only_context_length(target_encoder, model_config)
+     if model_config['meta']['api_version'] != 'v3':
+         return_layer_emb_fn = target_encoder.return_layer_emb
+     else:
+         return_layer_emb_fn = target_encoder.backbone.return_layer_emb
+ 
+-    # Create mask collator
++    # Create mask collator (special tokens are padded unless kept)
+     mask_collator = BlockMaskCollator(
+         n_targets=model_config['mask']['n_targets'],
+         n_contexts=model_config['mask']['n_contexts'],
+@@ -189,8 +223,8 @@ def embed_dataset(dataset: Dataset,
+         per_block_mask_ratio=model_config['mask']['per_block_mask_ratio'],
+         sample_segments=False,
+         sample_gene_masks=False,
+-        restrict_special_attention=model_config['meta']['restrict_special_attention'],
+-        special_token_pad_ratio=1.0)
++        restrict_special_attention=get_restrict_special_attention(model_config),
++        special_token_pad_ratio=0.0 if keep_special_tokens else 1.0)
+         
+     # Create torch dataset
+     cell_dataset = init_cell_dataset(
+@@ -206,7 +240,9 @@ def embed_dataset(dataset: Dataset,
+         n_nonzero_tokens_list=[],
+         include_cell_id=True,
+         sep_gene_tokens_neb=model_config['data']['sep_gene_tokens_neb'],
+-        pad_special_tokens=True,)
++        nz_spc=model_config['data'].get('nz_spc', False),
++        pad_special_tokens=not keep_special_tokens,
++        spv_token_offset=get_spv_token_offset(token_dict),)
+ 
+     # Initialize dataloader
+     loader, _ = init_dataloader_and_sampler(
+@@ -263,7 +299,7 @@ def embed_dataset(dataset: Dataset,
+                 batch=udata,
+                 masks_attention=masks_attention,
+                 need_cell_only_context=True,
+-                ignore_spc_tokens=ignore_spc_tokens,
++                ignore_spc_tokens=ignore_spc_tokens and not keep_special_tokens,
+             )
+ 
+             c_emb = cell_only_ctx[emb_layer].cpu()
+@@ -384,6 +420,7 @@ def harmonize_tokenize_embed_pipeline(
+         add_neigh_cell_ids: bool = False,
+         ignore_spc_tokens: bool = True,
+         agg_type: Literal['avg', 'softmax'] = 'avg',
++        keep_special_tokens: bool = False,
+         ) -> ad.AnnData:
+     """
+     Harmonize, tokenize and embed an AnnData object.
+@@ -558,7 +595,8 @@ def harmonize_tokenize_embed_pipeline(
+         pin_memory=pin_memory,
+         num_workers=num_workers,
+         ignore_spc_tokens=ignore_spc_tokens,
+-        agg_type=agg_type)
++        agg_type=agg_type,
++        keep_special_tokens=keep_special_tokens)
+     print(f"Embedded tokenized data.")
+ 
+     # Add embeddings to adata
+@@ -585,6 +623,7 @@ def gene_embed_dataset(dataset: Dataset,
+                   return_receptor_average: bool=False,
+                   include_spatial_cell_emb: bool = True,
+                   description: str='',
++                  keep_special_tokens: bool = False,
+                   ) -> dict:
+     
+     """
+@@ -625,6 +664,12 @@ def gene_embed_dataset(dataset: Dataset,
+         attends to the neighborhood.
+     description:
+         description for task that is currently using this function.
++    keep_special_tokens:
++        If `True`, keep the special tokens (e.g. the batch metatoken) in the
++        input sequence as in training, so that gene tokens attend to them.
++        By default (`False`), special tokens are removed at inference.
++        Special token embeddings are never part of the aggregated cell and
++        neighborhood embeddings.
+     Returns:
+     -----------
+     output_embed:
+@@ -658,7 +703,10 @@ def gene_embed_dataset(dataset: Dataset,
+     with open(token_dictionary_file_path, 'rb') as file:
+         token_dict = pickle.load(file)
+     vocab_size = len(token_dict)
+-    n_special_values = sum(1 for key in token_dict if "spv" in key)
++    # As in training and `embed_dataset` (the special value embedding must
++    # match the checkpoint); fall back to the number of special value tokens
++    n_special_values = model_config['data'].get(
++        'n_special_values', sum(1 for key in token_dict if "spv" in key))
+ 
+     print('==================================================')
+     print(f'STEP 2: {description}')
+@@ -697,12 +745,13 @@ def gene_embed_dataset(dataset: Dataset,
+         mlp_bias=model_config['meta'].get('mlp_bias', True)
+         )
+ 
++    set_cell_only_context_length(target_encoder, model_config)
+     if model_config['meta']['api_version'] != 'v3':
+         return_layer_emb_fn = target_encoder.return_layer_emb
+     else:
+         return_layer_emb_fn = target_encoder.backbone.return_layer_emb
+ 
+-    # Create mask collator
++    # Create mask collator (special tokens are padded unless kept)
+     mask_collator = BlockMaskCollator(
+         n_targets=model_config['mask']['n_targets'],
+         n_contexts=model_config['mask']['n_contexts'],
+@@ -713,7 +762,8 @@ def gene_embed_dataset(dataset: Dataset,
+         per_block_mask_ratio=model_config['mask']['per_block_mask_ratio'],
+         sample_segments=False,
+         sample_gene_masks=False,
+-        special_token_pad_ratio=1.0)
++        restrict_special_attention=get_restrict_special_attention(model_config),
++        special_token_pad_ratio=0.0 if keep_special_tokens else 1.0)
+         
+     # Create torch dataset
+     cell_dataset = init_cell_dataset(
+@@ -729,7 +779,9 @@ def gene_embed_dataset(dataset: Dataset,
+         n_nonzero_tokens_list=[],
+         include_cell_id=True,
+         sep_gene_tokens_neb=model_config['data']['sep_gene_tokens_neb'],
+-        pad_special_tokens=True,)
++        nz_spc=model_config['data'].get('nz_spc', False),
++        pad_special_tokens=not keep_special_tokens,
++        spv_token_offset=get_spv_token_offset(token_dict),)
+ 
+     # Initialize dataloader
+     loader, _ = init_dataloader_and_sampler(
+@@ -793,6 +845,7 @@ def gene_embed_dataset(dataset: Dataset,
+                 batch=udata,
+                 masks_attention=masks_attention,
+                 need_cell_only_context=True,
++                ignore_spc_tokens=not keep_special_tokens,
+             )
+ 
+             # Keep embeddings on device for vectorized ops; move to CPU only when storing
+diff --git a/src/app/inference/infer.py b/src/app/inference/infer.py
+index 98eb00e..cddac5a 100644
+--- a/src/app/inference/infer.py
++++ b/src/app/inference/infer.py
+@@ -22,7 +22,9 @@ from pyensembl import EnsemblRelease
+ from scipy.sparse import issparse
+ 
+ from app.utils import init_model, load_checkpoint
+-from stjepa.datasets.cell_datasets import CellBaseDataset, init_cell_dataset
++from stjepa.datasets.cell_datasets import (CellBaseDataset,
++                                           get_spv_token_offset,
++                                           init_cell_dataset)
+ from stjepa.datasets.dataloaders import init_dataloader_and_sampler
+ from stjepa.masks.block_masking  import BlockMaskCollator
+ from stjepa.masks.cell_masking import CellMaskCollator
+@@ -74,6 +76,7 @@ def infer(args: dict,
+           include_spatial_cell_emb: bool = False,
+           ignore_spc_tokens: bool = True,
+           debug: bool = False,
++          keep_special_tokens: bool = False,
+           ) -> ad.AnnData:
+     """
+     Use a trained model for inference. Run forward pass on a given
+@@ -122,6 +125,10 @@ def infer(args: dict,
+         and cell_cell matrix.
+     include_spatial_cell_emb:
+         If 'True' also return spatial cell embedding.
++    keep_special_tokens:
++        If `True`, keep the special tokens (e.g. the batch metatoken) in the
++        input sequence as in training, so that gene tokens attend to them.
++        By default (`False`), special tokens are removed at inference.
+ 
+     Returns
+     -----------
+@@ -221,7 +228,9 @@ def infer(args: dict,
+     context_mask_size = args['mask']['context_mask_size']
+     target_mask_size = args['mask']['target_mask_size']
+     per_block_mask_ratio = args['mask']['per_block_mask_ratio']
+-    if 'restrict_special_attention' in args['meta'].keys():
++    if 'restrict_special_attention' in args['mask'].keys():
++        restrict_special_attention = args['mask']['restrict_special_attention']
++    elif 'restrict_special_attention' in args['meta'].keys():
+         restrict_special_attention = args['meta']['restrict_special_attention']
+     else:
+         restrict_special_attention = False
+@@ -310,12 +319,16 @@ def infer(args: dict,
+         nz_spc=nz_spc,
+         mlp_bias=mlp_bias)
+ 
++    # Cell-only context length from the config (the encoder derives it from
++    # n_segments, which is only right for the cell graph layout)
++    (target_encoder.backbone if hasattr(target_encoder, 'backbone')
++     else target_encoder).seq_len_cell = seq_len_cell
+     if api_version != 'v3':
+         return_layer_emb_fn = target_encoder.return_layer_emb
+     else:
+         return_layer_emb_fn = target_encoder.backbone.return_layer_emb
+ 
+-    # Initialize mask collator
++    # Initialize mask collator (special tokens are padded unless kept)
+     if block_masking:
+        mask_collator = BlockMaskCollator(
+             n_targets=n_targets,
+@@ -328,7 +341,7 @@ def infer(args: dict,
+             sample_segments=False,
+             sample_gene_masks=False,
+             restrict_special_attention=restrict_special_attention,
+-            special_token_pad_ratio=1.0)
++            special_token_pad_ratio=0.0 if keep_special_tokens else 1.0)
+     elif cell_masking:
+        mask_collator = CellMaskCollator(
+             n_targets=n_targets,
+@@ -354,7 +367,8 @@ def infer(args: dict,
+         n_nonzero_tokens_list=[],
+         include_cell_id=True,
+         sep_gene_tokens_neb=sep_gene_tokens_neb,
+-        nz_spc=nz_spc)
++        nz_spc=nz_spc,
++        spv_token_offset=get_spv_token_offset(token_dict))
+ 
+     loader, _ = init_dataloader_and_sampler(
+         cell_dataset=cell_dataset,
+@@ -432,7 +446,7 @@ def infer(args: dict,
+                 batch=udata,
+                 masks_attention=masks_attention,
+                 need_cell_only_context=True,
+-                ignore_spc_tokens=ignore_spc_tokens,
++                ignore_spc_tokens=ignore_spc_tokens and not keep_special_tokens,
+             )
+ 
+             cell_emb_list = []
+diff --git a/src/app/inference/tokenize.py b/src/app/inference/tokenize.py
+index eaa8308..683f641 100644
+--- a/src/app/inference/tokenize.py
++++ b/src/app/inference/tokenize.py
+@@ -95,9 +95,20 @@ def tokenize_adata(adata: ad.AnnData,
+     print('==================================================')
+     print('STEP 2: TOKENIZING ANNDATA OBJECT...')
+     print('==================================================')
+-    # Tokenize adata
++    # Tokenize adata (opt-in tokenizer fixes as recorded in the model config;
++    # absent keys -> off, as for models tokenized before they existed)
++    tokenizer_kwargs = {
++        'stable_rank_ties': model_config['data'].get(
++            'stable_rank_ties', False),
++        'zero_expr_from_raw_counts': model_config['data'].get(
++            'zero_expr_from_raw_counts', False)}
+     if model_config['data']['tokenizer_type'] == 'cell_neigh':
+         Tokenizer = cell_tokenizers.CellNeighborhoodTokenizer
++        # Split index-cell and neighborhood tokens as the model was trained
++        # (the datasets slice the sequence by `data.seq_len_cell`)
++        tokenizer_kwargs['seq_len_cell'] = model_config['data']['seq_len_cell']
++        tokenizer_kwargs['aggregate_own_neighbors'] = model_config['data'].get(
++            'aggregate_own_neighbors', False)
+     elif model_config['data']['tokenizer_type'] == 'cell_graph':
+         Tokenizer = cell_tokenizers.CellGraphTokenizer
+     tk = Tokenizer(
+@@ -116,7 +127,8 @@ def tokenize_adata(adata: ad.AnnData,
+         norm_factor_file_path=norm_factor_file_path,
+         token_dictionary_file_path=token_dictionary_file_path,
+         add_neigh_cell_ids=add_neigh_cell_ids,
+-        include_special_tokens=include_special_tokens)
++        include_special_tokens=include_special_tokens,
++        **tokenizer_kwargs)
+     dataset_dict = tk._tokenize_adata(adata=adata)
+     dataset = tk._create_dataset(
+         dataset_dict=dataset_dict,
+diff --git a/src/app/training/train.py b/src/app/training/train.py
+index c6b2e32..906b6a0 100644
 --- a/src/app/training/train.py
 +++ b/src/app/training/train.py
-@@ -84,11 +84,12 @@
+@@ -39,7 +39,7 @@ from torch.nn.parallel import DistributedDataParallel
+ from tqdm import tqdm
+ 
+ from app.utils import init_model, init_opt, load_checkpoint
+-from stjepa.datasets.cell_datasets import init_cell_dataset
++from stjepa.datasets.cell_datasets import get_spv_token_offset, init_cell_dataset
+ from stjepa.datasets.dataloaders import init_dataloader_and_sampler
+ from stjepa.masks.block_masking  import BlockMaskCollator
+ from stjepa.masks.cell_masking import CellMaskCollator
+@@ -84,11 +84,12 @@ def train(args: dict,
      WORLD_RANK:
          World rank of the process.
      """
@@ -24,7 +408,27 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
      torch.backends.cudnn.deterministic = False # set to True for reproducibility
      torch.backends.cudnn.benchmark = True # set to False for reproducibility
  
-@@ -432,7 +433,8 @@
+@@ -397,7 +398,8 @@ def train(args: dict,
+                 n_nonzero_tokens_list=nz,
+                 include_cell_id=False,
+                 sep_gene_tokens_neb=sep_gene_tokens_neb,
+-                nz_spc=nz_spc)
++                nz_spc=nz_spc,
++                spv_token_offset=get_spv_token_offset(token_dict))
+             train_cell_datasets.append(cell_d)
+ 
+     else:
+@@ -414,7 +416,8 @@ def train(args: dict,
+             n_nonzero_tokens_list=n_nonzero_tokens,
+             include_cell_id=False,
+             sep_gene_tokens_neb=sep_gene_tokens_neb,
+-            nz_spc=nz_spc)
++            nz_spc=nz_spc,
++            spv_token_offset=get_spv_token_offset(token_dict))
+ 
+     if isinstance(train_dataset, list):
+         train_loaders = []
+@@ -432,7 +435,8 @@ def train(args: dict,
                  drop_last=True,
                  prefetch_factor=(4 if num_workers > 0 else None),
                  persistent_workers=False,
@@ -34,7 +438,7 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
              train_loaders.append(train_loader)
              train_samplers.append(train_sampler)
  
-@@ -449,7 +451,8 @@
+@@ -449,7 +453,8 @@ def train(args: dict,
              drop_last=True,
              prefetch_factor=(4 if num_workers > 0 else None),
              persistent_workers=False,
@@ -44,7 +448,7 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
  
      print(f"Length of train loader: {len(train_loader)}.")
      ipe = len(train_loader)
-@@ -558,7 +561,9 @@
+@@ -558,7 +563,9 @@ def train(args: dict,
          if iter_number is not None:
              save_dict['iter_number'] = iter_number
          if rank == 0:
@@ -55,9 +459,120 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
              if (epoch + 1) % checkpoint_freq == 0:
                  if iter_number is None:
                      torch.save(save_dict, save_path.format(epoch=f'{epoch}'))
+@@ -623,7 +630,8 @@ def train(args: dict,
+                     batch=udata,
+                     masks_enc=masks_enc,
+                     masks_pred=masks_pred,
+-                    masks_attention=None)
++                    masks_attention=None,
++                    pad_special_tokens=pad_special_tokens)
+ 
+                 # Compute loss
+                 loss_exp = 1.0
+diff --git a/src/stjepa/datasets/cell_datasets.py b/src/stjepa/datasets/cell_datasets.py
+index ad8d8a7..d499c4c 100644
+--- a/src/stjepa/datasets/cell_datasets.py
++++ b/src/stjepa/datasets/cell_datasets.py
+@@ -25,6 +25,7 @@ class CellBaseDataset(Dataset):
+                  sep_gene_tokens_neb: bool = False,
+                  nz_spc: bool = True,
+                  pad_special_tokens: bool = False,
++                 spv_token_offset: int | None = None,
+                  ):
+         """
+         Torch CellBaseDataset class.
+@@ -99,6 +100,9 @@ class CellBaseDataset(Dataset):
+         self.sep_gene_tokens_neb = sep_gene_tokens_neb
+         self.nz_spc = nz_spc
+         self.pad_special_tokens = pad_special_tokens
++        # Token id offset of special values for `gt_type: rank` (token = value + offset); derived from the token
++        # dictionary by the caller (see `get_spv_token_offset`); None -> hard-coded offset by vocabulary size
++        self.spv_token_offset = spv_token_offset
+ 
+     def __len__(self) -> int:
+         return self.len
+@@ -131,12 +135,18 @@ class CellBaseDataset(Dataset):
+                     [item[f'{spc_tk}_token'],
+                     item_dict['tokens']])
+             else:
+-                if self.vocab_size == 2785:
++                if self.spv_token_offset is not None:
++                    spv_idx_subtract = torch.tensor([self.spv_token_offset])
++                elif self.vocab_size == 2785:
+                     spv_idx_subtract = torch.tensor([1674]) # mus musculus token dict
+                 else:
+                     spv_idx_subtract = torch.tensor([21957]) # homo sapiens token dict
++                spc_token = item[f'{spc_tk}_value'] + spv_idx_subtract # see tokenizers module
++                if self.pad_special_tokens:
++                    # Padded special tokens must stay <pad> (0), not offset
++                    spc_token = torch.zeros_like(spc_token)
+                 item_dict['tokens'] = torch.cat(
+-                    [item[f'{spc_tk}_value'] + spv_idx_subtract, # see tokenizers module
++                    [spc_token,
+                     item_dict['tokens']])
+ 
+             if self.gt_type != 'rank':
+@@ -552,8 +562,10 @@ class CellGraphDataset(CellBaseDataset):
+         if self.n_special_tokens > 0:
+             if self.pad_special_tokens:
+                 for spc_tk in self.special_tokens:
+-                    item[f'{spc_tk}_token'] = torch.tensor([0] * self.n_special_tokens)
+-                    item[f'{spc_tk}_value'] = torch.tensor([0] * self.n_special_tokens)
++                    item[f'{spc_tk}_token'] = torch.zeros_like(
++                        torch.as_tensor(item[f'{spc_tk}_token']))
++                    item[f'{spc_tk}_value'] = torch.zeros_like(
++                        torch.as_tensor(item[f'{spc_tk}_value']))
+             item_dict = self._add_special_seq(item=item,
+                                               item_dict=item_dict)
+ 
+@@ -764,8 +776,10 @@ class CellNeighborhoodDataset(CellBaseDataset):
+         if self.n_special_tokens > 0:
+             if self.pad_special_tokens:
+                 for spc_tk in self.special_tokens:
+-                    item[f'{spc_tk}_token'] = torch.tensor([0] * self.n_special_tokens)
+-                    item[f'{spc_tk}_value'] = torch.tensor([0] * self.n_special_tokens)
++                    item[f'{spc_tk}_token'] = torch.zeros_like(
++                        torch.as_tensor(item[f'{spc_tk}_token']))
++                    item[f'{spc_tk}_value'] = torch.zeros_like(
++                        torch.as_tensor(item[f'{spc_tk}_value']))
+             item_dict = self._add_special_seq(item=item,
+                                               item_dict=item_dict)
+ 
+@@ -786,6 +800,29 @@ class CellNeighborhoodDataset(CellBaseDataset):
+         return item_dict
+ 
+ 
++def get_spv_token_offset(token_dict: dict) -> int | None:
++    """
++    Token id offset of special values (token id = special value + offset),
++    as used by the tokenizers to store special values
++    (`spv_start_idx - 2 - max_cls_tokens`). Returns `None` if the token
++    dictionary has no special value tokens.
++    """
++    spv_token_ids = [
++        token_id for key, token_id in token_dict.items()
++        if str(key).startswith('spv_')]
++    if not spv_token_ids:
++        return None
++    max_cls_tokens = sum(1 for key in token_dict if 'cls' in str(key))
++    spv_token_offset = min(spv_token_ids) - 2 - max_cls_tokens
++    hard_coded_offset = 1674 if len(token_dict) == 2785 else 21957
++    if spv_token_offset != hard_coded_offset:
++        print(f"WARNING: special value token offset {spv_token_offset} of the "
++              f"token dictionary differs from the hard-coded offset "
++              f"{hard_coded_offset}; using {spv_token_offset} for "
++              f"`gt_type: rank`.")
++    return spv_token_offset
++
++
+ def init_cell_dataset(tokenizer_type: Literal['cell_graph',
+                                               'cell_neigh'],
+                       **cell_dataset_kwargs,
+diff --git a/src/stjepa/datasets/dataloaders.py b/src/stjepa/datasets/dataloaders.py
+index 03e90b6..020d3a7 100644
 --- a/src/stjepa/datasets/dataloaders.py
 +++ b/src/stjepa/datasets/dataloaders.py
-@@ -184,6 +184,7 @@
+@@ -184,6 +184,7 @@ def init_dataloader_and_sampler(cell_dataset: CellBaseDataset,
                                  world_size: int,
                                  rank: int,
                                  mega_batch_mult_max: int,
@@ -65,7 +580,7 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
                                  **dataloader_kwargs,
      ) -> tuple[torch.utils.data.DataLoader,
                 torch.utils.data.distributed.DistributedSampler | None]:
-@@ -218,7 +219,7 @@
+@@ -218,7 +219,7 @@ def init_dataloader_and_sampler(cell_dataset: CellBaseDataset,
              batch_size=batch_size,
              num_replicas=world_size,
              rank=rank,
@@ -74,7 +589,7 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
              mega_batch_mult_max=mega_batch_mult_max)
      else:
          dist_sampler = DistributedSampler(
-@@ -226,7 +227,7 @@
+@@ -226,7 +227,7 @@ def init_dataloader_and_sampler(cell_dataset: CellBaseDataset,
              num_replicas=world_size,
              rank=rank,
              shuffle=False,
@@ -83,3 +598,603 @@ Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations. Appl
          )
          
      dataloader = DataLoader(cell_dataset,
+diff --git a/src/stjepa/masks/block_masking.py b/src/stjepa/masks/block_masking.py
+index c6399a0..dad4abd 100644
+--- a/src/stjepa/masks/block_masking.py
++++ b/src/stjepa/masks/block_masking.py
+@@ -271,6 +271,14 @@ class BlockMaskCollator:
+                     :,
+                     i,
+                     (i+1):] = 0
++                # A padded special token (token 0) would otherwise have no
++                # key left and give NaN attention outputs that spread to all
++                # tokens; let it attend to itself (no-op if not padded)
++                masks_attention[
++                    :,
++                    :,
++                    i,
++                    i] = True
+ 
+         if self.sample_gene_masks:
+             # Retrieve target and context masks per cell
+diff --git a/src/stjepa/models/gene_transformers.py b/src/stjepa/models/gene_transformers.py
+index 34ce07c..b9a0a1e 100644
+--- a/src/stjepa/models/gene_transformers.py
++++ b/src/stjepa/models/gene_transformers.py
+@@ -451,7 +451,9 @@ class GeneTransformerBasePredictor(ABC, nn.Module):
+         # Initialize segment embeddings
+         if self.cell_pos_enc == 'segment':
+             self.seg_embed = nn.Embedding(
+-                1 + n_segments + (105 if api_version == 'v1' else 0) + (1 if self.nz_spc else 0), # include <pad>
++                # One special segment per special token, as in the encoder
++                # (was +1, which crashes with 2 or more special tokens)
++                1 + n_segments + (105 if api_version == 'v1' else 0) + (self.n_special_tokens if self.nz_spc else 0), # include <pad>
+                 predictor_embed_dim,
+                 padding_idx=0)
+             
+@@ -461,7 +463,7 @@ class GeneTransformerBasePredictor(ABC, nn.Module):
+             seg_embed = get_1d_sincos_pos_embed(
+                 embed_dim=predictor_embed_dim,
+                 n_zero_pos=0,
+-                n_sincos_pos=n_segments + (105 if api_version == 'v1' else 0) + (1 if self.nz_spc else 0))
++                n_sincos_pos=n_segments + (105 if api_version == 'v1' else 0) + (self.n_special_tokens if self.nz_spc else 0))
+             self.seg_embed.weight[1:].copy_(torch.from_numpy(seg_embed).float())
+ 
+         # Initialize layer to project from enc to pred embed dim
+@@ -1393,6 +1395,7 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
+                 masks_enc: list[torch.Tensor] | torch.Tensor,
+                 masks_pred: list[torch.Tensor] | torch.Tensor,
+                 masks_attention: torch.Tensor | None = None,
++                pad_special_tokens: bool = False,
+                 ) -> torch.Tensor:
+             """
+             Run predictor forward pass for a batch of input tokens.
+@@ -1475,7 +1478,7 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
+             # Repeat context embeddings for all target masks
+             z = z.repeat(len(masks_pred), 1, 1)
+ 
+-            if self.new_spc:
++            if self.new_spc and not pad_special_tokens:
+                 # Concatenate mask tokens and context embeddings of gene tokens
+                 z = torch.cat([
+                     z[:, :self.n_special_tokens, :],
+@@ -1523,6 +1526,7 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
+         masks_enc: list[torch.Tensor] | torch.Tensor,
+         masks_pred: list[torch.Tensor] | torch.Tensor,
+         masks_attention: torch.Tensor | None = None,
++        pad_special_tokens: bool = False,
+         ) -> torch.Tensor:
+         """
+         Run predictor forward pass for a batch of input tokens.
+@@ -1603,7 +1607,7 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
+         # Repeat context embeddings for all target masks
+         z = z.repeat(len(masks_pred), 1, 1)
+ 
+-        if self.new_spc:
++        if self.new_spc and not pad_special_tokens:
+             # Concatenate mask tokens and context embeddings of gene tokens
+             z = torch.cat([
+                 z[:, :self.n_special_tokens, :],
+@@ -1680,6 +1684,7 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
+         masks_enc: list[torch.Tensor] | torch.Tensor,
+         masks_pred: list[torch.Tensor] | torch.Tensor,
+         masks_attention: torch.Tensor | None = None,
++        pad_special_tokens: bool = False,
+         ) -> torch.Tensor:
+         """
+         Run predictor forward pass for a batch of input tokens.
+@@ -1777,7 +1782,7 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
+         # Repeat context embeddings for all target masks
+         z = z.repeat(len(masks_pred), 1, 1)
+ 
+-        if self.new_spc:
++        if self.new_spc and not pad_special_tokens:
+             # Concatenate mask tokens and context embeddings of gene tokens
+             z = torch.cat([
+                 z[:, :self.n_special_tokens, :],
+diff --git a/src/stjepa/models/multimask.py b/src/stjepa/models/multimask.py
+index 5a80a12..e3f81e8 100644
+--- a/src/stjepa/models/multimask.py
++++ b/src/stjepa/models/multimask.py
+@@ -69,7 +69,8 @@ class PredictorMultiMaskWrapper(nn.Module):
+                 batch: dict[torch.Tensor],
+                 masks_enc: torch.Tensor | list,
+                 masks_pred: torch.Tensor | list,
+-                masks_attention: torch.Tensor
++                masks_attention: torch.Tensor,
++                pad_special_tokens: bool = False,
+                 ) -> list[torch.Tensor]:
+         if type(z) is not list:
+             z = [z]
+@@ -86,5 +87,6 @@ class PredictorMultiMaskWrapper(nn.Module):
+                               batch=batch,
+                               masks_enc=masks_enc[0],
+                               masks_pred=mp,
+-                              masks_attention=masks_attention)]
++                              masks_attention=masks_attention,
++                              pad_special_tokens=pad_special_tokens)]
+         return outs
+\ No newline at end of file
+diff --git a/src/stjepa/preprocessors/graph.py b/src/stjepa/preprocessors/graph.py
+index 61bbf4a..34928a4 100755
+--- a/src/stjepa/preprocessors/graph.py
++++ b/src/stjepa/preprocessors/graph.py
+@@ -65,6 +65,7 @@ def construct_neighbor_graph(adata: ad.AnnData,
+                              include_self_loop: bool = False,
+                              batch_key: str | None = None,
+                              compute_neighbor_counts: bool = False,
++                             aggregate_own_neighbors: bool = False,
+                              ) -> ad.AnnData:
+     """
+     Compute neighbor graph and optionally aggregate cell features across
+@@ -97,6 +98,13 @@ def construct_neighbor_graph(adata: ad.AnnData,
+     compute_neighbor_counts:
+         If 'True', aggregate counts across neighborhood and store in
+         `adata.layers['X_neighborhood']`.
++    aggregate_own_neighbors:
++        If 'True', aggregate the counts of each cell's own neighbors (row
++        i of `adata.obsp['spatial_connectivities']`, i.e.
++        `connectivities @ X`). If 'False', aggregate the counts of the
++        cells that have the cell among their neighbors (column i, i.e.
++        `connectivities.T @ X`); for a directed kNN graph, their number
++        varies and can be 0.
+ 
+     Returns
+     ----------
+@@ -138,7 +146,11 @@ def construct_neighbor_graph(adata: ad.AnnData,
+             include_self_loop)           
+     
+     if compute_neighbor_counts:
+-        adata.layers['X_neighborhood'] = (
+-            adata.obsp['spatial_connectivities'].T @ adata.X)
++        if aggregate_own_neighbors:
++            adata.layers['X_neighborhood'] = (
++                adata.obsp['spatial_connectivities'] @ adata.X)
++        else:
++            adata.layers['X_neighborhood'] = (
++                adata.obsp['spatial_connectivities'].T @ adata.X)
+ 
+     return adata
+\ No newline at end of file
+diff --git a/src/stjepa/tokenizers/__init__.py b/src/stjepa/tokenizers/__init__.py
+index 80139af..a73aa43 100755
+--- a/src/stjepa/tokenizers/__init__.py
++++ b/src/stjepa/tokenizers/__init__.py
+@@ -1,4 +1,7 @@
+ from .cell_tokenizers import (CellBaseTokenizer,
+                               CellGraphTokenizer,
+                               CellNeighborhoodTokenizer)
+-from .tokenize import process_gene_expr, process_gene_tokens, rank_gene_tokens
+\ No newline at end of file
++from .tokenize import (order_gene_tokens,
++                       process_gene_expr,
++                       process_gene_tokens,
++                       rank_gene_tokens)
+\ No newline at end of file
+diff --git a/src/stjepa/tokenizers/cell_tokenizers.py b/src/stjepa/tokenizers/cell_tokenizers.py
+index c9cbe8b..bc7a729 100755
+--- a/src/stjepa/tokenizers/cell_tokenizers.py
++++ b/src/stjepa/tokenizers/cell_tokenizers.py
+@@ -85,7 +85,10 @@ from ..preprocessors.normalizers import normalize_by_factor
+ from ..preprocessors.normalizers import normalize_by_read_depth
+ from ..preprocessors.normalizers import normalize_by_seurat
+ from ..preprocessors.normalizers import normalize_by_shifted_log
+-from .tokenize import process_gene_expr, process_gene_tokens, rank_gene_tokens
++from .tokenize import (order_gene_tokens,
++                       process_gene_expr,
++                       process_gene_tokens,
++                       rank_gene_tokens)
+ 
+ 
+ warnings.filterwarnings('ignore', message=".*The 'nopython' keyword.*") # noqa
+@@ -145,6 +148,23 @@ class CellBaseTokenizer(ABC):
+         If `True`, add neighbor cell IDs.
+     include_special_tokens:
+         If `True`, include special tokens.
++    stable_rank_ties:
++        If `True`, order the genes of each cell (and neighborhood) by a
++        gene-level key that does not depend on the gene order or the sort
++        algorithm: rank-stream score (descending), count-stream value
++        (descending), reference nonzero mean (ascending; column
++        'nonzero_mean' of `norm_factor_file_path`) and gene token
++        (ascending). If `False`, ties are broken as before (unstable
++        argsort on the sparse path, gene order on the dense path).
++    zero_expr_from_raw_counts:
++        If `True`, the candidate genes of a cell are exactly the genes
++        with raw count > 0 (aggregated raw count > 0 for the neighborhood
++        of the CellNeighborhoodTokenizer), whatever their normalized
++        score. If `False`, genes with a normalized rank score of 0 are
++        excluded, so zero-count genes with a nonzero score (e.g. Seurat
++        v3, Pearson residuals) are candidates and detected genes with a
++        score of exactly 0 are not. Requires
++        `include_zero_expr_genes=False`.
+     """
+     def __init__(
+             self,
+@@ -188,6 +208,8 @@ class CellBaseTokenizer(ABC):
+             token_dictionary_file_path: Path | str = token_dictionary_file_path,
+             add_neigh_cell_ids: bool = False,
+             include_special_tokens: bool = True,
++            stable_rank_ties: bool = False,
++            zero_expr_from_raw_counts: bool = False,
+             ):
+         self.nproc = nproc
+         self.processing_mode = processing_mode
+@@ -207,6 +229,14 @@ class CellBaseTokenizer(ABC):
+         self.token_dictionary_file_path = token_dictionary_file_path
+         self.add_neigh_cell_ids = add_neigh_cell_ids
+         self.include_special_tokens = include_special_tokens
++        self.stable_rank_ties = stable_rank_ties
++        self.zero_expr_from_raw_counts = zero_expr_from_raw_counts
++
++        if self.zero_expr_from_raw_counts and self.include_zero_expr_genes:
++            raise ValueError(
++                "'zero_expr_from_raw_counts=True' restricts the candidate "
++                "genes to genes with raw count > 0 and cannot be combined "
++                "with 'include_zero_expr_genes=True'.")
+ 
+         # TODO fix this for radius and delaunay
+         self.seq_len_cell = int(self.model_input_size / (self.n_neighs + 1))
+@@ -243,6 +273,182 @@ class CellBaseTokenizer(ABC):
+         self.coding_miRNA_dict = dict(
+             zip(self.coding_miRNA_ids, [True] * len(self.vocab)))
+ 
++        # Load the reference nonzero means used to break rank ties
++        if self.stable_rank_ties:
++            norm_factor_df = pd.read_csv(self.norm_factor_file_path)
++            missing_columns = (
++                {'gene_id', 'nonzero_mean'} - set(norm_factor_df.columns))
++            if missing_columns:
++                raise ValueError(
++                    "'stable_rank_ties=True' needs the columns 'gene_id' and "
++                    f"'nonzero_mean' in '{self.norm_factor_file_path}'; "
++                    f"missing: {sorted(missing_columns)}.")
++            # First row per gene, as in `normalize_by_factor()`
++            self.ref_nonzero_means = norm_factor_df.drop_duplicates(
++                'gene_id').set_index('gene_id')['nonzero_mean'].astype(
++                    np.float64)
++
++    def _get_ref_nonzero_means(self,
++                               gene_ids: np.ndarray | pd.Series,
++                               ) -> np.ndarray:
++        """
++        Retrieve the reference nonzero means of genes (vectorized) to break
++        rank ties.
++
++        Parameters
++        ----------
++        gene_ids:
++            Ensembl IDs of the genes.
++
++        Returns
++        ----------
++        ref_nonzero_means:
++            Reference nonzero mean of each gene.
++        """
++        gene_ids = np.asarray(gene_ids)
++        positions = self.ref_nonzero_means.index.get_indexer(gene_ids)
++        if (positions < 0).any():
++            missing_gene_ids = gene_ids[positions < 0]
++            raise ValueError(
++                f"'stable_rank_ties=True': {len(missing_gene_ids)} probed "
++                "genes have no 'nonzero_mean' in "
++                f"'{self.norm_factor_file_path}', e.g. "
++                f"{missing_gene_ids[:5].tolist()}.")
++        ref_nonzero_means = self.ref_nonzero_means.to_numpy()[positions]
++
++        return ref_nonzero_means
++
++    def _max_ranked_genes(self) -> int | None:
++        """
++        Maximum number of ranked genes kept per cell (and neighborhood) by
++        `_rank_genes_chunk()`. `_format_examples()` uses at most
++        `model_input_size` tokens of each ranked gene list, so cutting the
++        lists there does not change the tokenized data. `None` keeps all
++        genes.
++        """
++        return self.model_input_size
++
++    def _rank_genes_chunk(self,
++                          rank_block: np.ndarray | sp.spmatrix,
++                          count_block: np.ndarray | sp.spmatrix,
++                          raw_block: np.ndarray | sp.spmatrix,
++                          gene_tokens: np.ndarray,
++                          ref_nonzero_means: np.ndarray | None = None,
++                          ) -> tuple[list, list]:
++        """
++        Rank the genes of each cell (row) of a chunk with the opt-in rules
++        `stable_rank_ties` and `zero_expr_from_raw_counts`.
++
++        Candidate genes are the genes with raw count > 0 if
++        `zero_expr_from_raw_counts`, else as in the default paths (sparse
++        path: the stored rank scores; dense path: all genes, genes with a
++        rank score of 0 set to the pad token in place). Candidates are
++        ordered by `order_gene_tokens()` if `stable_rank_ties`, else as in
++        the default paths. The ranked gene lists keep the format of their
++        path and are cut at `_max_ranked_genes()`; on the dense path, they
++        have min(n_genes, `_max_ranked_genes()`) entries, with pad tokens
++        (expression 0.) after the candidates.
++
++        Parameters
++        ----------
++        rank_block:
++            Rank-stream scores of the chunk (cells x genes).
++        count_block:
++            Count-stream values of the chunk (cells x genes).
++        raw_block:
++            Raw counts of the chunk (cells x genes); only used if
++            `zero_expr_from_raw_counts`.
++        gene_tokens:
++            Gene token of each gene (column).
++        ref_nonzero_means:
++            Reference nonzero mean of each gene (column); only used if
++            `stable_rank_ties`.
++
++        Returns
++        ----------
++        gene_tokens_list:
++            Ranked gene tokens of each cell.
++        gene_expr_list:
++            Count-stream values of the ranked gene tokens of each cell.
++        """
++        def to_dense(block):
++            if sp.issparse(block):
++                return block.toarray()
++            return np.asarray(block)
++
++        def order_candidates(rank_scores, count_values, idx):
++            # Order the candidate genes `idx` of one cell
++            if self.stable_rank_ties:
++                return order_gene_tokens(rank_scores,
++                                         gene_tokens[idx],
++                                         ref_nonzero_means[idx],
++                                         count_values)
++            if self.rank_differs_from_count:  # as the default dense path
++                return np.lexsort((-count_values, -rank_scores))
++            return np.argsort(-rank_scores)  # as the default sparse path
++
++        max_ranked_genes = self._max_ranked_genes()
++        gene_tokens_list = []
++        gene_expr_list = []
++
++        if not (self.rank_differs_from_count
++                or self.include_zero_expr_genes
++                or self.zero_expr_from_raw_counts):
++            # Sparse path with the candidates of the default sparse path:
++            # the stored rank scores (count values aligned by position)
++            rank_block = sp.csr_matrix(rank_block)
++            count_block = sp.csr_matrix(count_block)
++            for j in range(rank_block.shape[0]):
++                idx = rank_block[j].indices
++                count_values = count_block[j].data
++                order = order_candidates(
++                    rank_block[j].data, count_values, idx)[:max_ranked_genes]
++                gene_tokens_list.append(gene_tokens[idx][order])
++                gene_expr_list.append(count_values[order])
++            return gene_tokens_list, gene_expr_list
++
++        rank_block = to_dense(rank_block)
++        count_block = to_dense(count_block)
++        if self.zero_expr_from_raw_counts:
++            raw_block = to_dense(raw_block)
++        dense_list_length = len(gene_tokens)
++        if max_ranked_genes is not None:
++            dense_list_length = min(dense_list_length, max_ranked_genes)
++
++        for j in range(rank_block.shape[0]):
++            if self.zero_expr_from_raw_counts:
++                idx = np.flatnonzero(raw_block[j] > 0)
++            else:
++                idx = np.arange(rank_block.shape[1])
++            rank_scores = rank_block[j][idx]
++            count_values = count_block[j][idx]
++            order = order_candidates(
++                rank_scores, count_values, idx)[:max_ranked_genes]
++            n_ranked = len(order)
++
++            if not self.rank_differs_from_count:
++                # Sparse path: arrays of the ranked candidates
++                gene_tokens_list.append(gene_tokens[idx][order])
++                gene_expr_list.append(count_values[order])
++                continue
++
++            # Dense path: lists of `dense_list_length` entries
++            sorted_tokens = np.zeros(dense_list_length, dtype=gene_tokens.dtype)
++            sorted_expr = np.zeros(dense_list_length, dtype=np.float64)
++            sorted_tokens[:n_ranked] = gene_tokens[idx][order]
++            sorted_expr[:n_ranked] = count_values[order]
++            if not (self.zero_expr_from_raw_counts
++                    or self.include_zero_expr_genes):
++                # As the default dense path: genes with a rank score of 0
++                # are set to the pad token in place
++                zero_mask = rank_scores[order] == 0
++                sorted_tokens[:n_ranked][zero_mask] = 0
++                sorted_expr[:n_ranked][zero_mask] = 0.0
++            gene_tokens_list.append(sorted_tokens.tolist())
++            gene_expr_list.append(sorted_expr.tolist())
++
++        return gene_tokens_list, gene_expr_list
++
+     def tokenize_data(self,
+                       input_directory: Path | str,
+                       output_directory: Path | str,
+@@ -692,7 +898,25 @@ class CellGraphTokenizer(CellBaseTokenizer):
+         adata_dict['gene_tokens_neighborhood'] = []
+         adata_dict['gene_expr_neighborhood'] = []
+             
+-        if not self.rank_differs_from_count: # save memory by working with sparse arrays
++        if self.stable_rank_ties or self.zero_expr_from_raw_counts:
++            print('Ranking gene tokens based on normalized counts '
++                  f"(stable_rank_ties={self.stable_rank_ties}, "
++                  f"zero_expr_from_raw_counts={self.zero_expr_from_raw_counts}).")
++            ref_nonzero_means = (
++                self._get_ref_nonzero_means(coding_miRNA_ids)
++                if self.stable_rank_ties else None)
++            for i in range(0, len(adata), self.chunk_size):
++                adata_chunk = adata[i : i + self.chunk_size, coding_miRNA_idx]
++                gene_tokens, gene_expr = self._rank_genes_chunk(
++                    rank_block=adata_chunk.layers['X_rank'],
++                    count_block=adata_chunk.layers['X_count'],
++                    raw_block=adata_chunk.X,
++                    gene_tokens=coding_miRNA_tokens_cell,
++                    ref_nonzero_means=ref_nonzero_means)
++                adata_dict['gene_tokens_cell'] += gene_tokens
++                adata_dict['gene_expr_cell'] += gene_expr
++
++        elif not self.rank_differs_from_count: # save memory by working with sparse arrays
+             print('Ranking gene tokens based on normalized counts (sparse version).')
+             for i in range(0, len(adata), self.chunk_size):
+                 if self.include_zero_expr_genes:
+@@ -1040,6 +1264,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
+ 
+ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+     def __init__(self,
++                 seq_len_cell: int | None = None,
++                 aggregate_own_neighbors: bool = False,
+                  **base_tokenizer_kwargs,
+                  ):
+         """
+@@ -1047,11 +1273,32 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+ 
+         Parameters
+         -----------
++        seq_len_cell:
++            Number of index-cell tokens; the remaining
++            `model_input_size - seq_len_cell` tokens are neighborhood
++            tokens. Must match `data.seq_len_cell` of the model config. If
++            `None`, `int(model_input_size / (n_neighs + 1))` is used.
++        aggregate_own_neighbors:
++            If `True`, aggregate the counts of each cell's own neighbors
++            (row i of the directed kNN graph, as the CellGraphTokenizer
++            uses). If `False`, aggregate the counts of the cells that have
++            the cell among their neighbors (reverse neighbors; their number
++            varies and can be 0).
+         **base_tokenizer_kwargs:
+             Keyword arguments for the initialization of the
+             CellBaseTokenizer.
+         """
+         super().__init__(**base_tokenizer_kwargs)
++        self.aggregate_own_neighbors = aggregate_own_neighbors
++
++        if seq_len_cell is not None:
++            if (int(seq_len_cell) != seq_len_cell
++                or not 0 < seq_len_cell < self.model_input_size):
++                raise ValueError(
++                    "'seq_len_cell' must be an integer between 0 and "
++                    f"'model_input_size' ({self.model_input_size}), "
++                    f"got {seq_len_cell}.")
++            self.seq_len_cell = int(seq_len_cell)
+ 
+     def _tokenize_adata(self,
+                         adata_file_path: Path | str | None = None,
+@@ -1123,7 +1370,8 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+             radius=self.radius,
+             delaunay=self.delaunay,
+             include_self_loop=True,
+-            compute_neighbor_counts=True)
++            compute_neighbor_counts=True,
++            aggregate_own_neighbors=self.aggregate_own_neighbors)
+ 
+         print('Normalizing gene expression counts...')
+         # Perform normalization of counts per cell for rank and count
+@@ -1345,7 +1593,35 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+         adata_dict['gene_expr_neighborhood'] = []
+             
+         # Divide cells into chunks and loop through chunks
+-        if not self.rank_differs_from_count:  # sparse-optimized path
++        if self.stable_rank_ties or self.zero_expr_from_raw_counts:
++            print('Ranking gene tokens based on normalized counts '
++                  f"(stable_rank_ties={self.stable_rank_ties}, "
++                  f"zero_expr_from_raw_counts={self.zero_expr_from_raw_counts}).")
++            ref_nonzero_means = (
++                self._get_ref_nonzero_means(coding_miRNA_ids)
++                if self.stable_rank_ties else None)
++            for i in range(0, len(adata), self.chunk_size):
++                adata_chunk = adata[i : i + self.chunk_size, coding_miRNA_idx]
++                # Index cell (raw counts) and aggregated neighborhood
++                # (aggregated raw counts)
++                gene_tokens, gene_expr = self._rank_genes_chunk(
++                    rank_block=adata_chunk.layers['X_rank'],
++                    count_block=adata_chunk.layers['X_count'],
++                    raw_block=adata_chunk.X,
++                    gene_tokens=coding_miRNA_tokens_cell,
++                    ref_nonzero_means=ref_nonzero_means)
++                adata_dict['gene_tokens_cell'] += gene_tokens
++                adata_dict['gene_expr_cell'] += gene_expr
++                gene_tokens, gene_expr = self._rank_genes_chunk(
++                    rank_block=adata_chunk.layers['X_neighborhood_rank'],
++                    count_block=adata_chunk.layers['X_neighborhood_count'],
++                    raw_block=adata_chunk.layers['X_neighborhood'],
++                    gene_tokens=coding_miRNA_tokens_neighborhood,
++                    ref_nonzero_means=ref_nonzero_means)
++                adata_dict['gene_tokens_neighborhood'] += gene_tokens
++                adata_dict['gene_expr_neighborhood'] += gene_expr
++
++        elif not self.rank_differs_from_count:  # sparse-optimized path
+             print('Ranking gene tokens based on normalized counts (sparse version).')
+             for i in range(0, len(adata), self.chunk_size):
+                 if self.include_zero_expr_genes:
+@@ -1565,7 +1841,7 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+         Format examples.
+         """
+         # Retrieve gene tokens
+-        seq_len_cell = self.seq_len_cell  # model_input_size / (n_neighs + 1)
++        seq_len_cell = self.seq_len_cell  # model_input_size / (n_neighs + 1) unless set
+         seq_len_neighborhood = self.model_input_size - seq_len_cell
+ 
+         gene_tokens_cell, n_nonzero_cell_tokens = process_gene_tokens(
+diff --git a/src/stjepa/tokenizers/tokenize.py b/src/stjepa/tokenizers/tokenize.py
+index 4298add..f428dcb 100755
+--- a/src/stjepa/tokenizers/tokenize.py
++++ b/src/stjepa/tokenizers/tokenize.py
+@@ -104,5 +104,49 @@ def rank_gene_tokens(gene_scores: np.ndarray,
+     # Sort gene tokens by gene scores
+     sorted_indices = np.argsort(-gene_scores)
+     ranked_gene_tokens = gene_tokens[sorted_indices][:n_tokens]
+-    
++
+     return ranked_gene_tokens
++
++
++def order_gene_tokens(gene_scores: np.ndarray,
++                      gene_tokens: np.ndarray,
++                      tie_break_values: np.ndarray,
++                      count_values: np.ndarray | None = None,
++                      ) -> np.ndarray:
++    """
++    Order genes by a gene-level key: gene score (descending), count value
++    (descending, optional), tie-break value (ascending) and gene token
++    (ascending). Gene tokens are unique, so the key is a total order on
++    genes and the result depends neither on the order of the genes nor on
++    the sort algorithm. NaN values are ordered last on every key.
++
++    Parameters
++    ----------
++    gene_scores:
++        1D vector containing gene scores (normalized gene expression of
++        the rank stream).
++    gene_tokens:
++        1D vector containing gene tokens.
++    tie_break_values:
++        1D vector containing per-gene tie-break values (e.g. the reference
++        nonzero mean expression, so that the less expressed gene is
++        ranked first).
++    count_values:
++        1D vector containing the normalized gene expression of the count
++        stream (secondary key).
++
++    Returns
++    ----------
++    order:
++        1D vector containing the indices that order the genes.
++    """
++    # np.lexsort sorts by the last key first; negate (exactly, in float64)
++    # for descending keys
++    keys = [np.asarray(gene_tokens),
++            np.asarray(tie_break_values, dtype=np.float64)]
++    if count_values is not None:
++        keys.append(-np.asarray(count_values, dtype=np.float64))
++    keys.append(-np.asarray(gene_scores, dtype=np.float64))
++    order = np.lexsort(keys)
++
++    return order

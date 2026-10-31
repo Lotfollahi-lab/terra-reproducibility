@@ -5,6 +5,10 @@ bars show the mean over all Leiden resolutions (0.6-1.4) and replicates, error b
 the individual values colored by replicate. The base run is shown as the reference bar of each category, labelled
 with its setting in that category (the mouse architecture panel had no base bar). Runs without results are skipped.
 
+The category panels use the mouse evaluation (metatoken removed at inference). An extra panel,
+`metatoken_inference`, compares removing and keeping the metatoken at inference for the base and metatoken dropout
+runs, next to the run without metatoken.
+
 Usage:
 ```bash
 python compare_ablations.py
@@ -48,14 +52,16 @@ plt.rcParams.update({
 def collect_metrics(manifest_df: pd.DataFrame, dataset_name: str) -> pd.DataFrame:
     records = []
     for _, run in manifest_df.iterrows():
-        metrics_file_path = (Path(run["eval_folder_path"]) /
-                             f"{dataset_name}_neighborhood_emb_niche_identification_metrics_res_sweep.csv")
-        if not metrics_file_path.exists():
-            continue
-        metrics_df = pd.read_csv(metrics_file_path)
-        for key in ["run_name", "variant", "category", "label", "replicate"]:
-            metrics_df[key] = run[key]
-        records.append(metrics_df)
+        for mode, prefix in [("drop", f"{dataset_name}_"), ("keep", f"{dataset_name}_keep_metatoken_")]:
+            metrics_file_path = (Path(run["eval_folder_path"]) /
+                                 f"{prefix}neighborhood_emb_niche_identification_metrics_res_sweep.csv")
+            if not metrics_file_path.exists():
+                continue
+            metrics_df = pd.read_csv(metrics_file_path)
+            for key in ["run_name", "variant", "category", "label", "replicate"]:
+                metrics_df[key] = run[key]
+            metrics_df["metatoken_mode"] = mode
+            records.append(metrics_df)
     if not records:
         raise FileNotFoundError("No evaluated runs found.")
     return pd.concat(records, ignore_index=True)
@@ -96,14 +102,29 @@ def main(args):
     figures_folder_path.mkdir(parents=True, exist_ok=True)
 
     manifest_df = pd.read_csv(artifact_folder_path / "manifest.tsv", sep="\t")
-    metrics_df = collect_metrics(manifest_df, args.dataset_name)
-    metrics_df.to_csv(results_folder_path / "niche_identification_ovca_ablations.csv", index=False)
-    summary_df = (metrics_df.groupby(["category", "variant", "label"])[["NMI", "ARI", "n_clusters"]]
-                  .agg(["mean", "std"]).join(metrics_df.groupby("variant")["replicate"].nunique()
-                                             .rename(("n_replicates", ""))))
+    all_metrics_df = collect_metrics(manifest_df, args.dataset_name)
+    all_metrics_df.to_csv(results_folder_path / "niche_identification_ovca_ablations.csv", index=False)
+    summary_df = (all_metrics_df.groupby(["category", "variant", "label", "metatoken_mode"])[["NMI", "ARI", "n_clusters"]]
+                  .agg(["mean", "std"]).join(all_metrics_df.groupby(["variant", "metatoken_mode"])["replicate"]
+                                             .nunique().rename(("n_replicates", ""))))
     summary_df.to_csv(results_folder_path / "niche_identification_ovca_ablations_summary.csv")
     print(summary_df.round(3).to_string())
 
+    # Metatoken at inference: removed (as in the mouse evaluation) vs kept, for runs trained with it
+    metatoken_df = all_metrics_df[all_metrics_df["category"].isin(["base", "metatoken"])].copy()
+    if not metatoken_df.empty:
+        metatoken_df["label"] = metatoken_df.apply(
+            lambda run: (run["label"] if run["variant"] == "no_metatk" else
+                         f"{'Metatoken' if run['category'] == 'base' else run['label']} "
+                         f"({'removed' if run['metatoken_mode'] == 'drop' else 'kept'})"), axis=1)
+        for metric in ["NMI", "ARI"]:
+            fig = plot_category(metatoken_df, metric, "Metatoken at inference (OVCA)")
+            for extension in ["svg", "pdf", "png"]:
+                fig.savefig(figures_folder_path / f"ovca_ablation_metatoken_inference_niche_{metric}.{extension}")
+            plt.close(fig)
+
+    # Category panels with the mouse evaluation (metatoken removed at inference)
+    metrics_df = all_metrics_df[all_metrics_df["metatoken_mode"] == "drop"]
     base_df = metrics_df[metrics_df["category"] == "base"]
     for category in CATEGORY_ORDER[1:]:
         category_df = metrics_df[metrics_df["category"] == category]

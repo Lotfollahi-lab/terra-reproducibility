@@ -6,7 +6,7 @@ pathologist niche labels) for the OVCA ablations:
    section in the TERRA corpus (`xho50-1b_1p`: dataset id 50, batch0) so that the human token dictionary already holds
    its special value tokens. The pathologist labels (`path_region`), cell type labels and 10x cell ids (obs_names) are
    kept; only `obsm['spatial']` (microns) is kept as coordinates.
-2. Computes the per-gene normalization factors of this cohort (the section itself) as
+2. Computes the per-gene normalization factors of this cohort (the section itself) with `norm_factors.py`, i.e. as
    `stjepa-reproducibility/src/compute_norm_factors.py` does, with the gene-corrected read depth constants of the
    tokenizer (153.4768 + 0.0487 * n_genes), so that factors and tokenization are consistent. They are needed by the
    mean and nonzero-mean normalization arms.
@@ -31,13 +31,13 @@ import anndata as ad
 import numpy as np
 import pandas as pd
 import scanpy as sc
-import scipy.sparse as sp
 
 from ablation_utils import (BRONZE_FILE_PATH,
                             GENE_MAPPING_DICT_FILE_PATH,
                             NORM_FACTOR_FILE_PATH,
                             SILVER_FILE_PATH,
                             TOKEN_DICTIONARY_FILE_PATH)
+from norm_factors import compute_norm_factors
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "data_preparation"))
 from harmonize_bronze_to_silver import harmonize_batch  # noqa: E402
@@ -52,33 +52,6 @@ UNS_PARAMS = {"dataset_id": 50,
 LABEL_KEYS = ["path_region", "cell_labels", "minor_celltype", "major_celltype"]
 # Special token offset hard-coded for `gt_type: rank` with a non-mouse vocabulary (cell_datasets.py)
 RANK_SPECIAL_TOKEN_OFFSET = 21957
-
-
-def compute_norm_factors(adata: ad.AnnData,
-                         basis_target_read_depth: float = 153.4768,
-                         target_read_depth_per_gene: float = 0.0487) -> pd.DataFrame:
-    """Per-gene normalization factors of one batch, as computed by `src/compute_norm_factors.py`."""
-    X = sp.csr_matrix(adata.X, dtype=np.float64)
-    n_cells, n_genes = X.shape
-    n_nonzero_cells = np.asarray((X > 0).sum(axis=0)).ravel()
-    if np.any(n_nonzero_cells == 0):
-        raise ValueError(f"{np.sum(n_nonzero_cells == 0)} genes have no counts; their factors would be 0 or NaN.")
-
-    # Gene-corrected read depth normalization (normalizers.normalize_by_gene_corrected_read_depth)
-    target_read_depth = basis_target_read_depth + n_genes * target_read_depth_per_gene
-    X_gcrd = sp.diags(target_read_depth / np.asarray(X.sum(axis=1)).ravel()) @ X
-
-    sums = np.asarray(X.sum(axis=0)).ravel()
-    sums_gcrd = np.asarray(X_gcrd.sum(axis=0)).ravel()
-    norm_factor_df = pd.DataFrame({"gene_id": adata.var["ensembl_id"].values,
-                                   "nonzero_mean": sums / n_nonzero_cells,
-                                   "mean": sums / n_cells,
-                                   "gene_corrected_read_depth_nonzero_mean": sums_gcrd / n_nonzero_cells,
-                                   "gene_corrected_read_depth_mean": sums_gcrd / n_cells,
-                                   "n_cells": n_cells,
-                                   "n_nonzero_cells": n_nonzero_cells})
-    assert np.isfinite(norm_factor_df.iloc[:, 1:5].values).all() and (norm_factor_df.iloc[:, 1:5].values > 0).all()
-    return norm_factor_df
 
 
 def check_token_dictionary(adata: ad.AnnData,
@@ -132,8 +105,8 @@ def main(args):
     print(f"Saved silver AnnData {adata.shape} to {args.silver_file_path}.")
     print(adata.obs[LABEL_KEYS[0]].value_counts())
 
-    # Normalization factors of this cohort
-    norm_factor_df = compute_norm_factors(adata)
+    # Normalization factors of this cohort, with the tokenizer's gene-corrected read depth constants
+    norm_factor_df = compute_norm_factors([adata])
     norm_factor_df.to_csv(args.norm_factor_file_path, index=False)
     print(f"Saved normalization factors of {len(norm_factor_df)} genes to {args.norm_factor_file_path}.")
 

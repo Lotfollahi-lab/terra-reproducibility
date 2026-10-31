@@ -1,10 +1,10 @@
 #!/bin/bash
 # Submit the tokenization job array (tokenize_ovca.lsf) for one memory class of the ablation plan. Run from this
 # directory in the stjepa_v2 environment.
-#   standard: sparse tokenizer path (base, sequence lengths <= 128, cell neighborhood, shifted log, mean/nonzero-mean
-#             normalizations of both streams), ~70 GB each
-#   large:    dense tokenizer path (rank and count streams normalized differently), Seurat v3 / Pearson residuals and
-#             sequence length 256, ~0.5-0.6 TB each for the OVCA section
+#   standard: everything up to sequence length 128 with the plan's tokenizer options (ranked gene lists cut at the
+#             input size), up to ~70 GB each
+#   large:    sequence length 256; without the tokenizer options also the dense tokenizer path (rank and count streams
+#             normalized differently) and Seurat v3 / Pearson residuals, ~0.5-0.6 TB each for the OVCA section
 #
 # Usage: bash submit_tokenization.sh standard|large
 

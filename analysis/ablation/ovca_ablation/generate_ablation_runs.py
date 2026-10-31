@@ -33,7 +33,9 @@ from ablation_utils import (ARTIFACT_FOLDER_PATH,
                             PLAN_FILE_PATH,
                             SILVER_FILE_PATH,
                             TOKEN_DICTIONARY_FILE_PATH,
+                            TOKENIZER_OPTION_DEFAULTS,
                             get_runs,
+                            get_seq_len_cell,
                             get_tokenized_dataset_path,
                             load_plan)
 
@@ -58,11 +60,10 @@ def validate_config(config: dict, tokenization: dict, run_name: str):
     data, meta = config["data"], config["meta"]
     if TOKENIZER_TYPES[data["tokenizer_type"]] != tokenization["tokenizer"]:
         raise ValueError(f"{run_name}: tokenizer_type {data['tokenizer_type']} does not match {tokenization}.")
-    # Cell graph: n_neighs + 1 blocks of seq_len_cell tokens; cell neighborhood (tokenize_ovca.py): equal split. The
-    # datasets expect exactly seq_len_cell + seq_len_neighborhood = model_input_size tokens.
+    # Cell graph: n_neighs + 1 blocks of seq_len_cell tokens; cell neighborhood: the tokenizer's split (`seq_len_cell`
+    # of the plan). The datasets expect exactly seq_len_cell + seq_len_neighborhood = model_input_size tokens.
     model_input_size = tokenization["model_input_size"]
-    n_blocks = tokenization["n_neighs"] + 1 if data["tokenizer_type"] == "cell_graph" else 2
-    seq_len_cell = model_input_size // n_blocks
+    seq_len_cell = get_seq_len_cell(tokenization)
     if (data["seq_len_cell"], data["seq_len_neighborhood"]) != (seq_len_cell, model_input_size - seq_len_cell):
         raise ValueError(f"{run_name}: seq_len_cell / seq_len_neighborhood {data['seq_len_cell']} / "
                          f"{data['seq_len_neighborhood']} do not match the tokenized data "
@@ -70,6 +71,12 @@ def validate_config(config: dict, tokenization: dict, run_name: str):
     for key in ["enc_emb_dim", "pred_emb_dim"]:
         if meta[key] % meta["num_heads"]:
             raise ValueError(f"{run_name}: {key} {meta[key]} is not divisible by num_heads {meta['num_heads']}.")
+    # Training reads restrict_special_attention from `mask`, the unpatched inference from `meta`: keep them equal
+    mask = config["mask"]
+    if meta.get("restrict_special_attention", False) != mask.get("restrict_special_attention", False):
+        raise ValueError(f"{run_name}: meta.restrict_special_attention and mask.restrict_special_attention differ.")
+    if not 0.0 <= mask.get("special_token_pad_ratio", 0.0) <= 1.0:
+        raise ValueError(f"{run_name}: mask.special_token_pad_ratio must be in [0, 1].")
 
 
 def make_run_config(base_config: dict,
@@ -91,6 +98,11 @@ def make_run_config(base_config: dict,
     data["n_neighs"] = tokenization["n_neighs"]
     for key in NORM_METHOD_KEYS:
         data[key] = tokenization[key]
+    # Opt-in tokenizer fixes, recorded so that a re-tokenization from the model folder (`tokenize_adata`) matches; the
+    # cell-neighborhood split is the model's own data.seq_len_cell (validated below)
+    for key in TOKENIZER_OPTION_DEFAULTS:
+        if key != "seq_len_cell":
+            data[key] = tokenization[key]
     data["n_special_values"] = args.n_special_values
 
     # Schedule, run folder with resumption, seed

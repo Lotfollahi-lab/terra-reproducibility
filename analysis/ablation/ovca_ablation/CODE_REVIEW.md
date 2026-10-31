@@ -5,7 +5,7 @@
 - **Ablation analysis:** `sebastianbirk/stjepa-reproducibility` `analysis/mouse_ablation`.
 - **Coordinate ablation:** the data preparation behind it.
 
-**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The code itself was not changed, apart from `stjepa_ovca_ablation.patch` used for the OVCA runs (opt-in seed, atomic latest checkpoint).
+**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes are in `stjepa_ovca_ablation.patch`, used for the OVCA runs (see Resolution).
 
 ## Bottom line
 
@@ -45,6 +45,52 @@ Low-severity items (finding 13):
 - `cell_masking` is unusable.
 - `decode.py` saves the last epoch instead of the best (`best_state` is not copied).
 - A debug print in `block_masking.py:206` fires on every batch.
+
+## Resolution (31 Oct 2026)
+
+Fixes are in `stjepa_ovca_ablation.patch` (its header lists all changes). Everything that changes results is opt-in
+or limited to code paths that were broken, so mouse configs and the default inference behave as before.
+
+| # | Resolution | OVCA runs | Mouse |
+|---|---|---|---|
+| 1 | Opt-in top-level `seed`. | Seeds 1000, 2000, 3000. | Reruns use the same seeds. |
+| 2 | `keep_special_tokens` at inference (all inference entry points; default: removed); padded-metatoken predictor fixed (see below), so metatoken dropout (`mask.special_token_pad_ratio`) trains correctly. | Every model with a metatoken is evaluated with it removed and kept; new arm `metatoken_dropout` (ratio 0.5). | Metatoken experiment (base, no metatoken, dropout; 3 seeds; removed and kept). |
+| 3 | Opt-in `stable_rank_ties`: gene-level order by rank score, count value, reference nonzero mean (ascending), token id, in every path and block. | On. | Datasets unchanged. |
+| 4 | With the options of 3 or 5, ranked lists are cut at `model_input_size` (lossless): 0.09-0.21 instead of 1.3 MB per cell. | 26 of 27 datasets in the standard memory class. | — |
+| 5 | Opt-in `zero_expr_from_raw_counts`: candidates are the detected genes (raw count > 0). | On. | — |
+| 6 | Shared `norm_factors.py` with the tokenizer's constants; `check_setup.py` compares the factor file with the tokenizer's normalizer. | Consistent. | Farm check `check_mouse_norm_factors.py`; if it reports another fit or a train/eval mismatch, rerun the six gcrd arms with factors from `compute_norm_factors.py`. |
+| 7 | `CellNeighborhoodTokenizer(seq_len_cell=...)`, opt-in `aggregate_own_neighbors` (each cell's own kNN, `C @ X`); re-tokenization at inference and the cell-only context take the split from the config. On OVCA, 79% of cells have a reverse in-degree other than 10 and own and reverse neighbour sets agree for 7.7%. | Own kNN, 64/64. | Rerun the three cell-neighborhood arms with the fix (9 runs). |
+| 8–12 | Under review. | | |
+| 13 | Predictor segment table: one special segment per special token. | | |
+
+Metatoken review (31 Oct), all fixed in the patch:
+- **Predictor, padded special tokens:** in batches without the metatoken (`special_token_pad_ratio` > 0), the
+  `new_spc` layout put the first context gene into the first target's slot, so 1/T of the loss of those batches was
+  noise. Never triggered by the mouse configs (ratio 0).
+- **`restrict_special_attention` with a padded special token:** its query row had no key left (NaN without flash
+  attention, spreading to all tokens). Inference read the option from `meta`, training from `mask`.
+- **Inference consistency:** `nz_spc` was not passed to the inference dataset (crash for `nz_spc: False` models);
+  `gene_embed_dataset` sized the special value embedding from the token dictionary instead of the config, and hard-coded
+  metatoken removal and attention settings.
+- **Dataset-level padding** with two or more special tokens produced too long sequences, and padded `gt_type: rank`
+  special tokens were not 0.
+- **`gt_type: rank` metatoken:** token id = special value + an offset hard-coded by vocabulary size; now derived from
+  the token dictionary. `check_setup.py` reports whether the mouse rank arms trained with the right token.
+- **Cell embeddings of cell-neighborhood models** used `(seq_len - n_special) // n_segments` index-cell tokens (11 for
+  a 64/64 model); neighborhood embeddings were correct.
+- Not changed (unused option, design question): `restrict_special_attention` applies to the target encoder only; the
+  context encoder and predictor get no attention mask.
+
+Tokenizer review (31 Oct), not fixed (not used by the ablations or negligible):
+- LOESS span (finding 10) confirmed: `loess(..., options={'span': 0.3})` gives span 0.75.
+- Seurat v3 scores depend on gene column order at about 1e-14 (LOESS numerics); Pearson residuals do not.
+- The cell-graph tokenizer computes Seurat v3 on raw `X`, ignoring the cell normalization; with `cell_area`, the
+  cell-neighborhood tokenizer normalizes `X` instead of `X_neighborhood`.
+- Read-depth and gcrd normalizers produce COO layers (anndata 0.11 warns, 0.12 would raise).
+- Pearson residuals are NaN for genes without counts (OVCA factors require counts for every gene).
+- An empty neighbour gene list removes its segment and shifts the blocks (not possible on OVCA: >= 10 genes per cell);
+  neighbour segments are ordered by an unstable argsort on distances (no ties on OVCA).
+- Without detected-only candidates, the dense path can place pad tokens mid-sequence for Seurat / Pearson rank streams.
 
 ## Coordinate (spatial-encoding) ablation
 

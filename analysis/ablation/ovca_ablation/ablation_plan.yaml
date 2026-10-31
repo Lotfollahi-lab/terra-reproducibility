@@ -1,21 +1,29 @@
 # OVCA ablation plan: the mouse ablations of stjepa-reproducibility/analysis/mouse_ablation (Supp. Figs. 4-6),
-# rerun on the SpatialFusion ovarian cancer section (xho4000-1b_1p) with the pathologist niche labels as ground truth.
+# rerun on the SpatialFusion ovarian cancer section (xho50-1b_1p_spatialfusion) with the pathologist niche labels as
+# ground truth.
 #
 # Every variant is the base model config plus `overrides` (dotted config keys) and is trained on the tokenized dataset
 # named in `tokenization`. Variant names are the mouse method names (stjepa_v2_<name>), so results can be matched
 # one-to-one. `replicates` follows the mouse figures: 3 runs for Supp. Figs. 4 and 6, 1 run for normalization
 # (Supp. Fig. 5) and architecture. Categories and labels follow the mouse comparison notebooks.
 
+# Opt-in tokenizer fixes of stjepa_ovca_ablation.patch (CODE_REVIEW.md), enabled for every OVCA tokenization; the
+# mouse tokenizations had them off. Their names are appended to the dataset names.
+tokenizer_options:
+  stable_rank_ties: true           # top-k ties: rank score, count value, reference nonzero mean (ascending), token id
+  zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
+  aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)
+
 tokenizations:
   # Keys: tokenizer, model_input_size, n_neighs and the six normalization methods (null = no normalization).
-  # Training reads the tokenized dataset as is; the same keys are written into each variant's data config so that the
-  # evaluation re-tokenizes the OVCA section exactly as for training.
+  # Training and evaluation read the tokenized dataset as is; the same keys (and the tokenizer options) are written
+  # into each variant's data config, so that a re-tokenization from the model folder matches training.
   base:            {tokenizer: cell-graph-tokenizer, model_input_size: 704, n_neighs: 10}
   seq_len_16:      {tokenizer: cell-graph-tokenizer, model_input_size: 176, n_neighs: 10}
   seq_len_32:      {tokenizer: cell-graph-tokenizer, model_input_size: 352, n_neighs: 10}
   seq_len_128:     {tokenizer: cell-graph-tokenizer, model_input_size: 1408, n_neighs: 10}
   seq_len_256:     {tokenizer: cell-graph-tokenizer, model_input_size: 2816, n_neighs: 10}
-  cell_neigh:      {tokenizer: cell-neighborhood-tokenizer, model_input_size: 128, n_neighs: 10}
+  cell_neigh:      {tokenizer: cell-neighborhood-tokenizer, model_input_size: 128, n_neighs: 10, seq_len_cell: 64}
   # Normalization (rank stream: rank_*; count stream: count_*)
   shifted_log:                                      {count_count_norm_method: shifted_log}
   read_depth_shifted_log:                           {count_cell_norm_method: read_depth, count_count_norm_method: shifted_log}
@@ -48,8 +56,8 @@ variants:
   # Tokenizer (Supp. Fig. 4)
   cell_graph_tokenizer_rank:   {category: tokenizer, label: "Cell Graph (Rank)", replicates: 3, overrides: {meta.gt_type: rank}, mouse_runs: ["09042026_115045_337", "11042026_214647_337", "11042026_214158_037"]}
   cell_graph_tokenizer_counts: {category: tokenizer, label: "Cell Graph (Counts)", replicates: 3, overrides: {meta.gt_type: counts}, mouse_runs: ["08042026_100918_294", "12042026_093931_657", "12042026_101322_076"]}
-  # Cell-neighborhood tokenizer: 64 index-cell and 64 aggregated-neighborhood tokens (model_input_size 128, split
-  # equally as in later v2 tokenizers; the dataset class requires seq_len_cell + seq_len_neighborhood tokens). The
+  # Cell-neighborhood tokenizer: 64 index-cell and 64 aggregated-neighborhood tokens (model_input_size 128 with
+  # `seq_len_cell: 64`, as in later v2 tokenizers; the dataset class requires seq_len_cell + seq_len_neighborhood tokens). The
   # separate mouse "_640_neigh_seq_len" runs used 640 neighborhood tokens. Inferred from the method names, verify with
   # check_setup.py against the mouse params.yaml before launching.
   cell_neigh_tokenizer_combined:
@@ -89,6 +97,9 @@ variants:
 
   # Metatoken (Supp. Fig. 6)
   no_metatk: {category: metatoken, label: "No Metatoken", replicates: 3, overrides: {meta.special_tokens: []}, mouse_runs: ["14042026_132037_066"]}
+  # New arm (no mouse run): the batch metatoken is removed from a random half of the training batches, so the model
+  # also learns to work without it, as at inference. Needs the predictor fix of stjepa_ovca_ablation.patch.
+  metatoken_dropout: {category: metatoken, label: "Metatoken Dropout", replicates: 3, overrides: {mask.special_token_pad_ratio: 0.5}, mouse_runs: []}
 
   # Normalization (Supp. Fig. 5, 1 run each); groups as in the mouse notebook
   shifted_log:                                    {category: normalization_unnormalized_ranks, label: "Shifted Log", replicates: 1, tokenization: shifted_log, mouse_runs: ["24032026_224828_432"]}

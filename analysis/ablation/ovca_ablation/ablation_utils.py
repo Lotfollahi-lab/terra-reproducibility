@@ -27,10 +27,17 @@ NORM_METHOD_KEYS = ["rank_cell_norm_method",
                     "count_cell_norm_method",
                     "count_gene_norm_method",
                     "count_count_norm_method"]
+# Opt-in tokenizer fixes of stjepa_ovca_ablation.patch (off = behaviour of the mouse tokenizations); the plan sets
+# them for all tokenizations under `tokenizer_options`. The last two only apply to the cell-neighborhood tokenizer.
+TOKENIZER_OPTION_DEFAULTS = {"stable_rank_ties": False,
+                             "zero_expr_from_raw_counts": False,
+                             "aggregate_own_neighbors": False,
+                             "seq_len_cell": None}
 TOKENIZATION_DEFAULTS = {"tokenizer": "cell-graph-tokenizer",
                          "model_input_size": 704,
                          "n_neighs": 10,
-                         **dict.fromkeys(NORM_METHOD_KEYS)}
+                         **dict.fromkeys(NORM_METHOD_KEYS),
+                         **TOKENIZER_OPTION_DEFAULTS}
 # Launch and plotting order (figure order of the mouse ablations)
 CATEGORY_ORDER = ["base",
                   "tokenizer",
@@ -50,7 +57,11 @@ def load_plan(plan_file_path: Path | str = PLAN_FILE_PATH) -> tuple[dict, dict]:
     with open(plan_file_path) as file:
         plan = yaml.safe_load(file)
 
-    tokenizations = {name: {**TOKENIZATION_DEFAULTS, **spec} for name, spec in plan["tokenizations"].items()}
+    tokenizations = {name: {**TOKENIZATION_DEFAULTS, **plan.get("tokenizer_options", {}), **spec}
+                     for name, spec in plan["tokenizations"].items()}
+    for name, tokenization in tokenizations.items():
+        if set(tokenization) - set(TOKENIZATION_DEFAULTS):
+            raise ValueError(f"Tokenization {name} has unknown keys {set(tokenization) - set(TOKENIZATION_DEFAULTS)}.")
     variants = plan["variants"]
     for name, variant in variants.items():
         variant.setdefault("tokenization", "base")
@@ -66,18 +77,33 @@ def get_tokenized_dataset_path(tokenization: dict,
                                data_directory_path: Path | str = DATA_DIRECTORY_PATH,
                                dataset_name: str = DATASET_NAME,
                                num_shards: int = NUM_SHARDS) -> Path:
-    """Path of a tokenized dataset, named as by `create_tokenized_dataset.py` (kNN graph, no zero-expression genes)."""
+    """
+    Path of a tokenized dataset, named as by `create_tokenized_dataset.py` (kNN graph, no zero-expression genes), with
+    a suffix for the enabled tokenizer fixes (so datasets of other tokenizer settings are never reused).
+    """
     norm_methods = "_".join(str(tokenization[key]) for key in NORM_METHOD_KEYS)
+    options = []
+    if tokenization["stable_rank_ties"]:
+        options.append("ties")
+    if tokenization["zero_expr_from_raw_counts"]:
+        options.append("detected")
+    if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
+        if tokenization["aggregate_own_neighbors"]:
+            options.append("ownknn")
+        if tokenization["seq_len_cell"] is not None:
+            options.append(f"cell{tokenization['seq_len_cell']}")
     file_prefix = (f"{dataset_name}_{num_shards}_{norm_methods}_knn_{tokenization['n_neighs']}_"
-                   f"{tokenization['model_input_size']}")
+                   f"{tokenization['model_input_size']}{''.join(f'_{option}' for option in options)}")
     return Path(data_directory_path) / "gold" / tokenization["tokenizer"] / dataset_name / f"{file_prefix}.dataset"
 
 
 def needs_large_memory(tokenization: dict) -> bool:
     """
-    Whether a tokenization takes the tokenizer's dense path (rank and count normalizations differ, see
-    `CellBaseTokenizer.rank_differs_from_count`) or keeps every gene per cell (Seurat v3, Pearson residuals), or has
-    long sequences. These need about 0.5-0.6 TB of memory for the OVCA section.
+    Whether a tokenization needs the large memory class: without the opt-in tokenizer fixes, the dense path (rank and
+    count normalizations differ, see `CellBaseTokenizer.rank_differs_from_count`) and Seurat v3 / Pearson residuals keep
+    every gene per cell (about 1.3 MB per cell, 0.5-0.6 TB for the OVCA section); with `stable_rank_ties` or
+    `zero_expr_from_raw_counts`, ranked gene lists are cut at `model_input_size` (lossless; about 0.09-0.21 MB per cell,
+    at most about 70 GB). Long sequences always use the large class.
     """
     rank_differs_from_count = not (
         tokenization["rank_cell_norm_method"] == tokenization["count_cell_norm_method"]
@@ -85,7 +111,16 @@ def needs_large_memory(tokenization: dict) -> bool:
         and (tokenization["rank_count_norm_method"] == tokenization["count_count_norm_method"]
              or tokenization["count_count_norm_method"] == "shifted_log"))
     keeps_all_genes = any(tokenization[key] in ("seurat_v3", "analytic_pearson_residuals") for key in NORM_METHOD_KEYS)
-    return rank_differs_from_count or keeps_all_genes or tokenization["model_input_size"] > 1408
+    cuts_ranked_lists = tokenization["stable_rank_ties"] or tokenization["zero_expr_from_raw_counts"]
+    return ((rank_differs_from_count or keeps_all_genes) and not cuts_ranked_lists
+            or tokenization["model_input_size"] > 1408)
+
+
+def get_seq_len_cell(tokenization: dict) -> int:
+    """Index-cell tokens per sequence: cell graph blocks or the cell-neighborhood split (pinned default k + 1 blocks)."""
+    if tokenization["tokenizer"] == "cell-neighborhood-tokenizer" and tokenization["seq_len_cell"] is not None:
+        return tokenization["seq_len_cell"]
+    return int(tokenization["model_input_size"] / (tokenization["n_neighs"] + 1))
 
 
 def get_runs(variants: dict) -> list[dict]:

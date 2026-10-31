@@ -2,8 +2,10 @@
 This script creates one tokenized dataset of the OVCA ablation plan from the OVCA silver data like
 `stjepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py` created the mouse ablation datasets (same
 tokenizer arguments and output naming), but with the pinned ST-JEPA v2 tokenizer (`stjepa.tokenizers`), sequential
-processing of the single silver file (same output, lower peak memory), an equal index-cell/neighborhood split for the
-cell-neighborhood tokenizer and without wandb logging. The dataset is written under a temporary name and renamed when
+processing of the single silver file (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
+(`tokenizer_options`: deterministic top-k ties, detected genes only, own-neighbor aggregation and an explicit
+index-cell/neighborhood split for the cell-neighborhood tokenizer; their names are appended to the dataset name) and
+without wandb logging. The dataset is written under a temporary name and renamed when
 complete, so that interrupted jobs are never mistaken for finished datasets.
 
 Usage:
@@ -58,6 +60,11 @@ def main(args):
 
     Tokenizer = {"cell-graph-tokenizer": CellGraphTokenizer,
                  "cell-neighborhood-tokenizer": CellNeighborhoodTokenizer}[tokenization["tokenizer"]]
+    tokenizer_kwargs = {"stable_rank_ties": tokenization["stable_rank_ties"],
+                        "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"]}
+    if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
+        tokenizer_kwargs["seq_len_cell"] = tokenization["seq_len_cell"]
+        tokenizer_kwargs["aggregate_own_neighbors"] = tokenization["aggregate_own_neighbors"]
     # Sequential processing: the silver data is one file, and parallel mode pickles the whole tokenized file back from a
     # worker process, which doubles the peak memory of the dense-path tokenizations (~1.4 TB for OVCA)
     tk = Tokenizer(
@@ -70,11 +77,8 @@ def main(args):
         delaunay=False,
         **{key: tokenization[key] for key in NORM_METHOD_KEYS},
         norm_factor_file_path=args.norm_factor_file_path,
-        token_dictionary_file_path=args.token_dictionary_file_path)
-    if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
-        # Split the input equally between index cell and neighborhood, as later v2 tokenizers do by default
-        # (`split_cell_neigh_equally=True`); the pinned tokenizer uses model_input_size / (n_neighs + 1) cell tokens
-        tk.seq_len_cell = tokenization["model_input_size"] // 2
+        token_dictionary_file_path=args.token_dictionary_file_path,
+        **tokenizer_kwargs)
 
     # Write under a temporary name, then rename
     incomplete_file_prefix = f"{output_path.stem}_incomplete"

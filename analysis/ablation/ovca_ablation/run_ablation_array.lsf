@@ -22,7 +22,7 @@ IFS=$'\t' read -r INDEX RUN_ID RUN_NAME VARIANT CATEGORY LABEL REPLICATE SEED EX
     RUN_FOLDER_PATH EVAL_FOLDER_PATH \
     < <(awk -F'\t' -v idx="${LSB_JOBINDEX}" 'NR > 1 && $1 == idx' "${ARTIFACT_FOLDER_PATH}/manifest.tsv")
 echo "Run ${INDEX}: ${RUN_ID} (${CATEGORY}: ${LABEL}; replicate ${REPLICATE}, seed ${SEED})"
-if [ -f "${EVAL_FOLDER_PATH}/xho50-1b_1p_spatialfusion_neighborhood_emb_niche_identification_metrics_res_sweep.csv" ]; then
+if [ -f "${EVAL_FOLDER_PATH}/evaluation_complete" ]; then
     echo "Already trained and evaluated."
     exit 0
 fi

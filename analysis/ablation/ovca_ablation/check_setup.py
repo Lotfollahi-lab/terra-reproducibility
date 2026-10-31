@@ -6,9 +6,14 @@ This script checks the OVCA ablation setup on the farm before launching the job 
    mouse experiment and should be resolved first. Inferred overrides (cell-neighborhood layout, dimension ablations)
    are verified here.
 2. Special values: the human batch special value fits into the special value embedding of the configs, and the
-   metatoken offset hard-coded for `gt_type: rank` matches the human token dictionary.
+   `gt_type: rank` metatoken gets the right token id. The patched dataset derives the token offset from the token
+   dictionary; the offset hard-coded in the unpatched code is reported for the human and the mouse dictionary (the
+   latter tells whether the mouse rank arms trained with the right metatoken).
 3. Tokenized datasets: each exists and has one row per silver cell.
-Exits with an error if check 2 or 3 fails; check 1 differences have to be reviewed by eye.
+4. Normalization factors: the gene-corrected read depth columns of the OVCA factor file match the tokenizer's own
+   normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`).
+0. Pinned code: the patch is applied (predictor fix, metatoken inference option).
+Exits with an error if check 0, 2, 3 or 4 fails; check 1 differences have to be reviewed by eye.
 
 Usage:
 ```bash
@@ -28,6 +33,7 @@ import pandas as pd
 import yaml
 
 from ablation_utils import (ARTIFACT_FOLDER_PATH,
+                            NORM_FACTOR_FILE_PATH,
                             PLAN_FILE_PATH,
                             SILVER_FILE_PATH,
                             TOKEN_DICTIONARY_FILE_PATH,
@@ -42,6 +48,10 @@ IGNORED_KEYS = {"data.dataset_name",
                 "data.n_special_values",
                 "data.vocab_size",
                 "seed",
+                # Opt-in tokenizer fixes (recorded in the OVCA configs; off in the mouse tokenizations)
+                "data.stable_rank_ties",
+                "data.zero_expr_from_raw_counts",
+                "data.aggregate_own_neighbors",
                 "state.folder_path",
                 "state.load_checkpoint",
                 "state.read_checkpoint",
@@ -52,8 +62,9 @@ IGNORED_KEYS = {"data.dataset_name",
                 "optimization.warmup"}
 # RoPE keys (added on 21 Apr, after the plotted runs) are ignored by the pinned v2 code
 IGNORED_KEY_PREFIXES = ("meta.rope_",)
-# Special token offset hard-coded for `gt_type: rank` with a non-mouse vocabulary (cell_datasets.py)
-RANK_SPECIAL_TOKEN_OFFSET = 21957
+# Special token offsets hard-coded for `gt_type: rank` in the unpatched code (cell_datasets.py), by vocabulary size
+MOUSE_VOCAB_SIZE, MOUSE_RANK_OFFSET, HUMAN_RANK_OFFSET = 2785, 1674, 21957
+MOUSE_TOKEN_DICTIONARY_FILE_PATH = "/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl"
 
 
 def flatten(config: dict, prefix: str = "") -> dict:
@@ -95,26 +106,58 @@ def check_config_parity(variants: dict, config_file_paths: dict, mouse_artifact_
                   f"{'identical' if not differences else f'mouse vs OVCA {differences}'}")
 
 
-def check_special_values(config_file_path: Path, token_dictionary_file_path: str, silver_file_path: str) -> bool:
+def check_pinned_code(code_path: str) -> bool:
+    print("== 0. Pinned code")
+    import inspect
+
+    sys.path.insert(0, f"{code_path}/src")
+    from app.inference.embed import embed_dataset
+    from stjepa.models.gene_transformers import GeneTransformerCombinedPredictor
+    import stjepa
+
+    version = (Path(code_path) / "CODE_VERSION").read_text().strip() if (Path(code_path) / "CODE_VERSION").exists() else "?"
+    patched = ("pad_special_tokens" in inspect.signature(GeneTransformerCombinedPredictor.forward).parameters
+               and "keep_special_tokens" in inspect.signature(embed_dataset).parameters)
+    print(f"{stjepa.__file__}: {version}; {'patched' if patched else 'NOT PATCHED (rerun setup_code.sh)'}")
+    return patched
+
+
+def hard_coded_rank_offset(token_dict: dict) -> int:
+    return MOUSE_RANK_OFFSET if len(token_dict) == MOUSE_VOCAB_SIZE else HUMAN_RANK_OFFSET
+
+
+def check_special_values(config_file_path: Path, token_dictionary_file_path: str, silver_file_path: str,
+                         mouse_token_dictionary_file_path: str) -> bool:
     print("== 2. Batch special value")
     import scanpy as sc
+    from stjepa.datasets.cell_datasets import get_spv_token_offset
 
     uns = sc.read_h5ad(silver_file_path, backed="r").uns
     with open(token_dictionary_file_path, "rb") as file:
         token_dict = pickle.load(file)
-    spv_start_idx = min(value for key, value in token_dict.items() if key.startswith("spv_"))
-    max_cls_tokens = sum(1 for key in token_dict if "cls" in key)
+    spv_offset = get_spv_token_offset(token_dict)
     batch_value_token = token_dict[f"spv_{uns['dataset_id']}_{uns['batch']}"]
-    batch_value = batch_value_token - (spv_start_idx - 2 - max_cls_tokens)
+    batch_value = batch_value_token - spv_offset
     with open(config_file_path) as file:
         n_special_values = yaml.safe_load(file)["data"]["n_special_values"]
     fits = batch_value <= n_special_values + 1
-    rank_offset_consistent = batch_value + RANK_SPECIAL_TOKEN_OFFSET == batch_value_token
     print(f"batch_value {batch_value}, special value embedding rows {n_special_values + 2}: "
           f"{'OK' if fits else 'TOO SMALL'}")
-    print(f"`gt_type: rank` metatoken {batch_value + RANK_SPECIAL_TOKEN_OFFSET} vs token {batch_value_token}: "
-          f"{'OK' if rank_offset_consistent else 'INCONSISTENT (rank arms would train with a wrong metatoken)'}")
-    return fits and rank_offset_consistent
+    print(f"`gt_type: rank` metatoken: token {batch_value + spv_offset} (offset from the token dictionary) for "
+          f"spv token {batch_value_token}; the unpatched code used offset {hard_coded_rank_offset(token_dict)} "
+          f"({'same' if hard_coded_rank_offset(token_dict) == spv_offset else 'DIFFERENT'})")
+
+    # Mouse dictionary: did the mouse rank arms (unpatched code) get the right metatoken?
+    if Path(mouse_token_dictionary_file_path).exists():
+        with open(mouse_token_dictionary_file_path, "rb") as file:
+            mouse_token_dict = pickle.load(file)
+        mouse_offset = get_spv_token_offset(mouse_token_dict)
+        print(f"Mouse token dictionary ({len(mouse_token_dict)} tokens): offset {mouse_offset}, unpatched code used "
+              f"{hard_coded_rank_offset(mouse_token_dict)} -> mouse rank arms trained with "
+              f"{'the right' if mouse_offset == hard_coded_rank_offset(mouse_token_dict) else 'a WRONG'} metatoken")
+    else:
+        print(f"Mouse token dictionary not found ({mouse_token_dictionary_file_path}).")
+    return fits
 
 
 def check_tokenized_datasets(tokenizations: dict, silver_file_path: str) -> bool:
@@ -141,10 +184,17 @@ def main(args):
     manifest_df = pd.read_csv(Path(args.artifact_folder_path) / "manifest.tsv", sep="\t")
     config_file_paths = (manifest_df[manifest_df["replicate"] == 1]
                          .set_index("variant")["config_file_path"].to_dict())
+    ok = check_pinned_code(args.code_path)
     check_config_parity(variants, config_file_paths, args.mouse_artifact_folder_path)
-    ok = check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_path)
+    ok &= check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_path,
+                               args.mouse_token_dictionary_file_path)
     if not args.skip_datasets:
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_path)
+    print("== 4. Normalization factors")
+    from norm_factors import check_norm_factors
+    from stjepa.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
+    ok &= check_norm_factors(args.norm_factor_file_path, [args.silver_file_path],
+                             normalize_by_gene_corrected_read_depth)
     if not ok:
         sys.exit("Setup check failed, see above.")
 
@@ -164,10 +214,22 @@ if __name__ == '__main__':
                         type=str,
                         default=SILVER_FILE_PATH,
                         help='OVCA silver AnnData.')
+    parser.add_argument('--norm_factor_file_path',
+                        type=str,
+                        default=NORM_FACTOR_FILE_PATH,
+                        help='Per-gene normalization factors of the OVCA section.')
     parser.add_argument('--token_dictionary_file_path',
                         type=str,
                         default=TOKEN_DICTIONARY_FILE_PATH,
                         help='Human token dictionary.')
+    parser.add_argument('--code_path',
+                        type=str,
+                        default="/nfs/team361/sb75/stjepa_ovca_ablation",
+                        help='Pinned code (setup_code.sh).')
+    parser.add_argument('--mouse_token_dictionary_file_path',
+                        type=str,
+                        default=MOUSE_TOKEN_DICTIONARY_FILE_PATH,
+                        help='Mouse token dictionary (rank metatoken check of the mouse runs).')
     parser.add_argument('--mouse_artifact_folder_path',
                         type=str,
                         default="/nfs/team361/sb75/stjepa-reproducibility/artifacts",

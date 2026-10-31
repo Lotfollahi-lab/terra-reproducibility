@@ -1,9 +1,12 @@
 """
 This script evaluates one trained OVCA ablation run with the niche identification protocol of the mouse ablations
 (`analysis/mouse_ablation/stjepa_v2_ablation.ipynb`, stjepa-reproducibility): neighborhood embeddings from the target
-encoder (`embed_dataset`, metatoken padded as in the mouse evaluation), a kNN graph (k = 15), Leiden clustering on the
-fixed resolution grid 0.6-1.4 (step 0.1; identical for all variants, i.e. chosen without labels) and NMI and ARI
-against the pathologist niche labels. Cells labelled 'Unassigned' are embedded and clustered but excluded from the
+encoder (`embed_dataset`), a kNN graph (k = 15), Leiden clustering on the fixed resolution grid 0.6-1.4 (step 0.1;
+identical for all variants, i.e. chosen without labels) and NMI and ARI against the pathologist niche labels.
+
+Models with special tokens (the batch metatoken) are evaluated twice: with the metatoken removed at inference, as in
+the mouse evaluation (`drop`, the default outputs), and with the metatoken kept as in training (`keep`,
+`keep_special_tokens=True` of the patched code; outputs prefixed `<dataset_name>_keep_metatoken_`). Cells labelled 'Unassigned' are embedded and clustered but excluded from the
 metrics. Unlike the mouse evaluation, which removed unlabelled cells before embedding, they stay in the kNN graph
 (as in training), so cluster counts and metric levels are comparable between OVCA variants, not with the mouse runs.
 
@@ -13,11 +16,13 @@ gives identical tokens without re-tokenizing (which needs ~0.5 TB of memory for 
 breaks ties at the top-64 cut non-deterministically). Labels are joined through the dataset's `cell_id` column, and the
 run aborts if the checkpoint does not load (`load_checkpoint` otherwise silently returns a randomly initialized model).
 
-Outputs in `--output_folder_path` (mouse layout `artifacts/ablation/<variant>/<run>/`):
-- `<dataset_name>_neighborhood_emb_niche_identification_metrics_res_sweep.csv` (columns as in the mouse runs)
-- `<dataset_name>_neighborhood_emb_avg_cosine_similarity.csv`
-- `<dataset_name>_neighborhood_emb_clusters.csv` (label and Leiden cluster per resolution for every cell)
-- `<dataset_name>_neighborhood_emb.npy` (float16 embeddings, rows in the order of the clusters CSV)
+Outputs in `--output_folder_path` (mouse layout `artifacts/ablation/<variant>/<run>/`), per metatoken mode with the
+prefix `<dataset_name>_` (drop) or `<dataset_name>_keep_metatoken_` (keep):
+- `<prefix>neighborhood_emb_niche_identification_metrics_res_sweep.csv` (columns as in the mouse runs)
+- `<prefix>neighborhood_emb_avg_cosine_similarity.csv`
+- `<prefix>neighborhood_emb_clusters.csv` (label and Leiden cluster per resolution for every cell)
+- `<prefix>neighborhood_emb.npy` (float16 embeddings, rows in the order of the clusters CSV)
+- `evaluation_complete` once all modes are done
 
 Usage:
 ```bash
@@ -59,16 +64,10 @@ def require_loaded_checkpoint():
 
 def main(args):
     from datasets import load_from_disk
-    from app.inference import embed_dataset
 
     logging.basicConfig(level=logging.INFO, stream=sys.stdout, force=True)
     output_folder_path = Path(args.output_folder_path)
     output_folder_path.mkdir(parents=True, exist_ok=True)
-    file_prefix = f"{args.dataset_name}_{args.emb_key}"
-    metrics_file_path = output_folder_path / f"{file_prefix}_niche_identification_metrics_res_sweep.csv"
-    if metrics_file_path.exists() and not args.overwrite:
-        print(f"{metrics_file_path} already exists. Skipping evaluation...")
-        return
 
     # Tokenized training dataset of this run
     with open(Path(args.model_folder_path) / "model_config.yaml") as file:
@@ -77,9 +76,28 @@ def main(args):
     cell_ids = dataset["cell_id"]
     columns = [column for column in dataset.features if column != "cell_id"]
     dataset.set_format(type="torch", columns=columns, output_all_columns=True)
+    require_loaded_checkpoint()
+
+    # Keeping the metatoken only differs from dropping it if the model has special tokens
+    modes = [mode for mode in args.metatoken_modes if mode == "drop" or model_config["meta"]["special_tokens"]]
+    for mode in modes:
+        file_prefix = (f"{args.dataset_name}_{args.emb_key}" if mode == "drop" else
+                       f"{args.dataset_name}_keep_metatoken_{args.emb_key}")
+        metrics_file_path = output_folder_path / f"{file_prefix}_niche_identification_metrics_res_sweep.csv"
+        if metrics_file_path.exists() and not args.overwrite:
+            print(f"{metrics_file_path} already exists. Skipping the '{mode}' evaluation...")
+            continue
+        print(f"Evaluating with the metatoken {'removed' if mode == 'drop' else 'kept'} at inference...")
+        evaluate(args, dataset, cell_ids, output_folder_path, file_prefix, metrics_file_path,
+                 keep_special_tokens=(mode == "keep"))
+    (output_folder_path / "evaluation_complete").write_text(" ".join(modes) + "\n")
+
+
+def evaluate(args, dataset, cell_ids, output_folder_path, file_prefix, metrics_file_path, keep_special_tokens):
+    """Embed the dataset, cluster on the resolution grid and score against the niche labels."""
+    from app.inference import embed_dataset
 
     # Neighborhood embeddings with the target encoder of the final checkpoint
-    require_loaded_checkpoint()
     output_embed = embed_dataset(dataset=dataset,
                                  model_folder_path=args.model_folder_path,
                                  emb_layer=None,
@@ -87,7 +105,8 @@ def main(args):
                                  top_k=None,
                                  batch_size=128,
                                  pin_memory=False,
-                                 num_workers=args.num_workers)
+                                 num_workers=args.num_workers,
+                                 keep_special_tokens=keep_special_tokens)
     embeddings = output_embed[args.emb_key]
     if len(embeddings) != len(cell_ids):
         raise ValueError(f"{len(embeddings)} embeddings for {len(cell_ids)} cells.")
@@ -172,6 +191,11 @@ if __name__ == '__main__':
                         type=int,
                         default=12,
                         help='Number of dataloader workers used for embedding.')
+    parser.add_argument('--metatoken_modes',
+                        nargs='+',
+                        choices=['drop', 'keep'],
+                        default=['drop', 'keep'],
+                        help='Remove (drop, as in the mouse evaluation) and/or keep the metatoken at inference.')
     parser.add_argument('--overwrite',
                         action='store_true',
                         help='Recompute the metrics even if they exist.')
