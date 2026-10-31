@@ -66,6 +66,8 @@ def load_plan(plan_file_path: Path | str = PLAN_FILE_PATH) -> tuple[dict, dict]:
     for name, variant in variants.items():
         variant.setdefault("tokenization", "base")
         variant.setdefault("overrides", {})
+        # Opt-in training fixes of the patch, set in every run config before the variant's own overrides
+        variant["training_options"] = dict(plan.get("training_options", {}))
         if variant["tokenization"] not in tokenizations:
             raise ValueError(f"Variant {name} uses unknown tokenization {variant['tokenization']}.")
         if variant["category"] not in CATEGORY_ORDER:

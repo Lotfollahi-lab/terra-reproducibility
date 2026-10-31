@@ -60,7 +60,8 @@ or limited to code paths that were broken, so mouse configs and the default infe
 | 5 | Opt-in `zero_expr_from_raw_counts`: candidates are the detected genes (raw count > 0). | On. | — |
 | 6 | Shared `norm_factors.py` with the tokenizer's constants; `check_setup.py` compares the factor file with the tokenizer's normalizer. | Consistent. | Farm check `check_mouse_norm_factors.py`; if it reports another fit or a train/eval mismatch, rerun the six gcrd arms with factors from `compute_norm_factors.py`. |
 | 7 | `CellNeighborhoodTokenizer(seq_len_cell=...)`, opt-in `aggregate_own_neighbors` (each cell's own kNN, `C @ X`); re-tokenization at inference and the cell-only context take the split from the config. On OVCA, 79% of cells have a reverse in-degree other than 10 and own and reverse neighbour sets agree for 7.7%. | Own kNN, 64/64. | Rerun the three cell-neighborhood arms with the fix (9 runs). |
-| 8–12 | Under review. | | |
+| 8 | Opt-in `mask.pad_masks_to_batch_max`: masks are padded to the longest in the batch; the context encoder and predictor ignore padded entries as keys and the loss averages over real target tokens. Verified: each cell's predictions in a padded batch equal those of the cell alone (max diff 1e-7), and training with equally long masks is bit-identical to trimming. | On (`training_options` of the plan). | Reruns use it. |
+| 9–12 | Under review. | | |
 | 13 | Predictor segment table: one special segment per special token. | | |
 
 Metatoken review (31 Oct), all fixed in the patch:

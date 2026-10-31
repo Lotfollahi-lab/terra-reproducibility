@@ -1,8 +1,8 @@
 Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations and the mouse reruns.
 Apply with: git apply stjepa_ovca_ablation.patch (setup_code.sh does this). Changes that alter results are opt-in or
 limited to code paths that were broken. With the default config keys and arguments, tokenized data and training are
-unchanged, except the `gt_type: rank` metatoken if the token dictionary's offset differs from the hard-coded one (7);
-so is the default inference (metatoken removed), except cell embeddings of cell-neighborhood models (9).
+unchanged, except the `gt_type: rank` metatoken if the token dictionary's offset differs from the hard-coded one (8);
+so is the default inference (metatoken removed), except cell embeddings of cell-neighborhood models (10).
 
 Training
  1. Opt-in seed: a top-level 'seed' key replaces the hard-coded _GLOBAL_SEED = 0 for numpy/torch seeding and the
@@ -15,32 +15,36 @@ Training
  4. Predictor segment table: one special segment per special token, as in the encoder (crashed with >= 2).
  5. restrict_special_attention: a padded special token attends to itself instead of to nothing (NaN outputs that
     spread to all tokens without flash attention).
+ 6. Opt-in mask.pad_masks_to_batch_max: context and target masks are padded to the longest in the batch (index 0,
+    marked invalid) instead of trimmed to the shortest, so every cell keeps all its sampled context and target tokens;
+    the context encoder and the predictor ignore padded entries as keys and the loss averages over real target tokens.
+    With equally long masks, training is bit-identical to trimming.
 
 Datasets
- 6. Dataset-level special token padding: one pad token per special token (was n_special_tokens per special token),
+ 7. Dataset-level special token padding: one pad token per special token (was n_special_tokens per special token),
     and padded `gt_type: rank` special tokens stay 0.
- 7. `gt_type: rank` special tokens use the special value token offset of the token dictionary
+ 8. `gt_type: rank` special tokens use the special value token offset of the token dictionary
     (spv_start - 2 - n_cls) instead of the offset hard-coded by vocabulary size; a warning is printed if they differ.
 
 Inference
- 8. keep_special_tokens (embed_dataset, harmonize_tokenize_embed_pipeline, gene_embed_dataset, infer): keep the batch
+ 9. keep_special_tokens (embed_dataset, harmonize_tokenize_embed_pipeline, gene_embed_dataset, infer): keep the batch
     metatoken as in training. Default False: removed, as before.
- 9. Inference reads restrict_special_attention from `mask` like training (fallback `meta`), passes data.nz_spc to the
+10. Inference reads restrict_special_attention from `mask` like training (fallback `meta`), passes data.nz_spc to the
     dataset, gene_embed_dataset uses data.n_special_values like training, and the cell-only context uses
     data.seq_len_cell (was (seq_len - n_special_tokens) // n_segments, which gave wrong cell embeddings for
     cell-neighborhood models; neighborhood embeddings are unchanged).
-10. tokenize_adata (re-tokenization from a model folder) passes data.seq_len_cell for cell-neighborhood models and the
+11. tokenize_adata (re-tokenization from a model folder) passes data.seq_len_cell for cell-neighborhood models and the
     tokenizer options recorded in the model config (absent keys: off).
 
 Tokenizers (opt-in constructor arguments, default off = output unchanged)
-11. stable_rank_ties: genes are ordered by rank-stream score (descending), count-stream value (descending), reference
+12. stable_rank_ties: genes are ordered by rank-stream score (descending), count-stream value (descending), reference
     nonzero mean (ascending; 'nonzero_mean' of the norm factor file) and token id (ascending), independently of gene
     order and sort algorithm, in all paths and both cell-neighborhood blocks.
-12. zero_expr_from_raw_counts: the candidate genes of a cell (neighborhood) are the genes with raw (aggregated) count
+13. zero_expr_from_raw_counts: the candidate genes of a cell (neighborhood) are the genes with raw (aggregated) count
     > 0, whatever their normalized score (Seurat v3 / Pearson residuals no longer select undetected genes).
-    With 11 or 12, ranked gene lists are cut at model_input_size (lossless; 6-14x less memory on the dense path).
-13. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
-14. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
+    With 12 or 13, ranked gene lists are cut at model_input_size (lossless; 6-14x less memory on the dense path).
+14. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
+15. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
     (connectivities @ X) instead of the cells that have it among their kNN (connectivities.T @ X).
 
 diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
@@ -379,7 +383,7 @@ index eaa8308..683f641 100644
      dataset = tk._create_dataset(
          dataset_dict=dataset_dict,
 diff --git a/src/app/training/train.py b/src/app/training/train.py
-index c6b2e32..906b6a0 100644
+index c6b2e32..81db5a8 100644
 --- a/src/app/training/train.py
 +++ b/src/app/training/train.py
 @@ -39,7 +39,7 @@ from torch.nn.parallel import DistributedDataParallel
@@ -408,7 +412,27 @@ index c6b2e32..906b6a0 100644
      torch.backends.cudnn.deterministic = False # set to True for reproducibility
      torch.backends.cudnn.benchmark = True # set to False for reproducibility
  
-@@ -397,7 +398,8 @@ def train(args: dict,
+@@ -205,6 +206,9 @@ def train(args: dict,
+         special_token_pad_ratio = args['mask']['special_token_pad_ratio']
+     else:
+         special_token_pad_ratio = 0.0
++    # Opt-in: pad context and target masks to the longest in the batch
++    # instead of trimming them to the shortest
++    pad_masks_to_batch_max = args['mask'].get('pad_masks_to_batch_max', False)
+     if 'sample_segments' in args['mask'].keys():
+         sample_segments = args['mask']['sample_segments']
+     else:
+@@ -368,7 +372,8 @@ def train(args: dict,
+             sample_segments=sample_segments,
+             sample_gene_masks=True,
+             restrict_special_attention=restrict_special_attention,
+-            special_token_pad_ratio=special_token_pad_ratio)
++            special_token_pad_ratio=special_token_pad_ratio,
++            pad_masks_to_batch_max=pad_masks_to_batch_max)
+     elif cell_masking:
+        mask_collator = CellMaskCollator(
+             n_targets=n_targets,
+@@ -397,7 +402,8 @@ def train(args: dict,
                  n_nonzero_tokens_list=nz,
                  include_cell_id=False,
                  sep_gene_tokens_neb=sep_gene_tokens_neb,
@@ -418,7 +442,7 @@ index c6b2e32..906b6a0 100644
              train_cell_datasets.append(cell_d)
  
      else:
-@@ -414,7 +416,8 @@ def train(args: dict,
+@@ -414,7 +420,8 @@ def train(args: dict,
              n_nonzero_tokens_list=n_nonzero_tokens,
              include_cell_id=False,
              sep_gene_tokens_neb=sep_gene_tokens_neb,
@@ -428,7 +452,7 @@ index c6b2e32..906b6a0 100644
  
      if isinstance(train_dataset, list):
          train_loaders = []
-@@ -432,7 +435,8 @@ def train(args: dict,
+@@ -432,7 +439,8 @@ def train(args: dict,
                  drop_last=True,
                  prefetch_factor=(4 if num_workers > 0 else None),
                  persistent_workers=False,
@@ -438,7 +462,7 @@ index c6b2e32..906b6a0 100644
              train_loaders.append(train_loader)
              train_samplers.append(train_sampler)
  
-@@ -449,7 +453,8 @@ def train(args: dict,
+@@ -449,7 +457,8 @@ def train(args: dict,
              drop_last=True,
              prefetch_factor=(4 if num_workers > 0 else None),
              persistent_workers=False,
@@ -448,7 +472,7 @@ index c6b2e32..906b6a0 100644
  
      print(f"Length of train loader: {len(train_loader)}.")
      ipe = len(train_loader)
-@@ -558,7 +563,9 @@ def train(args: dict,
+@@ -558,7 +567,9 @@ def train(args: dict,
          if iter_number is not None:
              save_dict['iter_number'] = iter_number
          if rank == 0:
@@ -459,16 +483,108 @@ index c6b2e32..906b6a0 100644
              if (epoch + 1) % checkpoint_freq == 0:
                  if iter_number is None:
                      torch.save(save_dict, save_path.format(epoch=f'{epoch}'))
-@@ -623,7 +630,8 @@ def train(args: dict,
+@@ -586,6 +597,9 @@ def train(args: dict,
+             masks_enc = [u.to(device, non_blocking=True) for u in masks_enc]
+             masks_pred = [u.to(device, non_blocking=True) for u in masks_pred]
+             masks_attention = masks_attention.to(device, non_blocking=True)
++            # Validity of padded masks ([N_MASKS, B, L]; None if trimmed)
++            masks_enc_valid = udata.pop('masks_enc_valid', None)
++            masks_pred_valid = udata.pop('masks_pred_valid', None)
+ 
+             assert len(masks_enc) == 1, 'Currently require num encoder masks = 1'
+ 
+@@ -610,11 +624,14 @@ def train(args: dict,
+                         h = F.layer_norm(h, (h.size(-1),))
+                     h = apply_masks(h, masks_pred, concat=False)
+ 
+-                # Forward pass of context encoder
++                # Forward pass of context encoder (padded context entries
++                # are excluded as keys)
+                 z, token_emb = encoder(
+                     batch=udata,
+                     masks=masks_enc,
+-                    masks_attention=None)
++                    masks_attention=(
++                        None if masks_enc_valid is None
++                        else masks_enc_valid[0][:, None, None, :]))
+ 
+                 # Forward pass of predictor
+                 z = predictor(
+@@ -623,24 +640,44 @@ def train(args: dict,
                      batch=udata,
                      masks_enc=masks_enc,
                      masks_pred=masks_pred,
 -                    masks_attention=None)
 +                    masks_attention=None,
-+                    pad_special_tokens=pad_special_tokens)
++                    pad_special_tokens=pad_special_tokens,
++                    masks_enc_valid=masks_enc_valid,
++                    masks_pred_valid=masks_pred_valid)
  
                  # Compute loss
                  loss_exp = 1.0
+                 loss = 0.
+-                for zi, hi in zip(z, h):
+-                    if loss_fn_type == 'smooth_l1':
+-                        if excl_spc_from_loss and not pad_special_tokens:
+-                            loss += F.smooth_l1_loss(zi[:, n_special_tokens:, :], hi[:, n_special_tokens:, :])
+-                        else:
+-                            loss += F.smooth_l1_loss(zi, hi)
+-                    elif loss_fn_type == 'l1':
++                if masks_pred_valid is None:
++                    for zi, hi in zip(z, h):
++                        if loss_fn_type == 'smooth_l1':
++                            if excl_spc_from_loss and not pad_special_tokens:
++                                loss += F.smooth_l1_loss(zi[:, n_special_tokens:, :], hi[:, n_special_tokens:, :])
++                            else:
++                                loss += F.smooth_l1_loss(zi, hi)
++                        elif loss_fn_type == 'l1':
++                            if excl_spc_from_loss and not pad_special_tokens:
++                                loss += torch.mean(
++                                    torch.abs(zi[:, n_special_tokens:, :] - hi[:, n_special_tokens:, :])**loss_exp) / loss_exp
++                            else:
++                                loss += torch.mean(
++                                    torch.abs(zi - hi)**loss_exp) / loss_exp
++                else:
++                    # Padded masks: mean over the real target tokens only
++                    for zi, hi, vi in zip(z, h, masks_pred_valid):
+                         if excl_spc_from_loss and not pad_special_tokens:
+-                            loss += torch.mean(
+-                                torch.abs(zi[:, n_special_tokens:, :] - hi[:, n_special_tokens:, :])**loss_exp) / loss_exp
+-                        else:
+-                            loss += torch.mean(
+-                                torch.abs(zi - hi)**loss_exp) / loss_exp
++                            zi = zi[:, n_special_tokens:, :]
++                            hi = hi[:, n_special_tokens:, :]
++                            vi = vi[:, n_special_tokens:]
++                        if loss_fn_type == 'smooth_l1':
++                            token_loss = F.smooth_l1_loss(
++                                zi.float(), hi.float(), reduction='none')
++                        elif loss_fn_type == 'l1':
++                            token_loss = torch.abs(
++                                zi.float() - hi.float())**loss_exp / loss_exp
++                        weights = vi.unsqueeze(-1).to(token_loss.dtype)
++                        loss += (token_loss * weights).sum() / (
++                            weights.sum().clamp(min=1) * token_loss.size(-1))
+                 loss /= len(masks_pred)
+ 
+                 # ----------------------------------------------------
+@@ -648,8 +685,14 @@ def train(args: dict,
+                 # ----------------------------------------------------
+                 if lambda_var > 0 or lambda_cov > 0:
+ 
+-                    all_z = torch.cat(z, dim=0)
+-                    all_z = all_z.reshape(-1, all_z.shape[-1])
++                    if masks_pred_valid is None:
++                        all_z = torch.cat(z, dim=0)
++                        all_z = all_z.reshape(-1, all_z.shape[-1])
++                    else:
++                        # Real target tokens only
++                        all_z = torch.cat(
++                            [zi[vi] for zi, vi in zip(z, masks_pred_valid)],
++                            dim=0)
+ 
+                     # ----- variance loss -----
+                     def variance_loss(z, gamma=1.0, eps=1e-4):
 diff --git a/src/stjepa/datasets/cell_datasets.py b/src/stjepa/datasets/cell_datasets.py
 index ad8d8a7..d499c4c 100644
 --- a/src/stjepa/datasets/cell_datasets.py
@@ -599,10 +715,92 @@ index 03e90b6..020d3a7 100644
          
      dataloader = DataLoader(cell_dataset,
 diff --git a/src/stjepa/masks/block_masking.py b/src/stjepa/masks/block_masking.py
-index c6399a0..dad4abd 100644
+index c6399a0..cf5076d 100644
 --- a/src/stjepa/masks/block_masking.py
 +++ b/src/stjepa/masks/block_masking.py
-@@ -271,6 +271,14 @@ class BlockMaskCollator:
+@@ -41,6 +41,16 @@ class BlockMaskCollator:
+     sample_gene_masks:
+         If `True`, sample a gene mask for each cell. Should be used
+         during training but not inference.
++    restrict_special_attention:
++        If `True`, special tokens only attend to themselves.
++    pad_masks_to_batch_max:
++        If `True`, pad the context and target masks of every cell to the
++        longest in the batch and return which entries are real
++        (`collated['masks_enc_valid']`, `collated['masks_pred_valid']`),
++        so that every cell keeps all its sampled context and target
++        tokens. If `False`, all masks are trimmed to the shortest in the
++        batch, i.e. the sparsest cell sets the number of context and
++        target tokens of every cell.
+     """
+     def __init__(self,
+                  n_targets: int,
+@@ -54,7 +64,8 @@ class BlockMaskCollator:
+                  cell_segment_sampling_ratio: float = 0.09090909090909091,
+                  special_token_pad_ratio: float = 0.,
+                  sample_gene_masks: bool = True,
+-                 restrict_special_attention: bool = False):
++                 restrict_special_attention: bool = False,
++                 pad_masks_to_batch_max: bool = False):
+         self.n_targets = n_targets
+         self.n_contexts = n_contexts
+         self.n_segments = n_segments
+@@ -68,6 +79,7 @@ class BlockMaskCollator:
+         self.restrict_special_attention = restrict_special_attention
+         self.cell_segment_sampling_ratio = cell_segment_sampling_ratio
+         self.special_token_pad_ratio = special_token_pad_ratio
++        self.pad_masks_to_batch_max = pad_masks_to_batch_max
+         print("Special token pad ratio:", self.special_token_pad_ratio)
+ 
+     def _sample_gene_mask(
+@@ -168,6 +180,27 @@ class BlockMaskCollator:
+ 
+         return target_masks, context_masks
+ 
++    @staticmethod
++    def _pad_masks(mask_lists: list[list[torch.Tensor]]
++                   ) -> tuple[torch.Tensor, torch.Tensor]:
++        """
++        Stack per-cell lists of masks into [N_MASKS, B, L] index and
++        validity tensors, padded to the longest mask (L) with index 0.
++        """
++        n_masks = len(mask_lists[0])
++        length = max(
++            max((m.numel() for m in masks), default=0)
++            for masks in mask_lists)
++        indices = torch.zeros(
++            (n_masks, len(mask_lists), length), dtype=torch.long)
++        valid = torch.zeros(
++            (n_masks, len(mask_lists), length), dtype=torch.bool)
++        for i, masks in enumerate(mask_lists):
++            for j, m in enumerate(masks):
++                indices[j, i, :m.numel()] = m.to(torch.long)
++                valid[j, i, :m.numel()] = True
++        return indices, valid
++
+     def __call__(self, batch: list[dict]) -> tuple[
+             torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+         """
+@@ -184,10 +217,14 @@ class BlockMaskCollator:
+         collated:
+             Input positions, segments, gene tokens, values and cell IDs
+             collated by batch.
+-        collated_context_masks: LongTensor [B, Nctx, Lctx] (min-trimmed)
+-            Sampled context masks collated by batch.
+-        collated_target_masks: LongTensor [B, Ntgt, Ltgt] (min-trimmed)
+-            Sampled target masks collated by batch.
++        collated_context_masks: LongTensor [Nctx, B, Lctx]
++            Sampled context masks collated by batch (trimmed to the
++            shortest, or padded to the longest with validity in
++            `collated['masks_enc_valid']`).
++        collated_target_masks: LongTensor [Ntgt, B, Ltgt]
++            Sampled target masks collated by batch (trimmed to the
++            shortest, or padded to the longest with validity in
++            `collated['masks_pred_valid']`).
+         masks_attention: BoolTensor [B, 1, 1, L]
+             Attention masks collated by batch.
+         """
+@@ -271,6 +308,14 @@ class BlockMaskCollator:
                      :,
                      i,
                      (i+1):] = 0
@@ -617,8 +815,32 @@ index c6399a0..dad4abd 100644
  
          if self.sample_gene_masks:
              # Retrieve target and context masks per cell
+@@ -291,6 +336,23 @@ class BlockMaskCollator:
+                 tgt_list.append(tgt)
+                 ctx_list.append(ctx)
+ 
++            if self.pad_masks_to_batch_max:
++                # Pad to the longest mask in the batch (index 0, marked
++                # invalid) instead of trimming to the shortest
++                collated_target_masks, collated[
++                    'masks_pred_valid'] = self._pad_masks(tgt_list)
++                collated_context_masks, collated[
++                    'masks_enc_valid'] = self._pad_masks(ctx_list)
++                if not collated['masks_enc_valid'].any(dim=-1).all():
++                    raise ValueError(
++                        'A cell has no context token; its attention would '
++                        'have no key.')
++                return collated, \
++                       collated_context_masks, \
++                       collated_target_masks, \
++                       masks_attention, \
++                       pad_special_tokens
++
+             # Trim to min length and stack directly (faster than
+             # default_collate on nested lists)
+             tgt_trimmed = [
 diff --git a/src/stjepa/models/gene_transformers.py b/src/stjepa/models/gene_transformers.py
-index 34ce07c..b9a0a1e 100644
+index 34ce07c..8ab1d5c 100644
 --- a/src/stjepa/models/gene_transformers.py
 +++ b/src/stjepa/models/gene_transformers.py
 @@ -451,7 +451,9 @@ class GeneTransformerBasePredictor(ABC, nn.Module):
@@ -641,15 +863,68 @@ index 34ce07c..b9a0a1e 100644
              self.seg_embed.weight[1:].copy_(torch.from_numpy(seg_embed).float())
  
          # Initialize layer to project from enc to pred embed dim
-@@ -1393,6 +1395,7 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
+@@ -556,6 +558,50 @@ class GeneTransformerBasePredictor(ABC, nn.Module):
+ 
+         return seg_emb
+ 
++    def _get_predictor_key_mask(
++            self,
++            masks_enc_valid: torch.Tensor,
++            masks_pred_valid: torch.Tensor,
++            n_masks_pred: int,
++            pad_special_tokens: bool,
++            masks_attention: torch.Tensor | None = None,
++            ) -> torch.Tensor:
++        """
++        Key padding mask (True: attend) of the predictor sequence for
++        padded context and target masks, with shape
++        (BATCH_SIZE * N_TARGET_MASKS, 1, 1, SEQ_LEN), in the order in which
++        `forward` concatenates mask tokens and context embeddings.
++
++        Parameters
++        -----------
++        masks_enc_valid:
++            Validity of the context mask entries with shape (BATCH_SIZE,
++            CONTEXT_MASK_SIZE).
++        masks_pred_valid:
++            Validity of the target mask entries with shape
++            ([N_TARGET_MASKS,] BATCH_SIZE, TARGET_MASK_SIZE).
++        n_masks_pred:
++            Number of target masks.
++        pad_special_tokens:
++            If `True`, the special tokens of this batch are padded.
++        masks_attention:
++            Optional attention mask to combine with.
++        """
++        ctx_valid = masks_enc_valid.reshape(
++            -1, masks_enc_valid.shape[-1]).repeat(n_masks_pred, 1)
++        tgt_valid = masks_pred_valid.reshape(-1, masks_pred_valid.shape[-1])
++        if self.new_spc and not pad_special_tokens:
++            valid = torch.cat([
++                ctx_valid[:, :self.n_special_tokens],
++                tgt_valid[:, self.n_special_tokens:],
++                ctx_valid[:, self.n_special_tokens:]], dim=1)
++        else:
++            valid = torch.cat([tgt_valid, ctx_valid], dim=1)
++        key_mask = valid[:, None, None, :]
++        if masks_attention is not None:
++            key_mask = key_mask & masks_attention.bool()
++        return key_mask
++
+     @abstractmethod
+     def forward(self) -> torch.Tensor:
+         """
+@@ -1393,6 +1439,9 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
                  masks_enc: list[torch.Tensor] | torch.Tensor,
                  masks_pred: list[torch.Tensor] | torch.Tensor,
                  masks_attention: torch.Tensor | None = None,
 +                pad_special_tokens: bool = False,
++                masks_enc_valid: torch.Tensor | None = None,
++                masks_pred_valid: torch.Tensor | None = None,
                  ) -> torch.Tensor:
              """
              Run predictor forward pass for a batch of input tokens.
-@@ -1475,7 +1478,7 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
+@@ -1475,7 +1524,7 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
              # Repeat context embeddings for all target masks
              z = z.repeat(len(masks_pred), 1, 1)
  
@@ -658,15 +933,30 @@ index 34ce07c..b9a0a1e 100644
                  # Concatenate mask tokens and context embeddings of gene tokens
                  z = torch.cat([
                      z[:, :self.n_special_tokens, :],
-@@ -1523,6 +1526,7 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
+@@ -1490,6 +1539,12 @@ class GeneTransformerRankPredictor(GeneTransformerBasePredictor):
+                     #z[:, self.n_special_tokens:, :] # context gene tokens (excl. special tokens)
+                     ], dim=1)
+ 
++            # Ignore padded context and target entries (padded masks)
++            if masks_enc_valid is not None:
++                masks_attention = self._get_predictor_key_mask(
++                    masks_enc_valid, masks_pred_valid, len(masks_pred),
++                    pad_special_tokens, masks_attention)
++
+             # Run forward prop
+             for blk in self.predictor_blocks:
+                 z = blk(z, masks=masks_attention)
+@@ -1523,6 +1578,9 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
          masks_enc: list[torch.Tensor] | torch.Tensor,
          masks_pred: list[torch.Tensor] | torch.Tensor,
          masks_attention: torch.Tensor | None = None,
 +        pad_special_tokens: bool = False,
++        masks_enc_valid: torch.Tensor | None = None,
++        masks_pred_valid: torch.Tensor | None = None,
          ) -> torch.Tensor:
          """
          Run predictor forward pass for a batch of input tokens.
-@@ -1603,7 +1607,7 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
+@@ -1603,7 +1661,7 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
          # Repeat context embeddings for all target masks
          z = z.repeat(len(masks_pred), 1, 1)
  
@@ -675,15 +965,30 @@ index 34ce07c..b9a0a1e 100644
              # Concatenate mask tokens and context embeddings of gene tokens
              z = torch.cat([
                  z[:, :self.n_special_tokens, :],
-@@ -1680,6 +1684,7 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
+@@ -1618,6 +1676,12 @@ class GeneTransformerCountPredictor(GeneTransformerBasePredictor):
+                 #z[:, self.n_special_tokens:, :] # context gene tokens (excl. special tokens)
+                 ], dim=1)
+ 
++        # Ignore padded context and target entries (padded masks)
++        if masks_enc_valid is not None:
++            masks_attention = self._get_predictor_key_mask(
++                masks_enc_valid, masks_pred_valid, len(masks_pred),
++                pad_special_tokens, masks_attention)
++
+         # Run forward prop
+         for blk in self.predictor_blocks:
+             z = blk(z, masks=masks_attention)
+@@ -1680,6 +1744,9 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
          masks_enc: list[torch.Tensor] | torch.Tensor,
          masks_pred: list[torch.Tensor] | torch.Tensor,
          masks_attention: torch.Tensor | None = None,
 +        pad_special_tokens: bool = False,
++        masks_enc_valid: torch.Tensor | None = None,
++        masks_pred_valid: torch.Tensor | None = None,
          ) -> torch.Tensor:
          """
          Run predictor forward pass for a batch of input tokens.
-@@ -1777,7 +1782,7 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
+@@ -1777,7 +1844,7 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
          # Repeat context embeddings for all target masks
          z = z.repeat(len(masks_pred), 1, 1)
  
@@ -692,27 +997,55 @@ index 34ce07c..b9a0a1e 100644
              # Concatenate mask tokens and context embeddings of gene tokens
              z = torch.cat([
                  z[:, :self.n_special_tokens, :],
+@@ -1792,6 +1859,12 @@ class GeneTransformerCombinedPredictor(GeneTransformerBasePredictor):
+                 #z[:, self.n_special_tokens:, :] # context gene tokens (excl. special tokens)
+                 ], dim=1)
+ 
++        # Ignore padded context and target entries (padded masks)
++        if masks_enc_valid is not None:
++            masks_attention = self._get_predictor_key_mask(
++                masks_enc_valid, masks_pred_valid, len(masks_pred),
++                pad_special_tokens, masks_attention)
++
+         # Run forward prop
+         for blk in self.predictor_blocks:
+             z = blk(z, masks=masks_attention)
 diff --git a/src/stjepa/models/multimask.py b/src/stjepa/models/multimask.py
-index 5a80a12..e3f81e8 100644
+index 5a80a12..8c76244 100644
 --- a/src/stjepa/models/multimask.py
 +++ b/src/stjepa/models/multimask.py
-@@ -69,7 +69,8 @@ class PredictorMultiMaskWrapper(nn.Module):
+@@ -69,7 +69,10 @@ class PredictorMultiMaskWrapper(nn.Module):
                  batch: dict[torch.Tensor],
                  masks_enc: torch.Tensor | list,
                  masks_pred: torch.Tensor | list,
 -                masks_attention: torch.Tensor
 +                masks_attention: torch.Tensor,
 +                pad_special_tokens: bool = False,
++                masks_enc_valid: torch.Tensor | None = None,
++                masks_pred_valid: torch.Tensor | None = None,
                  ) -> list[torch.Tensor]:
          if type(z) is not list:
              z = [z]
-@@ -86,5 +87,6 @@ class PredictorMultiMaskWrapper(nn.Module):
+@@ -79,12 +82,18 @@ class PredictorMultiMaskWrapper(nn.Module):
+             masks_pred = [masks_pred]
+ 
+         outs = []
+-        for mp in masks_pred:
++        for i, mp in enumerate(masks_pred):
+             outs += [
+                 self.backbone(z=z[0],
+                               token_emb=token_emb,
                                batch=batch,
                                masks_enc=masks_enc[0],
                                masks_pred=mp,
 -                              masks_attention=masks_attention)]
 +                              masks_attention=masks_attention,
-+                              pad_special_tokens=pad_special_tokens)]
++                              pad_special_tokens=pad_special_tokens,
++                              # Validity of padded masks ([N_MASKS, B, L])
++                              masks_enc_valid=(None if masks_enc_valid is None
++                                               else masks_enc_valid[0]),
++                              masks_pred_valid=(None if masks_pred_valid is None
++                                                else masks_pred_valid[i]))]
          return outs
 \ No newline at end of file
 diff --git a/src/stjepa/preprocessors/graph.py b/src/stjepa/preprocessors/graph.py

@@ -14,6 +14,11 @@ tokenizer_options:
   zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
   aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)
 
+# Opt-in training fixes of stjepa_ovca_ablation.patch, set in every run config (dotted keys; the mouse runs had
+# them off). Variant overrides are applied after these.
+training_options:
+  mask.pad_masks_to_batch_max: true  # pad context/target masks to the longest in the batch (was: trimmed to the shortest)
+
 tokenizations:
   # Keys: tokenizer, model_input_size, n_neighs and the six normalization methods (null = no normalization).
   # Training and evaluation read the tokenized dataset as is; the same keys (and the tokenizer options) are written

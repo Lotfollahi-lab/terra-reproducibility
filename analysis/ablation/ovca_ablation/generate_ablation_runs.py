@@ -44,13 +44,16 @@ MANIFEST_COLUMNS = ["index", "run_id", "run_name", "variant", "category", "label
 TOKENIZER_TYPES = {"cell_graph": "cell-graph-tokenizer", "cell_neigh": "cell-neighborhood-tokenizer"}
 
 
-def set_key(config: dict, dotted_key: str, value):
-    """Set a dotted key that must already exist in the config (catches typos in the plan)."""
+def set_key(config: dict, dotted_key: str, value, allow_new: bool = False):
+    """
+    Set a dotted key, which must already exist in the config (catches typos in the plan) unless `allow_new` (opt-in
+    keys of the patch that the mouse base config does not have).
+    """
     *parents, key = dotted_key.split(".")
     section = config
     for parent in parents:
         section = section[parent]
-    if key not in section:
+    if key not in section and not allow_new:
         raise KeyError(f"Override {dotted_key} does not exist in the base config.")
     section[key] = value
 
@@ -114,6 +117,8 @@ def make_run_config(base_config: dict,
     config["state"]["checkpoint_freq"] = args.epochs + 1  # never write epoch snapshots, only stjepa-latest
     config["seed"] = run["seed"]
 
+    for key, value in run["training_options"].items():
+        set_key(config, key, value, allow_new=True)
     for key, value in run["overrides"].items():
         set_key(config, key, value)
     validate_config(config, tokenization, run["run_name"])

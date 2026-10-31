@@ -48,7 +48,8 @@ IGNORED_KEYS = {"data.dataset_name",
                 "data.n_special_values",
                 "data.vocab_size",
                 "seed",
-                # Opt-in tokenizer fixes (recorded in the OVCA configs; off in the mouse tokenizations)
+                # Opt-in fixes (`training_options` and `tokenizer_options` of the plan; off in the mouse runs)
+                "mask.pad_masks_to_batch_max",
                 "data.stable_rank_ties",
                 "data.zero_expr_from_raw_counts",
                 "data.aggregate_own_neighbors",
