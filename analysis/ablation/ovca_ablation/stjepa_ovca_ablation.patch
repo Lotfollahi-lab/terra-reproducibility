@@ -47,8 +47,12 @@ Tokenizers (opt-in constructor arguments, default off = output unchanged)
     of the sequence; it was the number of ranked-list entries, which on the dense path (rank and count normalized
     differently) includes pad entries, so every cell had the full length and batches were not grouped by size. With
     12 or 13, the dense path also drops trailing pad entries of the ranked lists (lossless; about 2x less memory).
-15. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
-16. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
+15. seurat_loess_span (also normalize_by_seurat(loess_span=...)): the Seurat v3 LOESS fit of log variance on log mean
+    uses the given span (Seurat v3 / scanpy: 0.3), on the genes ordered by log mean and log variance, so that the
+    scores do not depend on the gene order. The fit passed options={'span': 0.3}, which skmisc.loess ignores (span
+    0.75), and depended on the gene order at about 1e-12.
+16. CellNeighborhoodTokenizer(seq_len_cell=...): explicit index-cell / neighborhood split (None: input / (k + 1)).
+17. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
     (connectivities @ X) instead of the cells that have it among their kNN (connectivities.T @ X).
 
 diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
@@ -351,10 +355,10 @@ index 98eb00e..cddac5a 100644
  
              cell_emb_list = []
 diff --git a/src/app/inference/tokenize.py b/src/app/inference/tokenize.py
-index eaa8308..f33f9e1 100644
+index eaa8308..3228c09 100644
 --- a/src/app/inference/tokenize.py
 +++ b/src/app/inference/tokenize.py
-@@ -95,9 +95,22 @@ def tokenize_adata(adata: ad.AnnData,
+@@ -95,9 +95,24 @@ def tokenize_adata(adata: ad.AnnData,
      print('==================================================')
      print('STEP 2: TOKENIZING ANNDATA OBJECT...')
      print('==================================================')
@@ -367,7 +371,9 @@ index eaa8308..f33f9e1 100644
 +        'zero_expr_from_raw_counts': model_config['data'].get(
 +            'zero_expr_from_raw_counts', False),
 +        'exact_n_nonzero_tokens': model_config['data'].get(
-+            'exact_n_nonzero_tokens', False)}
++            'exact_n_nonzero_tokens', False),
++        'seurat_loess_span': model_config['data'].get(
++            'seurat_loess_span', None)}
      if model_config['data']['tokenizer_type'] == 'cell_neigh':
          Tokenizer = cell_tokenizers.CellNeighborhoodTokenizer
 +        # Split index-cell and neighborhood tokens as the model was trained
@@ -378,7 +384,7 @@ index eaa8308..f33f9e1 100644
      elif model_config['data']['tokenizer_type'] == 'cell_graph':
          Tokenizer = cell_tokenizers.CellGraphTokenizer
      tk = Tokenizer(
-@@ -116,7 +129,8 @@ def tokenize_adata(adata: ad.AnnData,
+@@ -116,7 +131,8 @@ def tokenize_adata(adata: ad.AnnData,
          norm_factor_file_path=norm_factor_file_path,
          token_dictionary_file_path=token_dictionary_file_path,
          add_neigh_cell_ids=add_neigh_cell_ids,
@@ -1095,6 +1101,68 @@ index 61bbf4a..34928a4 100755
  
      return adata
 \ No newline at end of file
+diff --git a/src/stjepa/preprocessors/normalizers.py b/src/stjepa/preprocessors/normalizers.py
+index 7e5564f..533622f 100755
+--- a/src/stjepa/preprocessors/normalizers.py
++++ b/src/stjepa/preprocessors/normalizers.py
+@@ -191,7 +191,9 @@ def normalize_by_read_depth(x: sp.csr_matrix,
+     return y
+ 
+ 
+-def normalize_by_seurat(x: sp.csr_matrix) -> sp.csr_matrix:
++def normalize_by_seurat(x: sp.csr_matrix,
++                        loess_span: float | None = None,
++                        ) -> sp.csr_matrix:
+     """
+     Normalize gene expression counts per gene (within the batch) using
+     seurat v3 `FindVariableFeatures`.
+@@ -214,6 +216,13 @@ def normalize_by_seurat(x: sp.csr_matrix) -> sp.csr_matrix:
+         A sparse matrix where each row represents an observation and
+         each column represents a feature, containing raw counts as
+         features (i.e. not scaled or normalized).
++    loess_span:
++        Span of the LOESS fit of log variance on log mean (Seurat v3 and
++        scanpy: 0.3), fitted on the genes ordered by log mean and log
++        variance, so that the result does not depend on the gene order.
++        If `None`, the fit as before: the `options` argument is ignored by
++        `skmisc.loess`, so the default span 0.75 is used, on the genes in
++        column order.
+ 
+     Returns
+     ----------
+@@ -233,13 +242,27 @@ def normalize_by_seurat(x: sp.csr_matrix) -> sp.csr_matrix:
+     gene_log_means = np.log10(gene_means[not_const])
+     gene_log_variances = np.log10(gene_vars[not_const])
+ 
+-    model = loess(gene_log_means,
+-                  gene_log_variances,
+-                  options={'span': 0.3, 'degree': 2})
+-    model.fit()
++    if loess_span is None:
++        # As before: `options` is ignored by skmisc.loess (span 0.75)
++        model = loess(gene_log_means,
++                      gene_log_variances,
++                      options={'span': 0.3, 'degree': 2})
++        model.fit()
++        fitted_log_variances = model.outputs.fitted_values
++    else:
++        # Fit on genes ordered by log mean and log variance, so that the
++        # fit does not depend on the gene order
++        order = np.lexsort((gene_log_variances, gene_log_means))
++        model = loess(gene_log_means[order],
++                      gene_log_variances[order],
++                      span=loess_span,
++                      degree=2)
++        model.fit()
++        fitted_log_variances = np.empty_like(gene_log_means)
++        fitted_log_variances[order] = model.outputs.fitted_values
+ 
+     expected_log_variances = np.zeros(x.shape[1], dtype=np.float64)
+-    expected_log_variances[not_const] = model.outputs.fitted_values
++    expected_log_variances[not_const] = fitted_log_variances
+     expected_variances = 10 ** expected_log_variances
+     expected_standard_deviation = np.sqrt(expected_variances)
+ 
 diff --git a/src/stjepa/tokenizers/__init__.py b/src/stjepa/tokenizers/__init__.py
 index 80139af..a73aa43 100755
 --- a/src/stjepa/tokenizers/__init__.py
@@ -1111,7 +1179,7 @@ index 80139af..a73aa43 100755
 +                       rank_gene_tokens)
 \ No newline at end of file
 diff --git a/src/stjepa/tokenizers/cell_tokenizers.py b/src/stjepa/tokenizers/cell_tokenizers.py
-index c9cbe8b..393a45e 100755
+index c9cbe8b..1e6e3a4 100755
 --- a/src/stjepa/tokenizers/cell_tokenizers.py
 +++ b/src/stjepa/tokenizers/cell_tokenizers.py
 @@ -85,7 +85,10 @@ from ..preprocessors.normalizers import normalize_by_factor
@@ -1126,7 +1194,7 @@ index c9cbe8b..393a45e 100755
  
  
  warnings.filterwarnings('ignore', message=".*The 'nopython' keyword.*") # noqa
-@@ -145,6 +148,31 @@ class CellBaseTokenizer(ABC):
+@@ -145,6 +148,35 @@ class CellBaseTokenizer(ABC):
          If `True`, add neighbor cell IDs.
      include_special_tokens:
          If `True`, include special tokens.
@@ -1155,26 +1223,32 @@ index c9cbe8b..393a45e 100755
 +        includes pad entries, so every cell gets the full length. With
 +        `stable_rank_ties` or `zero_expr_from_raw_counts`, the dense path
 +        then also drops trailing pad entries of the ranked lists (lossless).
++    seurat_loess_span:
++        Span of the LOESS fit of the `seurat_v3` normalization (Seurat v3:
++        0.3), fitted independently of the gene order. If `None`, the fit
++        as before (default span 0.75, see `normalize_by_seurat`).
      """
      def __init__(
              self,
-@@ -188,6 +216,9 @@ class CellBaseTokenizer(ABC):
+@@ -188,6 +220,10 @@ class CellBaseTokenizer(ABC):
              token_dictionary_file_path: Path | str = token_dictionary_file_path,
              add_neigh_cell_ids: bool = False,
              include_special_tokens: bool = True,
 +            stable_rank_ties: bool = False,
 +            zero_expr_from_raw_counts: bool = False,
 +            exact_n_nonzero_tokens: bool = False,
++            seurat_loess_span: float | None = None,
              ):
          self.nproc = nproc
          self.processing_mode = processing_mode
-@@ -207,6 +238,15 @@ class CellBaseTokenizer(ABC):
+@@ -207,6 +243,16 @@ class CellBaseTokenizer(ABC):
          self.token_dictionary_file_path = token_dictionary_file_path
          self.add_neigh_cell_ids = add_neigh_cell_ids
          self.include_special_tokens = include_special_tokens
 +        self.stable_rank_ties = stable_rank_ties
 +        self.zero_expr_from_raw_counts = zero_expr_from_raw_counts
 +        self.exact_n_nonzero_tokens = exact_n_nonzero_tokens
++        self.seurat_loess_span = seurat_loess_span
 +
 +        if self.zero_expr_from_raw_counts and self.include_zero_expr_genes:
 +            raise ValueError(
@@ -1184,7 +1258,7 @@ index c9cbe8b..393a45e 100755
  
          # TODO fix this for radius and delaunay
          self.seq_len_cell = int(self.model_input_size / (self.n_neighs + 1))
-@@ -243,6 +283,201 @@ class CellBaseTokenizer(ABC):
+@@ -243,6 +289,201 @@ class CellBaseTokenizer(ABC):
          self.coding_miRNA_dict = dict(
              zip(self.coding_miRNA_ids, [True] * len(self.vocab)))
  
@@ -1386,7 +1460,27 @@ index c9cbe8b..393a45e 100755
      def tokenize_data(self,
                        input_directory: Path | str,
                        output_directory: Path | str,
-@@ -692,7 +927,25 @@ class CellGraphTokenizer(CellBaseTokenizer):
+@@ -585,7 +826,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
+                 probed_genes=adata.var['ensembl_id'],
+                 norm_factor=norm_factor)              
+         elif self.rank_gene_norm_method == 'seurat_v3':
+-            adata.layers['X_rank'] = normalize_by_seurat(adata.X)
++            adata.layers['X_rank'] = normalize_by_seurat(
++                adata.X, loess_span=self.seurat_loess_span)
+         else:
+             if self.rank_gene_norm_method is None:
+                 pass
+@@ -622,7 +864,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
+                 probed_genes=adata.var['ensembl_id'],
+                 norm_factor=norm_factor)            
+         elif self.count_gene_norm_method == 'seurat_v3':
+-            adata.layers['X_count'] = normalize_by_seurat(adata.X)
++            adata.layers['X_count'] = normalize_by_seurat(
++                adata.X, loess_span=self.seurat_loess_span)
+         else:
+             if self.count_gene_norm_method is None:
+                 pass
+@@ -692,7 +935,25 @@ class CellGraphTokenizer(CellBaseTokenizer):
          adata_dict['gene_tokens_neighborhood'] = []
          adata_dict['gene_expr_neighborhood'] = []
              
@@ -1413,7 +1507,7 @@ index c9cbe8b..393a45e 100755
              print('Ranking gene tokens based on normalized counts (sparse version).')
              for i in range(0, len(adata), self.chunk_size):
                  if self.include_zero_expr_genes:
-@@ -994,6 +1247,11 @@ class CellGraphTokenizer(CellBaseTokenizer):
+@@ -994,6 +1255,11 @@ class CellGraphTokenizer(CellBaseTokenizer):
          # Retrieve attributes
          example['n_nonzero_tokens'] = (
              n_nonzero_cell_tokens + n_nonzero_neighborhood_tokens)
@@ -1425,7 +1519,7 @@ index c9cbe8b..393a45e 100755
  
          # Add padding to make all sequences have length 'model_input_size'
          if len(example['gene_tokens']) < self.model_input_size:
-@@ -1040,6 +1298,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
+@@ -1040,6 +1306,8 @@ class CellGraphTokenizer(CellBaseTokenizer):
  
  class CellNeighborhoodTokenizer(CellBaseTokenizer):
      def __init__(self,
@@ -1434,7 +1528,7 @@ index c9cbe8b..393a45e 100755
                   **base_tokenizer_kwargs,
                   ):
          """
-@@ -1047,11 +1307,32 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1047,11 +1315,32 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
  
          Parameters
          -----------
@@ -1467,7 +1561,7 @@ index c9cbe8b..393a45e 100755
  
      def _tokenize_adata(self,
                          adata_file_path: Path | str | None = None,
-@@ -1123,7 +1404,8 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1123,7 +1412,8 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
              radius=self.radius,
              delaunay=self.delaunay,
              include_self_loop=True,
@@ -1477,7 +1571,34 @@ index c9cbe8b..393a45e 100755
  
          print('Normalizing gene expression counts...')
          # Perform normalization of counts per cell for rank and count
-@@ -1345,7 +1627,35 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1221,9 +1511,11 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+                 probed_genes=adata.var['ensembl_id'],
+                 norm_factor=f"{norm_factor}_neighborhood")
+         elif self.rank_gene_norm_method == 'seurat_v3':
+-            adata.layers['X_rank'] = normalize_by_seurat(adata.layers['X_rank'])
++            adata.layers['X_rank'] = normalize_by_seurat(
++                adata.layers['X_rank'], loess_span=self.seurat_loess_span)
+             adata.layers['X_neighborhood_rank'] = normalize_by_seurat(
+-                adata.layers['X_neighborhood_rank'])
++                adata.layers['X_neighborhood_rank'],
++                loess_span=self.seurat_loess_span)
+         else:
+             if self.rank_gene_norm_method is None:
+                 pass
+@@ -1271,9 +1563,10 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+                 norm_factor=f"{norm_factor}_neighborhood")
+         elif self.count_gene_norm_method == 'seurat_v3':
+             adata.layers['X_count'] = normalize_by_seurat(
+-                adata.layers['X_count'])
++                adata.layers['X_count'], loess_span=self.seurat_loess_span)
+             adata.layers['X_neighborhood_count'] = normalize_by_seurat(
+-                adata.layers['X_neighborhood_count'])
++                adata.layers['X_neighborhood_count'],
++                loess_span=self.seurat_loess_span)
+         else:
+             if self.count_gene_norm_method is None:
+                 pass
+@@ -1345,7 +1638,35 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
          adata_dict['gene_expr_neighborhood'] = []
              
          # Divide cells into chunks and loop through chunks
@@ -1514,7 +1635,7 @@ index c9cbe8b..393a45e 100755
              print('Ranking gene tokens based on normalized counts (sparse version).')
              for i in range(0, len(adata), self.chunk_size):
                  if self.include_zero_expr_genes:
-@@ -1565,7 +1875,7 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1565,7 +1886,7 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
          Format examples.
          """
          # Retrieve gene tokens
@@ -1523,7 +1644,7 @@ index c9cbe8b..393a45e 100755
          seq_len_neighborhood = self.model_input_size - seq_len_cell
  
          gene_tokens_cell, n_nonzero_cell_tokens = process_gene_tokens(
-@@ -1599,6 +1909,11 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
+@@ -1599,6 +1920,11 @@ class CellNeighborhoodTokenizer(CellBaseTokenizer):
          # Retrieve attributes
          example['n_nonzero_tokens'] = (
              n_nonzero_cell_tokens + n_nonzero_neighborhood_tokens)

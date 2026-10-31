@@ -32,6 +32,7 @@ NORM_METHOD_KEYS = ["rank_cell_norm_method",
 TOKENIZER_OPTION_DEFAULTS = {"stable_rank_ties": False,
                              "zero_expr_from_raw_counts": False,
                              "exact_n_nonzero_tokens": False,
+                             "seurat_loess_span": None,
                              "aggregate_own_neighbors": False,
                              "seq_len_cell": None}
 TOKENIZATION_DEFAULTS = {"tokenizer": "cell-graph-tokenizer",
@@ -92,6 +93,9 @@ def get_tokenized_dataset_path(tokenization: dict,
         options.append("detected")
     if tokenization["exact_n_nonzero_tokens"]:
         options.append("nnz")
+    if tokenization["seurat_loess_span"] is not None and "seurat_v3" in norm_methods:
+        # No dots: the tokenizer names its output with Path.with_suffix
+        options.append(f"span{tokenization['seurat_loess_span']}".replace(".", "p"))
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
         if tokenization["aggregate_own_neighbors"]:
             options.append("ownknn")

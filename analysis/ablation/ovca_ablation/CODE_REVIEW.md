@@ -62,7 +62,8 @@ or limited to code paths that were broken, so mouse configs and the default infe
 | 7 | `CellNeighborhoodTokenizer(seq_len_cell=...)`, opt-in `aggregate_own_neighbors` (each cell's own kNN, `C @ X`); re-tokenization at inference and the cell-only context take the split from the config. On OVCA, 79% of cells have a reverse in-degree other than 10 and own and reverse neighbour sets agree for 7.7%. | Own kNN, 64/64. | Rerun the three cell-neighborhood arms with the fix (9 runs). |
 | 8 | Opt-in `mask.pad_masks_to_batch_max`: masks are padded to the longest in the batch; the context encoder and predictor ignore padded entries as keys and the loss averages over real target tokens. Verified: each cell's predictions in a padded batch equal those of the cell alone (max diff 1e-7), and training with equally long masks is bit-identical to trimming. | On (`training_options` of the plan). | Reruns use it. |
 | 9 | Opt-in `exact_n_nonzero_tokens`: `n_nonzero_tokens`, which only the length-grouped sampler reads, is the number of gene tokens; on the dense path it was the full length for every cell, so the 14 dense-path normalization arms trained on batches not grouped by size (more trimming before padding). With the ranked-list options, the dense path also drops trailing pad entries (lossless; 0.10 instead of 0.21 MB per cell). Verified on all 27 plan tokenizations: only `n_nonzero_tokens` of the 14 dense-path datasets changes, and it equals the gene token count. | On. | Reruns re-tokenize with it. |
-| 10–12 | Under review. | | |
+| 10 | Opt-in `seurat_loess_span` (tokenizer and `normalize_by_seurat`): the LOESS fit uses the given span, on genes ordered by log mean and log variance, so scores no longer depend on the gene order (the old fit did, at about 1e-12). On OVCA (50,000 cells), span 0.3 instead of the effective 0.75 changes the expected SDs by up to 2-5%; the top-64 gene sets are the same in 86% of cells, but their order changes in 87%. | Span 0.3 (Seurat v3 / scanpy). | Reruns re-tokenize with it. |
+| 11–12 | Under review. | | |
 | 13 | Predictor segment table: one special segment per special token. | | |
 
 Metatoken review (31 Oct), all fixed in the patch:
@@ -84,8 +85,7 @@ Metatoken review (31 Oct), all fixed in the patch:
   context encoder and predictor get no attention mask.
 
 Tokenizer review (31 Oct), not fixed (not used by the ablations or negligible):
-- LOESS span (finding 10) confirmed: `loess(..., options={'span': 0.3})` gives span 0.75.
-- Seurat v3 scores depend on gene column order at about 1e-14 (LOESS numerics); Pearson residuals do not.
+- (Fixed as finding 10: the LOESS span and the gene-order dependence of Seurat v3 scores.)
 - The cell-graph tokenizer computes Seurat v3 on raw `X`, ignoring the cell normalization; with `cell_area`, the
   cell-neighborhood tokenizer normalizes `X` instead of `X_neighborhood`.
 - Read-depth and gcrd normalizers produce COO layers (anndata 0.11 warns, 0.12 would raise).
