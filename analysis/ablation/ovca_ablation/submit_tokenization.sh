@@ -30,7 +30,7 @@ case "${MEMORY_CLASS}" in
         ;;
 esac
 
-ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/stjepa-reproducibility/artifacts/ovca_ablation}"
+ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation}"
 INDICES=$(python tokenize_ovca.py --list_indices "${MEMORY_CLASS}")
 echo "Tokenizations (${MEMORY_CLASS}): ${INDICES}"
 

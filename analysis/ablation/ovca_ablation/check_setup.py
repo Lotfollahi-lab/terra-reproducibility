@@ -1,7 +1,7 @@
 """
 This script checks the OVCA ablation setup on the farm before launching the job array:
 1. Config parity: every variant's generated config is compared with the params of its mouse runs (model_config.yaml
-   or params.yaml under the stjepa-reproducibility artifacts). Expected differences (OVCA data paths, special value
+   or params.yaml under --mouse_artifact_folder_path). Expected differences (OVCA data paths, special value
    rows, run folder and resumption, seed, step-matched epochs) are ignored; any other difference means the plan does not reproduce the
    mouse experiment and should be resolved first. Inferred overrides (cell-neighborhood layout, dimension ablations)
    are verified here.
@@ -34,7 +34,6 @@ from ablation_utils import (ARTIFACT_FOLDER_PATH,
                             get_tokenized_dataset_path,
                             load_plan)
 
-MOUSE_ARTIFACT_FOLDER_PATH = "/nfs/team361/sb75/stjepa-reproducibility/artifacts"
 # Keys that differ between the mouse and OVCA runs by design
 IGNORED_KEYS = {"data.dataset_name",
                 "data.raw_data_folder_path",
@@ -67,22 +66,22 @@ def flatten(config: dict, prefix: str = "") -> dict:
     return flat_config
 
 
-def find_mouse_params(timestamp: str) -> Path | None:
-    for pattern in [f"{MOUSE_ARTIFACT_FOLDER_PATH}/models/{timestamp}/model_config.yaml",
-                    f"{MOUSE_ARTIFACT_FOLDER_PATH}/*/{timestamp}/params.yaml"]:
+def find_mouse_params(mouse_artifact_folder_path: str, timestamp: str) -> Path | None:
+    for pattern in [f"{mouse_artifact_folder_path}/models/{timestamp}/model_config.yaml",
+                    f"{mouse_artifact_folder_path}/*/{timestamp}/params.yaml"]:
         file_paths = sorted(glob.glob(pattern))
         if file_paths:
             return Path(file_paths[0])
     return None
 
 
-def check_config_parity(variants: dict, config_file_paths: dict):
+def check_config_parity(variants: dict, config_file_paths: dict, mouse_artifact_folder_path: str):
     print("== 1. Config parity with the mouse runs (differences other than OVCA data, run folder and seed)")
     for variant, spec in variants.items():
         with open(config_file_paths[variant]) as file:
             ovca_config = flatten(yaml.safe_load(file))
         for timestamp in spec["mouse_runs"]:
-            mouse_params_file_path = find_mouse_params(timestamp)
+            mouse_params_file_path = find_mouse_params(mouse_artifact_folder_path, timestamp)
             if mouse_params_file_path is None:
                 print(f"{variant} | mouse run {timestamp}: params not found")
                 continue
@@ -142,7 +141,7 @@ def main(args):
     manifest_df = pd.read_csv(Path(args.artifact_folder_path) / "manifest.tsv", sep="\t")
     config_file_paths = (manifest_df[manifest_df["replicate"] == 1]
                          .set_index("variant")["config_file_path"].to_dict())
-    check_config_parity(variants, config_file_paths)
+    check_config_parity(variants, config_file_paths, args.mouse_artifact_folder_path)
     ok = check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_path)
     if not args.skip_datasets:
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_path)
@@ -169,6 +168,10 @@ if __name__ == '__main__':
                         type=str,
                         default=TOKEN_DICTIONARY_FILE_PATH,
                         help='Human token dictionary.')
+    parser.add_argument('--mouse_artifact_folder_path',
+                        type=str,
+                        default="/nfs/team361/sb75/stjepa-reproducibility/artifacts",
+                        help='Artifact folder of the mouse ablation runs (models/<timestamp>/model_config.yaml).')
     parser.add_argument('--skip_datasets',
                         action='store_true',
                         help='Skip the tokenized dataset checks (before tokenization).')

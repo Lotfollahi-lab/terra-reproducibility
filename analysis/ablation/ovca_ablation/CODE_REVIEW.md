@@ -67,7 +67,7 @@ Low-severity items (finding 13):
 ## Farm checks
 
 ```bash
-A=/nfs/team361/sb75/stjepa-reproducibility/artifacts
+A=/nfs/team361/sb75/stjepa-reproducibility/artifacts   # adjust if the folder was renamed
 # Coordinate and rank runs: encoding, dataset, epoch of the evaluated checkpoint
 for ts in 21032026_085513_196 11042026_190115_580 11042026_202814_332 10042026_193042_980 14042026_001543_594 14042026_003429_740; do
   echo "== $ts"; grep -E 'cell_pos_enc|tokenized_data_folder_path|special_tokens|epochs:' $A/models/$ts/model_config.yaml

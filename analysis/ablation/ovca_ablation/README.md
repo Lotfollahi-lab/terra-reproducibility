@@ -34,7 +34,7 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 
 | Item | Mouse | OVCA | Reason |
 |---|---|---|---|
-| Code | farm checkout of the time | copy of stjepa `b433d5e` + `stjepa_ovca_ablation.patch` (`setup_code.sh`) | Same code as the April runs; v2 later only added debug prints. A separate copy, so branch switches of `/nfs/team361/sb75/stjepa` cannot change running jobs. The patch adds an opt-in seed and writes the latest checkpoint atomically. |
+| Code | farm checkout of the time | copy of stjepa `b433d5e` + `stjepa_ovca_ablation.patch` (`setup_code.sh`) | Same code as the April runs; v2 later only added debug prints. A separate copy, so changes to the farm checkout (now `/nfs/team361/sb75/terra`) cannot change running jobs. The patch adds an opt-in seed and writes the latest checkpoint atomically. |
 | Schedule | 300 epochs, 3 warmup (216,600 steps) | 82 epochs, 1 warmup (216,972 steps) | Matched in optimizer steps: OVCA has 3.66× the iterations per epoch. All epoch-based schedules (LR, WD, EMA) scale with it. |
 | Replicate seeds | all seed 0 (`_GLOBAL_SEED`), so replicates differed only by GPU non-determinism | seed = 1000 × (replicate − 1) | Real seed variance (rebuttal E10). Replicate 1 equals the mouse seed; the spacing keeps the samplers' per-epoch seeds (seed + epoch) disjoint. |
 | `n_special_values` | 200 | 1448 | The human batch special value (about 213) exceeds 200 rows and would crash training. |
@@ -56,13 +56,14 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 
 ```bash
 cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/ovca_ablation
-bash setup_code.sh                                   # pinned code at /nfs/team361/sb75/stjepa_ovca_ablation
+bash setup_code.sh                                   # pinned code at /nfs/team361/sb75/stjepa_ovca_ablation + env check
 mkdir -p ../../../logs/ablation/ovca_ablation && bsub < prepare_ovca_data.lsf   # silver + norm factors (terra env)
 source /nfs/team361/sb75/.venvs/stjepa_v2/bin/activate && export PYTHONPATH=/nfs/team361/sb75/stjepa_ovca_ablation/src
 python generate_ablation_runs.py                     # 92 configs + manifest.tsv (82 epochs, 1 warmup)
 bash submit_tokenization.sh standard                 # 10 datasets, normal queue, ~35 min each
 bash submit_tokenization.sh large                    # 17 datasets, hugemem queue, ~0.6 TB peak each
 python check_setup.py                                # config parity with mouse runs (review), special values, datasets (fails on errors)
+# (if the mouse run folder moved: python check_setup.py --mouse_artifact_folder_path <.../artifacts>)
 bash submit_ablation_array.sh 1                      # pilot: base_rep1 (train + evaluate); wait until it finishes
 bash submit_ablation_array.sh                        # all 92 runs (finished runs are skipped); never two arrays at once
 python compare_ablations.py                          # results/ and figures/ under the artifact folder
@@ -75,7 +76,7 @@ python compare_ablations.py                          # results/ and figures/ und
   - It stops with an error, instead of retraining, if the latest checkpoint cannot be read.
   - Retry a failed element with `brequeue -e "<JOBID>[<INDEX>]"`; it resumes from its latest checkpoint.
   - Change concurrency with `bmod -J "%<N>" <JOBID>`.
-- **Outputs:** everything goes to `/nfs/team361/sb75/stjepa-reproducibility/artifacts/ovca_ablation/`: `configs/`, `manifest.tsv`, `runs/<run>/`, `eval/<variant>/<run>/`, `logs/`, `results/`, `figures/`.
+- **Outputs:** everything goes to `/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation/`: `configs/`, `manifest.tsv`, `runs/<run>/`, `eval/<variant>/<run>/`, `logs/`, `results/`, `figures/`.
 
 ## Runtime and storage
 

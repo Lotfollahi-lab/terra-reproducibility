@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-export ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/stjepa-reproducibility/artifacts/ovca_ablation}"
+export ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation}"
 N_RUNS=$(( $(wc -l < "${ARTIFACT_FOLDER_PATH}/manifest.tsv") - 1 ))
 INDICES="${1:-1-${N_RUNS}}"
 MAX_CONCURRENT="${2:-2}"

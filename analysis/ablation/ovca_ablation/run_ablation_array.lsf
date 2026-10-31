@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/stjepa-reproducibility/artifacts/ovca_ablation}"
+ARTIFACT_FOLDER_PATH="${ARTIFACT_FOLDER_PATH:-/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation}"
 CODE_PATH="${CODE_PATH:-/nfs/team361/sb75/stjepa_ovca_ablation}"  # pinned stjepa v2 (b433d5e) + seed patch
 ENV_PATH="${ENV_PATH:-/nfs/team361/sb75/.venvs/stjepa_v2}"
 ADVANCED_BASH_SCRIPT_PATH="/software/isg/advanced-bsub-script"
@@ -47,7 +47,7 @@ module load ISG/experimental/fg12/openmpi/5.0.4-cuda12.1-lsf
 source "${ADVANCED_BASH_SCRIPT_PATH}/check_and_load_cuda.sh"
 check_and_load_cuda
 source "${ENV_PATH}/bin/activate"
-# The venv has an editable install of /nfs/team361/sb75/stjepa, whose checkout may change; use the pinned code
+# The venv's editable install points at the farm checkout, which may change; use the pinned code
 export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
 python3 -c "import app.utils, stjepa; assert all(m.__file__.startswith('${CODE_PATH}/') for m in (app.utils, stjepa)), (app.utils.__file__, stjepa.__file__)"
 . "${ADVANCED_BASH_SCRIPT_PATH}/find_master_port.sh"

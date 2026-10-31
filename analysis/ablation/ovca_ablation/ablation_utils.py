@@ -12,7 +12,7 @@ import yaml
 
 DATA_DIRECTORY_PATH = "/lustre/scratch126/cellgen/lotfollahi/DATASETS"
 DATASET_NAME = "xho50-1b_1p_spatialfusion"
-ARTIFACT_FOLDER_PATH = "/nfs/team361/sb75/stjepa-reproducibility/artifacts/ovca_ablation"
+ARTIFACT_FOLDER_PATH = "/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation"
 BRONZE_FILE_PATH = "/nfs/team361/sb75/DATASETS/bronze/spatialfusion/benchmark_processed_data/processed_OVCA.h5ad"
 SILVER_FILE_PATH = f"{DATA_DIRECTORY_PATH}/silver/{DATASET_NAME}/{DATASET_NAME}_batch0.h5ad"
 TOKEN_DICTIONARY_FILE_PATH = f"{DATA_DIRECTORY_PATH}/tokenizer/token_dictionary_homo_sapiens.pkl"
