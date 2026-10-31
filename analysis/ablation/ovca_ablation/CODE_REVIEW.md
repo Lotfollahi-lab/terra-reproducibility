@@ -39,12 +39,12 @@ Several issues change what individual arms compare, and how large the replicate 
 | 13 | Low | various | Low-severity items, listed below the table. | Not used in these ablations. |
 
 Low-severity items (finding 13):
-- `clip_grad` is not applied during warmup epochs (`train.py:675-687`).
-- The predictor's segment table adds +1 row instead of +n_special tokens, which crashes with 2 or more special tokens.
+- `clip_grad` is not applied during warmup epochs (`train.py:675-687`). Kept, as in the published models; Methods should say that clipping starts after warmup.
+- The predictor's segment table adds +1 row instead of +n_special tokens, which crashes with 2 or more special tokens. Fixed (patch 4).
 - `use_sampler: False` means no shuffling.
 - `cell_masking` is unusable.
 - `decode.py` saves the last epoch instead of the best (`best_state` is not copied).
-- A debug print in `block_masking.py:206` fires on every batch.
+- A debug print in `block_masking.py:206` fires on every batch. Fixed (patch 19).
 
 ## Resolution (31 Oct 2026)
 
@@ -65,7 +65,7 @@ or limited to code paths that were broken, so mouse configs and the default infe
 | 10 | Opt-in `seurat_loess_span` (tokenizer and `normalize_by_seurat`): the LOESS fit uses the given span, on genes ordered by log mean and log variance, so scores no longer depend on the gene order (the old fit did, at about 1e-12). On OVCA (50,000 cells), span 0.3 instead of the effective 0.75 changes the expected SDs by up to 2-5%; the top-64 gene sets are the same in 86% of cells, but their order changes in 87%. | Span 0.3 (Seurat v3 / scanpy). | Reruns re-tokenize with it. |
 | 11 | Kept `ipe_scale: 1.25`, the V-JEPA value (I-JEPA's configs use 1.0), as in the mouse runs and TERRA-112M/96M; it is not a code error, but Methods must state the actual end values. `check_setup.py` reports them: LR 2.39e-5 (configured 2e-5), weight decay 0.366 (0.4), EMA 0.999 (1.0). | Same recipe. | Same. |
 | 12 | Every rank uses rank 0's run folder (`main.py` passes it to rank 0 only); `load_checkpoint` starts training from scratch only if there is no checkpoint and raises if one exists but cannot be loaded (always at inference); all ranks must resume from the same epoch. Reproduced on the old code: with `read_checkpoint: null`, rank 1 looked for the checkpoint in a folder of its own, started from scratch while rank 0 resumed, and the job hung. Rank 1's load error is invisible because ranks > 0 only log errors. | Fresh runs bit-identical to before; resuming verified on 2 processes (same checkpoint, same epoch, identical weights on both ranks). | Unlikely to be affected: the mouse base config has `load_checkpoint: false`, so killed runs restarted from scratch instead of resuming (farm check below). The reruns resume, so they need the fix. |
-| 13 | Predictor segment table: one special segment per special token. | | |
+| 13 | Predictor segment table fixed; per-batch debug print removed; the other low-severity items are unused code paths or kept by design (listed below the table). | | |
 
 Metatoken review (31 Oct), all fixed in the patch:
 - **Predictor, padded special tokens:** in batches without the metatoken (`special_token_pad_ratio` > 0), the

@@ -60,6 +60,8 @@ Tokenizers (opt-in constructor arguments, default off = output unchanged)
 18. CellNeighborhoodTokenizer(aggregate_own_neighbors=True): the neighborhood is each cell's own kNN
     (connectivities @ X) instead of the cells that have it among their kNN (connectivities.T @ X).
 
+Other
+19. The masking collator no longer prints the sampled number of neighbor segments for every batch (log noise only).
 diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
 index 9f1ad7b..dec36a2 100644
 --- a/src/app/inference/embed.py
@@ -805,7 +807,7 @@ index 03e90b6..020d3a7 100644
          
      dataloader = DataLoader(cell_dataset,
 diff --git a/src/stjepa/masks/block_masking.py b/src/stjepa/masks/block_masking.py
-index c6399a0..cf5076d 100644
+index c6399a0..552f939 100644
 --- a/src/stjepa/masks/block_masking.py
 +++ b/src/stjepa/masks/block_masking.py
 @@ -41,6 +41,16 @@ class BlockMaskCollator:
@@ -890,7 +892,15 @@ index c6399a0..cf5076d 100644
          masks_attention: BoolTensor [B, 1, 1, L]
              Attention masks collated by batch.
          """
-@@ -271,6 +308,14 @@ class BlockMaskCollator:
+@@ -203,7 +240,6 @@ class BlockMaskCollator:
+             else:
+                 k = torch.randint(
+                     low=2, high=self.n_segments + 1, size=(1,)).item()
+-            print(f"k: {k}")
+             cutoff = self.n_special_tokens + (self.seq_len_cell * k)
+ 
+             # Pad all segments not kept in cell graph
+@@ -271,6 +307,14 @@ class BlockMaskCollator:
                      :,
                      i,
                      (i+1):] = 0
@@ -905,7 +915,7 @@ index c6399a0..cf5076d 100644
  
          if self.sample_gene_masks:
              # Retrieve target and context masks per cell
-@@ -291,6 +336,23 @@ class BlockMaskCollator:
+@@ -291,6 +335,23 @@ class BlockMaskCollator:
                  tgt_list.append(tgt)
                  ctx_list.append(ctx)
  
