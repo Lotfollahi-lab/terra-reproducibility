@@ -2,11 +2,13 @@
 This script downloads the CAMEO multimodal benchmark datasets (Theis lab; aligned H&E image patches and gene expression
 profiles) from the Hugging Face Hub to the bronze tier. The repositories are gated (access by manual approval):
 
+- `theislab/CAMEO-Lung`: 10x Xenium lung, 52 Arrow shards (~26 GB); downloaded by default
 - `theislab/CAMEO-Breast`: 10x Xenium breast, 82 Arrow shards (~41 GB)
-- `theislab/CAMEO-Lung`: 10x Xenium lung, 52 Arrow shards (~26 GB)
 - `theislab/CAMEO-Thymus`: 10x Visium thymus, 9 Arrow shards (~4.4 GB)
 
-(`theislab-multimodal-ssl/CAMEO-Thymus-scvi-fixed` can be added with `--repo_ids`.) Each repository is a
+Only CAMEO-Lung is downloaded by default (access to the others is pending); add the others once access is approved:
+`--repo_ids theislab/CAMEO-Breast theislab/CAMEO-Thymus` (or all three). `theislab-multimodal-ssl/CAMEO-Thymus-scvi-fixed`
+can be added the same way. Each repository is a
 `datasets.Dataset.save_to_disk` folder and is downloaded to `<output_directory_path>/<repository name>`; load it with
 `datasets.load_from_disk`. Interrupted downloads are resumed. Each repository is pinned to the commit its revision
 resolves to, every file is verified against the size and SHA-256 (git SHA-1 for small non-LFS files) that the Hub
@@ -37,7 +39,9 @@ import json
 import sys
 from pathlib import Path
 
-DEFAULT_REPO_IDS = ["theislab/CAMEO-Breast", "theislab/CAMEO-Lung", "theislab/CAMEO-Thymus"]
+# Gated CAMEO repositories; only those with approved access are downloaded by default
+CAMEO_REPO_IDS = ["theislab/CAMEO-Lung", "theislab/CAMEO-Breast", "theislab/CAMEO-Thymus"]
+DEFAULT_REPO_IDS = ["theislab/CAMEO-Lung"]
 CHUNK_SIZE = 16 * 1024 * 1024
 
 
@@ -194,7 +198,7 @@ if __name__ == '__main__':
     parser.add_argument('--repo_ids',
                         nargs='+',
                         default=DEFAULT_REPO_IDS,
-                        help='Hugging Face dataset repositories to download.')
+                        help=f'Hugging Face dataset repositories to download (default: CAMEO-Lung; known: {CAMEO_REPO_IDS}).')
     parser.add_argument('--revision',
                         type=str,
                         default='main',

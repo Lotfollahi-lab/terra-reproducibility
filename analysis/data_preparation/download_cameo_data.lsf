@@ -11,6 +11,8 @@
 
 # The repositories are gated: store your Hugging Face token once on the head node first
 # (python download_cameo_data.py --login); the job reads it from the Hugging Face token file (or HF_TOKEN).
+# Downloads CAMEO-Lung (the default); once access is approved, add the others with
+#     --repo_ids theislab/CAMEO-Lung theislab/CAMEO-Breast theislab/CAMEO-Thymus
 
 # Load your environment
 source /nfs/team361/sb75/.venvs/terra/bin/activate
