@@ -22,8 +22,11 @@ Run in the ST-JEPA v2 environment with the pinned code on PYTHONPATH (as check_s
 
 Usage:
 ```bash
-source /nfs/team361/sb75/.venvs/stjepa_v2/bin/activate && export PYTHONPATH=/nfs/team361/sb75/stjepa_ovca_ablation/src
-python check_mouse_norm_factors.py [--n_cells 300] [--dataset_name <silver dataset folder>]
+source datasets/ovca.env   # any dataset's parameter file: only the plan, mouse artifact and data paths are used
+source "${ENV_PATH}/bin/activate" && export PYTHONPATH="${CODE_PATH}/src"
+python check_mouse_norm_factors.py --plan_file_path "${PLAN_FILE_PATH}" \
+    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --data_directory_path "${DATA_DIRECTORY_PATH}" \
+    [--n_cells 300] [--dataset_name <silver dataset folder>]
 ```
 """
 
@@ -40,7 +43,7 @@ import pandas as pd
 import scipy.sparse as sp
 import yaml
 
-from ablation_utils import DATA_DIRECTORY_PATH, NORM_METHOD_KEYS, PLAN_FILE_PATH, load_plan
+from ablation_utils import NORM_METHOD_KEYS, load_plan
 from norm_factors import GCRD_CONSTANTS, TOKENIZER_GCRD_CONSTANTS, file_statistics, iter_adatas, target_read_depth
 
 # The gcrd mean arms of the mouse normalization ablation (variant names of ablation_plan.yaml)
@@ -492,15 +495,15 @@ if __name__ == '__main__':
                         help='Variants of the ablation plan to check (default: the six gcrd mean arms).')
     parser.add_argument('--plan_file_path',
                         type=str,
-                        default=PLAN_FILE_PATH,
+                        required=True,
                         help='Ablation plan (variant names and mouse run timestamps).')
     parser.add_argument('--mouse_artifact_folder_path',
                         type=str,
-                        default="/nfs/team361/sb75/stjepa-reproducibility/artifacts",
+                        required=True,
                         help='Artifact folder of the mouse ablation runs (models/<timestamp>/).')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default=DATA_DIRECTORY_PATH,
+                        required=True,
                         help='Data directory with silver/<dataset_name>/*.h5ad (and gold, if the config path moved).')
     parser.add_argument('--dataset_name',
                         type=str,

@@ -1,6 +1,7 @@
 """
 This script prepares the SpatialFusion ovarian cancer section (Zenodo 20934900, `processed_OVCA.h5ad`; raw counts and
-pathologist niche labels) for the OVCA ablations:
+pathologist niche labels) for the OVCA ablations (the OVCA-specific data preparation of the ablation pipeline; the
+paths are the values of `datasets/ovca.env`):
 
 1. Harmonizes the bronze AnnData into a silver AnnData with TERRA's `harmonize_batch`, using the metadata of the same 10x
    section in the TERRA corpus (`xho50-1b_1p`: dataset id 50, batch0) so that the human token dictionary already holds
@@ -13,11 +14,14 @@ pathologist niche labels) for the OVCA ablations:
 3. Checks the human token dictionary: gene coverage, special value tokens, the batch special value and the token offset
    that `gt_type: rank` assumes.
 
-Run in the TERRA environment (imports `analysis/data_preparation/harmonize_bronze_to_silver.py`).
+Run in the TERRA environment (imports `analysis/data_preparation/harmonize_bronze_to_silver.py`); on the farm with
+`prepare_ovca_data.lsf` (README.md).
 
 Usage:
 ```bash
-python prepare_ovca_data.py
+python prepare_ovca_data.py --bronze_file_path [BRONZE] --silver_file_path [SILVER] \
+    --norm_factor_file_path [NORM_FACTORS] --gene_mapping_dict_file_path [GENE_MAP] \
+    --token_dictionary_file_path [TOKEN_DICTIONARY]
 ```
 """
 
@@ -32,11 +36,6 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 
-from ablation_utils import (BRONZE_FILE_PATH,
-                            GENE_MAPPING_DICT_FILE_PATH,
-                            NORM_FACTOR_FILE_PATH,
-                            SILVER_FILE_PATH,
-                            TOKEN_DICTIONARY_FILE_PATH)
 from norm_factors import compute_norm_factors
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "data_preparation"))
@@ -81,6 +80,9 @@ def check_token_dictionary(adata: ad.AnnData,
 
 
 def main(args):
+    # `<norm factors>.done` marks completed data (silver files, then factors); removed first, written last
+    done_file_path = Path(f"{args.norm_factor_file_path}.done")
+    done_file_path.unlink(missing_ok=True)
     # Keep the counts, labels and micron coordinates only
     adata_bronze = sc.read_h5ad(args.bronze_file_path)
     print(f"Read {args.bronze_file_path}: {adata_bronze.shape}.")
@@ -109,6 +111,7 @@ def main(args):
     norm_factor_df = compute_norm_factors([adata])
     norm_factor_df.to_csv(args.norm_factor_file_path, index=False)
     print(f"Saved normalization factors of {len(norm_factor_df)} genes to {args.norm_factor_file_path}.")
+    done_file_path.write_text(f"silver: {args.silver_file_path}\nnorm_factors: {args.norm_factor_file_path}\n")
 
     check_token_dictionary(adata, args.token_dictionary_file_path)
 
@@ -118,23 +121,23 @@ if __name__ == '__main__':
         description='Processing command line arguments...')
     parser.add_argument('--bronze_file_path',
                         type=str,
-                        default=BRONZE_FILE_PATH,
+                        required=True,
                         help='SpatialFusion OVCA AnnData (raw counts, gene symbols, pathologist labels).')
     parser.add_argument('--silver_file_path',
                         type=str,
-                        default=SILVER_FILE_PATH,
+                        required=True,
                         help='Output silver AnnData (the only file in its folder).')
     parser.add_argument('--norm_factor_file_path',
                         type=str,
-                        default=NORM_FACTOR_FILE_PATH,
+                        required=True,
                         help='Output per-gene normalization factors.')
     parser.add_argument('--gene_mapping_dict_file_path',
                         type=str,
-                        default=GENE_MAPPING_DICT_FILE_PATH,
+                        required=True,
                         help='Gene symbol to Ensembl id dictionary of the TERRA corpus.')
     parser.add_argument('--token_dictionary_file_path',
                         type=str,
-                        default=TOKEN_DICTIONARY_FILE_PATH,
+                        required=True,
                         help='Human token dictionary.')
     args = parser.parse_args()
 

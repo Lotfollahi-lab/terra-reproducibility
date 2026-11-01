@@ -1,5 +1,5 @@
-Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the OVCA ablations and the mouse reruns.
-Apply with: git apply stjepa_ovca_ablation.patch (setup_code.sh does this). Changes that alter results are opt-in or
+Patch of ST-JEPA v2 (sebastianbirk/stjepa, b433d5e) for the ablation reruns (OVCA, mouse).
+Apply with: git apply stjepa_ablation.patch (setup_code.sh does this). Changes that alter results are opt-in or
 limited to code paths that were broken. With the default config keys and arguments, tokenized data and training are
 unchanged, except the `gt_type: rank` metatoken if the token dictionary's offset differs from the hard-coded one (9);
 so is the default inference (metatoken removed), except cell embeddings of cell-neighborhood models (11).
@@ -23,17 +23,20 @@ Training
     other ranks looked for the checkpoint in a folder of their own, silently started from scratch and hung or trained
     on averaged gradients of different models); load_checkpoint starts training from scratch only if there is no
     checkpoint, and raises if one exists but cannot be loaded (or at inference); all ranks must resume from the same
-    epoch.
+    epoch. No checkpoint is written after the first step of an epoch any more (resuming from it reran the epoch, so
+    that step was applied twice).
 
 Datasets
  8. Dataset-level special token padding: one pad token per special token (was n_special_tokens per special token),
-    and padded `gt_type: rank` special tokens stay 0.
+    created without reading the special value columns (data tokenized without special tokens has none), and padded
+    `gt_type: rank` special tokens stay 0.
  9. `gt_type: rank` special tokens use the special value token offset of the token dictionary
     (spv_start - 2 - n_cls) instead of the offset hard-coded by vocabulary size; a warning is printed if they differ.
 
 Inference
 10. keep_special_tokens (embed_dataset, harmonize_tokenize_embed_pipeline, gene_embed_dataset, infer): keep the batch
-    metatoken as in training. Default False: removed, as before.
+    metatoken as in training. Default False: removed, as before. Keeping it needs data tokenized with special tokens:
+    harmonize_tokenize_embed_pipeline then tokenizes with them, and embed_dataset raises if their values are missing.
 11. Inference reads restrict_special_attention from `mask` like training (fallback `meta`), passes data.nz_spc to the
     dataset, gene_embed_dataset uses data.n_special_values like training, and the cell-only context uses
     data.seq_len_cell (was (seq_len - n_special_tokens) // n_segments, which gave wrong cell embeddings for
@@ -62,8 +65,10 @@ Tokenizers (opt-in constructor arguments, default off = output unchanged)
 
 Other
 19. The masking collator no longer prints the sampled number of neighbor segments for every batch (log noise only).
+20. infer.py and train.py compare the tokenizer type with 'cell_neigh' (was 'cell_neighborhood', which never matched;
+    only infer() for cell-neighborhood models and add_cls were affected).
 diff --git a/src/app/inference/embed.py b/src/app/inference/embed.py
-index 9f1ad7b..dec36a2 100644
+index 9f1ad7b..37bbce3 100644
 --- a/src/app/inference/embed.py
 +++ b/src/app/inference/embed.py
 @@ -22,7 +22,9 @@ from pyensembl import EnsemblRelease
@@ -77,7 +82,7 @@ index 9f1ad7b..dec36a2 100644
  from stjepa.datasets.dataloaders import init_dataloader_and_sampler
  from stjepa.masks.block_masking  import BlockMaskCollator
  from stjepa.masks.cell_masking import CellMaskCollator
-@@ -42,6 +44,30 @@ from .tokenize import tokenize_adata
+@@ -42,6 +44,45 @@ from .tokenize import tokenize_adata
  from typing import Dict, List
  
  
@@ -90,6 +95,21 @@ index 9f1ad7b..dec36a2 100644
 +        return model_config['mask']['restrict_special_attention']
 +    return model_config.get('meta', {}).get(
 +        'restrict_special_attention', False)
++
++
++def check_special_value_columns(dataset: Dataset, model_config: dict):
++    """
++    Keeping the special tokens needs their values, i.e. data tokenized with
++    special tokens (`include_special_tokens=True`).
++    """
++    missing_columns = [
++        f'{spc_tk}_value' for spc_tk in model_config['meta']['special_tokens']
++        if f'{spc_tk}_value' not in dataset.column_names]
++    if missing_columns:
++        raise ValueError(
++            f'`keep_special_tokens=True` needs the special value columns '
++            f'{missing_columns}: tokenize the data with special tokens '
++            f'(`include_special_tokens=True`).')
 +
 +
 +def set_cell_only_context_length(encoder: torch.nn.Module,
@@ -108,7 +128,7 @@ index 9f1ad7b..dec36a2 100644
  _GLOBAL_SEED = 0
  np.random.seed(_GLOBAL_SEED)
  torch.manual_seed(_GLOBAL_SEED)
-@@ -66,6 +92,7 @@ def embed_dataset(dataset: Dataset,
+@@ -66,6 +107,7 @@ def embed_dataset(dataset: Dataset,
                    ignore_spc_tokens: bool = True,
                    agg_type: Literal['avg',
                                      'softmax'] = 'avg',
@@ -116,7 +136,7 @@ index 9f1ad7b..dec36a2 100644
                    ) -> dict:
      """
      Parameters
-@@ -93,6 +120,12 @@ def embed_dataset(dataset: Dataset,
+@@ -93,6 +135,12 @@ def embed_dataset(dataset: Dataset,
      return_token_embeddings:
          If `True`, also return per-token embeddings for each sequence position
          (cell and neighborhood tokens; special tokens are excluded).
@@ -129,7 +149,7 @@ index 9f1ad7b..dec36a2 100644
  
      Returns:
      -----------
-@@ -173,12 +206,13 @@ def embed_dataset(dataset: Dataset,
+@@ -173,12 +221,15 @@ def embed_dataset(dataset: Dataset,
          nz_spc=model_config['data'].get('nz_spc', False),
          mlp_bias=model_config['meta'].get('mlp_bias', True))
  
@@ -138,13 +158,15 @@ index 9f1ad7b..dec36a2 100644
          return_layer_emb_fn = target_encoder.return_layer_emb
      else:
          return_layer_emb_fn = target_encoder.backbone.return_layer_emb
++    if keep_special_tokens:
++        check_special_value_columns(dataset, model_config)
  
 -    # Create mask collator
 +    # Create mask collator (special tokens are padded unless kept)
      mask_collator = BlockMaskCollator(
          n_targets=model_config['mask']['n_targets'],
          n_contexts=model_config['mask']['n_contexts'],
-@@ -189,8 +223,8 @@ def embed_dataset(dataset: Dataset,
+@@ -189,8 +240,8 @@ def embed_dataset(dataset: Dataset,
          per_block_mask_ratio=model_config['mask']['per_block_mask_ratio'],
          sample_segments=False,
          sample_gene_masks=False,
@@ -155,7 +177,7 @@ index 9f1ad7b..dec36a2 100644
          
      # Create torch dataset
      cell_dataset = init_cell_dataset(
-@@ -206,7 +240,9 @@ def embed_dataset(dataset: Dataset,
+@@ -206,7 +257,9 @@ def embed_dataset(dataset: Dataset,
          n_nonzero_tokens_list=[],
          include_cell_id=True,
          sep_gene_tokens_neb=model_config['data']['sep_gene_tokens_neb'],
@@ -166,7 +188,7 @@ index 9f1ad7b..dec36a2 100644
  
      # Initialize dataloader
      loader, _ = init_dataloader_and_sampler(
-@@ -263,7 +299,7 @@ def embed_dataset(dataset: Dataset,
+@@ -263,7 +316,7 @@ def embed_dataset(dataset: Dataset,
                  batch=udata,
                  masks_attention=masks_attention,
                  need_cell_only_context=True,
@@ -175,7 +197,7 @@ index 9f1ad7b..dec36a2 100644
              )
  
              c_emb = cell_only_ctx[emb_layer].cpu()
-@@ -384,6 +420,7 @@ def harmonize_tokenize_embed_pipeline(
+@@ -384,6 +437,7 @@ def harmonize_tokenize_embed_pipeline(
          add_neigh_cell_ids: bool = False,
          ignore_spc_tokens: bool = True,
          agg_type: Literal['avg', 'softmax'] = 'avg',
@@ -183,7 +205,28 @@ index 9f1ad7b..dec36a2 100644
          ) -> ad.AnnData:
      """
      Harmonize, tokenize and embed an AnnData object.
-@@ -558,7 +595,8 @@ def harmonize_tokenize_embed_pipeline(
+@@ -489,7 +543,8 @@ def harmonize_tokenize_embed_pipeline(
+                 cache_directory_path=cache_directory_path,             
+                 nproc=nproc,
+                 processing_mode=processing_mode,
+-                include_special_tokens=False)
++                # Special token values are needed to keep the metatoken
++                include_special_tokens=keep_special_tokens)
+             datasets.append(dataset_sample)
+             print(f"Tokenized sample {sample}.")
+             print('==================================================')
+@@ -530,7 +585,9 @@ def harmonize_tokenize_embed_pipeline(
+             nproc=nproc,
+             processing_mode=processing_mode,
+             add_neigh_cell_ids=add_neigh_cell_ids,
+-            use_generator=use_generator)       
++            use_generator=use_generator,
++            # Special token values are needed to keep the metatoken
++            include_special_tokens=keep_special_tokens)
+ 
+     if harmonized_adata_save_path:
+         print('==================================================')
+@@ -558,7 +615,8 @@ def harmonize_tokenize_embed_pipeline(
          pin_memory=pin_memory,
          num_workers=num_workers,
          ignore_spc_tokens=ignore_spc_tokens,
@@ -193,7 +236,7 @@ index 9f1ad7b..dec36a2 100644
      print(f"Embedded tokenized data.")
  
      # Add embeddings to adata
-@@ -585,6 +623,7 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -585,6 +643,7 @@ def gene_embed_dataset(dataset: Dataset,
                    return_receptor_average: bool=False,
                    include_spatial_cell_emb: bool = True,
                    description: str='',
@@ -201,7 +244,7 @@ index 9f1ad7b..dec36a2 100644
                    ) -> dict:
      
      """
-@@ -625,6 +664,12 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -625,6 +684,12 @@ def gene_embed_dataset(dataset: Dataset,
          attends to the neighborhood.
      description:
          description for task that is currently using this function.
@@ -214,7 +257,7 @@ index 9f1ad7b..dec36a2 100644
      Returns:
      -----------
      output_embed:
-@@ -658,7 +703,10 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -658,7 +723,10 @@ def gene_embed_dataset(dataset: Dataset,
      with open(token_dictionary_file_path, 'rb') as file:
          token_dict = pickle.load(file)
      vocab_size = len(token_dict)
@@ -226,7 +269,7 @@ index 9f1ad7b..dec36a2 100644
  
      print('==================================================')
      print(f'STEP 2: {description}')
-@@ -697,12 +745,13 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -697,12 +765,15 @@ def gene_embed_dataset(dataset: Dataset,
          mlp_bias=model_config['meta'].get('mlp_bias', True)
          )
  
@@ -235,13 +278,15 @@ index 9f1ad7b..dec36a2 100644
          return_layer_emb_fn = target_encoder.return_layer_emb
      else:
          return_layer_emb_fn = target_encoder.backbone.return_layer_emb
++    if keep_special_tokens:
++        check_special_value_columns(dataset, model_config)
  
 -    # Create mask collator
 +    # Create mask collator (special tokens are padded unless kept)
      mask_collator = BlockMaskCollator(
          n_targets=model_config['mask']['n_targets'],
          n_contexts=model_config['mask']['n_contexts'],
-@@ -713,7 +762,8 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -713,7 +784,8 @@ def gene_embed_dataset(dataset: Dataset,
          per_block_mask_ratio=model_config['mask']['per_block_mask_ratio'],
          sample_segments=False,
          sample_gene_masks=False,
@@ -251,7 +296,7 @@ index 9f1ad7b..dec36a2 100644
          
      # Create torch dataset
      cell_dataset = init_cell_dataset(
-@@ -729,7 +779,9 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -729,7 +801,9 @@ def gene_embed_dataset(dataset: Dataset,
          n_nonzero_tokens_list=[],
          include_cell_id=True,
          sep_gene_tokens_neb=model_config['data']['sep_gene_tokens_neb'],
@@ -262,7 +307,7 @@ index 9f1ad7b..dec36a2 100644
  
      # Initialize dataloader
      loader, _ = init_dataloader_and_sampler(
-@@ -793,6 +845,7 @@ def gene_embed_dataset(dataset: Dataset,
+@@ -793,6 +867,7 @@ def gene_embed_dataset(dataset: Dataset,
                  batch=udata,
                  masks_attention=masks_attention,
                  need_cell_only_context=True,
@@ -271,7 +316,7 @@ index 9f1ad7b..dec36a2 100644
  
              # Keep embeddings on device for vectorized ops; move to CPU only when storing
 diff --git a/src/app/inference/infer.py b/src/app/inference/infer.py
-index 98eb00e..cddac5a 100644
+index 98eb00e..86538a9 100644
 --- a/src/app/inference/infer.py
 +++ b/src/app/inference/infer.py
 @@ -22,7 +22,9 @@ from pyensembl import EnsemblRelease
@@ -315,6 +360,15 @@ index 98eb00e..cddac5a 100644
          restrict_special_attention = args['meta']['restrict_special_attention']
      else:
          restrict_special_attention = False
+@@ -253,7 +262,7 @@ def infer(args: dict,
+     print(agg_excluded_tokens)
+ 
+     # Define tokenizer-specific params
+-    if tokenizer_type == 'cell_neighborhood':
++    if tokenizer_type == 'cell_neigh':
+         if add_cls:
+             special_tokens = ['cls_0', 'cls_1'] + special_tokens  
+     elif tokenizer_type == 'cell_graph':
 @@ -310,12 +319,16 @@ def infer(args: dict,
          nz_spc=nz_spc,
          mlp_bias=mlp_bias)
@@ -361,6 +415,15 @@ index 98eb00e..cddac5a 100644
              )
  
              cell_emb_list = []
+@@ -449,7 +463,7 @@ def infer(args: dict,
+             excluded_tokens=agg_excluded_tokens,
+             seq_len_cell=seq_len_cell,
+             top_k=top_k).cpu()
+-        if tokenizer_type == 'cell_neighborhood':
++        if tokenizer_type == 'cell_neigh':
+             neighborhood_mask = create_binary_selection_mask(
+                 ns_tokens,
+                 selection_type="agg_neighborhood",
 diff --git a/src/app/inference/tokenize.py b/src/app/inference/tokenize.py
 index eaa8308..3228c09 100644
 --- a/src/app/inference/tokenize.py
@@ -402,7 +465,7 @@ index eaa8308..3228c09 100644
      dataset = tk._create_dataset(
          dataset_dict=dataset_dict,
 diff --git a/src/app/training/train.py b/src/app/training/train.py
-index c6b2e32..090b06c 100644
+index c6b2e32..35bf109 100644
 --- a/src/app/training/train.py
 +++ b/src/app/training/train.py
 @@ -30,6 +30,7 @@ import numpy as np
@@ -449,6 +512,15 @@ index c6b2e32..090b06c 100644
      if 'sample_segments' in args['mask'].keys():
          sample_segments = args['mask']['sample_segments']
      else:
+@@ -263,7 +268,7 @@ def train(args: dict,
+         1 for key in token_dict if "spt" in key)
+ 
+     # Define tokenizer-specific params
+-    if tokenizer_type == 'cell_neighborhood':
++    if tokenizer_type == 'cell_neigh':
+         if add_cls:
+             special_tokens = ['cls_0', 'cls_1'] + special_tokens            
+     elif tokenizer_type == 'cell_graph':
 @@ -298,6 +303,12 @@ def train(args: dict,
          save_folder_path = os.path.join(artifact_folder_path,
                                          dataset_name,
@@ -639,6 +711,17 @@ index c6b2e32..090b06c 100644
  
                      # ----- variance loss -----
                      def variance_loss(z, gamma=1.0, eps=1e-4):
+@@ -754,7 +811,9 @@ def train(args: dict,
+                     "global_norm_pred": float(grad_stats_pred.global_norm),
+                 })
+             assert not np.isnan(float(loss)), 'loss is nan'
+-            if itr % checkpoint_freq_iter == 0:
++            # Not at itr 0: that checkpoint (saved after the first step) made a
++            # resumed run repeat the whole epoch, i.e. apply that step twice
++            if itr > 0 and itr % checkpoint_freq_iter == 0:
+                 logger.info(f'Saving checkpoint at epoch {epoch} iteration {itr}')
+                 save_checkpoint(epoch, itr // checkpoint_freq_iter)
+ 
 diff --git a/src/app/utils/helper.py b/src/app/utils/helper.py
 index 882d46f..a3b7168 100644
 --- a/src/app/utils/helper.py
@@ -678,7 +761,7 @@ index 882d46f..a3b7168 100644
      return encoder, predictor, target_encoder, opt, scaler, epoch, iter_number
  
 diff --git a/src/stjepa/datasets/cell_datasets.py b/src/stjepa/datasets/cell_datasets.py
-index ad8d8a7..d499c4c 100644
+index ad8d8a7..39017f2 100644
 --- a/src/stjepa/datasets/cell_datasets.py
 +++ b/src/stjepa/datasets/cell_datasets.py
 @@ -25,6 +25,7 @@ class CellBaseDataset(Dataset):
@@ -720,33 +803,35 @@ index ad8d8a7..d499c4c 100644
                      item_dict['tokens']])
  
              if self.gt_type != 'rank':
-@@ -552,8 +562,10 @@ class CellGraphDataset(CellBaseDataset):
+@@ -552,8 +562,11 @@ class CellGraphDataset(CellBaseDataset):
          if self.n_special_tokens > 0:
              if self.pad_special_tokens:
                  for spc_tk in self.special_tokens:
 -                    item[f'{spc_tk}_token'] = torch.tensor([0] * self.n_special_tokens)
 -                    item[f'{spc_tk}_value'] = torch.tensor([0] * self.n_special_tokens)
-+                    item[f'{spc_tk}_token'] = torch.zeros_like(
-+                        torch.as_tensor(item[f'{spc_tk}_token']))
-+                    item[f'{spc_tk}_value'] = torch.zeros_like(
-+                        torch.as_tensor(item[f'{spc_tk}_value']))
++                    # One <pad> per special token; the special value
++                    # columns may be absent (data tokenized without
++                    # special tokens), so they are not read
++                    item[f'{spc_tk}_token'] = torch.zeros(1, dtype=torch.long)
++                    item[f'{spc_tk}_value'] = torch.zeros(1, dtype=torch.long)
              item_dict = self._add_special_seq(item=item,
                                                item_dict=item_dict)
  
-@@ -764,8 +776,10 @@ class CellNeighborhoodDataset(CellBaseDataset):
+@@ -764,8 +777,11 @@ class CellNeighborhoodDataset(CellBaseDataset):
          if self.n_special_tokens > 0:
              if self.pad_special_tokens:
                  for spc_tk in self.special_tokens:
 -                    item[f'{spc_tk}_token'] = torch.tensor([0] * self.n_special_tokens)
 -                    item[f'{spc_tk}_value'] = torch.tensor([0] * self.n_special_tokens)
-+                    item[f'{spc_tk}_token'] = torch.zeros_like(
-+                        torch.as_tensor(item[f'{spc_tk}_token']))
-+                    item[f'{spc_tk}_value'] = torch.zeros_like(
-+                        torch.as_tensor(item[f'{spc_tk}_value']))
++                    # One <pad> per special token; the special value
++                    # columns may be absent (data tokenized without
++                    # special tokens), so they are not read
++                    item[f'{spc_tk}_token'] = torch.zeros(1, dtype=torch.long)
++                    item[f'{spc_tk}_value'] = torch.zeros(1, dtype=torch.long)
              item_dict = self._add_special_seq(item=item,
                                                item_dict=item_dict)
  
-@@ -786,6 +800,29 @@ class CellNeighborhoodDataset(CellBaseDataset):
+@@ -786,6 +802,29 @@ class CellNeighborhoodDataset(CellBaseDataset):
          return item_dict
  
  

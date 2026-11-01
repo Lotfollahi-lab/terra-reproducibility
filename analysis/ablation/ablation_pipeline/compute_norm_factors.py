@@ -24,6 +24,9 @@ from norm_factors import TOKENIZER_GCRD_CONSTANTS, compute_norm_factors
 
 
 def main(args):
+    # `<norm factors>.done` marks completed data (silver files, then factors); removed first, written last
+    done_file_path = Path(f"{args.norm_factor_file_path}.done")
+    done_file_path.unlink(missing_ok=True)
     if args.silver_directory_path is not None:
         # All h5ad files below the folder, as the tokenizer reads them
         silver_file_paths = sorted(Path(args.silver_directory_path).glob("**/*.h5ad"))
@@ -42,6 +45,7 @@ def main(args):
     os.makedirs(Path(args.norm_factor_file_path).parent, exist_ok=True)
     norm_factor_df.to_csv(args.norm_factor_file_path, index=False)
     print(f"Saved normalization factors of {len(norm_factor_df)} genes to {args.norm_factor_file_path}.")
+    done_file_path.write_text(f"norm_factors: {args.norm_factor_file_path}\n")
 
 
 if __name__ == '__main__':

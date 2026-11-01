@@ -1,14 +1,14 @@
-# OVCA ablation plan: the mouse ablations of stjepa-reproducibility/analysis/mouse_ablation (Supp. Figs. 4-6),
-# rerun on the SpatialFusion ovarian cancer section (xho50-1b_1p_spatialfusion) with the pathologist niche labels as
-# ground truth.
+# Ablation plan: the mouse ablations of stjepa-reproducibility/analysis/mouse_ablation (Supp. Figs. 4-6), rerun on
+# the dataset given by a parameter file (datasets/<dataset>.env; first: the SpatialFusion ovarian cancer section
+# xho50-1b_1p_spatialfusion with the pathologist niche labels as ground truth, datasets/ovca.env).
 #
 # Every variant is the base model config plus `overrides` (dotted config keys) and is trained on the tokenized dataset
 # named in `tokenization`. Variant names are the mouse method names (stjepa_v2_<name>), so results can be matched
 # one-to-one. `replicates` follows the mouse figures: 3 runs for Supp. Figs. 4 and 6, 1 run for normalization
 # (Supp. Fig. 5) and architecture. Categories and labels follow the mouse comparison notebooks.
 
-# Opt-in tokenizer fixes of stjepa_ovca_ablation.patch (CODE_REVIEW.md), enabled for every OVCA tokenization; the
-# mouse tokenizations had them off. Their names are appended to the dataset names.
+# Opt-in tokenizer fixes of stjepa_ablation.patch (CODE_REVIEW.md), enabled for every tokenization; the mouse
+# tokenizations had them off. Their names are appended to the dataset names.
 tokenizer_options:
   stable_rank_ties: true           # top-k ties: rank score, count value, reference nonzero mean (ascending), token id
   zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
@@ -16,7 +16,7 @@ tokenizer_options:
   seurat_loess_span: 0.3           # Seurat v3 LOESS span, gene-order independent (was: ignored, span 0.75)
   aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)
 
-# Opt-in training fixes of stjepa_ovca_ablation.patch, set in every run config (dotted keys; the mouse runs had
+# Opt-in training fixes of stjepa_ablation.patch, set in every run config (dotted keys; the mouse runs had
 # them off). Variant overrides are applied after these.
 training_options:
   mask.pad_masks_to_batch_max: true  # pad context/target masks to the longest in the batch (was: trimmed to the shortest)
@@ -105,7 +105,7 @@ variants:
   # Metatoken (Supp. Fig. 6)
   no_metatk: {category: metatoken, label: "No Metatoken", replicates: 3, overrides: {meta.special_tokens: []}, mouse_runs: ["14042026_132037_066"]}
   # New arm (no mouse run): the batch metatoken is removed from a random half of the training batches, so the model
-  # also learns to work without it, as at inference. Needs the predictor fix of stjepa_ovca_ablation.patch.
+  # also learns to work without it, as at inference. Needs the predictor fix of stjepa_ablation.patch.
   metatoken_dropout: {category: metatoken, label: "Metatoken Dropout", replicates: 3, overrides: {mask.special_token_pad_ratio: 0.5}, mouse_runs: []}
 
   # Normalization (Supp. Fig. 5, 1 run each); groups as in the mouse notebook

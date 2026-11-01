@@ -1,6 +1,6 @@
 # Base model config of the mouse ablations: sebastianbirk/stjepa, branch v2 (e8bd8d8),
 # configs/model/mmb0-1b_smb1-1b/mmb0-1b_smb1-1b_2p_coord_aligned.yaml, unchanged. generate_ablation_runs.py replaces
-# the dataset, schedule and state keys for OVCA and applies the variant overrides of ablation_plan.yaml.
+# the dataset, schedule and state keys for the ablation dataset and applies the variant overrides of ablation_plan.yaml.
 # Keys the v2 training code ignores (e.g. api_version, vocab_size, rope_*) are kept as in the mouse config.
 data:
   dataset_name: 'mmb0-1b_smb1-1b_2p_coord_aligned'

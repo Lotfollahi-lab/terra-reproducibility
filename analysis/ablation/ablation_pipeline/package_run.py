@@ -1,5 +1,5 @@
 """
-This script checks whether an OVCA ablation run has finished training and, if so, packages its run folder for
+This script checks whether an ablation run has finished training and, if so, packages its run folder for
 `harmonize_tokenize_embed_pipeline`, which expects `model_config.yaml`, `model_checkpoint.pt`, `token_dictionary.pkl`
 and `norm_factors.csv` in the model folder (the mouse model folders held copies; here they are symlinks to the training
 params, the latest checkpoint, the token dictionary and the normalization factors).
@@ -11,7 +11,7 @@ Exit codes: 0 finished (and packaged unless --check_only), 3 not finished.
 
 Usage:
 ```bash
-python package_run.py --run_folder_path [RUN_FOLDER] [--check_only]
+python package_run.py --run_folder_path [RUN_FOLDER] --norm_factor_file_path [NORM_FACTORS] [--check_only]
 ```
 """
 
@@ -21,8 +21,6 @@ from pathlib import Path
 
 import torch
 import yaml
-
-from ablation_utils import NORM_FACTOR_FILE_PATH
 
 NOT_FINISHED_EXIT_CODE = 3
 
@@ -69,8 +67,8 @@ if __name__ == '__main__':
                         help='Run folder (state.folder_path of the run config).')
     parser.add_argument('--norm_factor_file_path',
                         type=str,
-                        default=NORM_FACTOR_FILE_PATH,
-                        help='Per-gene normalization factors of the OVCA section.')
+                        required=True,
+                        help='Per-gene normalization factors of the dataset (linked into the run folder).')
     parser.add_argument('--check_only',
                         action='store_true',
                         help='Only check whether training has finished.')

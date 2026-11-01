@@ -1,6 +1,6 @@
 """
 Per-gene normalization factors of a cohort of silver AnnData files (raw counts in X, Ensembl ids in
-var['ensembl_id']), shared by the OVCA ablation scripts.
+var['ensembl_id']), shared by the ablation scripts.
 
 The factors pool cells as `stjepa-reproducibility/src/compute_norm_factors.py` does (concatenated cells): per gene, the
 mean over all cells of the files that probe it and the nonzero mean over its cells with a count > 0, of the raw counts

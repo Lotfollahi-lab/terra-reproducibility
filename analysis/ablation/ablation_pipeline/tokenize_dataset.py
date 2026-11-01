@@ -1,36 +1,49 @@
 """
-This script creates one tokenized dataset of the OVCA ablation plan from the OVCA silver data like
+This script creates one tokenized dataset of the ablation plan from the silver data of a dataset, like
 `stjepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py` created the mouse ablation datasets (same
 tokenizer arguments and output naming), but with the pinned ST-JEPA v2 tokenizer (`stjepa.tokenizers`), sequential
-processing of the single silver file (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
+processing of the silver files (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
 (`tokenizer_options`: deterministic top-k ties, detected genes only, the real gene token count for the sampler, the
-Seurat v3 LOESS span, own-neighbor aggregation and an explicit index-cell/neighborhood split for the cell-neighborhood tokenizer; their names
-are appended to the dataset name) and without wandb logging. The dataset is written under a temporary name and renamed when
+Seurat v3 LOESS span, own-neighbor aggregation and an explicit index-cell/neighborhood split for the cell-neighborhood
+tokenizer; their names are appended to the dataset name) and without wandb logging. The tokenizer reads every h5ad file
+below `<data_directory_path>/silver/<dataset_name>`; they must be exactly `--silver_file_paths`, so that the
+evaluation's labels cover the tokenized cells. The dataset is written under a temporary name and renamed when
 complete, so that interrupted jobs are never mistaken for finished datasets.
 
-Usage:
+Usage (`submit_tokenization.sh` runs the first two; `tokenize_dataset.lsf` the last):
 ```bash
-python tokenize_ovca.py --list                                  # index, name, memory class and path of every dataset
-python tokenize_ovca.py --list_indices standard                 # indices of the datasets of one memory class
-python tokenize_ovca.py --tokenization_index ${LSB_JOBINDEX}    # create one dataset (job array element)
+python tokenize_dataset.py --list [DATASET ARGS]                                  # index, name, memory class, path
+python tokenize_dataset.py --list_indices standard [DATASET ARGS]                 # indices of one memory class
+python tokenize_dataset.py --tokenization_index ${LSB_JOBINDEX} [DATASET ARGS] \
+    --silver_file_paths ... --norm_factor_file_path ... --token_dictionary_file_path ...   # create one dataset
 ```
+DATASET ARGS: --plan_file_path ... --data_directory_path ... --dataset_name ...
 """
+
+from __future__ import annotations
 
 import argparse
 import os
 import shutil
 from pathlib import Path
 
-from ablation_utils import (DATA_DIRECTORY_PATH,
-                            DATASET_NAME,
-                            NORM_FACTOR_FILE_PATH,
-                            NORM_METHOD_KEYS,
+from ablation_utils import (NORM_METHOD_KEYS,
                             NUM_SHARDS,
-                            PLAN_FILE_PATH,
-                            TOKEN_DICTIONARY_FILE_PATH,
                             get_tokenized_dataset_path,
                             load_plan,
                             needs_large_memory)
+
+
+def check_silver_files(silver_folder_path: Path, silver_file_paths: list[str]):
+    """The tokenizer's input files (all h5ad files below the silver folder) must be exactly the given silver files."""
+    missing = [file_path for file_path in silver_file_paths if not Path(file_path).is_file()]
+    if missing:
+        raise FileNotFoundError(f"Silver files {missing} do not exist: the data preparation must finish first.")
+    tokenizer_inputs = {os.path.abspath(file_path) for file_path in silver_folder_path.glob("**/*.h5ad")}
+    given = {os.path.abspath(file_path) for file_path in silver_file_paths}
+    if tokenizer_inputs != given:
+        raise ValueError(f"The tokenizer would read {sorted(tokenizer_inputs)} from {silver_folder_path}, but the "
+                         f"silver files are {sorted(given)}: move other files out of the folder or list them.")
 
 
 def main(args):
@@ -48,12 +61,16 @@ def main(args):
                            if ("large" if needs_large_memory(tokenizations[name]) else "standard") == args.list_indices))
         return
 
+    if not 1 <= args.tokenization_index <= len(tokenization_names):
+        raise ValueError(f"--tokenization_index {args.tokenization_index} is not in 1-{len(tokenization_names)}.")
     name = tokenization_names[args.tokenization_index - 1]
     tokenization = tokenizations[name]
     output_path = get_tokenized_dataset_path(tokenization, args.data_directory_path, args.dataset_name)
     if output_path.exists():
         print(f"{output_path} already exists. Skipping tokenization...")
         return
+    silver_folder_path = Path(args.data_directory_path) / "silver" / args.dataset_name
+    check_silver_files(silver_folder_path, args.silver_file_paths)
     print(f"Tokenization {args.tokenization_index} ({name}): {tokenization}.")
 
     from stjepa.tokenizers.cell_tokenizers import CellGraphTokenizer, CellNeighborhoodTokenizer
@@ -67,8 +84,8 @@ def main(args):
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
         tokenizer_kwargs["seq_len_cell"] = tokenization["seq_len_cell"]
         tokenizer_kwargs["aggregate_own_neighbors"] = tokenization["aggregate_own_neighbors"]
-    # Sequential processing: the silver data is one file, and parallel mode pickles the whole tokenized file back from a
-    # worker process, which doubles the peak memory of the dense-path tokenizations (~1.4 TB for OVCA)
+    # Sequential processing (one silver file at a time): parallel mode pickles every tokenized file back from a worker
+    # process, which doubles the peak memory (without the ranked-list cut: ~1.4 TB for the dense-path OVCA tokenizations)
     tk = Tokenizer(
         nproc=int(os.environ.get("LSB_DJOB_NUMPROC", 1)),
         processing_mode="sequential",
@@ -87,7 +104,7 @@ def main(args):
     incomplete_output_path = output_path.with_name(f"{incomplete_file_prefix}.dataset")
     shutil.rmtree(incomplete_output_path, ignore_errors=True)
     cache_directory_path = Path(args.data_directory_path) / "cache" / args.dataset_name / name
-    tk.tokenize_data(input_directory=Path(args.data_directory_path) / "silver" / args.dataset_name,
+    tk.tokenize_data(input_directory=silver_folder_path,
                      output_directory=output_path.parent,
                      output_file_prefix=incomplete_file_prefix,
                      use_generator=True,
@@ -102,38 +119,43 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Processing command line arguments...')
-    parser.add_argument('--tokenization_index',
-                        type=int,
-                        default=None,
-                        help='1-based index of the tokenization in the ablation plan (job array index).')
-    parser.add_argument('--list',
-                        action='store_true',
-                        help='List all tokenizations and exit.')
-    parser.add_argument('--list_indices',
-                        type=str,
-                        choices=['standard', 'large'],
-                        default=None,
-                        help='Print the comma-separated indices of one memory class and exit.')
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument('--tokenization_index',
+                      type=int,
+                      help='1-based index of the tokenization in the ablation plan (job array index).')
+    mode.add_argument('--list',
+                      action='store_true',
+                      help='List all tokenizations and exit.')
+    mode.add_argument('--list_indices',
+                      type=str,
+                      choices=['standard', 'large'],
+                      help='Print the comma-separated indices of one memory class and exit.')
     parser.add_argument('--plan_file_path',
                         type=str,
-                        default=PLAN_FILE_PATH,
+                        required=True,
                         help='Ablation plan.')
     parser.add_argument('--data_directory_path',
                         type=str,
-                        default=DATA_DIRECTORY_PATH,
+                        required=True,
                         help='Data directory with silver, gold and cache subdirectories.')
     parser.add_argument('--dataset_name',
                         type=str,
-                        default=DATASET_NAME,
+                        required=True,
                         help='Name of the silver dataset folder.')
+    parser.add_argument('--silver_file_paths',
+                        type=str,
+                        nargs='+',
+                        help='Silver AnnData files of the dataset: all h5ad files of the silver folder (tokenization).')
     parser.add_argument('--norm_factor_file_path',
                         type=str,
-                        default=NORM_FACTOR_FILE_PATH,
-                        help='Per-gene normalization factors of the OVCA section.')
+                        help='Per-gene normalization factors of the dataset (tokenization).')
     parser.add_argument('--token_dictionary_file_path',
                         type=str,
-                        default=TOKEN_DICTIONARY_FILE_PATH,
-                        help='Human token dictionary.')
+                        help='Token dictionary of the species (tokenization).')
     args = parser.parse_args()
+    if args.tokenization_index is not None:
+        for name in ["silver_file_paths", "norm_factor_file_path", "token_dictionary_file_path"]:
+            if getattr(args, name) is None:
+                parser.error(f"--{name} is required with --tokenization_index.")
 
     main(args)

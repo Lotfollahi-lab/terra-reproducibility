@@ -5,7 +5,7 @@
 - **Ablation analysis:** `sebastianbirk/stjepa-reproducibility` `analysis/mouse_ablation`.
 - **Coordinate ablation:** the data preparation behind it.
 
-**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes are in `stjepa_ovca_ablation.patch`, used for the OVCA runs (see Resolution).
+**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes are in `stjepa_ablation.patch` of `analysis/ablation/ablation_pipeline` (pinned copy: `/nfs/team361/sb75/stjepa_ablation`, made by `setup_code.sh`), used for the OVCA runs and the mouse reruns (see Resolution).
 
 ## Bottom line
 
@@ -24,10 +24,10 @@ Several issues change what individual arms compare, and how large the replicate 
 
 | # | Severity | Where | Issue | Affects |
 |---|---|---|---|---|
-| 1 | High | `train.py:55,88-91`, `dataloaders.py:18` | Seed 0 is hard-coded; no config key sets a seed. The 3 replicates per arm differ only by GPU non-determinism, so the error bars understate seed variance. | Mouse Supp. Figs. 4–6. OVCA uses `stjepa_ovca_ablation.patch`. |
+| 1 | High | `train.py:55,88-91`, `dataloaders.py:18` | Seed 0 is hard-coded; no config key sets a seed. The 3 replicates per arm differ only by GPU non-determinism, so the error bars understate seed variance. | Mouse Supp. Figs. 4–6. OVCA uses `stjepa_ablation.patch`. |
 | 2 | High | `embed.py:193,209,492` vs training `special_token_pad_ratio: 0` | The batch metatoken is always present in training but padded at inference. Models with a metatoken are evaluated out of distribution; the no-metatoken model is not. | The metatoken ablation (Supp. Fig. 6) and every evaluation of a model with a metatoken. |
 | 3 | High | `tokenizers/tokenize.py:105` vs `cell_tokenizers.py:761` | Top-64 ties are broken by an unstable `argsort` on the sparse path but a stable `lexsort` on the dense path. With integer counts the cut falls inside a tie group in 99% of cells, so arms on different paths select different genes, not just different values. Results also depend on gene order and possibly CPU type. | Normalization ablation (no-norm and shifted-log vs the other arms); any re-tokenization. |
-| 4 | High (OVCA only) | `cell_tokenizers.py:719-724,763-773,838-846` | The dense path, and Seurat/Pearson, keep every gene per cell plus float64 neighborhood arrays: about 1.2 MB per cell, ~0.5 TB for OVCA. | OVCA: 16 normalization tokenizations, which run on hugemem. |
+| 4 | High (OVCA only) | `cell_tokenizers.py:719-724,763-773,838-846` | The dense path, and Seurat/Pearson, keep every gene per cell plus float64 neighborhood arrays: about 1.2 MB per cell, ~0.5 TB for OVCA. | OVCA: 16 normalization tokenizations, which would need hugemem. |
 | 5 | Medium-high | `cell_tokenizers.py:768,1485,1508` | With Seurat v3 or Pearson residuals as the rank, zero-count genes enter the top-64 (`include_zero_expr_genes=False` is violated). | 4 normalization arms. |
 | 6 | Medium-high | `normalizers.py:94-95` vs `compute_norm_factors.py` / `compute_cohort_norm_factors.py` | Gene-corrected read depth uses 153.4768 + 0.0487·G in the tokenizer but other constants in the factor scripts. Count values in the gcrd-mean arms are rescaled by a dataset-dependent factor (about 1.4× between MERFISH and STARmap). | Mouse gcrd-mean arms (farm check: which factor file). OVCA factors use the tokenizer's constants. |
 | 7 | Medium | `cell_tokenizers.py:1062` (`0b2ef1c`, 15 Apr) | The cell-neighborhood split changed from `input/(k+1)` (64/640) to `input/2`. Mouse cell-neighborhood models (trained 11–12 Apr, 64/640) re-tokenized after 15 Apr get index-cell genes 65–128 as "neighborhood" tokens. Also, `graph.py:142` aggregates reverse kNN (`C.T @ X`), not each cell's own 10 neighbors. | Tokenizer ablation, cell-neighborhood arms (farm check: evaluation dates). |
@@ -48,7 +48,7 @@ Low-severity items (finding 13):
 
 ## Resolution (31 Oct 2026)
 
-Fixes are in `stjepa_ovca_ablation.patch` (its header lists all changes). Everything that changes results is opt-in
+Fixes are in `stjepa_ablation.patch` (its header lists all changes). Everything that changes results is opt-in
 or limited to code paths that were broken, so mouse configs and the default inference behave as before.
 
 | # | Resolution | OVCA runs | Mouse |
@@ -56,7 +56,7 @@ or limited to code paths that were broken, so mouse configs and the default infe
 | 1 | Opt-in top-level `seed`. | Seeds 1000, 2000, 3000. | Reruns use the same seeds. |
 | 2 | `keep_special_tokens` at inference (all inference entry points; default: removed); padded-metatoken predictor fixed (see below), so metatoken dropout (`mask.special_token_pad_ratio`) trains correctly. | Every model with a metatoken is evaluated with it removed and kept; new arm `metatoken_dropout` (ratio 0.5). | Metatoken experiment (base, no metatoken, dropout; 3 seeds; removed and kept). |
 | 3 | Opt-in `stable_rank_ties`: gene-level order by rank score, count value, reference nonzero mean (ascending), token id, in every path and block. | On. | Datasets unchanged. |
-| 4 | With the options of 3 or 5, ranked lists are cut at `model_input_size` (lossless): 0.09-0.21 instead of 1.3 MB per cell. | 26 of 27 datasets in the standard memory class. | — |
+| 4 | With the options of 3 or 5, ranked lists are cut at `model_input_size` (lossless): 0.09-0.21 instead of 1.3 MB per cell. | All 27 datasets in the standard memory class (200 GB; measured peak about 83 GB for base, dense-path and 256 genes, about 105 GB for Seurat and Pearson). | — |
 | 5 | Opt-in `zero_expr_from_raw_counts`: candidates are the detected genes (raw count > 0). | On. | — |
 | 6 | Shared `norm_factors.py` with the tokenizer's constants; `check_setup.py` compares the factor file with the tokenizer's normalizer. | Consistent. | Farm check `check_mouse_norm_factors.py`; if it reports another fit or a train/eval mismatch, rerun the six gcrd arms with factors from `compute_norm_factors.py`. |
 | 7 | `CellNeighborhoodTokenizer(seq_len_cell=...)`, opt-in `aggregate_own_neighbors` (each cell's own kNN, `C @ X`); re-tokenization at inference and the cell-only context take the split from the config. On OVCA, 79% of cells have a reverse in-degree other than 10 and own and reverse neighbour sets agree for 7.7%. | Own kNN, 64/64. | Rerun the three cell-neighborhood arms with the fix (9 runs). |
@@ -94,6 +94,28 @@ Tokenizer review (31 Oct), not fixed (not used by the ablations or negligible):
 - An empty neighbour gene list removes its segment and shifts the blocks (not possible on OVCA: >= 10 genes per cell);
   neighbour segments are ordered by an unstable argsort on distances (no ties on OVCA).
 - Without detected-only candidates, the dense path can place pad tokens mid-sequence for Seurat / Pearson rank streams.
+
+## Second review (31 Oct 2026)
+
+Five reviewers (training, data, inference/evaluation, farm orchestration, end to end) and a final review of the
+refactored pipeline found no High issue for the OVCA runs. Resolved:
+- Dataset-level padding read the special value columns, which data tokenized without special tokens lacks (a
+  regression of patch 8): pads are created without reading them; keeping the metatoken needs data tokenized with
+  special tokens (patch 10).
+- A checkpoint written after the first step of each epoch made resumed runs repeat that step (patch 7).
+- `infer.py` / `train.py` compared the tokenizer type with 'cell_neighborhood' (patch 20).
+- Runs record the pinned code version (config key `code_version`, covered by the config hash; the job stops on a
+  mismatch with the pinned copy); `setup_code.sh` checks the environment before writing CODE_VERSION, isolates
+  `git apply` from an enclosing repository and verifies the patch applied.
+- The manifest rejects empty fields and the job reports missing rows; W&B ids are short
+  (`<tag>_<index>_<hash>`, display name = run id).
+- Evaluation: float32 embeddings, a mean-centred average cosine similarity next to the uncentred one,
+  `NUMBA_CPU_NAME=generic`, several silver files and label keys; the completion marker records the label keys.
+- Comparison: SD with ddof 0 (as the mouse figures), missing runs reported, readable panels.
+- The scripts are dataset-agnostic (all values as parameters; `datasets/<dataset>.env`).
+- Tokenization waits for `<norm factors>.done`; two arrays of one campaign cannot run at once.
+Open: batch-integration metrics (iLISI, ASW, MMD) for the mouse rerun. Kept: worker seeds equal across ranks
+(about 0.6% of steps share their segment count and metatoken-drop decision across ranks).
 
 ## Coordinate (spatial-encoding) ablation
 
@@ -133,4 +155,4 @@ done
 grep -l "Loaded pretrained encoder" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
 ```
 
-`check_setup.py` compares every OVCA config with the mouse `params.yaml` of its runs. That settles the inferred overrides (cell-neighborhood layout, predictor width, coordinate encoding).
+`check_setup.py` compares every generated config with the mouse `params.yaml` of its runs. That settles the inferred overrides (cell-neighborhood layout, predictor width, coordinate encoding).
