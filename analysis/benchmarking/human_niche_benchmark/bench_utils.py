@@ -76,14 +76,23 @@ DATASETS = {
         niche_key='niche_type',
         drop_unlabeled=True,
         coord_scale=1.0,
-        spot_size=20),
+        spot_size=20,
+        # Cell-type annotations (cell-type composition baseline): finest level
+        # first; 'coarse' = key of the paper's cell-type benchmark.
+        cell_type_levels=dict(fine='cell_type', coarse='new_annotation')),
     'xhs49-1b_1p': dict(
         label='Xenium skin (melanoma)',
         file_patterns=['Xenium_Prime_Human_Skin_FFPE_outs'],
         niche_key='niche_name',
         drop_unlabeled=True,
         coord_scale=1.0,
-        spot_size=20),
+        spot_size=20,
+        # Not in silver: read from the annotated source file, matched on
+        # obs['original_cell_id'] == source obs['cell_id'] (all 98,749 cells).
+        cell_type_levels=dict(fine='fine_celltypes', broad='broad_celltypes',
+                              coarse='celltype'),
+        cell_type_source=('/nfs/team361/sb75/DATASETS/bronze/xhs49-1b_1p/'
+                          'adata_xenium5k_melanoma_11jan.h5ad')),
     'chr78-11b_1p': dict(
         label='ISS reproductive tract',
         file_patterns=['CM007', 'CM008', 'CM009', 'CM011', 'CM013', 'CM015',
@@ -100,7 +109,8 @@ DATASETS = {
         niche_key='niche',
         drop_unlabeled=True,
         coord_scale=0.18,   # NanoString px -> um
-        spot_size=80 * 0.18),
+        spot_size=80 * 0.18,
+        cell_type_levels=dict(fine='cell_type')),
 }
 DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
 
@@ -117,7 +127,23 @@ METHODS = {
                       note='2000 HVGs (seurat_v3) before tokenization'),
     'terra_112m': dict(label='TERRA-112M', color='#2b7a8c',
                        note='trained on the full corpus (no held-out split)'),
+    'terra_cell_emb': dict(label='TERRA (cell emb.)', color='#b5ddd0',
+                           note='TERRA-96M cell_emb: index cell only, no neighbour tokens'),
+    'terra_cell_emb_nbavg': dict(label='TERRA (cell emb., neigh. avg.)', color='#8fc9b6',
+                                 note='TERRA-96M cell_emb averaged over 10 spatial neighbours'),
+    'terra_random': dict(label='TERRA (random init)', color='#c9c9c9',
+                         note='same architecture, untrained (capacity control)'),
     'neigh_expr_pca': dict(label='Neigh. Expr. PCA', color='#f4a6a6', note=''),
+    # Cell-type composition baseline, two clusterings (keep one: delete the other
+    # entry; results of both stay on disk).
+    'cell_type_composition': dict(label='Neigh. Cell-Type Comp. (Leiden)', color='#b8c97a',
+                                  note='annotated cell types (finest level), shared '
+                                       'Leiden scan; n/a for ISS (no annotation)'),
+    'cell_type_composition_kmeans': dict(label='Neigh. Cell-Type Comp. (k-means)',
+                                         color='#8fa35a',
+                                         note='annotated cell types (finest level), '
+                                              'k-means at the common cluster number '
+                                              '(10 seeds); n/a for ISS'),
     'nichecompass': dict(label='NicheCompass', color='#d6b36a', note=''),
     'cellcharter': dict(label='CellCharter', color='#6fb6d8', note=''),
     'banksy': dict(label='Banksy', color='#b99ad6',
@@ -125,6 +151,8 @@ METHODS = {
     'novae': dict(label='Novae', color='#ffde17',
                   note='Leiden on Novae batch-corrected embedding'),
     'nicheformer': dict(label='NicheFormer', color='#95a3c3', note=''),
+    'nicheformer_rerun': dict(label='NicheFormer (rerun)', color='#6f7fa6',
+                              note='authors\' recipe: NaN technology mean -> 1, context tokens'),
     'cellplm': dict(label='CellPLM', color='#ea9776', note=''),
     'scgpt-spatial': dict(label='scGPT-spatial', color='#db96c0', note=''),
 }

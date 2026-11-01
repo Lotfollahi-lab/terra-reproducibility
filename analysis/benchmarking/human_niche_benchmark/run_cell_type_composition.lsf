@@ -1,0 +1,28 @@
+#!/bin/bash
+# Neighbourhood cell-type composition baseline (run_cell_type_composition.py),
+# one array element per dataset with cell-type annotations (ISS has none).
+# Submit from this folder:
+#   bsub < run_cell_type_composition.lsf                        # finest level (main)
+#   LEVEL=coarse bsub -J "human_niche_ct_comp[1-2]" < run_cell_type_composition.lsf
+#   LEVEL=broad  bsub -J "human_niche_ct_comp[2]"   < run_cell_type_composition.lsf
+#
+#BSUB -G team361                                                                  # LSF group
+#BSUB -J human_niche_ct_comp[1-3]                                                 # Array job: one per dataset
+#BSUB -o ../../../artifacts/benchmarking/human/logs/ct_comp_%J_%I.out             # Standard output
+#BSUB -e ../../../artifacts/benchmarking/human/logs/ct_comp_%J_%I.err             # Standard error
+#BSUB -q normal                                                                   # Queue name
+#BSUB -n 8                                                                        # Number of CPU cores
+#BSUB -M 96GB                                                                     # Memory (largest dataset)
+#BSUB -R "select[mem>96GB] rusage[mem=96GB] span[hosts=1]"                        # Reserve memory on one host
+#BSUB -W 12:00                                                                    # Walltime (hh:mm)
+set -euo pipefail
+source "$LS_SUBCWD/config.sh"
+
+DATASETS=(xhs1000-39b_1p xhs49-1b_1p chl59-8b_1p)
+DATASET=${DATASETS[$((LSB_JOBINDEX - 1))]}
+LEVEL=${LEVEL:-fine}
+EXTRA_ARGS=${EXTRA_ARGS:-}
+
+echo "Host: $(hostname) | Job: $LSB_JOBID[$LSB_JOBINDEX] | Dataset: $DATASET | Level: $LEVEL"
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON_BANKSY" run_cell_type_composition.py \
+    --dataset "$DATASET" --level "$LEVEL" $EXTRA_ARGS

@@ -90,6 +90,8 @@ def plot_paper_metric_comparison(rows, metric, dataset_labels,
         rng = np.random.default_rng(42)
         for i, vals in enumerate(all_vals):
             if len(vals) == 0:
+                ax.text(i, 0.01, 'n/a', ha='center', va='bottom', fontsize=6,
+                        color='0.4', rotation=90)
                 continue
             jitter = rng.uniform(-0.15, 0.15, size=len(vals))
             ax.scatter(np.full(len(vals), i) + jitter, vals, s=12, color='0.15',

@@ -14,6 +14,7 @@ LUSTRE_WORK_ROOT=${BENCH_LUSTRE_ROOT:-/lustre/scratch126/cellgen/lotfollahi/$USE
 PYTHON_BANKSY=/nfs/team361/sb75/.venvs/banksy/bin/python             # BANKSY, neighbourhood PCA, re-scoring
 PYTHON_CELLCHARTER=/nfs/team361/sb75/.venvs/cellcharter/bin/python
 PYTHON_NICHECOMPASS=/nfs/team361/sb75/.venvs/nichecompass/bin/python
+PYTHON_NICHEFORMER=/nfs/team361/sb75/.venvs/nicheformer/bin/python
 PYTHON_TERRA=/nfs/team361/sb75/.venvs/terra/bin/python
 
 export NUMBA_CPU_NAME=generic   # reproducible UMAP/Leiden (as in the repo notebooks)

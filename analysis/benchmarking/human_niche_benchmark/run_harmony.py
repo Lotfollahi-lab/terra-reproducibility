@@ -33,8 +33,8 @@ def main(args):
 
     adata = sc.read_h5ad(in_dir / f'{prefix}_embedded_clustered.h5ad')
     adata.obsm = {base_key: adata.obsm[base_key]}   # drop other embeddings
-    for key in ['predicted_niche']:                 # base method's clusters
-        adata.obs.pop(key, None)
+    adata.obs = adata.obs.drop(columns=['predicted_niche'],  # base method's clusters
+                               errors='ignore')
     multi_section = adata.obs[SECTION_KEY].nunique() > 1
 
     emb_key = base_key

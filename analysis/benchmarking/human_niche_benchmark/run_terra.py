@@ -20,6 +20,10 @@ which of them are kept is arbitrary.
 (TERRA-96M, default; methods ``terra`` / ``terra_hvg``) or ``112m``
 (TERRA-112M; methods ``terra_112m`` / ``terra_112m_hvg``).
 
+``--random_init`` (method ``terra_random``) skips loading the checkpoint: the
+same architecture is built by TERRA's own ``init_model`` (seeded) and used
+untrained, as a capacity control.
+
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
 score.py. Run in the terra environment on a GPU node (run_terra.lsf).
 """
@@ -44,9 +48,22 @@ from bench_utils import (CACHE_FOLDER_PATH, SECTION_KEY,  # noqa: E402
 EMB_KEY = 'neighborhood_emb'
 
 
-def method_name(model, preprocess):
+def method_name(model, preprocess, random_init=False):
     name = 'terra' if model == '96m' else f'terra_{model}'
+    if random_init:
+        name += '_random'
     return name if preprocess == 'none' else f'{name}_{preprocess}'
+
+
+def skip_checkpoint_loading():
+    """Make the TERRA pipeline keep the randomly initialized target encoder."""
+    import terra.inference.embed as embed_module
+
+    def load_no_checkpoint(**kwargs):
+        print('random_init: checkpoint NOT loaded (untrained target encoder).')
+        return None, None, kwargs['target_encoder'], None, None, 0, None
+
+    embed_module.load_checkpoint = load_no_checkpoint
 
 
 def select_hvg(adata, n_top_genes, batch_key):
@@ -67,7 +84,9 @@ def select_hvg(adata, n_top_genes, batch_key):
 
 
 def main(args):
-    method = method_name(args.model, args.preprocess)
+    method = method_name(args.model, args.preprocess, args.random_init)
+    if args.random_init:
+        skip_checkpoint_loading()
     model_folder_path = TERRA_MODELS[args.model]
     print(f'Method {method}: model {model_folder_path}')
     adata = load_benchmark_dataset(args.dataset, subsample=args.subsample)
@@ -113,6 +132,7 @@ def main(args):
     save_embedding(adata, method, EMB_KEY, dict(
         embedding_seconds=t_embed.seconds,
         params=dict(model=args.model, model_folder_path=model_folder_path,
+                    random_init=args.random_init,
                     terra_source=f'{TERRA_SOURCE} @ {git_commit(TERRA_SOURCE)}',
                     sample_key=SECTION_KEY if multi_section else None,
                     batch_size=args.batch_size, integration='none (zero-shot)',
@@ -130,4 +150,6 @@ if __name__ == '__main__':
     parser.add_argument('--preprocess', choices=['none', 'hvg'], default='none',
                         help="'hvg': highly variable genes before tokenization.")
     parser.add_argument('--n_top_genes', type=int, default=2000)
+    parser.add_argument('--random_init', action='store_true',
+                        help='untrained model of the same architecture (method terra_random)')
     main(parser.parse_args())

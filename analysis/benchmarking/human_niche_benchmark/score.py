@@ -26,7 +26,7 @@ import scanpy as sc
 sys.path.append(str(Path(__file__).parent))
 from bench_utils import (FINAL_OUTPUT_FOLDER_PATH, OUTPUT_FOLDER_PATH,  # noqa: E402
                          SECTION_KEY, Timer, method_output_dir, save_results)
-from scoring import (batch_integration_metrics, cluster_and_score,  # noqa: E402
+from scoring import (CLUSTERING, batch_integration_metrics,  # noqa: E402
                      environment_versions)
 
 EMBEDDED_SUFFIX = '_embedded.h5ad'
@@ -34,8 +34,9 @@ EMBEDDED_SUFFIX = '_embedded.h5ad'
 
 def score(adata, method, dataset, run_info, out_dir):
     emb_key = run_info['emb_key']
+    clustering = run_info.setdefault('clustering', 'leiden')   # set by the embedding step
     with Timer() as t_cluster:
-        metrics_df = cluster_and_score(adata, method, emb_key, out_dir)
+        metrics_df = CLUSTERING[clustering](adata, method, emb_key, out_dir)
     print(metrics_df.to_string(index=False))
 
     batch_path = out_dir / f'{dataset}_{method}_batch_integration_metrics.csv'

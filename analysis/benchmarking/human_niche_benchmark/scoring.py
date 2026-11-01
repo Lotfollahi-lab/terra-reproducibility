@@ -213,6 +213,50 @@ def cluster_and_score(adata: ad.AnnData,
     return metrics_df
 
 
+N_KMEANS_SEEDS = 10       # k-means runs (seeds) replace the resolution sweep
+
+
+def kmeans_and_score(adata: ad.AnnData,
+                     method: str,
+                     emb_key: str,
+                     out_dir: Path) -> pd.DataFrame:
+    """k-means at the common cluster number instead of the Leiden scan.
+
+    For methods whose canonical clustering is k-means (cellular-neighbourhood
+    composition, Schuerch et al. 2020): ``N_KMEANS_SEEDS`` runs with
+    k = common cluster number (scikit-learn defaults, random_state = seed).
+    Every run is "matched" and "in_sweep"; seed 0 is the headline
+    (``obs['predicted_niche']``). Writes the same table as
+    ``cluster_and_score`` (``leiden_resolution`` = NaN, extra column ``seed``).
+    """
+    from sklearn.cluster import KMeans
+
+    dataset_name = adata.uns['benchmark']['dataset_name']
+    n_target = adata.uns['benchmark']['n_target_clusters']
+    X = np.asarray(adata.obsm[emb_key], dtype=np.float32)
+    rows = []
+    for seed in range(N_KMEANS_SEEDS):
+        labels = KMeans(n_clusters=n_target, random_state=seed).fit_predict(X)
+        if seed == 0:
+            adata.obs['predicted_niche'] = pd.Categorical(labels.astype(str))
+        rows.append(dict(leiden_resolution=np.nan, seed=seed,
+                         n_niches=int(len(np.unique(labels))),
+                         **niche_metrics(adata.obs['niche_gt'], labels)))
+    df = pd.DataFrame(rows)
+    df['grid'] = 'kmeans'
+    df['n_target'] = n_target
+    df['matched'] = df['n_niches'] == n_target
+    df['in_sweep'] = True
+    df['headline'] = df['seed'] == 0
+    df.insert(0, 'method', method)
+    df.insert(1, 'dataset', dataset_name)
+    df.to_csv(out_dir / f'{dataset_name}_{method}_metric_scores.csv', index=False)
+    return df
+
+
+CLUSTERING = {'leiden': cluster_and_score, 'kmeans': kmeans_and_score}
+
+
 # ---------------------------------------------------------------------------
 # Metrics
 # ---------------------------------------------------------------------------
