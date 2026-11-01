@@ -16,9 +16,10 @@ records for it (files that fail are downloaded once more), and the commits, chec
 `download_manifest.json`.
 
 Access: a Hugging Face token of an account whose access requests were approved. Store it once, interactively, on the
-farm head node: `--login` reads it without echo, checks it and the access to every repository, and saves it to the
-Hugging Face token file (`$HF_HOME/token`, by default `~/.cache/huggingface/token`, readable only by you), where the
-download job finds it. Alternatively, export `HF_TOKEN`. The token is never printed, logged or written to the manifest.
+farm head node: `--login` reads it without echo, checks it, saves it to the Hugging Face token file (`$HF_HOME/token`,
+by default `~/.cache/huggingface/token`, readable only by you), where the download job finds it, and reports which
+CAMEO repositories the account may download. Alternatively, export `HF_TOKEN`. The token is never printed, logged or
+written to the manifest.
 
 Usage:
 ```bash
@@ -45,37 +46,44 @@ DEFAULT_REPO_IDS = ["theislab/CAMEO-Lung"]
 CHUNK_SIZE = 16 * 1024 * 1024
 
 
-def check_access(repo_ids: list, token: str | None = None) -> bool:
-    """Check that the token (default: the stored token or HF_TOKEN) may download a file of every repository."""
+def check_access(repo_ids: list, token: str | None = None) -> dict | None:
+    """
+    Whether the token (default: the stored token or HF_TOKEN) may download files of each repository, as
+    {repo_id: bool}; None if there is no valid token.
+    """
     from huggingface_hub import HfApi, get_hf_file_metadata, hf_hub_url
     from huggingface_hub.utils import GatedRepoError, RepositoryNotFoundError
 
-    api = HfApi()
     try:
-        user = api.whoami(token=token)["name"]
+        user = HfApi().whoami(token=token)["name"]
     except Exception as error:  # noqa: BLE001 (no or invalid token)
         print(f"No valid Hugging Face token ({type(error).__name__}). Run `python download_cameo_data.py --login` "
               f"or export HF_TOKEN.")
-        return False
+        return None
     print(f"Hugging Face user: {user}")
-    ok = True
+    access = {}
     for repo_id in repo_ids:
         try:
             # A HEAD request for a small file: fails with GatedRepoError unless access was approved
             get_hf_file_metadata(hf_hub_url(repo_id, "state.json", repo_type="dataset"), token=token)
+            access[repo_id] = True
             print(f"{repo_id}: access granted.")
         except GatedRepoError:
+            access[repo_id] = False
             print(f"{repo_id}: NO ACCESS for {user}. Request it on https://huggingface.co/datasets/{repo_id} and "
                   f"wait for the approval.")
-            ok = False
         except RepositoryNotFoundError:
+            access[repo_id] = False
             print(f"{repo_id}: repository not found (or not visible to {user}).")
-            ok = False
-    return ok
+    return access
 
 
 def login(repo_ids: list):
-    """Read a token without echo, check it and the repository access, and store it in the Hugging Face token file."""
+    """
+    Read a token without echo, store it in the Hugging Face token file if it is valid, and report the access to every
+    known CAMEO repository (and any requested one). Repositories without approved access can be downloaded once the
+    approval arrives, without logging in again.
+    """
     from huggingface_hub import login as hf_login
     from huggingface_hub.constants import HF_TOKEN_PATH
 
@@ -84,10 +92,14 @@ def login(repo_ids: list):
     token = getpass.getpass("Hugging Face access token (read; input hidden): ").strip()
     if not token:
         sys.exit("No token entered.")
-    if not check_access(repo_ids, token=token):
-        sys.exit("Token not stored: fix the access problems above first.")
+    access = check_access(CAMEO_REPO_IDS + [repo_id for repo_id in repo_ids if repo_id not in CAMEO_REPO_IDS],
+                          token=token)
+    if access is None:
+        sys.exit("Token not stored: it is not valid.")
     hf_login(token=token, add_to_git_credential=False)
     print(f"Token stored in {HF_TOKEN_PATH}; the download job will use it.")
+    print(f"Downloadable now: {[repo_id for repo_id, ok in access.items() if ok]}; "
+          f"pending approval: {[repo_id for repo_id, ok in access.items() if not ok]}.")
 
 
 def file_digest(file_path: Path, algorithm: str) -> str:
@@ -168,13 +180,16 @@ def main(args):
         login(args.repo_ids)
         return
     if args.check_access:
-        sys.exit(0 if check_access(args.repo_ids) else 1)
+        access = check_access(args.repo_ids)
+        sys.exit(0 if access is not None and all(access.values()) else 1)
 
     import huggingface_hub
 
-    # Fail before downloading anything if the token or an access approval is missing
-    if not check_access(args.repo_ids):
-        sys.exit("Access check failed, see above.")
+    # Fail before downloading anything if the token or an access approval of a requested repository is missing
+    access = check_access(args.repo_ids)
+    if access is None or not all(access.values()):
+        sys.exit("Access check failed, see above (download the repositories with approved access only, e.g. with "
+                 "the default --repo_ids).")
     output_directory_path = Path(args.output_directory_path)
     output_directory_path.mkdir(parents=True, exist_ok=True)
     manifest_file_path = output_directory_path / "download_manifest.json"
