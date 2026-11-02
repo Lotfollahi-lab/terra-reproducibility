@@ -11,7 +11,7 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                           # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/terra/bin/activate
+source /nfs/team361/sb75/.venvs/terra/bin/activate
 
 # Run your Python script
 python test_model_checkpoint.py \

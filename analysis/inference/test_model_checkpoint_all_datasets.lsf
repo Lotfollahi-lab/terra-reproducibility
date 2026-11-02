@@ -11,7 +11,7 @@
 #BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
 
 # Load your environment
-source ~/.venvs/terra/bin/activate
+source /nfs/team361/sb75/.venvs/terra/bin/activate
 
 # Define your datasets
 datasets=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
