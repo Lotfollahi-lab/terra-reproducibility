@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -G team361                                                                       # LSF group
+#BSUB -G s10396                                                                        # LSF group
 #BSUB -J test_model_checkpoint_epochs[1-24]                                            # Array job: 24 jobs (4 epochs x 6 datasets)
 #BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_epochs_%J_%I.out    # Standard output (%J = job ID, %I = array index)
 #BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_epochs_%J_%I.err    # Standard error

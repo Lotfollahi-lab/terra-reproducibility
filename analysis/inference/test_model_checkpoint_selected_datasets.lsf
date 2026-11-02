@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -G team361                                                                    # LSF group
+#BSUB -G s10396                                                                     # LSF group
 #BSUB -J test_model_checkpoint                                                      # Job name
 #BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.out    # Standard output (%J = job ID)
 #BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_%J.err    # Standard error
