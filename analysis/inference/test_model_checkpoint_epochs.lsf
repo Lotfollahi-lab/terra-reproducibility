@@ -24,8 +24,9 @@ LOAD_TIMESTAMP=31102026_000942_250
 WRITE_TAG=terra                                                                        # Checkpoints are named {WRITE_TAG}-ep{epoch}.pth.tar
 EPOCHS=(0 1 2 3)
 
-# Must be tokenized exactly like the training data (check tokenized_data_folder_path in params.yaml)
-TOKENIZED_DATA=/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_pflog1ppf_knn_16_4352.dataset
+# Empty = evaluate on the dataset the run was trained on (tokenized_data_folder_path in params.yaml),
+# so tokenization and number of neighbours match the model. Set a path only to deliberately override.
+TOKENIZED_DATA=
 
 # Define your datasets
 DATASETS=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)

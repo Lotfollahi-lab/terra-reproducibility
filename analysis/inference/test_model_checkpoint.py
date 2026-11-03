@@ -137,8 +137,9 @@ def main(args):
             != Path(str(used_tokenized_data_folder_path).rstrip('/')).name):
         logger.warning(
             'Evaluation dataset differs from the training dataset; results are '
-            'only meaningful if both use the same tokenization. Pass the training '
-            'dataset via --overwrite_tokenized_data_folder_path unless intended.')
+            'only meaningful if both use the same tokenization and number of '
+            'neighbours. Pass an empty --overwrite_tokenized_data_folder_path to '
+            'evaluate on the training dataset unless intended.')
 
     global layer
     layer = params['meta']['enc_depth']
