@@ -15,7 +15,6 @@ from itertools import chain, compress
 from pathlib import Path
 
 import anndata as ad
-import celltypist
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
