@@ -56,10 +56,11 @@ column).
 
    This clones TERRA into `work/src/repo` and makes one worktree per variant
    (`base`, `p1`, `p2`, `p12`, `tok`). It also downloads the TERRA-112M and
-   TERRA-96M bundles into `work/bundles/`. If GitHub over SSH does not work
-   there, set `TERRA_REPO` to the HTTPS URL or to an existing TERRA clone.
-   Set `WORK` to put everything somewhere other than `./work`; it needs a few
-   GB.
+   TERRA-96M bundles into `work/bundles/`. TERRA is cloned the same way as
+   this checkout (HTTPS or SSH); set `TERRA_REPO` to clone it from elsewhere.
+   The script is safe to run again: it resets the variant trees and applies
+   the patches anew. Set `WORK` to put everything somewhere other than
+   `./work`; it needs a few GB.
 
 2. Submit the job. `H5AD` is a spatial AnnData with raw counts in `X` (or
    `layers['counts']`), gene symbols or Ensembl IDs as `var_names`, and
