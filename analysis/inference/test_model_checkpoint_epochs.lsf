@@ -12,6 +12,10 @@
 
 # Evaluates one model checkpoint at several epochs on all zero-shot datasets.
 # Array index i (1..24) maps to epoch EPOCHS[(i-1)/6] and dataset DATASETS[(i-1)%6].
+# COHORT_NAME, LOAD_TIMESTAMP, WRITE_TAG, EPOCHS and TOKENIZED_DATA can be set at
+# submission (bsub passes the environment on); shrink the array to n_epochs x 6, e.g.
+#   LOAD_TIMESTAMP=03112026_165611_219 EPOCHS="0_3" bsub -J "test_model_checkpoint_epochs[1-6]" < test_model_checkpoint_epochs.lsf
+# Mid-epoch checkpoints use epoch "<epoch>_<iter>" (terra-ep0_3.pth.tar -> EPOCHS="0_3").
 # The logs directory must exist before submission:
 #   mkdir -p ../../logs/inference/test_model_checkpoint
 
@@ -19,14 +23,14 @@
 source /nfs/team361/sb75/.venvs/terra/bin/activate
 
 # Define the run to evaluate
-COHORT_NAME=hst_corpus_110m
-LOAD_TIMESTAMP=31102026_000942_250
-WRITE_TAG=terra                                                                        # Checkpoints are named {WRITE_TAG}-ep{epoch}.pth.tar
-EPOCHS=(0 1 2 3)
+COHORT_NAME=${COHORT_NAME:-hst_corpus_110m}
+LOAD_TIMESTAMP=${LOAD_TIMESTAMP:-31102026_000942_250}
+WRITE_TAG=${WRITE_TAG:-terra}                                                          # Checkpoints are named {WRITE_TAG}-ep{epoch}.pth.tar
+read -ra EPOCHS <<< "${EPOCHS:-0 1 2 3}"                                               # Space-separated, e.g. "0 1 2 3" or "0_3"
 
 # Empty = evaluate on the dataset the run was trained on (tokenized_data_folder_path in params.yaml),
 # so tokenization and number of neighbours match the model. Set a path only to deliberately override.
-TOKENIZED_DATA=
+TOKENIZED_DATA=${TOKENIZED_DATA:-}
 
 # Define your datasets
 DATASETS=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
