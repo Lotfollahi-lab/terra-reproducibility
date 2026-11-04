@@ -6,7 +6,8 @@
 #
 # Optional: WORK, MODELS, N_CELLS (20000), SAMPLE_KEY + SAMPLE, BATCH_SIZE
 # (128), NUM_WORKERS (12), REPS (2), TOK_NPROCS ("1 4"), SKIP_TOKENIZATION=1,
-# ALLOW_CPU=1 (only for a CPU smoke test of the scripts).
+# EMB_VARIANTS and TOK_VARIANTS (the variants to run, base first; default:
+# all), ALLOW_CPU=1 (only for a CPU smoke test of the scripts).
 #
 # Results go to WORK/results/<LSF job ID>. A failing variant is recorded in
 # steps.tsv and reported, and the other variants still run.
@@ -22,11 +23,43 @@ BATCH_SIZE="${BATCH_SIZE:-128}"
 NUM_WORKERS="${NUM_WORKERS:-12}"
 REPS="${REPS:-2}"
 TOK_NPROCS="${TOK_NPROCS:-1 4}"
+EMB_VARIANTS="${EMB_VARIANTS:-base base_rerun p2 p1 p12 base_pin p12_pin base_nw0 final}"
+TOK_VARIANTS="${TOK_VARIANTS:-base tok tok_gen tok_gen_fp final}"
 RESULTS="$WORK/results/${LSB_JOBID:-local-$(date +%Y%m%d-%H%M%S)}"
 if [ -n "${SAMPLE_KEY:-}" ] && [ -z "${SAMPLE:-}" ]; then
     echo "SAMPLE_KEY is set: set SAMPLE to the section to use as well." >&2
     exit 1
 fi
+
+# The source tree of each variant
+emb_tree() {
+    case "$1" in
+        base|base_rerun|base_pin|base_nw0) echo base ;;
+        p12_pin) echo p12 ;;
+        p1|p2|p12|final) echo "$1" ;;
+        *) return 1 ;;
+    esac
+}
+tok_tree() {
+    case "$1" in
+        base|final) echo "$1" ;;
+        tok|tok_gen|tok_gen_fp) echo tok ;;
+        *) return 1 ;;
+    esac
+}
+# Stop before any work if a variant is unknown or its tree is missing
+for label in $EMB_VARIANTS; do
+    tree="$(emb_tree "$label")" \
+        || { echo "Unknown embedding variant: $label" >&2; exit 1; }
+    [ -d "$WORK/src/$tree/src" ] \
+        || { echo "No tree $WORK/src/$tree: run setup_variants.sh." >&2; exit 1; }
+done
+for label in $TOK_VARIANTS; do
+    tree="$(tok_tree "$label")" \
+        || { echo "Unknown tokenization variant: $label" >&2; exit 1; }
+    [ -d "$WORK/src/$tree/src" ] \
+        || { echo "No tree $WORK/src/$tree: run setup_variants.sh." >&2; exit 1; }
+done
 # The same number of CPU threads for every variant (the timed loop includes
 # host-side work): the job's slots
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-${LSB_DJOB_NUMPROC:-8}}"
@@ -115,32 +148,45 @@ for model in $MODELS; do
     # Read the dataset once, so that no variant pays for a cold page cache
     cat "$data"/dataset/*.arrow > /dev/null || true
 
-    # Embedding: every variant embeds the same tokenized dataset
-    step "emb $model base" emb base base
-    step "emb $model base_rerun" emb base base_rerun   # determinism control
-    step "emb $model p2" emb p2 p2
-    step "emb $model p1" emb p1 p1
-    step "emb $model p12" emb p12 p12
-    step "emb $model base_pin" emb base base_pin --pin-memory
-    step "emb $model p12_pin" emb p12 p12_pin --pin-memory
-    step "emb $model base_nw0" emb base base_nw0 --num-workers 0
+    # Embedding: every variant embeds the same tokenized dataset.
+    # base_rerun is the determinism control.
+    for label in $EMB_VARIANTS; do
+        case "$label" in
+            base_pin|p12_pin) extra=(--pin-memory) ;;
+            base_nw0) extra=(--num-workers 0) ;;
+            *) extra=() ;;
+        esac
+        step "emb $model $label" emb "$(emb_tree "$label")" "$label" \
+            ${extra[@]+"${extra[@]}"}
+    done
 
     # Tokenization: base; prototype; prototype formatting the examples in
-    # the generator; the same with a random dataset fingerprint. Each
-    # prototype dataset is compared with the base dataset of the same nproc.
+    # the generator; the same with a random dataset fingerprint; the final
+    # change. Each dataset is compared with the base dataset of the same
+    # nproc.
     if [ "${SKIP_TOKENIZATION:-0}" != 1 ]; then
         for nproc in $TOK_NPROCS; do
             base_dataset="$RESULTS/tok__${model}__np${nproc}__base/dataset"
-            step "tok $model np$nproc base" tok base base "$nproc" --save
-            step "tok $model np$nproc tok" tok tok tok "$nproc" \
-                --compare-with "$base_dataset"
-            EFFREAD_FORMAT_IN_GEN=1 step "tok $model np$nproc tok_gen" \
-                tok tok tok_gen "$nproc" --compare-with "$base_dataset"
-            if [ "$fingerprint_ok" = 1 ]; then
-                EFFREAD_FORMAT_IN_GEN=1 EFFREAD_FINGERPRINT=1 \
-                    step "tok $model np$nproc tok_gen_fp" \
-                    tok tok tok_gen_fp "$nproc" --compare-with "$base_dataset"
-            fi
+            for label in $TOK_VARIANTS; do
+                name="tok $model np$nproc $label"
+                case "$label" in
+                    base)
+                        step "$name" tok base base "$nproc" --save ;;
+                    tok|final)
+                        step "$name" tok "$label" "$label" "$nproc" \
+                            --compare-with "$base_dataset" ;;
+                    tok_gen)
+                        EFFREAD_FORMAT_IN_GEN=1 step "$name" \
+                            tok tok tok_gen "$nproc" \
+                            --compare-with "$base_dataset" ;;
+                    tok_gen_fp)
+                        if [ "$fingerprint_ok" = 1 ]; then
+                            EFFREAD_FORMAT_IN_GEN=1 EFFREAD_FINGERPRINT=1 \
+                                step "$name" tok tok tok_gen_fp "$nproc" \
+                                --compare-with "$base_dataset"
+                        fi ;;
+                esac
+            done
         done
     fi
 done

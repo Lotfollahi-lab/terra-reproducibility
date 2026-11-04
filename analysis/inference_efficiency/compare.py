@@ -29,7 +29,7 @@ import numpy as np
 
 # Report order of the variants; others follow alphabetically
 ORDER = ['base', 'base_rerun', 'p2', 'p1', 'p12', 'base_pin', 'p12_pin',
-         'base_nw0', 'tok', 'tok_gen', 'tok_gen_fp']
+         'base_nw0', 'tok', 'tok_gen', 'tok_gen_fp', 'final']
 
 
 def by_order(variant):

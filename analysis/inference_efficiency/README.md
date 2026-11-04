@@ -4,7 +4,9 @@ Settles, on one GPU node, the inference-efficiency candidates from the TERRA
 code validation of November 2026: how much faster each candidate makes
 inference with TERRA-112M and TERRA-96M, and whether it changes the outputs.
 The candidates are prototypes, kept as patches against TERRA `dev` d4811cf
-(`patches/`); none of them is in TERRA.
+(`patches/`). `final` is the change adopted from them (`p12` plus the
+tokenizer with the examples formatted in the generator), as committed to TERRA,
+also as a patch against d4811cf.
 
 ## What is compared
 
@@ -20,6 +22,7 @@ dataset:
 | `p12` | `p1` + `p2` |
 | `base_pin`, `p12_pin` | as `base`, `p12` with `pin_memory=True` |
 | `base_nw0` | `base` with `num_workers=0` (how much the DataLoader workers matter) |
+| `final` | the adopted change, as committed to TERRA |
 
 Tokenization (`tokenize_adata`, CPU), with `nproc` 1 and 4. Every variant
 tokenizes the same harmonized AnnData:
@@ -30,6 +33,7 @@ tokenizes the same harmonized AnnData:
 | `tok` | CSR row access, one ranking per cell, neighbors read from the CSR arrays |
 | `tok_gen` | `tok` + examples formatted inside the dataset generator (no `map` over the stored data) |
 | `tok_gen_fp` | `tok_gen` + a random dataset fingerprint instead of hashing the generator and its data |
+| `final` | the adopted change, as committed to TERRA |
 
 A candidate preserves the results if its outputs are bit-identical to `base`.
 On CPU, `p12` differed from `base` by at most 2.4e-7. On GPU, in bf16, the
@@ -82,7 +86,10 @@ column).
    with 2 timed repetitions each (`REPS`), after a warm-up on 1,024 cells.
    `BATCH_SIZE` (128) and `NUM_WORKERS` (12) are the `embed_dataset`
    defaults. `MODELS=TERRA-112M` runs one model. `SKIP_TOKENIZATION=1` runs
-   only the embedding variants. LSF passes these variables from the
+   only the embedding variants. `EMB_VARIANTS` and `TOK_VARIANTS` select the
+   variants (`base` first, as the reference); for example, to check the
+   adopted change: `EMB_VARIANTS="base base_rerun p12 final"
+   TOK_VARIANTS="base tok_gen final" TOK_NPROCS=4`. LSF passes these variables from the
    submitting shell to the job. If a variant fails, the others still run and
    the report lists the failure. The whole H5AD is read into memory, so for a
    very large file use a smaller one or raise the memory of the job.

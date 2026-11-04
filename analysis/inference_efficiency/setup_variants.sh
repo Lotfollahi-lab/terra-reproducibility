@@ -19,6 +19,8 @@
 #   tok   tokenization prototype (CSR row access, one ranking per cell,
 #         neighbors from the CSR arrays; EFFREAD_FORMAT_IN_GEN=1 also formats
 #         the examples inside the dataset generator)
+#   final the adopted change as committed to TERRA (p12 + tok with the
+#         examples formatted in the generator, by default)
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -44,7 +46,7 @@ fi
 git -C "$WORK/src/repo" fetch -q origin
 git -C "$WORK/src/repo" worktree prune
 
-for variant in base p1 p2 p12 tok; do
+for variant in base p1 p2 p12 tok final; do
     tree="$WORK/src/$variant"
     # A variant folder that is not a working tree of this clone (e.g. one of
     # an earlier clone, or a folder emptied by hand) is made anew
