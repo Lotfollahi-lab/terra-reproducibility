@@ -59,8 +59,11 @@ column).
    TERRA-96M bundles into `work/bundles/`. TERRA is cloned the same way as
    this checkout (HTTPS or SSH); set `TERRA_REPO` to clone it from elsewhere.
    The script is safe to run again: it resets the variant trees and applies
-   the patches anew. Set `WORK` to put everything somewhere other than
-   `./work`; it needs a few GB.
+   the patches anew. It ends by printing the venv's torch, datasets and
+   huggingface_hub versions (`tok_gen_fp` needs datasets >= 4.3 and is
+   skipped otherwise). Set `WORK` to put everything somewhere other than
+   `./work`, and then pass the same `WORK` to `bsub` in step 2. With the
+   defaults, `WORK` needs about 10 GB.
 
 2. Submit the job. `H5AD` is a spatial AnnData with raw counts in `X` (or
    `layers['counts']`), gene symbols or Ensembl IDs as `var_names`, and
@@ -73,18 +76,25 @@ column).
    ```
 
    The job takes the 20,000 cells closest to the centre of the section
-   (`N_CELLS`). It harmonizes and tokenizes them once per model, then runs the
-   tokenization and embedding variants with 2 timed repetitions each (`REPS`),
-   after a warm-up on 1,024 cells. `BATCH_SIZE` (128) and `NUM_WORKERS` (12)
-   are the `embed_dataset` defaults. `MODELS=TERRA-112M` runs one model.
-   `SKIP_TOKENIZATION=1` runs only the embedding variants. LSF passes these
-   variables from the submitting shell to the job.
+   (`N_CELLS`). It harmonizes and tokenizes them once per model; this is done
+   again whenever `H5AD`, `SAMPLE_KEY`, `SAMPLE` or `N_CELLS` change. It then
+   runs the embedding variants (GPU) and the tokenization variants (CPU)
+   with 2 timed repetitions each (`REPS`), after a warm-up on 1,024 cells.
+   `BATCH_SIZE` (128) and `NUM_WORKERS` (12) are the `embed_dataset`
+   defaults. `MODELS=TERRA-112M` runs one model. `SKIP_TOKENIZATION=1` runs
+   only the embedding variants. LSF passes these variables from the
+   submitting shell to the job. If a variant fails, the others still run and
+   the report lists the failure. The whole H5AD is read into memory, so for a
+   very large file use a smaller one or raise the memory of the job.
 
-3. Results: `work/results/report.md` (also at the end of the job's `.out`
-   log), with the raw numbers in `report.json`. Speed is the embedding loop
-   time per 1,000 cells, without model loading. `emb__<model>__<variant>.npz`
-   holds the embeddings of each variant. `compare.py work/results` rebuilds
-   the report.
+3. Results: `work/results/<job ID>/report.md` (also at the end of the job's
+   `.out` log), with the raw numbers in `report.json`. Speed is the time of
+   `embed_dataset`'s loop per 1,000 cells, without model loading but with
+   the DataLoader and the host-side averaging of the gene embeddings, so it
+   is the end-to-end speed-up a user would see. All variants run with the
+   same number of CPU threads (the job's slots). `emb__<model>__<variant>.npz`
+   holds the embeddings of each variant, `steps.tsv` the status of every
+   step. `python compare.py work/results/<job ID>` rebuilds the report.
 
 ## Files
 
@@ -95,6 +105,7 @@ column).
 - `prepare_data.py`: selects the cells, then harmonizes and tokenizes them
   with `base`.
 - `bench_embed.py`, `bench_tokenize.py`: time one variant and save its
-  outputs. `bench_tokenize.py compare A B` compares two tokenized datasets.
+  outputs; a tokenization variant is compared with the base dataset right
+  away. `bench_tokenize.py compare A B` compares two saved datasets.
 - `compare.py`: the report.
 - `patches/`: the candidates as diffs against TERRA d4811cf.

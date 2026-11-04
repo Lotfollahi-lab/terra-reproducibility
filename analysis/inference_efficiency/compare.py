@@ -3,16 +3,18 @@ Compare the benchmark variants with the base runs and write a report.
 
 usage: python compare.py RESULTS_DIR
 
-Reads RESULTS_DIR/emb__<model>__<variant>.{npz,json} (bench_embed.py) and
-RESULTS_DIR/tok__<model>__np<nproc>__<variant>/ (bench_tokenize.py); writes
-RESULTS_DIR/report.md and report.json and prints the report.
+Reads, from one run of run_efficiency.sh, RESULTS_DIR/emb__<model>__<variant>
+.{npz,json} (bench_embed.py), RESULTS_DIR/tok__<model>__np<nproc>__<variant>/
+timing.json (bench_tokenize.py), prepare__<model>.json (prepare_data.py) and
+steps.tsv; writes RESULTS_DIR/report.md and report.json and prints the report.
 
 Embeddings: for each output, whether it is bit-identical to the base run,
 otherwise the largest absolute difference, the largest difference relative to
 the largest base value, and the smallest per-cell cosine similarity; speed is
-the embedding-loop time per 1000 cells (mean over repetitions), and memory the
-peak GPU memory. 'base_rerun' repeats the base run: if it is not bit-identical
-to 'base', the GPU itself is not deterministic and only the size of the
+the embedding-loop time per 1000 cells (mean over repetitions; the loop
+includes the DataLoader and the host-side aggregation), and memory the peak
+GPU memory. 'base_rerun' repeats the base run: if it is not bit-identical to
+'base', the GPU itself is not deterministic and only the size of the
 differences can be judged.
 Tokenization: whether the dataset of each prototype variant equals the base
 dataset of the same nproc (rows, columns, features, every Arrow column) and
@@ -24,9 +26,6 @@ import os
 import sys
 
 import numpy as np
-
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from bench_tokenize import compare_datasets  # noqa: E402
 
 # Report order of the variants; others follow alphabetically
 ORDER = ['base', 'base_rerun', 'p2', 'p1', 'p12', 'base_pin', 'p12_pin',
@@ -92,42 +91,66 @@ def timing(path):
     return {'s_per_1000_cells': 1000 * float(np.mean(loops)) / info['n_cells'],
             'loop_s': loops,
             'peak_gpu_mem_gb': max(peaks) if peaks else None,
-            'gpu': info.get('gpu'), 'n_cells': info['n_cells'],
-            'batch_size': info['batch_size'],
-            'num_workers': info['num_workers'],
-            'pin_memory': info['pin_memory'], 'terra': info['terra']}
+            **{key: info.get(key) for key in (
+                'gpu', 'n_cells', 'batch_size', 'num_workers', 'pin_memory',
+                'terra', 'torch', 'cuda', 'datasets', 'torch_threads',
+                'cpus_available')}}
+
+
+def input_line(results, model):
+    path = os.path.join(results, f'prepare__{model}.json')
+    if not os.path.isfile(path):
+        return 'Input: unknown (no prepare.json).'
+    with open(path) as f:
+        prepared = json.load(f)
+    inputs = prepared['inputs']
+    section = (f", {inputs['sample_key']} = {inputs['sample']}"
+               if inputs.get('sample_key') else '')
+    return (f"Input: {inputs['h5ad']}{section}; {prepared['n_cells']} cells "
+            f"(N_CELLS {inputs['n_cells']}), {prepared['n_genes_harmonized']} "
+            'harmonized genes.')
 
 
 def embedding_section(results, report, lines):
-    for npz in sorted(glob.glob(os.path.join(results, 'emb__*__base.npz'))):
-        model = os.path.basename(npz).split('__')[1]
-        base = dict(np.load(npz))
-        base_time = timing(npz[:-4] + '.json')
-        lines += [f'## Embedding: {model}', '',
-                  f'{base_time["n_cells"]} cells, batch size '
-                  f'{base_time["batch_size"]}, GPU {base_time["gpu"]}. Speed '
-                  'is the embedding loop (no model loading), mean over the '
-                  'repetitions.', '',
+    models = sorted({os.path.basename(path).split('__')[1] for path in
+                     glob.glob(os.path.join(results, 'emb__*'))})
+    for model in models:
+        done = {os.path.basename(path)[:-5].split('__', 2)[2]: path[:-5]
+                for path in glob.glob(os.path.join(results,
+                                                   f'emb__{model}__*.json'))
+                if not path.endswith('.partial.json')}
+        lines += [f'## Embedding: {model}', '', input_line(results, model)]
+        report['embedding'][model] = {}
+        if 'base' not in done:
+            lines += ['', 'No complete base run: nothing to compare.', '']
+            continue
+        base = dict(np.load(done['base'] + '.npz'))
+        base_time = timing(done['base'] + '.json')
+        lines += [f'GPU {base_time["gpu"]}, torch {base_time["torch"]} (CUDA '
+                  f'{base_time["cuda"]}), datasets {base_time["datasets"]}; '
+                  f'batch size {base_time["batch_size"]}; '
+                  f'{base_time["torch_threads"]} torch CPU threads of '
+                  f'{base_time["cpus_available"]} CPUs. Speed: embedding loop '
+                  'without model loading, mean over the repetitions (each '
+                  'repetition in brackets).', '',
                   '| variant | s / 1000 cells | speedup | peak GPU GB | '
                   'outputs vs base |', '|---|---|---|---|---|']
-        report['embedding'][model] = {}
-        variants = {
-            os.path.basename(path)[:-4].split('__', 2)[2]: path
-            for path in glob.glob(os.path.join(results,
-                                               f'emb__{model}__*.npz'))}
-        for variant in sorted(variants, key=by_order):
-            path = variants[variant]
-            t = timing(path[:-4] + '.json')
-            diffs = ({} if variant == 'base'
-                     else output_differences(base, dict(np.load(path))))
+        for variant in sorted(done, key=by_order):
+            t = timing(done[variant] + '.json')
+            diffs = ({} if variant == 'base' else
+                     output_differences(base, dict(np.load(done[variant]
+                                                           + '.npz'))))
             report['embedding'][model][variant] = {'timing': t,
                                                    'outputs': diffs}
             verdict = '(reference)' if variant == 'base' else describe(diffs)
             speedup = base_time['s_per_1000_cells'] / t['s_per_1000_cells']
             peak = (f'{t["peak_gpu_mem_gb"]:.1f}'
                     if t['peak_gpu_mem_gb'] is not None else '-')
-            lines.append(f'| {variant} | {t["s_per_1000_cells"]:.2f} | '
-                         f'{speedup:.2f}x | {peak} | {verdict} |')
+            per_rep = ', '.join(f'{1000 * s / t["n_cells"]:.2f}'
+                                for s in t['loop_s'])
+            lines.append(f'| {variant} | {t["s_per_1000_cells"]:.2f} '
+                         f'({per_rep}) | {speedup:.2f}x | {peak} | '
+                         f'{verdict} |')
         rerun = report['embedding'][model].get('base_rerun')
         if rerun and not all(d.get('bit_identical')
                              for d in rerun['outputs'].values()):
@@ -138,37 +161,53 @@ def embedding_section(results, report, lines):
 
 
 def tokenization_section(results, report, lines):
-    for base_dir in sorted(glob.glob(os.path.join(results,
-                                                  'tok__*__np*__base'))):
-        _, model, nproc, _ = os.path.basename(base_dir).split('__')
-        with open(os.path.join(base_dir, 'timing.json')) as f:
-            base_info = json.load(f)
-        base_seconds = float(np.mean(base_info['seconds']))
-        lines += [f'## Tokenization: {model}, nproc {nproc[2:]}', '',
-                  f'{base_info["n_cells"]} cells; time per tokenize_adata '
+    groups = sorted({tuple(os.path.basename(path).split('__')[1:3]) for path
+                     in glob.glob(os.path.join(results, 'tok__*__np*__*'))})
+    for model, nproc in groups:
+        runs = {os.path.basename(path).split('__')[3]: path for path in
+                glob.glob(os.path.join(results, f'tok__{model}__{nproc}__*'))}
+        infos = {}
+        for variant, run_dir in runs.items():
+            path = os.path.join(run_dir, 'timing.json')
+            if os.path.isfile(path):
+                with open(path) as f:
+                    infos[variant] = json.load(f)
+        lines += [f'## Tokenization: {model}, nproc {nproc[2:]}', '']
+        report['tokenization'].setdefault(model, {})[nproc] = infos
+        if 'base' not in infos:
+            lines += ['No complete base run: nothing to compare.', '']
+            continue
+        base_seconds = float(np.mean(infos['base']['seconds']))
+        lines += [f'{infos["base"]["n_cells"]} cells; time per tokenize_adata '
                   'call, mean over the repetitions.', '',
                   '| variant | s per run | speedup | dataset vs base |',
                   '|---|---|---|---|']
-        report['tokenization'].setdefault(model, {})[nproc] = {}
-        variants = {
-            os.path.basename(path).split('__')[3]: path
-            for path in glob.glob(os.path.join(results,
-                                               f'tok__{model}__{nproc}__*'))}
-        for variant in sorted(variants, key=by_order):
-            run_dir = variants[variant]
-            with open(os.path.join(run_dir, 'timing.json')) as f:
-                seconds = float(np.mean(json.load(f)['seconds']))
-            same = (None if variant == 'base' else compare_datasets(
-                os.path.join(base_dir, 'dataset'),
-                os.path.join(run_dir, 'dataset')))
-            report['tokenization'][model][nproc][variant] = {
-                'seconds': seconds, 'vs_base': same}
-            verdict = ('(reference)' if same is None else
-                       'identical' if same['identical'] else
+        for variant in sorted(runs, key=by_order):
+            if variant not in infos:
+                lines.append(f'| {variant} | - | - | no result (failed) |')
+                continue
+            seconds = float(np.mean(infos[variant]['seconds']))
+            same = infos[variant].get('vs_base')
+            verdict = ('(reference)' if variant == 'base' else
+                       'not compared' if not same else
+                       'identical' if same.get('identical') else
                        f'DIFFERENT: {json.dumps(same)}')
             lines.append(f'| {variant} | {seconds:.1f} | '
                          f'{base_seconds / seconds:.2f}x | {verdict} |')
         lines.append('')
+
+
+def failed_steps(results, report, lines):
+    path = os.path.join(results, 'steps.tsv')
+    if not os.path.isfile(path):
+        return
+    with open(path) as f:
+        failed = [line.rstrip('\n').split('\t') for line in f
+                  if '\tFAILED' in line]
+    report['failed_steps'] = failed
+    if failed:
+        lines += ['## Failed steps', '', 'See the job log for the errors.',
+                  ''] + [f'- {name}: {status}' for name, status in failed] + ['']
 
 
 def main():
@@ -176,6 +215,7 @@ def main():
     report, lines = {'embedding': {}, 'tokenization': {}}, []
     embedding_section(results, report, lines)
     tokenization_section(results, report, lines)
+    failed_steps(results, report, lines)
     text = '\n'.join(lines)
     with open(os.path.join(results, 'report.md'), 'w') as f:
         f.write(text + '\n')

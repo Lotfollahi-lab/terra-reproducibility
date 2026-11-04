@@ -22,6 +22,7 @@ import os
 import resource
 import time
 
+import datasets
 import numpy as np
 import torch
 from datasets import load_from_disk
@@ -99,8 +100,6 @@ def main():
               f'1000 cells), wall {wall:.1f} s, peak GPU memory '
               f'{reps[-1]["peak_gpu_mem_gb"]} GB', flush=True)
 
-    np.savez(args.out + '.npz',
-             **{key: np.asarray(value) for key, value in outputs.items()})
     info = {
         'terra': terra_path,
         'n_cells': dataset.num_rows,
@@ -109,13 +108,26 @@ def main():
         'pin_memory': args.pin_memory,
         'reps': reps,
         'torch': torch.__version__,
+        'cuda': torch.version.cuda,
+        'datasets': datasets.__version__,
         'gpu': torch.cuda.get_device_name(0) if cuda else None,
+        # CPU threads of the host-side work inside the timed loop
+        'torch_threads': torch.get_num_threads(),
+        'cpus_available': (len(os.sched_getaffinity(0))
+                           if hasattr(os, 'sched_getaffinity')
+                           else os.cpu_count()),
         # ru_maxrss is in kB on Linux
         'peak_host_rss_gb': resource.getrusage(
             resource.RUSAGE_SELF).ru_maxrss / 1e6,
     }
-    with open(args.out + '.json', 'w') as f:
+    # Written under temporary names and renamed, the JSON last: a variant
+    # counts as done only once PREFIX.json exists
+    np.savez(args.out + '.partial.npz',
+             **{key: np.asarray(value) for key, value in outputs.items()})
+    os.replace(args.out + '.partial.npz', args.out + '.npz')
+    with open(args.out + '.partial.json', 'w') as f:
         json.dump(info, f, indent=2)
+    os.replace(args.out + '.partial.json', args.out + '.json')
 
 
 if __name__ == '__main__':

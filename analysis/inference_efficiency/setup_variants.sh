@@ -23,6 +23,8 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK="${WORK:-$HERE/work}"
+mkdir -p "$WORK/src" "$WORK/bundles"
+WORK="$(cd "$WORK" && pwd)"
 if [ -z "${TERRA_REPO:-}" ]; then
     origin="$(git -C "$HERE" remote get-url origin)"
     origin="${origin%/}"
@@ -30,17 +32,27 @@ if [ -z "${TERRA_REPO:-}" ]; then
 fi
 TERRA_REF="${TERRA_REF:-d4811cf}"
 MODELS="${MODELS:-TERRA-112M TERRA-96M}"
+# git never looks for a repository above WORK/src: a broken variant folder
+# must not make git act on the enclosing terra-reproducibility checkout
+export GIT_CEILING_DIRECTORIES="$WORK/src"
 
-mkdir -p "$WORK/src" "$WORK/bundles"
 if [ ! -d "$WORK/src/repo/.git" ]; then
     # (without any credentials in the URL)
     echo "Cloning TERRA from $(sed -E 's#://[^/@]*@#://#' <<< "$TERRA_REPO")"
     git clone -q "$TERRA_REPO" "$WORK/src/repo"
 fi
 git -C "$WORK/src/repo" fetch -q origin
+git -C "$WORK/src/repo" worktree prune
 
 for variant in base p1 p2 p12 tok; do
     tree="$WORK/src/$variant"
+    # A variant folder that is not a working tree of this clone (e.g. one of
+    # an earlier clone, or a folder emptied by hand) is made anew
+    if [ -e "$tree" ] && [ "$(git -C "$tree" rev-parse --show-toplevel \
+            2>/dev/null)" != "$(cd "$tree" && pwd -P)" ]; then
+        rm -rf "$tree"
+        git -C "$WORK/src/repo" worktree prune
+    fi
     if [ ! -d "$tree" ]; then
         git -C "$WORK/src/repo" worktree add -q --detach "$tree" "$TERRA_REF"
     fi
@@ -56,6 +68,9 @@ done
 
 # Model bundles (Hugging Face 'main'). download_pretrained only fetches
 # missing or changed files, so it also completes an interrupted download.
+# Older huggingface_hub versions keep large files in the hub cache and link
+# to them from local_dir: keep that cache under WORK too.
+export HF_HUB_CACHE="$WORK/hf_cache" HUGGINGFACE_HUB_CACHE="$WORK/hf_cache"
 for model in $MODELS; do
     bundle="$WORK/bundles/$model"
     PYTHONPATH="$WORK/src/base/src" python -c \
@@ -75,3 +90,5 @@ for model in $MODELS; do
     fi
     echo "bundle $model: $(ls "$bundle" | tr '\n' ' ')"
 done
+
+python -c 'import datasets, huggingface_hub, torch; print("venv: torch", torch.__version__, "| datasets", datasets.__version__, "| huggingface_hub", huggingface_hub.__version__)'
