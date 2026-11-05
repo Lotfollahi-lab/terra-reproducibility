@@ -49,6 +49,9 @@ CACHE_FOLDER_PATH = os.environ.get(
 TERRA_MODELS = {
     '96m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/01112025_081731_614',
     '112m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/11012026_190057_836',
+    # TERRA-96M retrained with all neighbour segments masked (epoch-2 checkpoint,
+    # same budget as the 96m bundle); see README.txt in the folder.
+    'noneigh': '/nfs/team361/me13/terra_models/96m_no_neighbours_ep2',
 }
 TERRA_MODEL_FOLDER_PATH = TERRA_MODELS['96m']
 FM_EMBEDDINGS_FOLDER_PATH = ('/nfs/team361/sb75/terra-reproducibility/'
@@ -111,6 +114,28 @@ DATASETS = {
         coord_scale=0.18,   # NanoString px -> um
         spot_size=80 * 0.18,
         cell_type_levels=dict(fine='cell_type')),
+    'xhl3001-22b_1p': dict(
+        label='Xenium lung (fibrosis, CAMEO)',
+        # Built from theislab/CAMEO-Lung by
+        # analysis/data_preparation/process_cameo_lung.py (22 samples; niche =
+        # pathologist label of the 224-px patches containing the cell).
+        silver_folder='/nfs/team361/me13/DATASETS/silver',
+        file_patterns=[f'adata_batch{k}.h5ad' for k in range(22)],
+        niche_key='niche',
+        drop_unlabeled=True,
+        coord_scale=1.0,
+        spot_size=20),
+    'vhl3002-1b_1p': dict(
+        label='Visium HD lung (LUAD)',
+        # Built by analysis/data_preparation/process_visium_hd_luad.py (one
+        # segmented section; niche = pathologist region, 'Unassigned' dropped;
+        # counts rounded to integers).
+        silver_folder='/nfs/team361/me13/DATASETS/silver',
+        file_patterns=['adata_batch0.h5ad'],
+        niche_key='niche',
+        drop_unlabeled=True,
+        coord_scale=1.0,
+        spot_size=10),
 }
 DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
 
@@ -127,18 +152,21 @@ METHODS = {
                       note='2000 HVGs (seurat_v3) before tokenization'),
     'terra_112m': dict(label='TERRA-112M', color='#2b7a8c',
                        note='trained on the full corpus (no held-out split)'),
-    'terra_cell_emb': dict(label='TERRA (cell emb.)', color='#b5ddd0',
-                           note='TERRA-96M cell_emb: index cell only, no neighbour tokens'),
-    'terra_cell_emb_nbavg': dict(label='TERRA (cell emb., neigh. avg.)', color='#8fc9b6',
-                                 note='TERRA-96M cell_emb averaged over 10 spatial neighbours'),
     'terra_random': dict(label='TERRA (random init)', color='#c9c9c9',
                          note='same architecture, untrained (capacity control)'),
+    'terra_noneigh': dict(label='TERRA (no-neigh. pretraining)', color='#5e8f84',
+                          note='TERRA-96M retrained with neighbour cells masked; '
+                               'neighborhood_emb'),
+    'terra_noneigh_cell_emb_nbavg': dict(label='TERRA (no-neigh. pretraining, cell emb., '
+                                               'neigh. avg.)', color='#82a59d',
+                                         note='no-neighbour model, cell_emb averaged over '
+                                              '10 spatial neighbours'),
     'neigh_expr_pca': dict(label='Neigh. Expr. PCA', color='#f4a6a6', note=''),
-    # Cell-type composition baseline, two clusterings (keep one: delete the other
-    # entry; results of both stay on disk).
-    'cell_type_composition': dict(label='Neigh. Cell-Type Comp. (Leiden)', color='#b8c97a',
-                                  note='annotated cell types (finest level), shared '
-                                       'Leiden scan; n/a for ISS (no annotation)'),
+    # Left out of the figures (results kept on disk): scVI latent averaged over 10
+    # spatial neighbours ('scvi_nbavg'), TERRA-96M cell embedding with and without
+    # neighbour averaging ('terra_cell_emb', 'terra_cell_emb_nbavg'), the
+    # no-neighbour model's cell embedding ('terra_noneigh_cell_emb') and the
+    # cell-type composition baseline clustered with Leiden ('cell_type_composition').
     'cell_type_composition_kmeans': dict(label='Neigh. Cell-Type Comp. (k-means)',
                                          color='#8fa35a',
                                          note='annotated cell types (finest level), '
@@ -150,11 +178,21 @@ METHODS = {
                    note='forced integration: + Harmony'),
     'novae': dict(label='Novae', color='#ffde17',
                   note='Leiden on Novae batch-corrected embedding'),
-    'nicheformer': dict(label='NicheFormer', color='#95a3c3', note=''),
-    'nicheformer_rerun': dict(label='NicheFormer (rerun)', color='#6f7fa6',
+    # Earlier embeddings (method 'nicheformer', results kept on disk) replaced by
+    # the rerun with the authors' recipe (run_nicheformer.py).
+    'nicheformer_rerun': dict(label='NicheFormer', color='#95a3c3',
                               note='authors\' recipe: NaN technology mean -> 1, context tokens'),
     'cellplm': dict(label='CellPLM', color='#ea9776', note=''),
     'scgpt-spatial': dict(label='scGPT-spatial', color='#db96c0', note=''),
+}
+
+# (method, dataset) pairs left out (n/a) although results exist on disk.
+NOT_APPLICABLE = {
+    # Nicheformer has no ISS technology token, and its ISS technology mean covers
+    # only 27 of the 169 panel genes.
+    ('nicheformer_rerun', 'chr78-11b_1p'): 'ISS not supported by Nicheformer',
+    # Visium HD: no technology token and no technology mean in Nicheformer.
+    ('nicheformer_rerun', 'vhl3002-1b_1p'): 'Visium HD not supported by Nicheformer',
 }
 
 
@@ -175,7 +213,7 @@ def load_benchmark_dataset(dataset_name: str,
     """
     cfg = DATASETS[dataset_name]
     niche_key = cfg['niche_key']
-    folder = Path(SILVER_FOLDER_PATH) / dataset_name
+    folder = Path(cfg.get('silver_folder', SILVER_FOLDER_PATH)) / dataset_name
 
     files = sorted(f for f in os.listdir(folder)
                    if f.endswith('.h5ad')

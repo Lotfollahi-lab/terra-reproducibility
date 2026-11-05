@@ -7,7 +7,7 @@
 #   METHOD=terra_cell_emb_nbavg EXTRA_ARGS=--neighbour_average bsub < reuse_embedding.lsf
 #
 #BSUB -G team361                                                                  # LSF group
-#BSUB -J human_niche_reuse_emb[1-4]                                               # Array job: one per dataset
+#BSUB -J human_niche_reuse_emb[1-6]                                               # Array job: one per dataset
 #BSUB -o ../../../artifacts/benchmarking/human/logs/reuse_emb_%J_%I.out           # Standard output
 #BSUB -e ../../../artifacts/benchmarking/human/logs/reuse_emb_%J_%I.err           # Standard error
 #BSUB -q normal                                                                   # Queue name
@@ -18,7 +18,7 @@
 set -euo pipefail
 source "$LS_SUBCWD/config.sh"
 
-DATASETS=(xhs1000-39b_1p xhs49-1b_1p chr78-11b_1p chl59-8b_1p)
+DATASETS=(xhs1000-39b_1p xhs49-1b_1p chr78-11b_1p chl59-8b_1p xhl3001-22b_1p vhl3002-1b_1p)
 DATASET=${DATASETS[$((LSB_JOBINDEX - 1))]}
 SOURCE=${SOURCE:-terra}
 EMB_KEY=${EMB_KEY:-cell_emb}

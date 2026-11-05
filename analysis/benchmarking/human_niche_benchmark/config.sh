@@ -16,5 +16,8 @@ PYTHON_CELLCHARTER=/nfs/team361/sb75/.venvs/cellcharter/bin/python
 PYTHON_NICHECOMPASS=/nfs/team361/sb75/.venvs/nichecompass/bin/python
 PYTHON_NICHEFORMER=/nfs/team361/sb75/.venvs/nicheformer/bin/python
 PYTHON_TERRA=/nfs/team361/sb75/.venvs/terra/bin/python
+PYTHON_NOVAE=/nfs/team361/sb75/.venvs/novae/bin/python
+PYTHON_CELLPLM=/nfs/team361/sb75/.venvs/cellplm/bin/python
+PYTHON_SCGPT_SPATIAL=/nfs/team361/sb75/.venvs/scgpt/bin/python   # scgpt-spatial venv cannot import scgpt_spatial (run_scgpt_spatial.py)
 
 export NUMBA_CPU_NAME=generic   # reproducible UMAP/Leiden (as in the repo notebooks)

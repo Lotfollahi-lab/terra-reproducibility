@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from bench_utils import DATASET_LABELS, FINAL_OUTPUT_FOLDER_PATH, METHODS
+from bench_utils import DATASET_LABELS, FINAL_OUTPUT_FOLDER_PATH, METHODS, NOT_APPLICABLE
 
 RESULTS = Path(FINAL_OUTPUT_FOLDER_PATH)
 OUT = RESULTS / 'summary'
@@ -56,6 +56,10 @@ def main():
             base = dict(method=method, method_name=spec['label'],
                         dataset=dataset, dataset_label=dataset_label,
                         note=spec['note'])
+            if (method, dataset) in NOT_APPLICABLE:
+                headline_rows.append(dict(base, status='not applicable',
+                                          note=NOT_APPLICABLE[(method, dataset)]))
+                continue
             path = RESULTS / method / f'{dataset}_{method}_metric_scores.csv'
             if not path.exists():
                 headline_rows.append(dict(base, status='missing'))

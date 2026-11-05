@@ -18,7 +18,8 @@ which of them are kept is arbitrary.
 
 ``--model`` selects the model bundle (bench_utils.TERRA_MODELS): ``96m``
 (TERRA-96M, default; methods ``terra`` / ``terra_hvg``) or ``112m``
-(TERRA-112M; methods ``terra_112m`` / ``terra_112m_hvg``).
+(TERRA-112M; methods ``terra_112m`` / ``terra_112m_hvg``) or ``noneigh``
+(TERRA-96M retrained with the neighbour cells masked; method ``terra_noneigh``).
 
 ``--random_init`` (method ``terra_random``) skips loading the checkpoint: the
 same architecture is built by TERRA's own ``init_model`` (seeded) and used

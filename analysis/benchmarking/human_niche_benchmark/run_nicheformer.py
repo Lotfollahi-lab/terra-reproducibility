@@ -50,13 +50,15 @@ AUX_TOKENS = 30
 MODALITY_SPATIAL = 4
 SPECIE_HUMAN = 5
 # Assay tokens and technology means from the authors' tokenization notebooks
-# ("cosmx": 8, "Xenium": 9). ISS has neither; Xenium (closest targeted
-# imaging panel) is used, as in the earlier embeddings.
+# ("cosmx": 8, "Xenium": 9). ISS has no assay token; it has a technology mean
+# (iss_mean_script.npy), but that covers only 27 of the 169 chr78 panel genes
+# (Xenium: 69), so Xenium is used for both, as in the earlier embeddings.
 TECHNOLOGY = {
     'xhs1000-39b_1p': ('xenium', 9),
     'xhs49-1b_1p': ('xenium', 9),
     'chr78-11b_1p': ('xenium', 9),
     'chl59-8b_1p': ('cosmx', 8),
+    'xhl3001-22b_1p': ('xenium', 9),
 }
 
 
@@ -74,7 +76,7 @@ def ensembl_ids(dataset_name, gene_names):
     load_benchmark_dataset concatenates sections with ad.concat, which drops
     var columns, so they are read from the source files here.
     """
-    folder = Path(SILVER_FOLDER_PATH) / dataset_name
+    folder = Path(DATASETS[dataset_name].get('silver_folder', SILVER_FOLDER_PATH)) / dataset_name
     mapping = {}
     for file in sorted(folder.glob('*.h5ad')):
         if not any(p in file.name for p in DATASETS[dataset_name]['file_patterns']):
