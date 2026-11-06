@@ -5,7 +5,8 @@
 # both come from the env file and are passed through bsub -env.
 #
 # Usage: bash submit_ablation_array.sh ENV_FILE [INDICES (default: all rows; e.g. 1 for a pilot)] [MAX_CONCURRENT (default: 2)]
-# Example: bash submit_ablation_array.sh datasets/ovca.env 1
+# Example: bash submit_ablation_array.sh datasets/ovca.env 1          (pilot: the base run)
+#          bash submit_ablation_array.sh datasets/ovca.env "" 1       (all runs, 4 GPUs at a time)
 # Submit one array at a time: each array has its own concurrency limit.
 # Retry failed elements (they resume from their latest checkpoint): brequeue -e "<JOBID>[<INDEX>]"
 # Change concurrency of a submitted array: bmod -J "%<N>" <JOBID>

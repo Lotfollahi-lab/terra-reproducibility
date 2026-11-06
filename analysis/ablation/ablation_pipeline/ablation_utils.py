@@ -131,6 +131,27 @@ def get_seq_len_cell(tokenization: dict) -> int:
     return int(tokenization["model_input_size"] / (tokenization["n_neighs"] + 1))
 
 
+def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 100_000):
+    """
+    Boolean array over the cells of `adata`: True for a cell without a detected gene of the token dictionary (raw count
+    > 0 in `adata.X` for a gene whose `var['ensembl_id']` has a token, the genes the tokenizer keeps). With
+    `zero_expr_from_raw_counts`, exactly these cells have an empty ranked gene list in every tokenization. Their own
+    segment holds only padding (empty embedding), and on the sparse ranking path (most arms, including base) the
+    pinned tokenizer does not count them as neighbor segments (`_format_examples`): a cell with k such neighbors gets
+    longer segments that no longer start where the datasets read them, and loses its k farthest neighbors (TERRA's
+    H2, fixed there in 7f6a30c by removing these cells before tokenization). Works on backed AnnData (row chunks).
+    """
+    import numpy as np
+    import scipy.sparse as sp
+
+    in_vocabulary = np.array([bool(token_dict.get(gene_id, False)) for gene_id in adata.var["ensembl_id"]])
+    n_detected = np.zeros(adata.n_obs, dtype=np.int64)
+    for start in range(0, adata.n_obs, chunk_size):
+        X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
+        n_detected[start:start + X.shape[0]] = np.asarray((X > 0).sum(axis=1)).ravel()
+    return n_detected == 0
+
+
 def get_section_names(label_file_paths: list) -> list[str]:
     """Section of each label file (one file = one section): its name without extension, its path if names coincide."""
     names = [Path(file_path).stem for file_path in label_file_paths]

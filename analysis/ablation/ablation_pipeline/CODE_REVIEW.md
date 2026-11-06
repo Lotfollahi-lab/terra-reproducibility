@@ -114,8 +114,37 @@ refactored pipeline found no High issue for the OVCA runs. Resolved:
 - Comparison: SD with ddof 0 (as the mouse figures), missing runs reported, readable panels.
 - The scripts are dataset-agnostic (all values as parameters; `datasets/<dataset>.env`).
 - Tokenization waits for `<norm factors>.done`; two arrays of one campaign cannot run at once.
-Open: batch-integration metrics (iLISI, ASW, MMD) for the mouse rerun. Kept: worker seeds equal across ranks
-(about 0.6% of steps share their segment count and metatoken-drop decision across ranks).
+Open: batch-integration metrics (iLISI, ASW, MMD) for the mouse rerun (added on 1 Nov: seeded, over the labelled
+cells as in the notebook). Kept: worker seeds equal across ranks (about 0.6% of steps share their segment count and
+metatoken-drop decision across ranks).
+
+## Third review (6 Nov 2026): findings of the TERRA reviews
+
+The TERRA reviews of November checked TERRA, not the pinned code. Of their findings, one also applies to the
+ablations; the others are in paths the ablations do not use or are fixed by the patch:
+- **Cells without a detected gene of the token dictionary** (TERRA H2, fixed there in 7f6a30c). Such a cell has an
+  empty ranked gene list (with `zero_expr_from_raw_counts`: no vocabulary gene with raw count > 0). In the pinned
+  `CellGraphTokenizer._format_examples`, the segment count is 1 + the number of distinct neighbor segment ids
+  present, so on the sparse ranking path (most arms, including base) an empty neighbor removes its segment:
+  - the cells around it get segments of `model_input_size / (n_neighs + 1 - k)` tokens instead of the fixed
+    blocks the datasets read;
+  - the loop over ids 2..n keeps the empty id (as padding) and drops the farthest neighbor.
+
+  The patched dense path keeps one entry per empty cell, so its segment layout is unaffected (patch 15). Resolved
+  at the data level:
+  - `check_setup.py` (check 2) fails while a silver cell has no detected vocabulary gene;
+  - `filter_silver_cells.py` writes silver copies without these cells (mouse: `..._nonempty`), and
+    `prepare_ovca_data.py` removes them. OVCA's harmonization already required 10 detected genes per cell.
+
+  Removing the cells before tokenization also removes them from the neighbor graph (TERRA's default since
+  7f6a30c), and the factors, tokenization and evaluation read the same cells.
+- Not used by the ablations: ALiBi (not in the pinned code), `agg_type='softmax'` (evaluation pools with `avg`),
+  cell-area normalization, cycle consistency, token distance, fine-tuning, perturbation.
+- Fixed by the patch: padded-metatoken predictor (3, 4), metatoken at inference (10, 11), cell-only context length
+  (11, 17), `nz_spc` at inference (11), stable rank ties (13), dense-path `n_nonzero_tokens` (15), the
+  cell-neighborhood split and own-kNN sum (17, 18), mask padding (6), resume (7).
+- Pooling over batches with padded special tokens: evaluation never mixes sequences with and without the
+  metatoken (`drop` removes it from all, `keep` keeps it in all), so it is not affected.
 
 ## Coordinate (spatial-encoding) ablation
 

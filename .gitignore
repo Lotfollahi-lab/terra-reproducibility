@@ -19,3 +19,6 @@ analysis/benchmarking/CellPLM
 analysis/benchmarking/nicheformer
 analysis/benchmarking/scGPT-spatial
 analysis/benchmarking/nichecompass
+
+# Parameter files of the ablation pipeline (the `datasets` rule above ignores every folder of that name)
+!analysis/ablation/ablation_pipeline/datasets/

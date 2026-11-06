@@ -8,10 +8,12 @@ This script checks the setup of an ablation campaign on the farm before launchin
    folder and resumption, seed, step-matched epochs, code version) are ignored; any other difference means the plan
    does not reproduce the mouse experiment and should be resolved first. Inferred overrides (cell-neighborhood layout,
    dimension ablations) are verified here.
-2. Special values: the batch special value of every silver file fits into the special value embedding of the configs,
-   and the `gt_type: rank` metatoken gets the right token id. The patched dataset derives the token offset from the
-   token dictionary; the offset hard-coded in the unpatched code is reported for the dataset's and the mouse dictionary
-   (the latter tells whether the mouse rank arms trained with the right metatoken).
+2. Special values and vocabulary genes: the batch special value of every silver file fits into the special value
+   embedding of the configs, and the `gt_type: rank` metatoken gets the right token id. The patched dataset derives the
+   token offset from the token dictionary; the offset hard-coded in the unpatched code is reported for the dataset's
+   and the mouse dictionary (the latter tells whether the mouse rank arms trained with the right metatoken). Fails if a
+   silver cell has no detected gene of the token dictionary: its ranked gene lists are empty, which shifts the segments
+   of the cells around it on the sparse ranking path (remove such cells with filter_silver_cells.py).
 3. Labels and sections: every label file (LABEL_FILE_PATHS, default: the silver files) is one section, the batch of the
    integration metrics. Prints its cells, uns dataset id and batch, label keys and their most frequent values (to spot
    the unassigned value) and how many cells carry the unassigned label. Fails if a file is missing or has no
@@ -50,10 +52,11 @@ import shlex
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 
-from ablation_utils import get_section_names, get_tokenized_dataset_path, load_plan
+from ablation_utils import cells_without_vocabulary_genes, get_section_names, get_tokenized_dataset_path, load_plan
 
 # Keys that differ between the mouse runs and the reruns by design
 IGNORED_KEYS = {"code_version",
@@ -176,7 +179,7 @@ def hard_coded_rank_offset(token_dict: dict) -> int:
 
 def check_special_values(config_file_path: Path, token_dictionary_file_path: str, silver_file_paths: list,
                          mouse_token_dictionary_file_path: str) -> bool:
-    print("== 2. Batch special values")
+    print("== 2. Batch special values and vocabulary genes")
     import scanpy as sc
     from stjepa.datasets.cell_datasets import get_spv_token_offset
 
@@ -186,8 +189,17 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
     with open(config_file_path) as file:
         n_special_values = yaml.safe_load(file)["data"]["n_special_values"]
     fits = True
+    n_empty_cells = 0
     for silver_file_path in silver_file_paths:
-        uns = sc.read_h5ad(silver_file_path, backed="r").uns
+        adata = sc.read_h5ad(silver_file_path, backed="r")
+        uns = adata.uns
+        # Cells without a detected vocabulary gene, among those the tokenizer keeps (obs['filter_pass'], filters.py)
+        empty = cells_without_vocabulary_genes(adata, token_dict)
+        if "filter_pass" in adata.obs.columns:
+            empty &= np.array([filter_pass == 1 for filter_pass in adata.obs["filter_pass"]])
+        n_empty_cells += int(empty.sum())
+        print(f"{silver_file_path}: {int(empty.sum())} of {adata.n_obs} cells without a detected gene of the token "
+              f"dictionary{' (OK)' if not empty.any() else ', e.g. ' + str(list(adata.obs_names[empty][:3]))}")
         batch_value_token = token_dict[f"spv_{uns['dataset_id']}_{uns['batch']}"]
         batch_value = batch_value_token - spv_offset
         fits &= batch_value <= n_special_values + 1
@@ -207,7 +219,11 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
               f"{'the right' if mouse_offset == hard_coded_rank_offset(mouse_token_dict) else 'a WRONG'} metatoken")
     else:
         print(f"Mouse token dictionary not found ({mouse_token_dictionary_file_path}).")
-    return fits
+    if n_empty_cells > 0:
+        print(f"ERROR: {n_empty_cells} cells have no detected gene of the token dictionary, so their ranked gene lists "
+              f"are empty; on the sparse ranking path the cells around them get shifted segments and lose their "
+              f"farthest neighbors. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
+    return fits and n_empty_cells == 0
 
 
 def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str) -> tuple[bool, pd.Series]:

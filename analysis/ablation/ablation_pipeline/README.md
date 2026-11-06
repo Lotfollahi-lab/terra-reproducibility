@@ -17,6 +17,7 @@ dataset-specific defaults. Two datasets are defined:
 | `ablation_plan.yaml`, `base_config.yaml` | The variants, tokenizations and replicates; the mouse base model config. |
 | `setup_code.sh` | Pinned model code: stjepa `b433d5e` + `stjepa_ablation.patch` at `CODE_PATH`, with `CODE_VERSION`. |
 | `prepare_ovca_data.py` / `.lsf` | OVCA only: silver AnnData, normalization factors, token dictionary checks. |
+| `filter_silver_cells.py` | Silver copies without the cells that have no detected gene of the token dictionary (mouse: step 3). |
 | `generate_ablation_runs.py` | Run configs, `manifest.tsv` and `dataset.env` in the artifact folder. |
 | `submit_tokenization.sh`, `tokenize_dataset.lsf` / `.py` | Tokenized datasets of the plan (job array). |
 | `check_setup.py`, `check_mouse_norm_factors.py` | Checks before launch: pinned code, parity with the mouse configs, special values, labels and sections, datasets, factors. |
@@ -109,7 +110,10 @@ The mouse sections of the original ablations, rerun with this pipeline (`dataset
 STARmap PLUS (batch15), coordinate-aligned, the training data of the mouse base config. Labels: `ccf_region_name`
 (MERFISH) and `Sub_molecular_tissue_region` (STARmap PLUS), the region keys of the mouse evaluation. Same plan, base
 config, pinned code and launch setup as OVCA, with the mouse schedule (300 epochs, 3 warmup) and `n_special_values`
-200. The mouse silver data exists; only the norm factors are new.
+200. The mouse silver data exists; new are a filtered copy of the two section files (`DATASET_NAME`
+`mmb0-1b_smb1-1b_2p_coord_aligned_nonempty`: without cells that have no detected gene of the mouse token dictionary,
+which would shift the neighbor segments of the cells around them; the source files stay as they are) and its norm
+factors.
 
 Run from this folder in bash (in zsh, `setopt sh_word_split` first), in one shell; in a new shell, first rerun the
 `source` lines of step 3. Wait where noted.
@@ -122,11 +126,19 @@ cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/a
 #    runs; it now also imports scib_metrics)
 bash setup_code.sh datasets/mouse.env
 
-# 3. Norm factors of the two sections (new file, tokenizer constants; 92,520 cells, a few minutes; run it interactively,
-#    e.g. in a bsub -Is job). The script writes <norm factors>.done last; the tokenization waits for it.
+# 3. Silver files and norm factors (92,520 cells, a few minutes; run it interactively, e.g. in a bsub -Is job).
+#    First the two section files without the cells that have no detected gene of the mouse token dictionary, into the
+#    dataset's own silver folder (prints how many it removes; the source files are not modified), then the factors of
+#    the filtered files (new file, tokenizer constants). compute_norm_factors.py writes <norm factors>.done last; the
+#    tokenization waits for it.
 source datasets/mouse.env
-echo "${SILVER_FILE_PATHS}"   # two files, MERFISH and STARmap PLUS
+ls "${DATA_DIRECTORY_PATH}/silver/${SOURCE_DATASET_NAME}"   # the two section files of SOURCE_SILVER_FILE_PATHS
 source "${ENV_PATH}/bin/activate" && export PYTHONPATH="${CODE_PATH}/src"
+python filter_silver_cells.py --source_silver_file_paths ${SOURCE_SILVER_FILE_PATHS} \
+    --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" \
+    --output_folder_path "${DATA_DIRECTORY_PATH}/silver/${DATASET_NAME}"
+source datasets/mouse.env     # again: SILVER_FILE_PATHS lists the filtered files once they exist
+echo "${SILVER_FILE_PATHS}"   # two files, MERFISH and STARmap PLUS
 python compute_norm_factors.py --silver_file_paths ${SILVER_FILE_PATHS} --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}"
 
 # 4. Run configs, manifest.tsv and dataset.env (95 runs; 300 epochs, 3 warmup)
@@ -172,6 +184,9 @@ bash submit_ablation_array.sh datasets/mouse.env 1
 
 # 9. All 95 runs (the pilot is skipped): 2 elements x 4 GPUs = 8 GPUs at a time (the default %2); never two arrays at once
 bash submit_ablation_array.sh datasets/mouse.env
+#    or 4 GPUs at a time (one run at a time, about twice the wall time; every run keeps its 4 GPUs, so the batch size
+#    and schedule are unchanged): bash submit_ablation_array.sh datasets/mouse.env "" 1
+#    The limit of a submitted array can be changed at any time: bmod -J "%1" <JOBID> (or "%2")
 
 # 10. Results and figures (also works on a partial campaign; lists the missing runs)
 python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --dataset_name "${DATASET_NAME}" \
@@ -180,7 +195,8 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 
 - **Runs:** 95 (51 variants), in the order and with the seeds of the OVCA campaign.
 - **Runtime:** 722 iterations per epoch on 4 GPUs, 300 epochs (216,600 steps): about 3 h per run for the base config,
-  so about 6 days for all 95 runs at 2 at a time (95 × 3 h / 2), plus evaluation and the slower arms (128 and 256
+  so about 6 days for all 95 runs at 2 at a time (95 × 3 h / 2; about 12 days at 1 at a time), plus evaluation and
+  the slower arms (128 and 256
   genes, widths 960 and 1152). Evaluation per run: two embedding passes, then per pass a kNN graph, nine Leiden runs
   and the integration metrics (about 2.5 min per pass at this size, measured on synthetic data: mostly the
   single-threaded 90-NN graph of iLISI; MMD about 25 s, 1.6 GB). Tokenization: 27 small jobs (92,520 cells).
@@ -346,7 +362,11 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 1. Prepare the silver files into `<DATA_DIRECTORY_PATH>/silver/<DATASET_NAME>/` (raw counts, `var['ensembl_id']`,
    `obs['cell_id']`, the label keys, `uns` dataset id and batch with special values in the token dictionary). The
    tokenizer reads every h5ad file in that folder; `SILVER_FILE_PATHS` must list exactly those files. Labels may
-   instead come from separate files (`LABEL_FILE_PATHS`, one per section, with the same `obs['cell_id']`).
+   instead come from separate files (`LABEL_FILE_PATHS`, one per section, with the same `obs['cell_id']`). Every cell
+   needs a detected gene of the token dictionary (`check_setup.py`, check 2): a cell without one has empty ranked
+   gene lists, and on the sparse ranking path (most arms) the cells around it get shifted segments and lose their
+   farthest neighbors. Remove such cells while preparing the data, or write filtered copies with
+   `filter_silver_cells.py` as for the mouse sections.
 2. Write the normalization factors of the cohort with `compute_norm_factors.py` (tokenizer constants).
 3. Copy `datasets/mouse.env` (several sections) or `datasets/ovca.env` to `datasets/<dataset>.env` and set the values:
    a new `ARTIFACT_FOLDER_PATH` and `EXPERIMENT_TAG`, `EPOCHS` / `WARMUP` matched to the mouse runs in optimizer steps,

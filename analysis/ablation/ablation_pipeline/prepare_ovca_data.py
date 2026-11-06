@@ -6,7 +6,8 @@ paths are the values of `datasets/ovca.env`):
 1. Harmonizes the bronze AnnData into a silver AnnData with TERRA's `harmonize_batch`, using the metadata of the same 10x
    section in the TERRA corpus (`xho50-1b_1p`: dataset id 50, batch0) so that the human token dictionary already holds
    its special value tokens. The pathologist labels (`path_region`), cell type labels and 10x cell ids (obs_names) are
-   kept; only `obsm['spatial']` (microns) is kept as coordinates.
+   kept; only `obsm['spatial']` (microns) is kept as coordinates. Cells without a detected gene of the token
+   dictionary are removed (they would shift the neighbor segments of the cells around them; filter_silver_cells.py).
 2. Computes the per-gene normalization factors of this cohort (the section itself) with `norm_factors.py`, i.e. as
    `stjepa-reproducibility/src/compute_norm_factors.py` does, with the gene-corrected read depth constants of the
    tokenizer (153.4768 + 0.0487 * n_genes), so that factors and tokenization are consistent. They are needed by the
@@ -36,6 +37,7 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 
+from ablation_utils import cells_without_vocabulary_genes
 from norm_factors import compute_norm_factors
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "data_preparation"))
@@ -101,6 +103,12 @@ def main(args):
                             gene_ensembl_map_dict=gene_ensembl_map_dict)
     adata.X.eliminate_zeros()
     assert adata.obs_names.is_unique, "Cell ids (obs_names) must be unique to join the labels after embedding."
+    # Cells without a detected gene of the token dictionary have empty ranked gene lists and shift the segments of the
+    # cells around them (filter_silver_cells.py); harmonize_batch keeps cells with >= 10 genes of any kind
+    with open(args.token_dictionary_file_path, "rb") as file:
+        empty = cells_without_vocabulary_genes(adata, pickle.load(file))
+    print(f"Removing {int(empty.sum())} cells without a detected gene of the token dictionary.")
+    adata = adata[~empty].copy()
 
     os.makedirs(Path(args.silver_file_path).parent, exist_ok=True)
     adata.write_h5ad(args.silver_file_path)

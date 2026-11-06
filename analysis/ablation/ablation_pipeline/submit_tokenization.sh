@@ -58,7 +58,7 @@ if [ ! -f "${NORM_FACTOR_FILE_PATH}.done" ]; then
 fi
 if [ "${#MISSING_FILE_PATHS[@]}" -gt 0 ]; then
     echo "ERROR: the data preparation must finish first (OVCA: prepare_ovca_data.lsf, check with bjobs and its log;" \
-         "mouse: compute_norm_factors.py, README.md); missing: ${MISSING_FILE_PATHS[*]}" >&2
+         "mouse: filter_silver_cells.py, then compute_norm_factors.py, README.md); missing: ${MISSING_FILE_PATHS[*]}" >&2
     exit 1
 fi
 if [ ! -f "${CODE_PATH}/CODE_VERSION" ]; then
