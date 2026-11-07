@@ -3,10 +3,10 @@ This script creates one tokenized dataset of the ablation plan from the silver d
 `stjepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py` created the mouse ablation datasets (same
 tokenizer arguments and output naming), but with the pinned TERRA tokenizer (`terra.tokenizers`), sequential
 processing of the silver files (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
-(`tokenizer_options`: deterministic top-k ties, detected genes only, the Seurat v3 LOESS span, own-neighbor
-aggregation and the equal index-cell/neighborhood split of the cell-neighborhood tokenizer; their names are appended to
-the dataset name; TERRA counts the real gene tokens for the length-grouped sampler without an option) and without
-wandb logging. The tokenizer reads every h5ad file
+(`tokenizer_options`: deterministic top-k ties ordered by corpus mean, detected genes only, the Seurat v3 LOESS span,
+own-neighbor aggregation and the equal index-cell/neighborhood split of the cell-neighborhood tokenizer; their names are
+appended to the dataset name; TERRA counts the real gene tokens for the length-grouped sampler without an option) and
+without wandb logging. The tokenizer reads every h5ad file
 below `<data_directory_path>/silver/<dataset_name>`; they must be exactly `--silver_file_paths`, so that the
 evaluation's labels cover the tokenized cells. The dataset is written under a temporary name and renamed when
 complete, so that interrupted jobs are never mistaken for finished datasets.
@@ -80,6 +80,8 @@ def main(args):
                  "cell-neighborhood-tokenizer": CellNeighborhoodTokenizer}[tokenization["tokenizer"]]
     tokenizer_kwargs = {"stable_rank_ties": tokenization["stable_rank_ties"],
                         "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"]}
+    if tokenization["rank_tie_break_norm_factor"] is not None:
+        tokenizer_kwargs["rank_tie_break_norm_factor"] = tokenization["rank_tie_break_norm_factor"]
     if tokenization["seurat_loess_span"] is not None:
         tokenizer_kwargs["seurat_loess_span"] = tokenization["seurat_loess_span"]
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":

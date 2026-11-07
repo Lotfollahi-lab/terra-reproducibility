@@ -22,10 +22,13 @@ NORM_METHOD_KEYS = ["rank_cell_norm_method",
                     "count_gene_norm_method",
                     "count_count_norm_method"]
 # Opt-in tokenizer fixes of TERRA (off = behaviour of the mouse tokenizations); the plan sets them for all
-# tokenizations under `tokenizer_options`. seurat_loess_span None keeps TERRA's default (0.75, the span the mouse
-# tokenizations effectively used). The last two only apply to the cell-neighborhood tokenizer: seq_len_cell None is the
-# original v2 split into n_neighs + 1 blocks, model_input_size / 2 TERRA's equal split (split_cell_neigh_equally).
+# tokenizations under `tokenizer_options`. rank_tie_break_norm_factor (a column of the norm factor file, with
+# stable_rank_ties) orders tied genes before the token id. seurat_loess_span None keeps TERRA's default (0.75, the span
+# the mouse tokenizations effectively used). The last two only apply to the cell-neighborhood tokenizer: seq_len_cell
+# None is the original v2 split into n_neighs + 1 blocks, model_input_size / 2 TERRA's equal split
+# (split_cell_neigh_equally).
 TOKENIZER_OPTION_DEFAULTS = {"stable_rank_ties": False,
+                             "rank_tie_break_norm_factor": None,
                              "zero_expr_from_raw_counts": False,
                              "seurat_loess_span": None,
                              "aggregate_own_neighbors": False,
@@ -67,6 +70,8 @@ def load_plan(plan_file_path: Path | str) -> tuple[dict, dict]:
                 and tokenization["seq_len_cell"] not in (None, int(tokenization["model_input_size"] / 2))):
             raise ValueError(f"Tokenization {name}: seq_len_cell must be model_input_size / 2 (equal split) or null "
                              f"(n_neighs + 1 blocks), not {tokenization['seq_len_cell']}.")
+        if tokenization["rank_tie_break_norm_factor"] is not None and not tokenization["stable_rank_ties"]:
+            raise ValueError(f"Tokenization {name}: rank_tie_break_norm_factor requires stable_rank_ties.")
     variants = plan["variants"]
     for name, variant in variants.items():
         variant.setdefault("tokenization", "base")
@@ -90,7 +95,8 @@ def get_tokenized_dataset_path(tokenization: dict,
     norm_methods = "_".join(str(tokenization[key]) for key in NORM_METHOD_KEYS)
     options = []
     if tokenization["stable_rank_ties"]:
-        options.append("ties")
+        tie_break_norm_factor = tokenization["rank_tie_break_norm_factor"]
+        options.append("ties" if tie_break_norm_factor is None else f"tiesby{tie_break_norm_factor}")
     if tokenization["zero_expr_from_raw_counts"]:
         options.append("detected")
     if tokenization["seurat_loess_span"] is not None and "seurat_v3" in norm_methods:
@@ -158,6 +164,31 @@ def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 10
         X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
         n_detected[start:start + X.shape[0]] = np.asarray((X > 0).sum(axis=1)).ravel()
     return n_detected == 0
+
+
+def ties_at_cut(adata, token_dict: dict, seq_lens, chunk_size: int = 100_000) -> dict:
+    """
+    How often the tie order decides which genes a raw-count ranking keeps (the base and every arm whose rank is not
+    normalized): for each length k in `seq_lens`, (number of cells with more than k detected vocabulary genes, number
+    of cells whose k-th and (k + 1)-th highest raw counts are equal, i.e. whose cut at k genes falls inside a group of
+    tied genes). Works on backed AnnData (row chunks).
+    """
+    import numpy as np
+    import scipy.sparse as sp
+
+    seq_lens = sorted(set(seq_lens))
+    in_vocabulary = np.array([bool(token_dict.get(gene_id, False)) for gene_id in adata.var["ensembl_id"]])
+    n_cut, n_tied = dict.fromkeys(seq_lens, 0), dict.fromkeys(seq_lens, 0)
+    for start in range(0, adata.n_obs, chunk_size):
+        X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
+        for row in range(X.shape[0]):
+            counts = X.data[X.indptr[row]:X.indptr[row + 1]]
+            counts = np.sort(counts[counts > 0])[::-1]
+            for k in seq_lens:
+                if counts.size > k:
+                    n_cut[k] += 1
+                    n_tied[k] += int(counts[k - 1] == counts[k])
+    return {k: (n_cut[k], n_tied[k]) for k in seq_lens}
 
 
 def get_section_names(label_file_paths: list) -> list[str]:

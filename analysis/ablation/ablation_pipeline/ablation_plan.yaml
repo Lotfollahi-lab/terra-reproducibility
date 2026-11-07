@@ -12,6 +12,7 @@
 # (n_nonzero_tokens) without an option.
 tokenizer_options:
   stable_rank_ties: true           # top-k ties: rank score, then count value (dense path), then token id
+  rank_tie_break_norm_factor: mean # ... with the corpus mean (norm factor file) before the token id: rarer genes first
   zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
   seurat_loess_span: 0.3           # Seurat v3 LOESS span, gene-order independent (was: ignored, span 0.75)
   aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)

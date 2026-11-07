@@ -1,14 +1,14 @@
 #!/bin/bash
 # One-time setup of the pinned TERRA code of the ablations: a plain copy (git archive) of Lotfollahi-lab/terra at
-# COMMIT (dev 5593017, 5 Nov 2026), which holds all fixes of the ablation code reviews; those that change results are
-# opt-in, and the plan switches them on. CODE_PATH and ENV_PATH are taken from the env file.
-# The jobs put its src/ first on PYTHONPATH, so later changes of the farm checkout (editable install of the venv)
-# cannot change running jobs. The commit is taken from REPO_PATH if that checkout has it, otherwise fetched from
-# TERRA_URL into a temporary repository (REPO_PATH is not modified). The copy is built next to CODE_PATH and checked
-# (it has the options of the plan; ENV_PATH imports it) before CODE_VERSION (the commit) is written and it is moved to
-# CODE_PATH; generate_ablation_runs.py records CODE_VERSION in every run config. If CODE_PATH is up to date, only the
-# environment check is rerun. If it exists with another version, the script stops (jobs may be running on it): move it
-# away and rerun.
+# COMMIT (dev fefbf01, 7 Nov 2026), which holds all fixes of the ablation code reviews and the corpus-mean tie-break of
+# ranked genes; those that change results are opt-in, and the plan switches them on. CODE_PATH and ENV_PATH are taken
+# from the env file. The jobs put its src/ first on PYTHONPATH, so later changes of the farm checkout (editable install
+# of the venv) cannot change running jobs. The commit is taken from REPO_PATH if that checkout has it, otherwise fetched
+# from TERRA_URL into a temporary repository (REPO_PATH is not modified). The copy is built next to CODE_PATH and
+# checked (it has the options of the plan; ENV_PATH imports it) before CODE_VERSION (the commit) is written and it is
+# moved to CODE_PATH; generate_ablation_runs.py records CODE_VERSION in every run config. If CODE_PATH is up to date,
+# only the environment check is rerun. If it exists with another version, the script stops (jobs may be running on it):
+# move it away and rerun.
 #
 # Usage: bash setup_code.sh ENV_FILE          (e.g. datasets/mouse.env)
 # Optional: REPO_PATH=<checkout> TERRA_URL=<git url> bash setup_code.sh ENV_FILE
@@ -22,7 +22,7 @@ fi
 source "$1"
 REPO_PATH="${REPO_PATH:-/nfs/team361/sb75/terra}"
 TERRA_URL="${TERRA_URL:-https://github.com/Lotfollahi-lab/terra.git}"
-COMMIT="5593017fcb8be7a3f24d3b1563e48a7045c0201a"
+COMMIT="fefbf017cf0538202b2adf43c994a927fc9eda38"
 CODE_VERSION="terra ${COMMIT}"
 if [[ "${CODE_PATH}" != /* ]]; then
     echo "ERROR: CODE_PATH must be an absolute path, not ${CODE_PATH}." >&2
@@ -70,7 +70,8 @@ git -C "${SOURCE_REPO_PATH}" archive "${COMMIT}" | tar -x -C "${BUILD_PATH}"
 # inference option of the evaluation
 TERRA_SRC="${BUILD_PATH}/src/terra"
 for CHECK in "pad_masks_to_batch_max:masks/block_masking.py" "keep_special_tokens:inference/embed.py" \
-             "stable_rank_ties:tokenizers/cell_tokenizers.py" "zero_expr_from_raw_counts:tokenizers/cell_tokenizers.py" \
+             "stable_rank_ties:tokenizers/cell_tokenizers.py" "rank_tie_break_norm_factor:tokenizers/cell_tokenizers.py" \
+             "zero_expr_from_raw_counts:tokenizers/cell_tokenizers.py" \
              "seurat_loess_span:tokenizers/cell_tokenizers.py" "aggregate_own_neighbors:tokenizers/cell_tokenizers.py"; do
     if ! grep -q "${CHECK%%:*}" "${TERRA_SRC}/${CHECK#*:}"; then
         echo "ERROR: ${CHECK%%:*} is missing from ${TERRA_SRC}/${CHECK#*:}." >&2

@@ -23,7 +23,11 @@ This script checks the setup of an ablation campaign on the farm before launchin
 4. Tokenized datasets: each exists, has one row per silver cell and all its cells are in the label files (with the
    cells per section).
 5. Normalization factors: the gene-corrected read depth columns of the dataset's factor file match the tokenizer's own
-   normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`).
+   normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`). The column of
+   the plan's `rank_tie_break_norm_factor` has a finite value for every vocabulary gene of the silver files. Reports,
+   for each per-cell sequence length of the plan, how many cells have more detected genes and how many of them a
+   raw-count ranking (the base and every arm whose rank is not normalized) cuts inside tied counts, i.e. where the
+   tie order decides which genes are kept.
 6. Schedule end values (report): the LR, weight decay and EMA schedules span `ipe_scale` x epochs (1.25, as in
    V-JEPA), but training stops after `epochs`, so they end at 80% of their path; the values to state in Methods.
 Exits with an error if check 0, 2, 3, 4 or 5 fails; check 1 differences have to be reviewed by eye. --skip_datasets
@@ -57,7 +61,8 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from ablation_utils import cells_without_vocabulary_genes, get_section_names, get_tokenized_dataset_path, load_plan
+from ablation_utils import (cells_without_vocabulary_genes, get_section_names, get_seq_len_cell,
+                            get_tokenized_dataset_path, load_plan, ties_at_cut)
 
 # Keys that differ between the mouse runs and the reruns by design
 IGNORED_KEYS = {"code_version",
@@ -71,6 +76,7 @@ IGNORED_KEYS = {"code_version",
                 # Opt-in fixes (`training_options` and `tokenizer_options` of the plan; off in the mouse runs)
                 "mask.pad_masks_to_batch_max",
                 "data.stable_rank_ties",
+                "data.rank_tie_break_norm_factor",
                 "data.zero_expr_from_raw_counts",
                 "data.seurat_loess_span",
                 "data.aggregate_own_neighbors",
@@ -148,7 +154,8 @@ def check_pinned_code(code_path: str, config_file_path: str) -> bool:
     # The pinned copy, with the options of the plan and the metatoken inference option of the evaluation
     pinned = terra.__file__.startswith(f"{Path(code_path).resolve()}/") or terra.__file__.startswith(f"{code_path}/")
     tokenizer_options = set(inspect.signature(CellBaseTokenizer.__init__).parameters)
-    has_options = ({"stable_rank_ties", "zero_expr_from_raw_counts", "seurat_loess_span"} <= tokenizer_options
+    has_options = ({"stable_rank_ties", "rank_tie_break_norm_factor", "zero_expr_from_raw_counts",
+                    "seurat_loess_span"} <= tokenizer_options
                    and "aggregate_own_neighbors" in inspect.signature(CellNeighborhoodTokenizer.__init__).parameters
                    and "keep_special_tokens" in inspect.signature(embed_dataset).parameters)
     print(f"{terra.__file__}: {version}; "
@@ -341,6 +348,46 @@ def report_schedule_end_values(config_file_paths: dict):
               f"EMA {opt['ema'][0]:g} -> {ema_end:.4g} (configured {opt['ema'][1]:g})")
 
 
+def check_rank_tie_break(tokenizations: dict, norm_factor_file_path: str, token_dictionary_file_path: str,
+                         silver_file_paths: list) -> bool:
+    """Check 5 (rank ties): the tie-break column covers the vocabulary genes; report how often the tie order matters."""
+    import scanpy as sc
+
+    with open(token_dictionary_file_path, "rb") as file:
+        token_dict = pickle.load(file)
+    adatas = [sc.read_h5ad(silver_file_path, backed="r") for silver_file_path in silver_file_paths]
+    ok = True
+    factors = sorted({tokenization["rank_tie_break_norm_factor"] for tokenization in tokenizations.values()} - {None})
+    if factors:
+        norm_factor_df = pd.read_csv(norm_factor_file_path).drop_duplicates("gene_id").set_index("gene_id")
+        gene_ids = pd.Index(sorted({gene_id for adata in adatas for gene_id in adata.var["ensembl_id"].astype(str)
+                                    if token_dict.get(gene_id, False)}))
+        for factor in factors:
+            if factor not in norm_factor_df.columns:
+                print(f"ERROR: rank_tie_break_norm_factor {factor!r} is not a column of {norm_factor_file_path}")
+                ok = False
+                continue
+            invalid = ~np.isfinite(norm_factor_df[factor].reindex(gene_ids).to_numpy(dtype=float))
+            print(f"Rank ties ordered by {factor!r} (ascending), then token id: {len(gene_ids) - invalid.sum()} of "
+                  f"{len(gene_ids)} vocabulary genes of the silver files have a value"
+                  f"{' (OK)' if not invalid.any() else ', MISSING for e.g. ' + str(list(gene_ids[invalid][:3]))}")
+            ok &= not invalid.any()
+    else:
+        print("Rank ties ordered by token id (no rank_tie_break_norm_factor)")
+    seq_lens = sorted({get_seq_len_cell(tokenization) for tokenization in tokenizations.values()})
+    n_cells = sum(adata.n_obs for adata in adatas)
+    n_cut, n_tied = dict.fromkeys(seq_lens, 0), dict.fromkeys(seq_lens, 0)
+    for adata in adatas:
+        for k, (n_file_cut, n_file_tied) in ties_at_cut(adata, token_dict, seq_lens).items():
+            n_cut[k] += n_file_cut
+            n_tied[k] += n_file_tied
+    for k in seq_lens:
+        print(f"{k} genes per cell: {n_cut[k]} of {n_cells} cells ({n_cut[k] / n_cells:.1%}) have more detected "
+              f"genes; a raw-count ranking cuts {n_tied[k]} of them ({n_tied[k] / n_cells:.1%} of all cells) inside "
+              f"tied counts, where the tie order decides which genes are kept")
+    return ok
+
+
 def check_tokenized_datasets(tokenizations: dict, silver_file_paths: list, data_directory_path: str,
                              dataset_name: str, cell_section: pd.Series) -> bool:
     print("== 4. Tokenized datasets (one row per silver cell; every cell in the label files)")
@@ -397,6 +444,8 @@ def main(args):
     from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
     ok &= check_norm_factors(args.norm_factor_file_path, args.silver_file_paths,
                              normalize_by_gene_corrected_read_depth)
+    ok &= check_rank_tie_break(tokenizations, args.norm_factor_file_path, args.token_dictionary_file_path,
+                               args.silver_file_paths)
     report_schedule_end_values(config_file_paths)
     if not ok:
         sys.exit("Setup check failed, see above.")
