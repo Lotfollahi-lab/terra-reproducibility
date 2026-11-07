@@ -1,11 +1,12 @@
 """
 This script creates one tokenized dataset of the ablation plan from the silver data of a dataset, like
 `stjepa-reproducibility/analysis/tokenization/create_tokenized_dataset.py` created the mouse ablation datasets (same
-tokenizer arguments and output naming), but with the pinned ST-JEPA v2 tokenizer (`stjepa.tokenizers`), sequential
+tokenizer arguments and output naming), but with the pinned TERRA tokenizer (`terra.tokenizers`), sequential
 processing of the silver files (same output, lower peak memory), the opt-in tokenizer fixes set in the plan
-(`tokenizer_options`: deterministic top-k ties, detected genes only, the real gene token count for the sampler, the
-Seurat v3 LOESS span, own-neighbor aggregation and an explicit index-cell/neighborhood split for the cell-neighborhood
-tokenizer; their names are appended to the dataset name) and without wandb logging. The tokenizer reads every h5ad file
+(`tokenizer_options`: deterministic top-k ties, detected genes only, the Seurat v3 LOESS span, own-neighbor
+aggregation and the equal index-cell/neighborhood split of the cell-neighborhood tokenizer; their names are appended to
+the dataset name; TERRA counts the real gene tokens for the length-grouped sampler without an option) and without
+wandb logging. The tokenizer reads every h5ad file
 below `<data_directory_path>/silver/<dataset_name>`; they must be exactly `--silver_file_paths`, so that the
 evaluation's labels cover the tokenized cells. The dataset is written under a temporary name and renamed when
 complete, so that interrupted jobs are never mistaken for finished datasets.
@@ -73,16 +74,17 @@ def main(args):
     check_silver_files(silver_folder_path, args.silver_file_paths)
     print(f"Tokenization {args.tokenization_index} ({name}): {tokenization}.")
 
-    from stjepa.tokenizers.cell_tokenizers import CellGraphTokenizer, CellNeighborhoodTokenizer
+    from terra.tokenizers.cell_tokenizers import CellGraphTokenizer, CellNeighborhoodTokenizer
 
     Tokenizer = {"cell-graph-tokenizer": CellGraphTokenizer,
                  "cell-neighborhood-tokenizer": CellNeighborhoodTokenizer}[tokenization["tokenizer"]]
     tokenizer_kwargs = {"stable_rank_ties": tokenization["stable_rank_ties"],
-                        "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"],
-                        "exact_n_nonzero_tokens": tokenization["exact_n_nonzero_tokens"],
-                        "seurat_loess_span": tokenization["seurat_loess_span"]}
+                        "zero_expr_from_raw_counts": tokenization["zero_expr_from_raw_counts"]}
+    if tokenization["seurat_loess_span"] is not None:
+        tokenizer_kwargs["seurat_loess_span"] = tokenization["seurat_loess_span"]
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer":
-        tokenizer_kwargs["seq_len_cell"] = tokenization["seq_len_cell"]
+        # seq_len_cell is model_input_size / 2 (equal split) or None (n_neighs + 1 blocks; checked by load_plan)
+        tokenizer_kwargs["split_cell_neigh_equally"] = tokenization["seq_len_cell"] is not None
         tokenizer_kwargs["aggregate_own_neighbors"] = tokenization["aggregate_own_neighbors"]
     # Sequential processing (one silver file at a time): parallel mode pickles every tokenized file back from a worker
     # process, which doubles the peak memory (without the ranked-list cut: ~1.4 TB for the dense-path OVCA tokenizations)

@@ -1,8 +1,9 @@
 # Ablation pipeline
 
 The mouse ablations of the TERRA paper (Supp. Figs. 4–6; `sebastianbirk/stjepa-reproducibility`,
-`analysis/mouse_ablation`) rerun from scratch on any labelled dataset, with the same code, base config and launch
-setup as the mouse runs. A dataset is defined by one parameter file, `datasets/<dataset>.env`; the scripts have no
+`analysis/mouse_ablation`) rerun from scratch on any labelled dataset with the current TERRA code (a pinned commit of
+`Lotfollahi-lab/terra` with all fixes of the ablation code reviews switched on), the base config and the launch setup
+of the mouse runs. A dataset is defined by one parameter file, `datasets/<dataset>.env`; the scripts have no
 dataset-specific defaults. Two datasets are defined:
 - `datasets/mouse.env` (runs first; [Mouse rerun](#mouse-rerun)): the mouse sections themselves, MERFISH and STARmap
   PLUS, with their region annotations; two sections, so the evaluation also measures their integration.
@@ -14,8 +15,8 @@ dataset-specific defaults. Two datasets are defined:
 | File | Role |
 |---|---|
 | `datasets/<dataset>.env` | Parameters of one dataset (bash assignments; lists space-separated): `mouse.env`, `ovca.env`. |
-| `ablation_plan.yaml`, `base_config.yaml` | The variants, tokenizations and replicates; the mouse base model config. |
-| `setup_code.sh` | Pinned model code: stjepa `b433d5e` + `stjepa_ablation.patch` at `CODE_PATH`, with `CODE_VERSION`. |
+| `ablation_plan.yaml`, `base_config.yaml` | The variants, tokenizations and replicates; the mouse base model config in TERRA's config format. |
+| `setup_code.sh` | Pinned model code: TERRA `5593017` (`Lotfollahi-lab/terra` dev, 5 Nov 2026) at `CODE_PATH`, with `CODE_VERSION`. |
 | `prepare_ovca_data.py` / `.lsf` | OVCA only: silver AnnData, normalization factors, token dictionary checks. |
 | `filter_silver_cells.py` | Silver copies without the cells that have no detected gene of the token dictionary (mouse: step 3). |
 | `generate_ablation_runs.py` | Run configs, `manifest.tsv` and `dataset.env` in the artifact folder. |
@@ -24,7 +25,7 @@ dataset-specific defaults. Two datasets are defined:
 | `submit_ablation_array.sh`, `run_ablation_array.lsf` | Training, packaging (`package_run.py`) and evaluation (`evaluate_ablation_run.py`), one element per run. |
 | `compare_ablations.py` | Results tables and figures (niche identification; batch integration with two or more sections). |
 | `norm_factors.py`, `compute_norm_factors.py` | Per-gene normalization factors with the tokenizer's constants. |
-| `CODE_REVIEW.md` | Code review of the mouse ablations and the fixes in the patch. |
+| `CODE_REVIEW.md` | Code review of the mouse ablations and where each fix is in TERRA. |
 
 ## Dataset parameter file
 
@@ -40,7 +41,7 @@ dataset-specific defaults. Two datasets are defined:
 | `ARTIFACT_FOLDER_PATH` | configs, manifest, runs, evaluations, logs, results, figures of the campaign | `.../artifacts/mouse_ablation` | `.../artifacts/ovca_ablation` |
 | `EPOCHS`, `WARMUP`, `N_SPECIAL_VALUES` | run configs | 300, 3, 200 | 82, 1, 1448 |
 | `PLAN_FILE_PATH`, `BASE_CONFIG_FILE_PATH` | run configs | the files of this folder | the files of this folder |
-| `CODE_PATH`, `ENV_PATH` | pinned code and the venv that runs it | as OVCA | `/nfs/team361/sb75/stjepa_ablation`, `.../.venvs/stjepa_v2` |
+| `CODE_PATH`, `ENV_PATH` | pinned TERRA code and the TERRA venv that runs it | as OVCA | `/nfs/team361/sb75/terra_ablation`, `.../.venvs/terra` |
 | `MOUSE_ARTIFACT_FOLDER_PATH`, `MOUSE_TOKEN_DICTIONARY_FILE_PATH` | checks against the mouse runs | as OVCA | |
 | `BRONZE_FILE_PATH`, `GENE_MAPPING_DICT_FILE_PATH` | OVCA data preparation only | | |
 
@@ -75,8 +76,8 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 | Supp. Fig. 5 | normalization | 21 normalization tuples, in the three mouse groups | 1 |
 | none | architecture | width 192 / 384 / 960 / 1152; 1, 4 or 5 encoder layers; 3 predictor layers | 1 |
 
-Replicate `r` is trained with seed `1000 * r`. The opt-in fixes of `stjepa_ablation.patch` (`tokenizer_options` and
-`training_options` of the plan) are on for every run; `CODE_REVIEW.md` lists them.
+Replicate `r` is trained with seed `1000 * r`. TERRA's opt-in fixes (`tokenizer_options` and `training_options` of
+the plan) are on for every run; `CODE_REVIEW.md` lists them.
 
 **Evaluation** follows the mouse protocol:
 - Neighborhood embeddings from the target encoder, of the run's own tokenized training dataset.
@@ -122,8 +123,9 @@ Run from this folder in bash (in zsh, `setopt sh_word_split` first), in one shel
 # 1. Code
 cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/ablation_pipeline
 
-# 2. Pinned code at /nfs/team361/sb75/stjepa_ablation, shared with OVCA (if it is there, only the environment check
-#    runs; it now also imports scib_metrics)
+# 2. Pinned TERRA code at /nfs/team361/sb75/terra_ablation, shared by all datasets, and the check of the TERRA
+#    environment (/nfs/team361/sb75/.venvs/terra: torch, datasets, scanpy, squidpy, scib_metrics, leidenalg, wandb;
+#    if an import fails, install it into that venv). If the copy is there, only the environment check runs.
 bash setup_code.sh datasets/mouse.env
 
 # 3. Silver files and norm factors (92,520 cells, a few minutes; run it interactively, e.g. in a bsub -Is job).
@@ -229,8 +231,8 @@ last section).
 ```bash
 cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/ablation_pipeline
 
-# 1. Pinned code at /nfs/team361/sb75/stjepa_ablation and environment check (rerun: only the check; stops if another
-#    patch version is there: move it away first)
+# 1. Pinned TERRA code at /nfs/team361/sb75/terra_ablation and environment check (rerun: only the check; stops if
+#    another code version is there: move it away first)
 bash setup_code.sh datasets/ovca.env
 
 # 2. Data preparation (OVCA only, TERRA env): silver AnnData and norm factors. WAIT until the job has finished
@@ -316,7 +318,7 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 - **Storage**, computed with the base width (`enc_emb_dim` 768):
   - Embeddings: 768 × 338,695 cells × 4 bytes = 1.04 GB per set, two sets per run with a metatoken (92 of 95 runs),
     one for the 3 runs without: about 195 GB.
-  - Checkpoints: about 0.75 GB per run (only `stjepa-latest.pth.tar`): about 71 GB.
+  - Checkpoints: about 0.75 GB per run (only `terra-latest.pth.tar`): about 71 GB.
   - Total about 265 GB in the artifact folder, plus a few GB of cluster tables and logs.
   - Tokenized datasets go to `/lustre/.../DATASETS/gold/*/xho50-1b_1p_spatialfusion/`.
 
@@ -324,14 +326,14 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 
 | Item | Mouse | OVCA | Reason |
 |---|---|---|---|
-| Code | farm checkout of the time | copy of stjepa `b433d5e` + `stjepa_ablation.patch` (`setup_code.sh`) | Same code as the April runs; v2 later only added debug prints. A separate copy, so changes to the farm checkout (now `/nfs/team361/sb75/terra`) cannot change running jobs. The patch (its header lists all 20 changes) adds an opt-in seed, an atomic latest checkpoint, the metatoken fixes (`CODE_REVIEW.md`), padded masks and opt-in tokenizer fixes; mouse configs train as before. |
-| Tokenization | ties at the top-64 cut broken by gene order and sort algorithm; Seurat / Pearson ranks include undetected genes; dense-path cells all stored with the full token count, so their batches were not grouped by size; Seurat v3 LOESS span silently 0.75; cell neighborhood aggregated over reverse kNN | `tokenizer_options` of the plan: deterministic gene-level ties (rank score, count value, reference nonzero mean, token id), detected genes only, the real gene token count, Seurat v3 LOESS span 0.3 (gene-order independent), each cell's own kNN for the cell neighborhood | `CODE_REVIEW.md` issues 3, 5, 7, 9 and 10. The options also cut ranked lists losslessly (0.09-0.10 instead of 1.3 MB per cell), so all 27 datasets run in the standard memory class. Dataset names carry the options (`_ties_detected_nnz`, `_span0p3` for Seurat, `_ownknn_cell64`). |
+| Code | ST-JEPA v2 (`sebastianbirk/stjepa` `b433d5e`), the farm checkout of the time | copy of TERRA `5593017` (`setup_code.sh`), the mouse base config in TERRA's config format, `attention_backend: torch` (PyTorch chooses the SDPA kernel, as in the mouse runs and the released models) | The figure is rerun on the current code. TERRA holds every fix of the reviews (`CODE_REVIEW.md`): opt-in seed, atomic latest checkpoint, metatoken fixes, padded masks, resumption on all ranks and the opt-in tokenizer fixes; the options are switched on in the plan. A separate copy, so changes to the farm checkout (`/nfs/team361/sb75/terra`) cannot change running jobs. |
+| Tokenization | ties at the top-64 cut broken by gene order and sort algorithm; Seurat / Pearson ranks include undetected genes; dense-path cells all stored with the full token count, so their batches were not grouped by size; Seurat v3 LOESS span silently 0.75; cell neighborhood aggregated over reverse kNN | `tokenizer_options` of the plan: deterministic ties (rank score, then count value on the dense path, then token id), detected genes only, Seurat v3 LOESS span 0.3 (gene-order independent), each cell's own kNN for the cell neighborhood; TERRA always counts the real gene tokens for the sampler | `CODE_REVIEW.md` issues 3, 5, 7, 9 and 10. TERRA cuts ranked lists at the input size (lossless), so all 27 datasets run in the standard memory class. Dataset names carry the options (`_ties_detected`, `_span0p3` for Seurat, `_ownknn_cell64`). |
 | Context and target masks | trimmed to the shortest in each batch: the sparsest cell sets how many tokens every cell uses | padded to the longest (`training_options`: `mask.pad_masks_to_batch_max`), with padded entries masked in attention and loss | `CODE_REVIEW.md` issue 8: trimming dropped 3.4% of the sampled tokens at 64 genes per cell and 20% at 256 on OVCA, biasing the sequence-length comparison. |
 | Metatoken at inference | removed | removed (category panels) and kept (`metatoken_inference` panel) | Training always sees the metatoken; dropping it at inference is out of distribution unless the model was trained with metatoken dropout. |
 | Schedule | 300 epochs, 3 warmup (216,600 steps) | 82 epochs, 1 warmup (216,972 steps) | Matched in optimizer steps: OVCA has 3.66× the iterations per epoch. All epoch-based schedules (LR, WD, EMA) scale with it. |
 | Replicate seeds | all seed 0 (`_GLOBAL_SEED`, inherited from the I-JEPA training script), so replicates differed only by GPU non-determinism | seeds 1000, 2000, 3000 | Real seed variance (rebuttal E10): the seed sets weight initialization, data order, masks and segment sampling. The spacing keeps the samplers' per-epoch seeds (seed + epoch) disjoint. |
 | `n_special_values` | 200 | 1448 | The human batch special value (about 213) exceeds 200 rows and would crash training. |
-| Checkpoints | every 5 epochs (about 90 GB per run) | only `stjepa-latest.pth.tar`, in `runs/<run>_<config hash>`; killed runs resume on all ranks | Storage and walltime safety. A changed config (or code version) gets a new folder instead of resuming an old one. |
+| Checkpoints | every 5 epochs (about 90 GB per run) | only `terra-latest.pth.tar`, in `runs/<run>_<config hash>`; killed runs resume on all ranks (the launch config sets `state.load_checkpoint` once the file exists) | Storage and walltime safety. A changed config (or code version) gets a new folder instead of resuming an old one. |
 | Evaluation input | separate data, re-tokenized with `harmonize_tokenize_embed_pipeline`; unlabelled cells removed first | the run's own tokenized training dataset (`embed_dataset`); all cells, so `Unassigned` stays in the kNN graph | Same section and identical tokens; re-tokenizing broke top-64 ties non-deterministically (and needed about 0.5 TB per dense-path arm without the ranked-list cut). Absolute metric levels are therefore not comparable with the mouse numbers. |
 | Norm factors | cohort file of the mouse data | computed on the section (`prepare_ovca_data.py`) with the tokenizer's gene-corrected read depth constants | The factors must cover every gene and match the tokenizer. |
 | Dataset metadata | — | dataset id 50, batch0 (same 10x section as `xho50-1b_1p`) | The token dictionary only has special values for existing batches. |

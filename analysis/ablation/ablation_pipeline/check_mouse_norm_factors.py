@@ -325,7 +325,7 @@ def check_consistency(arm: dict, silver: list[dict], cell_index: dict, normalize
 
 
 def main(args):
-    from stjepa.preprocessors import normalizers  # pinned code (PYTHONPATH)
+    from terra.preprocessors import normalizers  # pinned TERRA code (PYTHONPATH)
 
     tokenizations, variants = load_plan(args.plan_file_path)
     arms, failures = [], {}

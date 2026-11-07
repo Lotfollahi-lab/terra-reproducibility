@@ -19,7 +19,7 @@ from norm_factors import check_norm_factors, compute_norm_factors
 norm_factor_df = compute_norm_factors(["batch0.h5ad", "batch1.h5ad"])     # file paths or AnnData objects
 
 # Guard (pinned code on PYTHONPATH): the gcrd columns match the tokenizer's own normalizer
-from stjepa.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
+from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
 ok = check_norm_factors("norm_factors.csv", ["batch0.h5ad"], normalize_by_gene_corrected_read_depth)
 ```
 """
@@ -37,7 +37,7 @@ import scipy.sparse as sp
 # Gcrd constants (a, b) of T(G) = a + b * G
 TOKENIZER_GCRD_CONSTANTS = (153.4768, 0.0487)
 GCRD_CONSTANTS = {
-    # stjepa/preprocessors/normalizers.py, normalize_by_gene_corrected_read_depth (the tokenizer)
+    # terra/preprocessors/normalizers.py, normalize_by_gene_corrected_read_depth (the tokenizer)
     "tokenizer": TOKENIZER_GCRD_CONSTANTS,
     # stjepa-reproducibility/analysis/tokenization/compute_cohort_norm_factors.py (human cohort, hst_corpus_90m)
     "human_cohort": (154.01749299636748, 0.05644618485013678),
@@ -166,7 +166,7 @@ def verify_gcrd_factors(norm_factor_df: pd.DataFrame | str | Path,
     """
     Recompute the gcrd columns of a factor file for a random sample of its genes (all genes if `n_genes` is None) with
     the tokenizer's own normalizer and compare. `normalize_fn` is the pinned
-    `stjepa.preprocessors.normalizers.normalize_by_gene_corrected_read_depth`; it is called on the counts of every
+    `terra.preprocessors.normalizers.normalize_by_gene_corrected_read_depth`; it is called on the counts of every
     file as the tokenizer calls it (default constants), in chunks of cells, which leaves its per-cell values unchanged.
 
     Returns one row per sampled gene: n_cells, n_nonzero_cells and the two gcrd columns of the factor file (`*_csv`)

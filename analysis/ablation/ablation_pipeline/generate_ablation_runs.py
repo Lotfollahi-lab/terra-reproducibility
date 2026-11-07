@@ -1,6 +1,7 @@
 """
 This script generates the training configs and the run manifest of an ablation campaign from the ablation plan
-(`ablation_plan.yaml`) and the mouse base config (`base_config.yaml`), for the dataset given by the arguments (values
+(`ablation_plan.yaml`) and the base config (`base_config.yaml`: the mouse ablation base in TERRA's config format), for
+the dataset given by the arguments (values
 of `datasets/<dataset>.env`). Every run config is the base config with
 - the dataset (silver folder, token dictionary, the variant's tokenized dataset and its tokenization keys; the keys
   are recorded so that a re-tokenization from the model folder, e.g. with `harmonize_tokenize_embed_pipeline` on other
@@ -10,10 +11,10 @@ of `datasets/<dataset>.env`). Every run config is the base config with
   human token dictionary),
 - the schedule (`--epochs`, `--warmup`; for OVCA, 82 epochs with 1 warmup epoch match the 300 / 3 epochs of the mouse
   runs in optimizer steps),
-- a fixed run folder `runs/<run name>_<config hash>` that is resumed from `stjepa-latest.pth.tar` (on the first
-  launch the file is missing and training starts from scratch), and only the latest checkpoint kept; a changed config
-  gets a new folder instead of resuming or reusing an earlier one,
-- `seed: 1000 * replicate` (stjepa_ablation.patch; without it all replicates use seed 0 like the mouse runs),
+- a fixed run folder `runs/<run name>_<config hash>` that is resumed from `terra-latest.pth.tar` (TERRA raises on a
+  missing checkpoint, so the job array's launch config sets `state.load_checkpoint` only once the file exists), and
+  only the latest checkpoint kept; a changed config gets a new folder instead of resuming or reusing an earlier one,
+- `seed: 1000 * replicate` (TERRA's top-level `seed`; without it all replicates use seed 0 like the mouse runs),
 - `code_version`: the CODE_VERSION of the pinned code (`setup_code.sh`), so that the config hash changes with the code
   (the training code ignores the key),
 - the variant overrides (dotted keys that must exist in the base config).
@@ -60,7 +61,7 @@ TOKENIZER_TYPES = {"cell_graph": "cell-graph-tokenizer", "cell_neigh": "cell-nei
 def set_key(config: dict, dotted_key: str, value, allow_new: bool = False):
     """
     Set a dotted key, which must already exist in the config (catches typos in the plan) unless `allow_new` (opt-in
-    keys of the patch that the mouse base config does not have).
+    keys that the base config does not have).
     """
     *parents, key = dotted_key.split(".")
     section = config
@@ -87,7 +88,8 @@ def validate_config(config: dict, tokenization: dict, run_name: str):
     for key in ["enc_emb_dim", "pred_emb_dim"]:
         if meta[key] % meta["num_heads"]:
             raise ValueError(f"{run_name}: {key} {meta[key]} is not divisible by num_heads {meta['num_heads']}.")
-    # Training reads restrict_special_attention from `mask`, the unpatched inference from `meta`: keep them equal
+    # Training and TERRA's inference read restrict_special_attention from `mask` (the v2 inference read `meta`): keep
+    # them equal
     mask = config["mask"]
     if meta.get("restrict_special_attention", False) != mask.get("restrict_special_attention", False):
         raise ValueError(f"{run_name}: meta.restrict_special_attention and mask.restrict_special_attention differ.")
@@ -126,8 +128,8 @@ def make_run_config(base_config: dict,
     config["optimization"]["warmup"] = args.warmup
     config["state"]["folder_path"] = str(run_folder_path)
     config["state"]["load_checkpoint"] = True
-    config["state"]["read_checkpoint"] = "stjepa-latest.pth.tar"
-    config["state"]["checkpoint_freq"] = args.epochs + 1  # never write epoch snapshots, only stjepa-latest
+    config["state"]["read_checkpoint"] = f"{config['state']['write_tag']}-latest.pth.tar"
+    config["state"]["checkpoint_freq"] = args.epochs + 1  # never write epoch snapshots, only the latest checkpoint
     config["seed"] = run["seed"]
     config["code_version"] = args.code_version
 

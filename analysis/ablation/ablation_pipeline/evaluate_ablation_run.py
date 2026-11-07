@@ -7,7 +7,7 @@ If the cells come from two or more sections, it also computes the batch-integrat
 
 Models with special tokens (the batch metatoken) are evaluated twice: with the metatoken removed at inference, as in
 the mouse evaluation (`drop`, the default outputs), and with the metatoken kept as in training (`keep`,
-`keep_special_tokens=True` of the patched code; outputs prefixed `<dataset_name>_keep_metatoken_`). Both modes get all
+`keep_special_tokens=True` of TERRA's `embed_dataset`; outputs prefixed `<dataset_name>_keep_metatoken_`). Both modes get all
 metrics, including the batch-integration metrics.
 
 Labels and sections: the obs of the label files (`--label_file_paths`; the job array passes LABEL_FILE_PATHS, by
@@ -88,21 +88,6 @@ RESOLUTIONS = [round(step * 0.1, 1) for step in range(6, 15)]
 INTEGRATION_METRICS = ["iLISI", "ASW", "MMD"]
 # Elements of the temporary difference array of the chunked pairwise distances (float32: 256 MB)
 DISTANCE_CHUNK_ELEMENTS = 2 ** 26
-
-
-def require_loaded_checkpoint():
-    """Make `embed_dataset` fail if its checkpoint does not load (epoch 0 is only returned on load errors)."""
-    import app.inference.embed as embed_module
-
-    load_checkpoint = embed_module.load_checkpoint
-
-    def checked_load_checkpoint(*args, **kwargs):
-        outputs = load_checkpoint(*args, **kwargs)
-        if outputs[-2] == 0:
-            raise RuntimeError("Checkpoint could not be loaded (see 'Encountered exception' above).")
-        return outputs
-
-    embed_module.load_checkpoint = checked_load_checkpoint
 
 
 def load_labels(label_file_paths: list, label_keys: list, unassigned_label: str) -> pd.DataFrame:
@@ -279,7 +264,6 @@ def main(args):
         print("Only one section has labelled cells: no batch-integration metrics.")
     columns = [column for column in dataset.features if column != "cell_id"]
     dataset.set_format(type="torch", columns=columns, output_all_columns=True)
-    require_loaded_checkpoint()
 
     # Keeping the metatoken only differs from dropping it if the model has special tokens
     modes = [mode for mode in args.metatoken_modes if mode == "drop" or model_config["meta"]["special_tokens"]]
@@ -331,8 +315,8 @@ def main(args):
 
 
 def embed(args, dataset, keep_special_tokens: bool) -> np.ndarray:
-    """Neighborhood embeddings with the target encoder of the final checkpoint."""
-    from app.inference import embed_dataset
+    """Neighborhood embeddings with the target encoder of the final checkpoint (TERRA raises if it does not load)."""
+    from terra.inference.embed import embed_dataset
 
     output_embed = embed_dataset(dataset=dataset,
                                  model_folder_path=args.model_folder_path,
@@ -342,6 +326,7 @@ def embed(args, dataset, keep_special_tokens: bool) -> np.ndarray:
                                  batch_size=128,
                                  pin_memory=False,
                                  num_workers=args.num_workers,
+                                 include_spatial_cell_emb=False,
                                  keep_special_tokens=keep_special_tokens)
     return np.asarray(output_embed[args.emb_key], dtype=np.float32)
 

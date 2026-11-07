@@ -1,6 +1,6 @@
 #!/bin/bash
 # Ablations: one job array element trains (or resumes) the run of manifest.tsv row LSB_JOBINDEX on 4 GPUs with the
-# launch setup of the mouse ablations (bsub_script.sh and train_model_lsf_mpirun_sanger.sh of sebastianbirk/stjepa),
+# launch setup of the mouse ablations (bsub_script.sh and train_model_lsf_mpirun_sanger.sh, as in TERRA's scripts/),
 # then packages and evaluates it. Submit with submit_ablation_array.sh <env file> from this directory, which sets the
 # job name, array indices, concurrency (2 elements = 8 GPUs) and log files, and passes ARTIFACT_FOLDER_PATH and
 # ENV_PATH through bsub -env. The campaign's dataset values (dataset, silver and label files, label keys, norm factors,
@@ -100,7 +100,7 @@ RUN_NAME="$(printf '%03d' "${INDEX}")_${CONFIG_HASH}"
 export RUN_NAME
 export WANDB_NAME="${RUN_ID}"
 export BACKEND="nccl"
-export TRAINING_SCRIPT_PATH="${CODE_PATH}/src/app/training/main.py"
+export TRAINING_SCRIPT_PATH="${CODE_PATH}/src/terra/training/main.py"
 export NUM_NODES=1 NUM_GPUS_NODE=4 NUM_PROCESSES_NODE=32 TOTAL_NUM_GPUS=4 TOTAL_NUM_CORES=32
 export NCCL_IB_DISABLE=1
 export OUTPUT_DIR="${RUN_FOLDER_PATH}"
@@ -120,14 +120,14 @@ check_and_load_cuda
 source "${ENV_PATH}/bin/activate"
 # The venv's editable install points at the farm checkout, which may change; use the pinned code
 export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
-python3 -c "import app.utils, stjepa; assert all(m.__file__.startswith('${CODE_PATH}/') for m in (app.utils, stjepa)), (app.utils.__file__, stjepa.__file__)"
+python3 -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__"
 . "${ADVANCED_BASH_SCRIPT_PATH}/find_master_port.sh"
 . "${ADVANCED_BASH_SCRIPT_PATH}/build_mpi_host_string.sh"
 # find_master_port.sh derives the port from the job ID, which all array elements share
 MASTER_PORT=$(python3 -c 'import socket; s = socket.socket(); s.bind(("", 0)); print(s.getsockname()[1])')
 export MASTER_PORT
 
-# Train unless finished (the run config resumes from stjepa-latest.pth.tar if it exists). Exit code 3 means not
+# Train unless finished (the run config resumes from terra-latest.pth.tar if it exists). Exit code 3 means not
 # finished; any other failure (e.g. an unreadable checkpoint) stops here instead of silently retraining from scratch.
 set +e
 python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
@@ -136,7 +136,24 @@ CHECK_STATUS=$?
 set -e
 if [ "${CHECK_STATUS}" -eq 3 ]; then
     mkdir -p "${RUN_FOLDER_PATH}"
-    "${CODE_PATH}/src/app/training/train_model_lsf_mpirun_sanger.sh"
+    # TERRA loads state.read_checkpoint whenever state.load_checkpoint is set and raises if it is missing: the launch
+    # config resumes only if the run has a latest checkpoint (one that exists but cannot be loaded still raises)
+    LAUNCH_CONFIG_FILE="${RUN_FOLDER_PATH}/launch_config.yaml"
+    python3 - "${CONFIG_FILE}" "${LAUNCH_CONFIG_FILE}" <<'PY'
+import sys
+from pathlib import Path
+
+import yaml
+
+config = yaml.safe_load(open(sys.argv[1]))
+latest_checkpoint_path = Path(config["state"]["folder_path"]) / config["state"]["read_checkpoint"]
+config["state"]["load_checkpoint"] = latest_checkpoint_path.is_file()
+print(f"{'Resuming from' if latest_checkpoint_path.is_file() else 'Training from scratch; no'} {latest_checkpoint_path}")
+with open(sys.argv[2], "w") as file:
+    yaml.safe_dump(config, file, sort_keys=False)
+PY
+    export CONFIG_FILE="${LAUNCH_CONFIG_FILE}"
+    "${CODE_PATH}/scripts/train_model_lsf_mpirun_sanger.sh"
 elif [ "${CHECK_STATUS}" -ne 0 ]; then
     echo "Could not check ${RUN_FOLDER_PATH} (exit code ${CHECK_STATUS}); inspect it before resubmitting."
     exit 1

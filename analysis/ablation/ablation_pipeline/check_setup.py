@@ -1,17 +1,18 @@
 """
 This script checks the setup of an ablation campaign on the farm before launching the job array:
-0. Pinned code and campaign: the patch is applied (predictor fix, metatoken inference option), its CODE_VERSION is the
-   `code_version` of the configs, and `dataset.env` of the artifact folder (what the job array reads) holds the values
-   of the arguments, i.e. the configs were regenerated after the last change of the env file.
+0. Pinned code and campaign: the pinned TERRA copy (CODE_PATH) is the one imported and has the options of the plan
+   and the metatoken inference option, its CODE_VERSION is the `code_version` of the configs, and `dataset.env` of the
+   artifact folder (what the job array reads) holds the values of the arguments, i.e. the configs were regenerated
+   after the last change of the env file.
 1. Config parity: every variant's generated config is compared with the params of its mouse runs (model_config.yaml
    or params.yaml under --mouse_artifact_folder_path). Expected differences (data paths, special value rows, run
-   folder and resumption, seed, step-matched epochs, code version) are ignored; any other difference means the plan
-   does not reproduce the mouse experiment and should be resolved first. Inferred overrides (cell-neighborhood layout,
-   dimension ablations) are verified here.
+   folder and resumption, seed, step-matched epochs, code version, the TERRA-only options, which are off) are ignored;
+   any other difference means the plan does not reproduce the mouse experiment and should be resolved first. Inferred
+   overrides (cell-neighborhood layout, dimension ablations) are verified here.
 2. Special values and vocabulary genes: the batch special value of every silver file fits into the special value
-   embedding of the configs, and the `gt_type: rank` metatoken gets the right token id. The patched dataset derives the
-   token offset from the token dictionary; the offset hard-coded in the unpatched code is reported for the dataset's
-   and the mouse dictionary (the latter tells whether the mouse rank arms trained with the right metatoken). Fails if a
+   embedding of the configs. TERRA maps the special values of `gt_type: rank` models to tokens with an offset
+   hard-coded by vocabulary size: fails if it differs from the token dictionary's offset while the plan has a rank arm
+   (the mouse dictionary is reported too: whether the mouse rank arms trained with the right metatoken). Fails if a
    silver cell has no detected gene of the token dictionary: its ranked gene lists are empty, which shifts the segments
    of the cells around it on the sparse ranking path (remove such cells with filter_silver_cells.py).
 3. Labels and sections: every label file (LABEL_FILE_PATHS, default: the silver files) is one section, the batch of the
@@ -71,7 +72,6 @@ IGNORED_KEYS = {"code_version",
                 "mask.pad_masks_to_batch_max",
                 "data.stable_rank_ties",
                 "data.zero_expr_from_raw_counts",
-                "data.exact_n_nonzero_tokens",
                 "data.seurat_loess_span",
                 "data.aggregate_own_neighbors",
                 "state.folder_path",
@@ -79,13 +79,17 @@ IGNORED_KEYS = {"code_version",
                 "state.read_checkpoint",
                 "state.read_timestamp",
                 "state.checkpoint_freq",
+                # TERRA: checkpoint names (terra-latest.pth.tar) and the SDPA kernel choice ('torch' = PyTorch's choice,
+                # the behaviour of the v2 code)
+                "state.write_tag",
+                "meta.attention_backend",
                 # Matched to the mouse runs in optimizer steps instead of epochs
                 "optimization.epochs",
                 "optimization.warmup"}
-# RoPE keys (added on 21 Apr, after the plotted runs) are ignored by the pinned v2 code
-IGNORED_KEY_PREFIXES = ("meta.rope_",)
-# Special token offsets hard-coded for `gt_type: rank` in the unpatched code (cell_datasets.py), by vocabulary size
-MOUSE_VOCAB_SIZE, MOUSE_RANK_OFFSET, HUMAN_RANK_OFFSET = 2785, 1674, 21957
+# RoPE keys (added on 21 Apr, after the plotted runs; unused with the 'segment' and 'coord' encodings) and the TERRA
+# options that the v2 code did not have (all off in the base config)
+IGNORED_KEY_PREFIXES = ("meta.rope_", "meta.laplacian_", "protein_init.", "special_token_correction.",
+                        "optimization.vicreg_granularity", "data.pf_targets_file_path")
 # Label values listed per key (check 3), and values that may mark unassigned cells (listed in addition)
 TOP_VALUES = 10
 UNASSIGNED_PATTERN = re.compile(r"unassign|unknown|undefined|unlabel|^(none|nan|na|n/a|other|-|)$", re.IGNORECASE)
@@ -135,21 +139,27 @@ def check_pinned_code(code_path: str, config_file_path: str) -> bool:
     import inspect
 
     sys.path.insert(0, f"{code_path}/src")
-    from app.inference.embed import embed_dataset
-    from stjepa.models.gene_transformers import GeneTransformerCombinedPredictor
-    import stjepa
+    import terra
+    from terra.inference.embed import embed_dataset
+    from terra.tokenizers.cell_tokenizers import CellBaseTokenizer, CellNeighborhoodTokenizer
 
     version_file_path = Path(code_path) / "CODE_VERSION"
     version = version_file_path.read_text().strip() if version_file_path.exists() else "?"
-    patched = ("pad_special_tokens" in inspect.signature(GeneTransformerCombinedPredictor.forward).parameters
-               and "keep_special_tokens" in inspect.signature(embed_dataset).parameters)
-    print(f"{stjepa.__file__}: {version}; {'patched' if patched else 'NOT PATCHED (rerun setup_code.sh)'}")
+    # The pinned copy, with the options of the plan and the metatoken inference option of the evaluation
+    pinned = terra.__file__.startswith(f"{Path(code_path).resolve()}/") or terra.__file__.startswith(f"{code_path}/")
+    tokenizer_options = set(inspect.signature(CellBaseTokenizer.__init__).parameters)
+    has_options = ({"stable_rank_ties", "zero_expr_from_raw_counts", "seurat_loess_span"} <= tokenizer_options
+                   and "aggregate_own_neighbors" in inspect.signature(CellNeighborhoodTokenizer.__init__).parameters
+                   and "keep_special_tokens" in inspect.signature(embed_dataset).parameters)
+    print(f"{terra.__file__}: {version}; "
+          f"{'pinned copy' if pinned else 'NOT THE PINNED COPY (check PYTHONPATH)'}, "
+          f"{'with the options of the plan' if has_options else 'WITHOUT the options of the plan (rerun setup_code.sh)'}")
     with open(config_file_path) as file:
         config_version = yaml.safe_load(file).get("code_version")
     same_version = config_version == version
     print(f"Code version of the configs: {config_version} "
           f"({'same' if same_version else 'DIFFERENT: regenerate the configs or set up that code version'})")
-    return patched and same_version
+    return pinned and has_options and same_version
 
 
 def check_dataset_env(artifact_folder_path: str, expected: dict) -> bool:
@@ -173,19 +183,27 @@ def check_dataset_env(artifact_folder_path: str, expected: dict) -> bool:
     return not differences
 
 
-def hard_coded_rank_offset(token_dict: dict) -> int:
-    return MOUSE_RANK_OFFSET if len(token_dict) == MOUSE_VOCAB_SIZE else HUMAN_RANK_OFFSET
+def spv_token_offset(token_dict: dict) -> int:
+    """
+    Token id offset of the special values in the token dictionary (token id = special value + offset), as the
+    tokenizers store them: the first special value token - 2 - the number of cls tokens.
+    """
+    spv_token_ids = [token_id for key, token_id in token_dict.items() if str(key).startswith("spv_")]
+    n_cls_tokens = sum(1 for key in token_dict if "cls" in str(key))
+    return min(spv_token_ids) - 2 - n_cls_tokens
 
 
 def check_special_values(config_file_path: Path, token_dictionary_file_path: str, silver_file_paths: list,
-                         mouse_token_dictionary_file_path: str) -> bool:
+                         mouse_token_dictionary_file_path: str, has_rank_variant: bool) -> bool:
     print("== 2. Batch special values and vocabulary genes")
     import scanpy as sc
-    from stjepa.datasets.cell_datasets import get_spv_token_offset
+    from terra.datasets.cell_datasets import rank_special_value_offset
 
     with open(token_dictionary_file_path, "rb") as file:
         token_dict = pickle.load(file)
-    spv_offset = get_spv_token_offset(token_dict)
+    spv_offset = spv_token_offset(token_dict)
+    # TERRA maps the special values of `gt_type: rank` models to tokens with an offset hard-coded by vocabulary size
+    rank_offset = rank_special_value_offset(len(token_dict))
     with open(config_file_path) as file:
         n_special_values = yaml.safe_load(file)["data"]["n_special_values"]
     fits = True
@@ -205,25 +223,29 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         fits &= batch_value <= n_special_values + 1
         print(f"{silver_file_path}: batch_value {batch_value}, special value embedding rows {n_special_values + 2}: "
               f"{'OK' if batch_value <= n_special_values + 1 else 'TOO SMALL'}")
-        print(f"`gt_type: rank` metatoken: token {batch_value + spv_offset} (offset from the token dictionary) for "
-              f"spv token {batch_value_token}; the unpatched code used offset {hard_coded_rank_offset(token_dict)} "
-              f"({'same' if hard_coded_rank_offset(token_dict) == spv_offset else 'DIFFERENT'})")
+    print(f"`gt_type: rank` metatoken: the token dictionary's special value offset is {spv_offset}, TERRA's (hard-coded "
+          f"for {len(token_dict)} tokens) {rank_offset}: {'same' if rank_offset == spv_offset else 'DIFFERENT'}")
+    rank_ok = rank_offset == spv_offset or not has_rank_variant
+    if not rank_ok:
+        print("ERROR: the rank arm would train with a wrong metatoken token; derive TERRA's rank special value offset "
+              "from the token dictionary (cell_datasets.rank_special_value_offset) before launching.")
 
-    # Mouse dictionary: did the mouse rank arms (unpatched code) get the right metatoken?
+    # Mouse dictionary: did the mouse rank arms (v2 code, same hard-coded offsets) get the right metatoken?
     if Path(mouse_token_dictionary_file_path).exists():
         with open(mouse_token_dictionary_file_path, "rb") as file:
             mouse_token_dict = pickle.load(file)
-        mouse_offset = get_spv_token_offset(mouse_token_dict)
-        print(f"Mouse token dictionary ({len(mouse_token_dict)} tokens): offset {mouse_offset}, unpatched code used "
-              f"{hard_coded_rank_offset(mouse_token_dict)} -> mouse rank arms trained with "
-              f"{'the right' if mouse_offset == hard_coded_rank_offset(mouse_token_dict) else 'a WRONG'} metatoken")
+        mouse_offset = spv_token_offset(mouse_token_dict)
+        mouse_rank_offset = rank_special_value_offset(len(mouse_token_dict))
+        print(f"Mouse token dictionary ({len(mouse_token_dict)} tokens): offset {mouse_offset}, hard-coded "
+              f"{mouse_rank_offset} -> the mouse rank arms trained with "
+              f"{'the right' if mouse_offset == mouse_rank_offset else 'a WRONG'} metatoken")
     else:
         print(f"Mouse token dictionary not found ({mouse_token_dictionary_file_path}).")
     if n_empty_cells > 0:
         print(f"ERROR: {n_empty_cells} cells have no detected gene of the token dictionary, so their ranked gene lists "
               f"are empty; on the sparse ranking path the cells around them get shifted segments and lose their "
               f"farthest neighbors. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
-    return fits and n_empty_cells == 0
+    return fits and rank_ok and n_empty_cells == 0
 
 
 def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str) -> tuple[bool, pd.Series]:
@@ -362,8 +384,9 @@ def main(args):
                              "NORM_FACTOR_FILE_PATH": args.norm_factor_file_path,
                              "CODE_PATH": args.code_path})
     check_config_parity(variants, config_file_paths, args.mouse_artifact_folder_path)
+    has_rank_variant = any(variant["overrides"].get("meta.gt_type") == "rank" for variant in variants.values())
     ok &= check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_paths,
-                               args.mouse_token_dictionary_file_path)
+                               args.mouse_token_dictionary_file_path, has_rank_variant)
     labels_ok, cell_section = check_labels(label_file_paths, args.label_keys, args.unassigned_label)
     ok &= labels_ok
     if not args.skip_datasets:
@@ -371,7 +394,7 @@ def main(args):
                                        args.dataset_name, cell_section)
     print("== 5. Normalization factors")
     from norm_factors import check_norm_factors
-    from stjepa.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
+    from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
     ok &= check_norm_factors(args.norm_factor_file_path, args.silver_file_paths,
                              normalize_by_gene_corrected_read_depth)
     report_schedule_end_values(config_file_paths)

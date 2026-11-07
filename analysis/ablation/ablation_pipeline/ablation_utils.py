@@ -21,11 +21,12 @@ NORM_METHOD_KEYS = ["rank_cell_norm_method",
                     "count_cell_norm_method",
                     "count_gene_norm_method",
                     "count_count_norm_method"]
-# Opt-in tokenizer fixes of stjepa_ablation.patch (off = behaviour of the mouse tokenizations); the plan sets
-# them for all tokenizations under `tokenizer_options`. The last two only apply to the cell-neighborhood tokenizer.
+# Opt-in tokenizer fixes of TERRA (off = behaviour of the mouse tokenizations); the plan sets them for all
+# tokenizations under `tokenizer_options`. seurat_loess_span None keeps TERRA's default (0.75, the span the mouse
+# tokenizations effectively used). The last two only apply to the cell-neighborhood tokenizer: seq_len_cell None is the
+# original v2 split into n_neighs + 1 blocks, model_input_size / 2 TERRA's equal split (split_cell_neigh_equally).
 TOKENIZER_OPTION_DEFAULTS = {"stable_rank_ties": False,
                              "zero_expr_from_raw_counts": False,
-                             "exact_n_nonzero_tokens": False,
                              "seurat_loess_span": None,
                              "aggregate_own_neighbors": False,
                              "seq_len_cell": None}
@@ -60,11 +61,17 @@ def load_plan(plan_file_path: Path | str) -> tuple[dict, dict]:
     for name, tokenization in tokenizations.items():
         if set(tokenization) - set(TOKENIZATION_DEFAULTS):
             raise ValueError(f"Tokenization {name} has unknown keys {set(tokenization) - set(TOKENIZATION_DEFAULTS)}.")
+        # TERRA's cell-neighborhood tokenizer splits a sequence equally between the index cell and its neighborhood
+        # (split_cell_neigh_equally) or into n_neighs + 1 blocks
+        if (tokenization["tokenizer"] == "cell-neighborhood-tokenizer"
+                and tokenization["seq_len_cell"] not in (None, int(tokenization["model_input_size"] / 2))):
+            raise ValueError(f"Tokenization {name}: seq_len_cell must be model_input_size / 2 (equal split) or null "
+                             f"(n_neighs + 1 blocks), not {tokenization['seq_len_cell']}.")
     variants = plan["variants"]
     for name, variant in variants.items():
         variant.setdefault("tokenization", "base")
         variant.setdefault("overrides", {})
-        # Opt-in training fixes of the patch, set in every run config before the variant's own overrides
+        # Opt-in training fixes of TERRA, set in every run config before the variant's own overrides
         variant["training_options"] = dict(plan.get("training_options", {}))
         if variant["tokenization"] not in tokenizations:
             raise ValueError(f"Variant {name} uses unknown tokenization {variant['tokenization']}.")
@@ -86,8 +93,6 @@ def get_tokenized_dataset_path(tokenization: dict,
         options.append("ties")
     if tokenization["zero_expr_from_raw_counts"]:
         options.append("detected")
-    if tokenization["exact_n_nonzero_tokens"]:
-        options.append("nnz")
     if tokenization["seurat_loess_span"] is not None and "seurat_v3" in norm_methods:
         # No dots: the tokenizer names its output with Path.with_suffix
         options.append(f"span{tokenization['seurat_loess_span']}".replace(".", "p"))
@@ -104,10 +109,12 @@ def get_tokenized_dataset_path(tokenization: dict,
 def needs_large_memory(tokenization: dict) -> bool:
     """
     Whether a tokenization needs the large memory class (`submit_tokenization.sh`; standard: 200 GB).
-    - With `stable_rank_ties` or `zero_expr_from_raw_counts`, ranked gene lists are cut at `model_input_size`
-      (lossless), and every tokenization is standard. Measured peak on the OVCA section (338,695 cells): about 83 GB for
-      the base, dense-path and 256-gene (`model_input_size` 2816) tokenizations, about 105 GB for Seurat v3 and Pearson
-      residuals.
+    - With `stable_rank_ties` or `zero_expr_from_raw_counts`, every tokenization is standard. TERRA cuts the ranked
+      gene lists at `model_input_size` on both ranking paths (lossless). Peaks measured on the OVCA section (338,695
+      cells) with the equivalent cut of the former pinned code: about 83 GB for the base, dense-path and 256-gene
+      (`model_input_size` 2816) tokenizations, about 105 GB for Seurat v3 and Pearson residuals. That code also dropped
+      trailing pad entries of dense-path lists, which TERRA keeps, so dense-path arms of a dataset of that size may need
+      up to about twice as much; the mouse sections (92,520 cells) are far below the limit.
     - Without them, the dense path (rank and count normalizations differ, see
       `CellBaseTokenizer.rank_differs_from_count`) and Seurat v3 / Pearson residuals keep every gene per cell (about
       1.3 MB per cell, 0.5-0.6 TB for the OVCA section), and long sequences (`model_input_size` > 1408) also use the
@@ -125,7 +132,7 @@ def needs_large_memory(tokenization: dict) -> bool:
 
 
 def get_seq_len_cell(tokenization: dict) -> int:
-    """Index-cell tokens per sequence: cell graph blocks or the cell-neighborhood split (pinned default k + 1 blocks)."""
+    """Index-cell tokens per sequence: cell graph blocks or the cell-neighborhood split (default: k + 1 blocks)."""
     if tokenization["tokenizer"] == "cell-neighborhood-tokenizer" and tokenization["seq_len_cell"] is not None:
         return tokenization["seq_len_cell"]
     return int(tokenization["model_input_size"] / (tokenization["n_neighs"] + 1))
@@ -137,9 +144,10 @@ def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 10
     > 0 in `adata.X` for a gene whose `var['ensembl_id']` has a token, the genes the tokenizer keeps). With
     `zero_expr_from_raw_counts`, exactly these cells have an empty ranked gene list in every tokenization. Their own
     segment holds only padding (empty embedding), and on the sparse ranking path (most arms, including base) the
-    pinned tokenizer does not count them as neighbor segments (`_format_examples`): a cell with k such neighbors gets
-    longer segments that no longer start where the datasets read them, and loses its k farthest neighbors (TERRA's
-    H2, fixed there in 7f6a30c by removing these cells before tokenization). Works on backed AnnData (row chunks).
+    tokenizer does not count them as neighbor segments (TERRA's CellGraphTokenizer with its default
+    pad_empty_neighbors=False, as the original v2 code): a cell with k such neighbors gets longer segments that no longer
+    start where the datasets read them, and loses its k farthest neighbors (TERRA's pipeline removes these cells before
+    tokenization since 7f6a30c). Works on backed AnnData (row chunks).
     """
     import numpy as np
     import scipy.sparse as sp

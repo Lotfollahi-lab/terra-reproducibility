@@ -27,10 +27,12 @@ if [ "${#SILVER_FILE_PATH_LIST[@]}" -ne 1 ]; then
     exit 1
 fi
 
-# Load your environment (TERRA environment: harmonize_bronze_to_silver.py dependencies)
+# TERRA environment (harmonize_bronze_to_silver.py dependencies) with the pinned TERRA code (the tokenizer's normalizer
+# for the factors; setup_code.sh)
 set +u
-source /nfs/team361/sb75/.venvs/terra/bin/activate
+source "${ENV_PATH}/bin/activate"
 set -u
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
 
 # Run the Python script
 python -u prepare_ovca_data.py --bronze_file_path "${BRONZE_FILE_PATH}" \

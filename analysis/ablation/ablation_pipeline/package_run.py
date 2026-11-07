@@ -4,8 +4,8 @@ This script checks whether an ablation run has finished training and, if so, pac
 and `norm_factors.csv` in the model folder (the mouse model folders held copies; here they are symlinks to the training
 params, the latest checkpoint, the token dictionary and the normalization factors).
 
-A run is finished when `stjepa-latest.pth.tar` was saved at the end of the last epoch (`epoch == epochs - 1` without
-`iter_number`; mid-epoch saves carry `iter_number`).
+A run is finished when its latest checkpoint (`<state.write_tag>-latest.pth.tar`, i.e. `terra-latest.pth.tar`) was saved
+at the end of the last epoch (`epoch == epochs - 1` without `iter_number`; mid-epoch saves carry `iter_number`).
 
 Exit codes: 0 finished (and packaged unless --check_only), 3 not finished.
 
@@ -28,13 +28,16 @@ NOT_FINISHED_EXIT_CODE = 3
 def main(args):
     run_folder_path = Path(args.run_folder_path)
     params_file_path = run_folder_path / "params.yaml"
-    checkpoint_file_path = run_folder_path / "stjepa-latest.pth.tar"
-    if not params_file_path.exists() or not checkpoint_file_path.exists():
-        print(f"{run_folder_path} has no params.yaml or latest checkpoint yet.")
+    if not params_file_path.exists():
+        print(f"{run_folder_path} has no params.yaml yet.")
         sys.exit(NOT_FINISHED_EXIT_CODE)
-
     with open(params_file_path) as file:
         params = yaml.safe_load(file)
+    checkpoint_file_path = run_folder_path / f"{params['state']['write_tag']}-latest.pth.tar"
+    if not checkpoint_file_path.exists():
+        print(f"{run_folder_path} has no latest checkpoint ({checkpoint_file_path.name}) yet.")
+        sys.exit(NOT_FINISHED_EXIT_CODE)
+
     checkpoint = torch.load(checkpoint_file_path, map_location="cpu", weights_only=False)
     epochs = params["optimization"]["epochs"]
     if checkpoint["epoch"] != epochs - 1 or "iter_number" in checkpoint:

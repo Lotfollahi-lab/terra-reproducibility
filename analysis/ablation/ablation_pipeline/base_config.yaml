@@ -1,7 +1,11 @@
-# Base model config of the mouse ablations: sebastianbirk/stjepa, branch v2 (e8bd8d8),
-# configs/model/mmb0-1b_smb1-1b/mmb0-1b_smb1-1b_2p_coord_aligned.yaml, unchanged. generate_ablation_runs.py replaces
-# the dataset, schedule and state keys for the ablation dataset and applies the variant overrides of ablation_plan.yaml.
-# Keys the v2 training code ignores (e.g. api_version, vocab_size, rope_*) are kept as in the mouse config.
+# Base model config of the ablations, in the TERRA config format: Lotfollahi-lab/terra
+# configs/model/mmb0-1b_smb1-1b/mmb0-1b_smb1-1b_2p_coord_aligned.yaml with the model and schedule of the mouse
+# ablation base (sebastianbirk/stjepa v2, the published Supp. Figs 4-6): count_count_norm_method null, enc_depth 3,
+# ema [0.995, 1.0], ipe_scale 1.25. attention_backend 'torch' lets PyTorch choose the SDPA kernel (FlashAttention
+# where it applies), as the mouse runs and the released TERRA models were trained; the TERRA default 'auto' excludes
+# it. Unused paths are null; the new TERRA options (protein_init, special_token_correction) are off.
+# generate_ablation_runs.py replaces the dataset, schedule and state keys for the ablation dataset and applies the
+# variant overrides of ablation_plan.yaml.
 data:
   dataset_name: 'mmb0-1b_smb1-1b_2p_coord_aligned'
   model_input_size: 704 # 2816, 704, 11264
@@ -12,9 +16,10 @@ data:
   count_cell_norm_method: null
   count_gene_norm_method: null
   count_count_norm_method: null
-  raw_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/mmb0-1b_smb1-1b_2p'
+  raw_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver/mmb0-1b_smb1-1b_2p_coord_aligned'
   token_dict_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_mus_musculus.pkl'
   tokenized_data_folder_path: '/lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer/mmb0-1b_smb1-1b_2p_coord_aligned/mmb0-1b_smb1-1b_2p_coord_aligned_32_None_None_None_None_None_None_knn_10_704.dataset'
+  pf_targets_file_path: null
   precomputed_split: null
   precomputed_n_nonzero_tokens: null
   test_batch_ids: null
@@ -28,8 +33,8 @@ data:
   seq_len_neighborhood: 640 # 2560, 640, 10240
   n_segments: 11
   sampling_strategy: null
-  batch_size: 32 # 32
-  num_workers: 16 
+  batch_size: 32 # 32 # 32
+  num_workers: 16
   pin_memory: True
   sep_gene_tokens_neb: False
   use_sampler: True
@@ -44,18 +49,26 @@ meta:
   gt_type: 'combined' # 'rank', 'counts', 'combined'
   count_encoding: 'mlp' # 'value_bins', 'mlp'
   n_value_bins: 20
-  cell_pos_enc: 'segment' # 'rope'
+  cell_pos_enc: 'segment' # 'laplacian', 'rope'
+  laplacian_k: 8        # default 8; max useful is n_segments - 1
+  laplacian_sigma: 1.0  # default 1.0; tune to your tissue scale
   enc_depth: 3
-  enc_emb_dim: 768
+  enc_emb_dim: 768 # 1152, 960
   pred_depth: 1
   pred_emb_dim: 768 # 384
   num_heads: 8
   mlp_ratio: 4
-  special_tokens: ['batch'] # ['batch'] # ['batch', 'assay'] # ['batch'] []
+  special_tokens: ['batch'] # ['batch'] # ['batch', 'assay'] # ['batch', 'assay', 'gene_panel']
   pos_learnable: False
   seg_learnable: False
   use_bfloat16: True
   use_flash_attention: True
+  # SDPA backend preference (only used when use_flash_attention: True):
+  #   auto      - CUDNN > EFFICIENT > MATH; fp32 softmax (training default)
+  #   flash     - prefer FLASH: lowest memory / largest batch, bf16 softmax
+  #   efficient | cudnn | math - pin a single backend
+  #   torch     - let PyTorch choose
+  attention_backend: torch
   use_layer_norm: True
   predict_gene: True
   new_spc: True # True, False
@@ -83,7 +96,7 @@ optimization:
   ema:
   - 0.995
   - 1.0
-  start_lr: 2.0e-05 # 2.0e-05, 1.0e-06 
+  start_lr: 2.0e-05 # 2.0e-05, 1.0e-06
   lr: 6.0e-05 # 2.0e-05, 0.000625, 6.0e-05
   final_lr: 2.0e-05 # 2.0e-05, 1.0e-06
   weight_decay: 0.04
@@ -92,12 +105,43 @@ optimization:
   clip_grad: 2.0
   lambda_var: 0.
   lambda_cov: 0.
+  vicreg_granularity: 'cell'
 state:
   log_freq: 20
   checkpoint_freq: 5
-  write_tag: stjepa
+  write_tag: terra
   read_timestamp: ''
   folder_path: null
   load_checkpoint: False # true, false
-  read_checkpoint: null # null, 'stjepa-ep5.pth.tar'
+  read_checkpoint: null # null, 'terra-ep5.pth.tar'
   checkpoint_freq_iter: 50000
+protein_init:
+  enabled: False
+  mode: warm_start
+  embedding_path: null
+  mapping_path: null
+special_token_correction:
+  # Shared spec — each mechanism inherits unless it overrides.
+  keys: ['batch_value', 'assay_value', 'gene_panel_value']  # which value slots to use for conditioning/special tokens; e.g
+  n_classes: [200, 200, 200]
+  offsets: [0, 0, 0]
+  adaln:
+    enabled: False
+    batch_embed_dim: 64
+    scope: 'predictor'
+  adv_classifier:
+    enabled: False
+    hidden_dim: 64
+    dropout: 0.1
+    lambda_adv: 1.0
+    grl_alpha: 1.0
+  distribution_alignment:
+    enabled: False
+    method: 'coral'
+    lambda: 1.0
+  cycle_consistency:
+    enabled: False
+    lambda_cycle: 0.1
+    swap_fraction: 0.25
+  special_token_moe:
+    enabled: False

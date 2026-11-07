@@ -5,7 +5,9 @@
 - **Ablation analysis:** `sebastianbirk/stjepa-reproducibility` `analysis/mouse_ablation`.
 - **Coordinate ablation:** the data preparation behind it.
 
-**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes are in `stjepa_ablation.patch` of `analysis/ablation/ablation_pipeline` (pinned copy: `/nfs/team361/sb75/stjepa_ablation`, made by `setup_code.sh`), used for the OVCA runs and the mouse reruns (see Resolution).
+**Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes were first collected in `stjepa_ablation.patch` (20 changes; in git history up to commit 60a77a3 of terra-reproducibility).
+
+**Since 7 Nov 2026 the ablations run on TERRA** (`Lotfollahi-lab/terra` `5593017`, pinned by `setup_code.sh`), which holds every fix; see [TERRA port](#terra-port-7-nov-2026). Patch numbers below refer to the former patch.
 
 ## Bottom line
 
@@ -185,3 +187,39 @@ grep -l "Loaded pretrained encoder" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
 ```
 
 `check_setup.py` compares every generated config with the mouse `params.yaml` of its runs. That settles the inferred overrides (cell-neighborhood layout, predictor width, coordinate encoding).
+
+## TERRA port (7 Nov 2026)
+
+The figure is rerun on the current code: the pipeline pins TERRA `5593017` (dev, 5 Nov 2026) instead of stjepa
+`b433d5e` plus the patch. Each change of the former patch, in TERRA:
+
+| Patch | TERRA |
+|---|---|
+| 1 seed, 2 atomic latest checkpoint, 6 padded masks (`mask.pad_masks_to_batch_max`), 7 resumption from rank 0's folder and raising load errors, 19 no per-batch print, 20 `cell_neigh` comparison | same, under the same names |
+| 3 predictor in batches with padded special tokens, 5 padded special token attending to itself, 10 `keep_special_tokens`, 11 inference consistency (restriction from `mask`, `nz_spc`, cell-only context length), 12 options in re-tokenization | same (TERRA commits 10b29d8, 1151e73, fe894f5, 9697067, 1367db2, 87d3262) |
+| 4 predictor segment table with two or more special tokens | not needed: the ablations use at most one metatoken |
+| 8 dataset-level padding of special tokens | one pad per special token, without reading the special value columns, as in the patch. A padded `gt_type: rank` special token gets the value offset instead of 0 in the dataset, but the collator zeroes padded special tokens before the model sees them |
+| 9 `gt_type: rank` offset from the token dictionary | still hard-coded by vocabulary size (1674 for the 2785-token mouse dictionary, else 21957); `check_setup.py` (check 2) fails if it differs from the dictionary's offset while the plan has a rank arm |
+| 13 `stable_rank_ties` | same option; ties are ordered by rank score, then count value (dense path), then token id; the patch used the reference nonzero mean before the token id. Deterministic and independent of the gene order either way, but the genes chosen among ties differ |
+| 14 `zero_expr_from_raw_counts`, 16 `seurat_loess_span`, 18 `aggregate_own_neighbors` | same options |
+| 15 `exact_n_nonzero_tokens` | always on (TERRA a936f2b); the ranked lists are cut at the input size on both paths, without the patch's extra trailing-pad trim |
+| 17 cell-neighborhood split | `split_cell_neigh_equally` (default): `seq_len_cell` = input size / 2, as the plan's 64 + 64 |
+
+Pipeline changes for TERRA:
+- `base_config.yaml` is TERRA's mouse config for this dataset with the ablation's model and schedule values.
+  `attention_backend: torch` lets PyTorch choose the SDPA kernel, as the mouse runs and the released models did; new
+  TERRA options are off.
+- TERRA raises if `state.load_checkpoint` is set and the checkpoint is missing. The job array therefore writes a launch
+  config that resumes only once `terra-latest.pth.tar` exists, and a checkpoint that cannot be loaded still raises.
+- The checkpoint name follows `state.write_tag` (`terra-latest.pth.tar`). Training, the launch script and the
+  embedding come from the pinned copy (`src/terra/training/main.py`, `scripts/train_model_lsf_mpirun_sanger.sh`,
+  `terra.inference.embed.embed_dataset` without the spatial cell embedding).
+- Tokenized datasets no longer carry `_nnz`, so they are never mixed up with the datasets of the former pinned code.
+
+Validated on a synthetic two-section mouse-like campaign (2785-token dictionary, 4 cells without counts) with the README
+steps:
+- setup, filter, factors, generation and both `check_setup.py` passes;
+- all 27 tokenizations;
+- 2-epoch CPU training through TERRA's `main.py` (gloo; a test-only shim drops the GPU device ids of DDP), packaging
+  and evaluation in both metatoken modes for the base, rank, counts, cell-neighborhood, value-bin, coordinate, no
+  metatoken and metatoken-dropout arms, and a resumed run.
