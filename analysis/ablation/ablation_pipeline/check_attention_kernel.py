@@ -18,7 +18,7 @@ settings. Exits with an error unless true gives finite outputs and gradients and
 unchanged.
 
 Usage (a 1-GPU job on the queue of the training runs, so that the GPU type matches; after tokenization, with any run
-config of the campaign, e.g. base_rep1; `source datasets/<dataset>.env` first):
+of the campaign, by default base_rep1, whose config is read from the manifest; `source datasets/<dataset>.env` first):
 ```bash
 mkdir -p "${ARTIFACT_FOLDER_PATH}/logs"
 bsub -G team361 -q training-parallel -n 4 -gpu "num=1:gmem=40000:mode=exclusive_process:block=yes" -M 32G \\
@@ -26,8 +26,9 @@ bsub -G team361 -q training-parallel -n 4 -gpu "num=1:gmem=40000:mode=exclusive_
     -o "${ARTIFACT_FOLDER_PATH}/logs/check_attention_kernel_%J.out" \\
     -e "${ARTIFACT_FOLDER_PATH}/logs/check_attention_kernel_%J.err" \\
     "source ${ENV_PATH}/bin/activate && PYTHONPATH=${CODE_PATH}/src python check_attention_kernel.py \\
-     --config_file_path $(ls "${ARTIFACT_FOLDER_PATH}"/configs/base_rep1_*.yaml)"
+     --artifact_folder_path ${ARTIFACT_FOLDER_PATH}"
 ```
+`--run_name` picks another run of the manifest, `--config_file_path` a config file directly.
 """
 
 import argparse
@@ -36,6 +37,7 @@ import pickle
 import sys
 from pathlib import Path
 
+import pandas as pd
 import torch
 import yaml
 
@@ -118,7 +120,19 @@ def run_encoder(config: dict, token_dict: dict, zero_rows: bool, inputs: dict, s
                                                              "n_gradients": len(gradients)}
 
 
+def get_config_file_path(artifact_folder_path: str, run_name: str) -> str:
+    """Config of a run of the manifest (configs/ can also hold the configs of earlier generations)."""
+    manifest_df = pd.read_csv(Path(artifact_folder_path) / "manifest.tsv", sep="\t")
+    rows = manifest_df[manifest_df["run_name"] == run_name]
+    if len(rows) != 1:
+        raise ValueError(f"Expected one manifest row of run {run_name!r}, found {len(rows)}.")
+    return rows["config_file_path"].iloc[0]
+
+
 def main(args):
+    if args.config_file_path is None:
+        args.config_file_path = get_config_file_path(args.artifact_folder_path, args.run_name)
+    print(f"Run config: {args.config_file_path}")
     with open(args.config_file_path) as file:
         config = yaml.safe_load(file)
     with open(config["data"]["token_dict_folder_path"], "rb") as file:
@@ -164,10 +178,18 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Processing command line arguments...')
-    parser.add_argument('--config_file_path',
+    config_group = parser.add_mutually_exclusive_group(required=True)
+    config_group.add_argument('--artifact_folder_path',
+                              type=str,
+                              help='Folder with manifest.tsv; the config of --run_name is checked.')
+    config_group.add_argument('--config_file_path',
+                              type=str,
+                              help='Run config of the campaign (configs/<run id>.yaml); its tokenized dataset must '
+                                   'exist.')
+    parser.add_argument('--run_name',
                         type=str,
-                        required=True,
-                        help='Run config of the campaign (configs/<run id>.yaml); its tokenized dataset must exist.')
+                        default='base_rep1',
+                        help='Run of the manifest whose config is checked (with --artifact_folder_path).')
     parser.add_argument('--n_samples',
                         type=int,
                         default=4,
