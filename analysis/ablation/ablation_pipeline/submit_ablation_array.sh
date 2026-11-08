@@ -12,7 +12,8 @@
 # Example: bash submit_ablation_array.sh datasets/mouse.env 1-4        (pilot)
 #          bash submit_ablation_array.sh datasets/mouse.env 5-51 1     (rows 5-51, 4 GPUs at a time)
 #          bash submit_ablation_array.sh datasets/mouse.env "" 1 48:00 (all rows, run limit 48 h)
-# Options (env file; the environment of the command where the env file does not set them):
+# Options (the environment of the command, e.g. EVAL_FP32=1 bash submit_ablation_array.sh ..., else the env file; the
+# effective values are printed before the rows are checked):
 #   RUN_LIMIT: bsub -W of each training element ([hours:]minutes; empty: the queue's default RUNLIMIT, check it with
 #     `bqueues -l training-parallel | grep -A 2 RUNLIMIT`). An element killed at the limit is not requeued; resubmitting
 #     it resumes from its latest checkpoint.
@@ -47,6 +48,10 @@ if [ "$#" -lt 1 ] || [ "$#" -gt "${MAX_ARGS}" ] || [ ! -f "$1" ]; then
     echo "Usage: bash ${USAGE}  (ENV_FILE: e.g. datasets/ovca.env)" >&2
     exit 1
 fi
+# Options set in the environment of the command take precedence over the env file, which sets their defaults
+COMMAND_RUN_LIMIT="${RUN_LIMIT:-}"
+COMMAND_EVAL_FP32="${EVAL_FP32:-}"
+COMMAND_SEPARATE_EVALUATION="${SEPARATE_EVALUATION:-}"
 source "$1"
 cd "$(dirname "${BASH_SOURCE[0]}")"  # the jobs run package_run.py and evaluate_ablation_run.py from here
 
@@ -80,12 +85,12 @@ if [ "${EVALUATION_ONLY}" = "1" ]; then
 else
     MAX_CONCURRENT="${3:-2}"
 fi
-RUN_LIMIT="${4:-${RUN_LIMIT:-}}"
+RUN_LIMIT="${4:-${COMMAND_RUN_LIMIT:-${RUN_LIMIT:-}}}"
 # Evaluation elements: two embedding passes and the metrics take minutes; the limit only catches hung jobs
 EVALUATION_RUN_LIMIT="4:00"
 FORCE_EVAL="${FORCE_EVAL:-0}"
-EVAL_FP32="${EVAL_FP32:-0}"
-SEPARATE_EVALUATION="${SEPARATE_EVALUATION:-0}"
+EVAL_FP32="${COMMAND_EVAL_FP32:-${EVAL_FP32:-0}}"
+SEPARATE_EVALUATION="${COMMAND_SEPARATE_EVALUATION:-${SEPARATE_EVALUATION:-0}}"
 if ! [[ "${MAX_CONCURRENT}" =~ ^[1-9][0-9]*$ ]]; then
     echo "ERROR: MAX_CONCURRENT must be a positive integer, not '${MAX_CONCURRENT}'." >&2
     exit 1
@@ -113,6 +118,12 @@ if [ -n "${ACTIVE_JOBS}" ]; then
 fi
 
 # Rows that still need work, with the checks of the jobs and the values of dataset.env (as the jobs read them)
+if [ "${EVALUATION_ONLY}" = "1" ]; then
+    echo "Options: FORCE_EVAL=${FORCE_EVAL} EVAL_FP32=${EVAL_FP32}; checking rows ${INDICES:-(all)}..."
+else
+    echo "Options: FORCE_EVAL=${FORCE_EVAL} EVAL_FP32=${EVAL_FP32} SEPARATE_EVALUATION=${SEPARATE_EVALUATION}" \
+         "RUN_LIMIT=${RUN_LIMIT:-(queue default)}; checking rows ${INDICES:-(all)}..."
+fi
 LIST_OPTIONS=()
 if [ "${FORCE_EVAL}" = "1" ]; then
     LIST_OPTIONS+=(--force_evaluation)
