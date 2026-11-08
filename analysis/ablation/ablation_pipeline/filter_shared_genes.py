@@ -1,7 +1,9 @@
 """
 This script writes the shared-gene evaluation data of a dataset with two or more sections: each silver file restricted
 to the genes measured in every section (by var['ensembl_id'], the ids the tokenizer reads), without the cells that then
-have fewer than `--min_shared_genes` detected shared genes of the token dictionary (default 10). The files go to the
+have fewer than `--min_shared_genes` detected shared genes (default 10; counted over all shared genes, as
+`sc.pp.filter_cells` in the published evaluation) or no detected shared gene of the token dictionary (which the
+tokenizer could not represent). The files go to the
 silver folder of the gene set, silver/<DATASET_NAME>_shared_genes (`ablation_utils.get_gene_set_dataset_name`), under
 the source file names, with the same obs names, obs, obsm and uns as the source files, and without explicitly stored
 zeros. The source files are not modified. The folder records the md5 of the source files and the minimum
@@ -77,7 +79,7 @@ def main(args):
     shared_gene_ids = set.intersection(*[set(get_gene_ids(adata).dropna()) for adata in adatas])
     n_vocabulary_genes = sum(bool(token_dict.get(gene_id, False)) for gene_id in shared_gene_ids)
     print(f"{len(shared_gene_ids)} genes measured in all {len(adatas)} sections ({n_vocabulary_genes} in the token "
-          f"dictionary); minimum detected shared vocabulary genes per cell: {args.min_shared_genes}.")
+          f"dictionary); minimum detected shared genes per cell: {args.min_shared_genes}.")
     if n_vocabulary_genes == 0:
         raise ValueError("The sections share no gene of the token dictionary.")
     del adatas
@@ -92,13 +94,17 @@ def main(args):
         adata = ad.read_h5ad(source_file_path)
         shared = get_gene_ids(adata).isin(shared_gene_ids).to_numpy()
         adata = adata[:, shared].copy()
-        n_detected = count_detected_vocabulary_genes(adata, token_dict)
-        keep = n_detected >= args.min_shared_genes
+        # Detected genes as sc.pp.filter_cells counts them (min_genes_per_cell of the published evaluation)
+        n_detected = np.asarray((sp.csr_matrix(adata.X) > 0).sum(axis=1)).ravel()
+        n_detected_vocabulary = count_detected_vocabulary_genes(adata, token_dict)
+        keep = (n_detected >= args.min_shared_genes) & (n_detected_vocabulary > 0)
         if not keep.any():
             raise ValueError(f"{source_file_path}: no cell has {args.min_shared_genes} detected shared genes.")
         print(f"{source_file_path}: {int(shared.sum())} of {len(shared)} genes kept; {int(keep.sum())} of "
-              f"{len(keep)} cells kept ({int((~keep).sum())} with fewer than {args.min_shared_genes} detected shared "
-              f"genes; median detected shared genes {np.median(n_detected):g}).")
+              f"{len(keep)} cells kept ({int((n_detected < args.min_shared_genes).sum())} with fewer than "
+              f"{args.min_shared_genes} detected shared genes, {int((n_detected_vocabulary == 0).sum())} without a "
+              f"detected shared gene of the token dictionary; median detected shared genes "
+              f"{np.median(n_detected):g}).")
         adata = adata[keep].copy()
         if sp.issparse(adata.X):
             adata.X.eliminate_zeros()
@@ -132,12 +138,12 @@ if __name__ == '__main__':
     parser.add_argument('--token_dictionary_file_path',
                         type=str,
                         required=True,
-                        help='Token dictionary of the tokenization (detected genes are counted among its genes).')
+                        help='Token dictionary of the tokenization (cells need a detected shared gene of it).')
     parser.add_argument('--min_shared_genes',
                         type=int,
                         default=10,
-                        help='Minimum number of detected shared genes of the token dictionary per cell (default 10, '
-                             'min_genes_per_cell of the published mouse evaluation).')
+                        help='Minimum number of detected shared genes per cell (default 10, min_genes_per_cell of '
+                             'the published mouse evaluation).')
     args = parser.parse_args()
 
     main(args)
