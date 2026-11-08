@@ -304,11 +304,48 @@ Pipeline:
   a sample whose context is padding only, with the option false and true, and fails unless true is finite and leaves
   the other samples bit-identical.
 
+Evaluation, launch and reporting:
+- **Evaluation provenance.** `evaluation_complete` is removed when an evaluation starts and written last, and records
+  what produced the metrics (modes, labels and unassigned label per key, sha1 of `evaluate_ablation_run.py` and of the
+  part of `ablation_utils.py` it uses, TERRA version, checkpoint epoch and md5, evaluation data path and provenance
+  md5, precision, GPU, torch). `--check_only` (exit 0 / 3 / other) compares it with the current inputs and requires
+  every output file; any mismatch re-evaluates all modes. The evaluation stops if the evaluation data was tokenized
+  differently from the training data (provenance) or repeats a cell id.
+- **Finiteness.** Non-finite embeddings stop the evaluation before any metric, with counts per mode, section and
+  labelled cells; `package_run.py` refuses non-finite target-encoder weights.
+- **Collapse.** Participation ratio, PCs for 90% of the variance, top PC share, RankMe, between-cell variance fraction
+  and per-dimension SD; flags for complete collapse (variance fraction below 1e-3) and one-direction collapse (top PC
+  above 95%; the participation ratio flagged full-rank embeddings with one dominant axis, e.g. two separated
+  sections). `compare_ablations.py` adds a flag for a participation ratio or variance fraction below 25% of base.
+- **Granularity and integration.** AMI and the cluster and label counts per resolution and key; `iLISI_relative` =
+  iLISI / iLISI of the same graph with the sections permuted (random mixing does not reach the analytic bound
+  `iLISI_max`: about 0.9 of it at 2:1); `ASW_label_<key>` for keys shared by sections (none for mouse); per-label
+  cross-section neighbour shares. `--fp32_embeddings` (`EVAL_FP32=1`) embeds in fp32.
+- **Unassigned labels per key.** `UNASSIGNED_LABEL` is one value or `<key>=<value>` pairs (`;`); check 3 counts per
+  key and file.
+- **Launch.** Jobs skip a run only if `--check_only` says its evaluation is up to date (`FORCE_EVAL=1`: always
+  re-evaluate). The submit scripts check every row of the range on the login node (`list_pending_runs.py`, outside the
+  hashed code) and submit only rows that need work; `RUN_LIMIT` sets `bsub -W`. `submit_evaluation_array.sh` /
+  `evaluate_ablation_array.lsf` evaluate trained runs on 1 GPU each, and `SEPARATE_EVALUATION=1` sends every
+  evaluation there (element N after training element N). Options on the command line override the env file.
+- **Reporting.** Each run is averaged over the resolutions first; bars are mean +/- SD (ddof 1) or 95% CI over
+  replicates with n, single-run arms are compared with base through the pooled seed SD (a band) and seed-paired
+  differences, and `--error_bars published` reproduces the published panels (implies `--category_mode drop`). Category
+  panels use the training input; `metatoken_contrasts` gives the seed-paired contrasts. Differences to base and the
+  relative collapse flags use base in the same metatoken mode (No Metatoken: the panel mode). Only runs with
+  `evaluation_complete` and the config's evaluation data are used; the gene set is stated in every figure.
+
 Verified on CPU only (TERRA 584 tests; the synthetic two-section campaign with the pinned copy: generation, shared-gene
 data, tokenization, check 0, the kernel check with the real guard, 2-epoch training of the base and no-metatoken arms,
 evaluation on the shared-gene data). Still open, on the farm: the kernel check on a training GPU (step 8), the NCCL path
 of the RNG gather and the non-finite reduction (the pilot), the cell-neighborhood layout of the mouse params (check 1)
-and the datasets version of the venv (the `fork` claim rests on `load_from_disk` fixing the start method).
+and the datasets version of the venv (the `fork` claim rests on `load_from_disk` fixing the start method). The
+evaluation, launch and reporting changes were run on CPU (evaluation of the tiny runs, every `--check_only` case, both
+job scripts locally and both submit scripts with fake `bsub`/`bjobs`, `compare_ablations.py` on a known-answer tree);
+open on the farm: real `bsub`/`bjobs` output, the one-to-one `ended(<job id>[*])` dependency of
+`SEPARATE_EVALUATION` (test it on a 2-element array first), the 1-GPU evaluation job's queue, memory and 4 h limit,
+the login-node time of the row checks (one 750 MB md5 per trained row), bf16 vs fp32 on the GPU, the collapse
+thresholds on real embeddings (pilot) and `RUN_LIMIT` (from the pilot's slowest arm).
 
 ## Methods notes
 
@@ -350,8 +387,10 @@ What the Methods (or the Supplement) must state about the reruns:
 - **Normalization factors** come from the two sections, pooled per gene over the sections that measure it, with the
   tokenizer's gene-corrected read depth constants.
 - **Compute.** With padded masks every attention call carries a mask, so SDPA uses a kernel that supports masks, not
-  FlashAttention; embeddings are computed in bf16 autocast on the GPU, so only the CPU part (kNN graph, Leiden) is
-  independent of the node.
+  FlashAttention; embeddings are computed in bf16 autocast on the GPU (of the training job, or of a 1-GPU job of the
+  same memory class with `SEPARATE_EVALUATION`), so only the CPU part (kNN graph, Leiden) is independent of the node.
+  `evaluation_complete` records the GPU, torch version and precision of every run; fp32 is available
+  (`EVAL_FP32=1`).
 - **Sampling and seeds.** Length-grouped batches (Geneformer-style mega-batches sorted by length). DataLoader worker
   seeds are equal across ranks (about 0.6% of steps share their segment count and metatoken-drop decision across
   ranks). First replicates with the same model shape share initial weights, data order and worker seeds (a paired
@@ -359,5 +398,17 @@ What the Methods (or the Supplement) must state about the reruns:
   (end-of-epoch checkpoints; mid-epoch checkpoints are never written here, as an epoch has 722 (mouse) or 2,646
   (OVCA) iterations, below `checkpoint_freq_iter` 50,000).
 - **Metrics.** The integration metrics are label-free and reward mixing even without shared biology; the iLISI ceiling
-  depends on the section sizes. The average cosine similarity is not a collapse check (centred it is about 0 by
-  construction, raw about 0.99 for healthy and collapsed embeddings alike).
+  depends on the section sizes, so the figures use `iLISI_relative` (iLISI over the iLISI of permuted sections on the
+  same graph). For the mouse keys, each labelling one section, the label-aware readout is the per-label share of
+  cross-section neighbours; a region-conditioned batch ASW needs a key shared by the sections. Collapse is assessed
+  from the spectrum and scale of the embeddings (participation ratio, top PC share, between-cell variance fraction),
+  not the average cosine similarity (centred about 0 by construction, raw about 0.99 for healthy and collapsed
+  embeddings alike). Cluster counts differ between arms at a fixed resolution, so AMI and a granularity-matched score
+  are reported with NMI and ARI.
+- **Statistics.** Each run is averaged over the 9 resolutions; error bars are the SD (ddof 1) over the replicates of
+  these run means (the published SD over resolutions x replicates mixed the resolution sweep with the seed spread and
+  had no seed spread for single-run arms). Single-run architecture arms are compared with base through the pooled
+  within-arm seed SD (df from the arms with 2 or more runs; 88 when complete) and seed-paired differences.
+- **Metatoken modes.** The category panels show each run with its training input (metatoken kept for runs trained with
+  it, removed for No Metatoken); removing it from a model trained with it is out of distribution, so the published
+  drop-mode panels are available separately, and the metatoken contrasts are seed-paired.
