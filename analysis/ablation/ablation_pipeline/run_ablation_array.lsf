@@ -2,10 +2,14 @@
 # Ablations: one job array element trains (or resumes) the run of manifest.tsv row LSB_JOBINDEX on 4 GPUs with the
 # launch setup of the mouse ablations (bsub_script.sh and train_model_lsf_mpirun_sanger.sh, as in TERRA's scripts/),
 # then packages and evaluates it. Submit with submit_ablation_array.sh <env file> from this directory, which sets the
-# job name, array indices, concurrency (2 elements = 8 GPUs) and log files, and passes ARTIFACT_FOLDER_PATH and
-# ENV_PATH through bsub -env. The campaign's dataset values (dataset, silver and label files, label keys, norm factors,
-# wandb tag, pinned code and its version) come from ${ARTIFACT_FOLDER_PATH}/dataset.env, written by
-# generate_ablation_runs.py.
+# job name, array indices (the rows that still need training or evaluation), concurrency (2 elements = 8 GPUs), run
+# limit and log files, and passes ARTIFACT_FOLDER_PATH, ENV_PATH and the options FORCE_EVAL, EVAL_FP32 and
+# SEPARATE_EVALUATION through bsub -env. The campaign's dataset values (dataset, silver and label files, label keys,
+# unassigned labels, norm factors, wandb tag, pinned code and its version) come from
+# ${ARTIFACT_FOLDER_PATH}/dataset.env, written by generate_ablation_runs.py. An element stops at once if the run's
+# evaluation is up to date (evaluate_ablation_run.py --check_only; not with FORCE_EVAL=1), trains only if training has
+# not finished, and with SEPARATE_EVALUATION=1 leaves the evaluation to the dependent 1-GPU evaluation array
+# (evaluate_ablation_array.lsf).
 #BSUB -G team361
 #BSUB -q training-parallel
 #BSUB -n 32
@@ -15,81 +19,8 @@
 
 set -euo pipefail
 
-if [ -z "${ARTIFACT_FOLDER_PATH:-}" ] || [ -z "${ENV_PATH:-}" ]; then
-    echo "ERROR: ARTIFACT_FOLDER_PATH and ENV_PATH must be set; submit with submit_ablation_array.sh <env file>." >&2
-    exit 1
-fi
-DATASET_ENV_FILE_PATH="${ARTIFACT_FOLDER_PATH}/dataset.env"
-MANIFEST_FILE_PATH="${ARTIFACT_FOLDER_PATH}/manifest.tsv"
-for FILE_PATH in "${DATASET_ENV_FILE_PATH}" "${MANIFEST_FILE_PATH}"; do
-    if [ ! -f "${FILE_PATH}" ]; then
-        echo "ERROR: ${FILE_PATH} does not exist; run generate_ablation_runs.py first." >&2
-        exit 1
-    fi
-done
-# DATASET_NAME, SILVER_FILE_PATHS, LABEL_FILE_PATHS, LABEL_KEYS, UNASSIGNED_LABEL, NORM_FACTOR_FILE_PATH,
-# EXPERIMENT_TAG, CODE_PATH, CODE_VERSION
-source "${DATASET_ENV_FILE_PATH}"
-# dataset.env written before LABEL_FILE_PATHS existed: the labels are in the silver files
-LABEL_FILE_PATHS="${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}}"
-ADVANCED_BASH_SCRIPT_PATH="/software/isg/advanced-bsub-script"
-
-# The configs were generated for the pinned code at CODE_PATH; stop if it has another version
-if [ "$(cat "${CODE_PATH}/CODE_VERSION" 2>/dev/null)" != "${CODE_VERSION}" ]; then
-    echo "ERROR: ${CODE_PATH}/CODE_VERSION ($(cat "${CODE_PATH}/CODE_VERSION" 2>/dev/null || echo missing)) differs" \
-         "from the code version of the configs (${CODE_VERSION}); set up that code version or regenerate the configs." >&2
-    exit 1
-fi
-
-# Run of this array element: manifest row LSB_JOBINDEX, with the columns written by generate_ablation_runs.py
-MANIFEST_COLUMNS="index run_id run_name variant category label replicate seed code_version config_file_path"
-MANIFEST_COLUMNS="${MANIFEST_COLUMNS} run_folder_path eval_folder_path"
-if [ "$(head -n 1 "${MANIFEST_FILE_PATH}" | tr '\t' ' ')" != "${MANIFEST_COLUMNS}" ]; then
-    echo "ERROR: the columns of ${MANIFEST_FILE_PATH} are not '${MANIFEST_COLUMNS}'; regenerate it with" \
-         "generate_ablation_runs.py." >&2
-    exit 1
-fi
-ROWS=$(awk -F'\t' -v idx="${LSB_JOBINDEX}" 'NR > 1 && $1 == idx' "${MANIFEST_FILE_PATH}")
-N_ROWS=$(printf '%s' "${ROWS}" | grep -c '^' || true)
-if [ "${N_ROWS}" -ne 1 ]; then
-    echo "ERROR: ${MANIFEST_FILE_PATH} has ${N_ROWS} rows with index ${LSB_JOBINDEX} (expected 1); check the array" \
-         "indices against the manifest." >&2
-    exit 1
-fi
-N_FIELDS=$(printf '%s\n' "${ROWS}" | awk -F'\t' '{ print NF }')
-N_EMPTY_FIELDS=$(printf '%s\n' "${ROWS}" | awk -F'\t' '{ n = 0; for (i = 1; i <= NF; i++) if ($i == "") n++; print n }')
-read -r -a COLUMN_NAMES <<< "${MANIFEST_COLUMNS}"
-N_COLUMNS="${#COLUMN_NAMES[@]}"
-if [ "${N_FIELDS}" -ne "${N_COLUMNS}" ] || [ "${N_EMPTY_FIELDS}" -ne 0 ]; then
-    echo "ERROR: manifest row ${LSB_JOBINDEX} has ${N_FIELDS} tab-separated fields (${N_EMPTY_FIELDS} empty);" \
-         "expected ${N_COLUMNS} non-empty fields. Regenerate the manifest with generate_ablation_runs.py." >&2
-    exit 1
-fi
-IFS=$'\t' read -r INDEX RUN_ID PLAN_RUN_NAME VARIANT CATEGORY LABEL REPLICATE SEED RUN_CODE_VERSION CONFIG_FILE \
-    RUN_FOLDER_PATH EVAL_FOLDER_PATH <<< "${ROWS}"
-echo "Run ${INDEX}: ${RUN_ID} (${CATEGORY}: ${LABEL}; replicate ${REPLICATE}, seed ${SEED}; ${PLAN_RUN_NAME})"
-if [ "${RUN_CODE_VERSION}" != "${CODE_VERSION}" ]; then
-    echo "ERROR: manifest row ${INDEX} has code version '${RUN_CODE_VERSION}', dataset.env '${CODE_VERSION}';" \
-         "regenerate the configs." >&2
-    exit 1
-fi
-CONFIG_HASH="${RUN_ID##*_}"
-if ! [[ "${CONFIG_HASH}" =~ ^[0-9a-f]{8}$ ]]; then
-    echo "ERROR: run id ${RUN_ID} does not end with an 8-digit config hash." >&2
-    exit 1
-fi
-# Done if evaluate_ablation_run.py recorded the campaign's labels in evaluation_complete. It writes the file last, once
-# every metatoken mode has its metrics (with two or more label files, i.e. sections, also the batch-integration
-# metrics); files written before the batch-integration metrics existed lack the label_file_paths line, so those runs
-# are evaluated again.
-EVALUATION_COMPLETE_FILE_PATH="${EVAL_FOLDER_PATH}/evaluation_complete"
-if [ -f "${EVALUATION_COMPLETE_FILE_PATH}" ] \
-    && grep -qxF "label_keys: ${LABEL_KEYS}" "${EVALUATION_COMPLETE_FILE_PATH}" \
-    && grep -qxF "label_file_paths: ${LABEL_FILE_PATHS}" "${EVALUATION_COMPLETE_FILE_PATH}" \
-    && grep -qxF "unassigned_label: ${UNASSIGNED_LABEL}" "${EVALUATION_COMPLETE_FILE_PATH}"; then
-    echo "Already trained and evaluated (label keys: ${LABEL_KEYS}; label files: ${LABEL_FILE_PATHS})."
-    exit 0
-fi
+# The campaign (dataset.env), the run of manifest row LSB_JOBINDEX and its evaluation (check_evaluation, evaluate_run)
+source ablation_job_setup.sh
 
 # Environment as in bsub_script.sh (single node, 4 GPUs, one MPI rank per GPU). wandb: main.py uses the run id
 # ${EXPERIMENT_NAME}_${RUN_NAME} = <tag>_<manifest index>_<config hash> (e.g. ovca_042_1a2b3c4d) and WANDB_NAME, the
@@ -121,6 +52,9 @@ source "${ENV_PATH}/bin/activate"
 # The venv's editable install points at the farm checkout, which may change; use the pinned code
 export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
 python3 -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__"
+# Done if the evaluation is up to date: it records the evaluation code, the TERRA version, the checkpoint, the
+# evaluation data, the labels and the precision, so a change of any of them evaluates the run again
+check_evaluation
 . "${ADVANCED_BASH_SCRIPT_PATH}/find_master_port.sh"
 . "${ADVANCED_BASH_SCRIPT_PATH}/build_mpi_host_string.sh"
 # find_master_port.sh derives the port from the job ID, which all array elements share
@@ -159,9 +93,10 @@ elif [ "${CHECK_STATUS}" -ne 0 ]; then
     exit 1
 fi
 
-# Package (fails if training did not finish) and evaluate (lists are space-separated, hence unquoted)
+# Package (fails if training did not finish) and evaluate
 python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}"
-# shellcheck disable=SC2086
-python3 -u evaluate_ablation_run.py --model_folder_path "${RUN_FOLDER_PATH}" --output_folder_path "${EVAL_FOLDER_PATH}" \
-    --dataset_name "${DATASET_NAME}" --label_file_paths ${LABEL_FILE_PATHS} --label_keys ${LABEL_KEYS} \
-    --unassigned_label "${UNASSIGNED_LABEL}"
+if [ "${SEPARATE_EVALUATION:-0}" = "1" ]; then
+    echo "Packaged; the evaluation array evaluates the run once this element has ended (SEPARATE_EVALUATION=1)."
+    exit 0
+fi
+evaluate_run
