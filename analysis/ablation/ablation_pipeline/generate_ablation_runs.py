@@ -8,7 +8,8 @@ of `datasets/<dataset>.env`). Every run config is the base config with
   data, matches training; the ablation evaluation itself embeds the run's own tokenized training dataset and does not
   re-tokenize),
 - `n_special_values` large enough for the dataset's batch special values (the mouse value 200 is too small for the
-  human token dictionary),
+  human token dictionary), and `vocab_size`, the size of the token dictionary (TERRA builds the models from the token
+  dictionary and does not read the key; recorded for the packaged model config),
 - the schedule (`--epochs`, `--warmup`; for OVCA, 82 epochs with 1 warmup epoch match the 300 / 3 epochs of the mouse
   runs in optimizer steps),
 - a fixed run folder `runs/<run name>_<config hash>` that is resumed from `terra-latest.pth.tar` (TERRA raises on a
@@ -18,6 +19,8 @@ of `datasets/<dataset>.env`). Every run config is the base config with
 - `code_version`: the CODE_VERSION of the pinned code (`setup_code.sh`), so that the config hash changes with the code
   (the training code ignores the key),
 - the variant overrides (dotted keys that must exist in the base config).
+Every config must set `meta.zero_fully_masked_attention_rows: true` (base config): an attention query whose keys are
+all padding (e.g. a context of padding only) then gives zeros instead of NaN.
 The manifest lists the runs in launch order for the job array (`get_runs`: replicates added later to the plan,
 `appended_replicates`, come last, so the other runs keep their rows). `dataset.env` in the artifact folder holds the
 dataset-level values of the job array (`run_ablation_array.lsf`), so that the artifact folder defines the campaign,
@@ -39,6 +42,7 @@ import argparse
 import copy
 import hashlib
 import os
+import pickle
 import re
 import shlex
 from pathlib import Path
@@ -96,6 +100,10 @@ def validate_config(config: dict, tokenization: dict, run_name: str):
         raise ValueError(f"{run_name}: meta.restrict_special_attention and mask.restrict_special_attention differ.")
     if not 0.0 <= mask.get("special_token_pad_ratio", 0.0) <= 1.0:
         raise ValueError(f"{run_name}: mask.special_token_pad_ratio must be in [0, 1].")
+    # Without it, a sample whose context is padding only (e.g. an index cell with at most 2 detected genes and a padded
+    # or no metatoken) gives NaN attention outputs on some GPU kernels, which spread to the loss and the weights
+    if meta.get("zero_fully_masked_attention_rows") is not True:
+        raise ValueError(f"{run_name}: meta.zero_fully_masked_attention_rows must be true (base config).")
 
 
 def make_run_config(base_config: dict,
@@ -123,6 +131,7 @@ def make_run_config(base_config: dict,
         if key != "seq_len_cell":
             data[key] = tokenization[key]
     data["n_special_values"] = args.n_special_values
+    data["vocab_size"] = args.vocab_size
 
     # Schedule, run folder with resumption, seed
     config["optimization"]["epochs"] = args.epochs
@@ -205,6 +214,8 @@ def main(args):
     args.label_file_paths = args.label_file_paths or args.silver_file_paths
     validate_args(args)
     args.code_version = read_code_version(args.code_path)
+    with open(args.token_dictionary_file_path, "rb") as file:
+        args.vocab_size = len(pickle.load(file))
     tokenizations, variants = load_plan(args.plan_file_path)
     with open(args.base_config_file_path) as file:
         base_config = yaml.safe_load(file)

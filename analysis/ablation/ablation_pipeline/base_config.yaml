@@ -3,7 +3,9 @@
 # ablation base (sebastianbirk/stjepa v2, the published Supp. Figs 4-6): count_count_norm_method null, enc_depth 3,
 # ema [0.995, 1.0], ipe_scale 1.25. attention_backend 'torch' lets PyTorch choose the SDPA kernel (FlashAttention
 # where it applies), as the mouse runs and the released TERRA models were trained; the TERRA default 'auto' excludes
-# it. Unused paths are null; the new TERRA options (protein_init, special_token_correction) are off.
+# it. Unused paths are null; the new TERRA options (protein_init, special_token_correction) are off. The TERRA option
+# meta.zero_fully_masked_attention_rows is on: an attention query whose keys are all padding (a context of padding
+# only) gives zeros instead of NaN; all other queries are unchanged.
 # generate_ablation_runs.py replaces the dataset, schedule and state keys for the ablation dataset and applies the
 # variant overrides of ablation_plan.yaml.
 data:
@@ -39,7 +41,7 @@ data:
   sep_gene_tokens_neb: False
   use_sampler: True
   n_special_values: 200
-  vocab_size: 23407
+  vocab_size: null # set to the size of the token dictionary by generate_ablation_runs.py (TERRA does not read it)
   nz_spc: True
   mega_batch_mult_max: 1000
 meta:
@@ -75,6 +77,7 @@ meta:
   excl_spc_from_loss: True # True, False
   target_enc_layer_norm: True
   restrict_special_attention: False
+  zero_fully_masked_attention_rows: True
   rope_freq_scale: 3.141592653589793  # π — the default, keep it
   rope_rotation_augment: True
   rope_coord_normalization: 'none'
