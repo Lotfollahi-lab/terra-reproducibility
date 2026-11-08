@@ -1,0 +1,46 @@
+#!/bin/bash
+# Ablations, evaluation only: one job array element packages and evaluates the trained run of manifest.tsv row
+# LSB_JOBINDEX on 1 GPU (the steps and environment of run_ablation_array.lsf after training; the embeddings on the GPU,
+# the metrics on the CPU), instead of in the 4-GPU allocation of training. Submit with submit_evaluation_array.sh
+# <env file> from this directory to re-evaluate finished runs, or with SEPARATE_EVALUATION=1 in the env file, where
+# submit_ablation_array.sh submits it next to the training array with element N waiting for training element N to end.
+# An element stops at once if the run's evaluation is up to date (evaluate_ablation_run.py --check_only; not with
+# FORCE_EVAL=1) and fails if the run has not finished training.
+#BSUB -G team361
+#BSUB -q training-parallel
+#BSUB -n 12
+#BSUB -gpu "num=1:gmem=40000:mode=exclusive_process:block=yes"
+#BSUB -M 64G
+#BSUB -R "select[mem>64G] rusage[mem=64G] span[hosts=1]"
+
+set -euo pipefail
+
+# The campaign (dataset.env), the run of manifest row LSB_JOBINDEX and its evaluation (check_evaluation, evaluate_run)
+source ablation_job_setup.sh
+
+# Environment of run_ablation_array.lsf without the MPI and NCCL setup of training. numba (kNN of the evaluation)
+# compiles for a generic CPU, so the graph does not depend on the node
+export NUMBA_CPU_NAME=generic
+. /usr/share/modules/init/sh
+source "${ADVANCED_BASH_SCRIPT_PATH}/check_and_load_cuda.sh"
+check_and_load_cuda
+source "${ENV_PATH}/bin/activate"
+# The venv's editable install points at the farm checkout, which may change; use the pinned code
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
+python3 -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__"
+check_evaluation
+
+# Only finished runs (exit code 3: training has not finished, e.g. its training element failed or was killed at the run
+# limit; any other failure, e.g. an unreadable checkpoint, also stops here)
+CHECK_STATUS=0
+python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
+    --check_only || CHECK_STATUS=$?
+if [ "${CHECK_STATUS}" -eq 3 ]; then
+    echo "ERROR: ${RUN_ID} has not finished training; resubmit it with submit_ablation_array.sh." >&2
+    exit 1
+elif [ "${CHECK_STATUS}" -ne 0 ]; then
+    echo "Could not check ${RUN_FOLDER_PATH} (exit code ${CHECK_STATUS}); inspect it before resubmitting."
+    exit 1
+fi
+python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}"
+evaluate_run
