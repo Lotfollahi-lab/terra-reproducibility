@@ -5,7 +5,8 @@ and `norm_factors.csv` in the model folder (the mouse model folders held copies;
 params, the latest checkpoint, the token dictionary and the normalization factors).
 
 A run is finished when its latest checkpoint (`<state.write_tag>-latest.pth.tar`, i.e. `terra-latest.pth.tar`) was saved
-at the end of the last epoch (`epoch == epochs - 1` without `iter_number`; mid-epoch saves carry `iter_number`).
+at the end of the last epoch (`epoch == epochs - 1` without `iter_number`; mid-epoch saves carry `iter_number`). It is
+packaged only if the weights of its target encoder (the encoder the evaluation embeds with) are finite.
 
 Exit codes: 0 finished (and packaged unless --check_only), 3 not finished.
 
@@ -47,6 +48,11 @@ def main(args):
     print(f"{run_folder_path} finished {epochs} epochs (final loss {checkpoint.get('loss')}).")
     if args.check_only:
         return
+    non_finite = [name for name, tensor in checkpoint["target_encoder"].items()
+                  if torch.is_floating_point(tensor) and not torch.isfinite(tensor).all()]
+    if non_finite:
+        raise ValueError(f"{checkpoint_file_path}: {len(non_finite)} target encoder tensors are not finite, e.g. "
+                         f"{non_finite[:3]}.")
 
     links = {"model_config.yaml": params_file_path,
              "model_checkpoint.pt": checkpoint_file_path,

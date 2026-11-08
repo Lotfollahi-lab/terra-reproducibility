@@ -26,7 +26,8 @@ all padding (e.g. a context of padding only) then gives zeros instead of NaN.
 The manifest lists the runs in launch order for the job array (`get_runs`: replicates added later to the plan,
 `appended_replicates`, come last, so the other runs keep their rows). `dataset.env` in the artifact folder holds the
 dataset-level values of the job array (`run_ablation_array.lsf`), so that the artifact folder defines the campaign,
-including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files) and the
+including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files), the
+unassigned value of each label key (`--unassigned_label`: one value, or `<key>=<value>` pairs separated by ';') and the
 gene set of the evaluation data (`--eval_gene_set`: the training data, or the same cells restricted to the genes of
 every section, `filter_shared_genes.py`).
 
@@ -62,7 +63,8 @@ from ablation_utils import (EVAL_GENE_SETS,
                             get_runs,
                             get_seq_len_cell,
                             get_tokenized_dataset_path,
-                            load_plan)
+                            load_plan,
+                            parse_unassigned_labels)
 
 # run_ablation_array.lsf reads the rows with these columns (in this order)
 MANIFEST_COLUMNS = ["index", "run_id", "run_name", "variant", "category", "label", "replicate", "seed", "code_version",
@@ -195,6 +197,8 @@ def validate_args(args):
     if SECTION_KEY in args.label_keys:
         raise ValueError(f"--label_keys: '{SECTION_KEY}' holds the section of each cell in the evaluation; rename the "
                          f"key.")
+    # One value, or one per label key (raises otherwise)
+    parse_unassigned_labels(args.unassigned_label, args.label_keys)
     # The tokenizer reads every h5ad file below the silver folder, so the silver files must be there (the label files
     # may be anywhere)
     silver_folder_path = os.path.abspath(get_silver_folder_path(args))
@@ -278,7 +282,8 @@ def main(args):
           f"the dataset values to {dataset_env_file_path} (code version: {args.code_version}).")
     label_files = ("the silver files" if args.label_file_paths == args.silver_file_paths else
                    f"{len(args.label_file_paths)} files that are not the silver files")
-    print(f"Evaluation labels: {args.label_keys} (unassigned label {args.unassigned_label!r}) from {label_files}: "
+    print(f"Evaluation labels: {args.label_keys} (unassigned label per key "
+          f"{parse_unassigned_labels(args.unassigned_label, args.label_keys)}) from {label_files}: "
           f"{args.label_file_paths}; evaluation data: {args.eval_gene_set}.")
     n_appended = sum(run["appended"] for run in runs)
     if n_appended:
@@ -335,7 +340,8 @@ if __name__ == '__main__':
     parser.add_argument('--unassigned_label',
                         type=str,
                         required=True,
-                        help='Label of cells outside annotated regions; excluded from the metrics.')
+                        help='Label of cells outside annotated regions, excluded from the metrics: one value for '
+                             'all label keys, or <key>=<value> pairs separated by ";", one per key.')
     parser.add_argument('--experiment_tag',
                         type=str,
                         required=True,
