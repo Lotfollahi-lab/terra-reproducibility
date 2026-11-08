@@ -79,6 +79,10 @@ def load_plan(plan_file_path: Path | str) -> tuple[dict, dict]:
     for name, variant in variants.items():
         variant.setdefault("tokenization", "base")
         variant.setdefault("overrides", {})
+        variant.setdefault("appended_replicates", 0)
+        if not 0 <= variant["appended_replicates"] < variant["replicates"]:
+            raise ValueError(f"Variant {name}: appended_replicates must be at least 0 and less than replicates "
+                             f"({variant['replicates']}), not {variant['appended_replicates']}.")
         # Opt-in training fixes of TERRA, set in every run config before the variant's own overrides
         variant["training_options"] = dict(plan.get("training_options", {}))
         if variant["tokenization"] not in tokenizations:
@@ -279,19 +283,24 @@ def get_section_names(label_file_paths: list) -> list[str]:
 def get_runs(variants: dict) -> list[dict]:
     """
     Runs in launch order: the first replicate of every variant (base first, then figure order), then all second
-    replicates, then all third replicates, so that a complete single-replicate picture is available early. Replicate
-    `r` is trained with seed `1000 * r` (1000, 2000, 3000): it seeds weight initialization, data order and, through
-    the DataLoader worker seeds, masks and segment sampling. None equals the hard-coded seed 0 of the mouse runs, and
-    the spacing keeps the samplers' per-epoch seeds (seed + epoch) of different replicates disjoint.
+    replicates, then all third replicates, so that a complete single-replicate picture is available early. The last
+    `appended_replicates` replicates of a variant (added after the first manifest was fixed) follow all other runs, in
+    the same order, so that the other runs keep their manifest rows (and wandb ids) and the campaigns of all datasets
+    share one order. Replicate `r` is trained with seed `1000 * r` (1000, 2000, 3000) in every variant (replicates are
+    paired by seed across variants): it seeds weight initialization, data order and, through the DataLoader worker
+    seeds, masks and segment sampling. None equals the hard-coded seed 0 of the mouse runs, and the spacing keeps the
+    samplers' per-epoch seeds (seed + epoch) of different replicates disjoint.
     """
     variant_order = {name: idx for idx, name in enumerate(variants)}
     runs = [{"run_name": f"{name}_rep{replicate}",
              "variant": name,
              "replicate": replicate,
              "seed": 1000 * replicate,
+             "appended": replicate > variant["replicates"] - variant["appended_replicates"],
              **variant}
             for name, variant in variants.items()
             for replicate in range(1, variant["replicates"] + 1)]
-    return sorted(runs, key=lambda run: (run["replicate"],
+    return sorted(runs, key=lambda run: (run["appended"],
+                                         run["replicate"],
                                          CATEGORY_ORDER.index(run["category"]),
                                          variant_order[run["variant"]]))

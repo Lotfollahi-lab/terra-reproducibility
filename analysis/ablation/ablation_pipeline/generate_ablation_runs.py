@@ -18,7 +18,8 @@ of `datasets/<dataset>.env`). Every run config is the base config with
 - `code_version`: the CODE_VERSION of the pinned code (`setup_code.sh`), so that the config hash changes with the code
   (the training code ignores the key),
 - the variant overrides (dotted keys that must exist in the base config).
-The manifest lists the runs in launch order for the job array. `dataset.env` in the artifact folder holds the
+The manifest lists the runs in launch order for the job array (`get_runs`: replicates added later to the plan,
+`appended_replicates`, come last, so the other runs keep their rows). `dataset.env` in the artifact folder holds the
 dataset-level values of the job array (`run_ablation_array.lsf`), so that the artifact folder defines the campaign,
 including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files).
 
@@ -212,8 +213,9 @@ def main(args):
     config_folder_path = artifact_folder_path / "configs"
     os.makedirs(config_folder_path, exist_ok=True)
 
+    runs = get_runs(variants)
     manifest_rows = []
-    for index, run in enumerate(get_runs(variants), start=1):
+    for index, run in enumerate(runs, start=1):
         # Run ids carry a hash of the config, so that a changed config (e.g. other epochs or code) never resumes or
         # reuses the checkpoints and metrics of an earlier config; the hash excludes the run folder, which contains it
         config = make_run_config(base_config, tokenizations[run["tokenization"]], run, Path(), args)
@@ -254,6 +256,10 @@ def main(args):
                    f"{len(args.label_file_paths)} files that are not the silver files")
     print(f"Evaluation labels: {args.label_keys} (unassigned label {args.unassigned_label!r}) from {label_files}: "
           f"{args.label_file_paths}.")
+    n_appended = sum(run["appended"] for run in runs)
+    if n_appended:
+        print(f"Rows {len(manifest_rows) - n_appended + 1}-{len(manifest_rows)}: the {n_appended} appended replicates "
+              f"(appended_replicates of the plan).")
 
 
 if __name__ == '__main__':
