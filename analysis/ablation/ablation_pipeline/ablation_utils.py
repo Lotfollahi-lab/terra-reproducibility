@@ -1,12 +1,15 @@
 """
 Generic helpers of the ablation scripts: loading the ablation plan, the names of the tokenized datasets (as written by
-`create_tokenized_dataset.py`), the memory class of a tokenization and the order in which the runs are launched. All
-dataset-specific values (paths, dataset name, labels, schedule) are command line arguments of the scripts, taken from
-the dataset's parameter file (`datasets/<dataset>.env`).
+`create_tokenized_dataset.py`) and what each was made from, the memory class of a tokenization and the order in which
+the runs are launched. All dataset-specific values (paths, dataset name, labels, schedule) are command line arguments of
+the scripts, taken from the dataset's parameter file (`datasets/<dataset>.env`).
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
+import os
 from pathlib import Path
 
 import yaml
@@ -164,6 +167,82 @@ def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 10
         X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
         n_detected[start:start + X.shape[0]] = np.asarray((X > 0).sum(axis=1)).ravel()
     return n_detected == 0
+
+
+def count_stored_zeros(adata, chunk_size: int = 100_000) -> int:
+    """
+    Number of zeros stored explicitly in a sparse `adata.X` (0 for a dense X). On the sparse ranking path the tokenizer
+    turns them into gene tokens with a count of 0; filter_silver_cells.py removes them. Works on backed AnnData.
+    """
+    import scipy.sparse as sp
+
+    n_stored_zeros = 0
+    for start in range(0, adata.n_obs, chunk_size):
+        X = adata.X[start:start + chunk_size]
+        if sp.issparse(X):
+            n_stored_zeros += int((X.data == 0).sum())
+    return n_stored_zeros
+
+
+# What each tokenized dataset was made from, written into its folder by tokenize_dataset.py and compared by
+# tokenize_dataset.py (before skipping an existing dataset) and check_setup.py (check 4): the dataset name records the
+# tokenization settings, but not the TERRA code or the input files
+PROVENANCE_FILE_NAME = "ablation_provenance.json"
+
+
+def file_md5(file_path: Path | str) -> str:
+    digest = hashlib.md5()
+    with open(file_path, "rb") as file:
+        for block in iter(lambda: file.read(1 << 23), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def get_code_version(code_path: Path | str | None = None) -> str:
+    """CODE_VERSION of `code_path`, by default of the TERRA copy that `import terra` loads; '?' without the file."""
+    if code_path is None:
+        import terra
+        code_path = Path(terra.__file__).resolve().parents[2]  # <code_path>/src/terra/__init__.py
+    version_file_path = Path(code_path) / "CODE_VERSION"
+    return version_file_path.read_text().strip() if version_file_path.exists() else "?"
+
+
+def get_tokenization_provenance(tokenization: dict, code_version: str, silver_file_paths: list,
+                                norm_factor_file_path: Path | str, token_dictionary_file_path: Path | str,
+                                md5_cache: dict | None = None) -> dict:
+    """
+    The inputs of a tokenized dataset: the TERRA code version, the tokenization settings of the plan, and the md5 of
+    the token dictionary, the normalization factor file and each silver file (by file name). `md5_cache` keeps the md5
+    of each path across calls.
+    """
+    md5_cache = {} if md5_cache is None else md5_cache
+
+    def md5(file_path):
+        key = os.path.abspath(file_path)
+        if key not in md5_cache:
+            md5_cache[key] = file_md5(file_path)
+        return md5_cache[key]
+
+    return {"code_version": code_version,
+            "tokenization": {key: tokenization[key] for key in sorted(tokenization)},
+            "token_dictionary_md5": md5(token_dictionary_file_path),
+            "norm_factor_md5": md5(norm_factor_file_path),
+            "silver_file_md5s": {Path(file_path).name: md5(file_path) for file_path in sorted(silver_file_paths)}}
+
+
+def provenance_differences(dataset_path: Path | str, expected: dict) -> list[str]:
+    """The provenance keys whose value in the dataset's provenance file differs from `expected`."""
+    provenance_file_path = Path(dataset_path) / PROVENANCE_FILE_NAME
+    if not provenance_file_path.exists():
+        return [f"no {PROVENANCE_FILE_NAME} (made before provenance was recorded)"]
+    with open(provenance_file_path) as file:
+        recorded = json.load(file)
+    return [key for key in expected if recorded.get(key) != expected[key]]
+
+
+def write_provenance(dataset_path: Path | str, provenance: dict):
+    with open(Path(dataset_path) / PROVENANCE_FILE_NAME, "w") as file:
+        json.dump(provenance, file, indent=1)
 
 
 def ties_at_cut(adata, token_dict: dict, seq_lens, chunk_size: int = 100_000) -> dict:

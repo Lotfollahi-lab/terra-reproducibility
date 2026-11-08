@@ -1,6 +1,6 @@
 #!/bin/bash
 # One-time setup of the pinned TERRA code of the ablations: a plain copy (git archive) of Lotfollahi-lab/terra at
-# COMMIT (dev fefbf01, 7 Nov 2026), which holds all fixes of the ablation code reviews and the corpus-mean tie-break of
+# COMMIT (dev 5d8ecbc, 8 Nov 2026), which holds all fixes of the ablation code reviews and the corpus-mean tie-break of
 # ranked genes; those that change results are opt-in, and the plan switches them on. CODE_PATH and ENV_PATH are taken
 # from the env file. The jobs put its src/ first on PYTHONPATH, so later changes of the farm checkout (editable install
 # of the venv) cannot change running jobs. The commit is taken from REPO_PATH if that checkout has it, otherwise fetched
@@ -22,7 +22,7 @@ fi
 source "$1"
 REPO_PATH="${REPO_PATH:-/nfs/team361/sb75/terra}"
 TERRA_URL="${TERRA_URL:-https://github.com/Lotfollahi-lab/terra.git}"
-COMMIT="fefbf017cf0538202b2adf43c994a927fc9eda38"
+COMMIT="5d8ecbc6a813788a0de5711964b50f8a4cf44d99"
 CODE_VERSION="terra ${COMMIT}"
 if [[ "${CODE_PATH}" != /* ]]; then
     echo "ERROR: CODE_PATH must be an absolute path, not ${CODE_PATH}." >&2

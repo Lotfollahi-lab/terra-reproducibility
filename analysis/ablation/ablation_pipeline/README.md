@@ -16,7 +16,7 @@ dataset-specific defaults. Two datasets are defined:
 |---|---|
 | `datasets/<dataset>.env` | Parameters of one dataset (bash assignments; lists space-separated): `mouse.env`, `ovca.env`. |
 | `ablation_plan.yaml`, `base_config.yaml` | The variants, tokenizations and replicates; the mouse base model config in TERRA's config format. |
-| `setup_code.sh` | Pinned model code: TERRA `fefbf01` (`Lotfollahi-lab/terra` dev, 7 Nov 2026) at `CODE_PATH`, with `CODE_VERSION`. |
+| `setup_code.sh` | Pinned model code: TERRA `5d8ecbc` (`Lotfollahi-lab/terra` dev, 8 Nov 2026) at `CODE_PATH`, with `CODE_VERSION`. |
 | `prepare_ovca_data.py` / `.lsf` | OVCA only: silver AnnData, normalization factors, token dictionary checks. |
 | `filter_silver_cells.py` | Silver copies without the cells that have no detected gene of the token dictionary (mouse: step 3). |
 | `generate_ablation_runs.py` | Run configs, `manifest.tsv` and `dataset.env` in the artifact folder. |
@@ -155,8 +155,9 @@ python generate_ablation_runs.py --plan_file_path "${PLAN_FILE_PATH}" --base_con
 # 5. Labels and sections, before tokenization. Review check 3: per label file the cells, uns dataset id and batch,
 #    label keys and their most frequent values. Each key must be in the file of its section; if the silver files lack
 #    them, set LABEL_FILE_PATHS in datasets/mouse.env (e.g. the commented evaluation files of the mouse notebook).
-#    Set UNASSIGNED_LABEL (a placeholder) to the value of unannotated cells, if there is one. Check 2 must show that
-#    the batch special values fit (200 rows). Check 5 reports how many cells the raw-count ranking cuts inside tied
+#    Set UNASSIGNED_LABEL (a placeholder; check 3 fails until it is set) to the value of unannotated cells, or to a
+#    value that occurs in no label file to score every labelled cell. Check 2 must show that the batch special values
+#    fit (200 rows) and differ between the sections, and no stored zeros. Check 5 reports how many cells the raw-count ranking cuts inside tied
 #    counts (ordered by corpus mean). After a change: source datasets/mouse.env again, rerun steps 4 and 5.
 python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" \
     --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}" \
@@ -327,7 +328,7 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 
 | Item | Mouse | OVCA | Reason |
 |---|---|---|---|
-| Code | ST-JEPA v2 (`sebastianbirk/stjepa` `b433d5e`), the farm checkout of the time | copy of TERRA `fefbf01` (`setup_code.sh`), the mouse base config in TERRA's config format, `attention_backend: torch` (PyTorch chooses the SDPA kernel, as in the mouse runs and the released models) | The figure is rerun on the current code. TERRA holds every fix of the reviews (`CODE_REVIEW.md`): opt-in seed, atomic latest checkpoint, metatoken fixes, padded masks, resumption on all ranks and the opt-in tokenizer fixes; the options are switched on in the plan. A separate copy, so changes to the farm checkout (`/nfs/team361/sb75/terra`) cannot change running jobs. |
+| Code | ST-JEPA v2 (`sebastianbirk/stjepa` `b433d5e`), the farm checkout of the time | copy of TERRA `5d8ecbc` (`setup_code.sh`), the mouse base config in TERRA's config format, `attention_backend: torch` (PyTorch chooses the SDPA kernel, as in the mouse runs and the released models) | The figure is rerun on the current code. TERRA holds every fix of the reviews (`CODE_REVIEW.md`): opt-in seed, atomic latest checkpoint, metatoken fixes, padded masks, resumption on all ranks and the opt-in tokenizer fixes; the options are switched on in the plan. A separate copy, so changes to the farm checkout (`/nfs/team361/sb75/terra`) cannot change running jobs. |
 | Tokenization | ties at the top-64 cut broken by gene order and sort algorithm; Seurat / Pearson ranks include undetected genes; dense-path cells all stored with the full token count, so their batches were not grouped by size; Seurat v3 LOESS span silently 0.75; cell neighborhood aggregated over reverse kNN | `tokenizer_options` of the plan: deterministic ties (rank score, then count value on the dense path, then ascending corpus mean `mean` of the norm factor file, so rarer and lower-expressed genes first, then token id), detected genes only, Seurat v3 LOESS span 0.3 (gene-order independent), each cell's own kNN for the cell neighborhood; TERRA always counts the real gene tokens for the sampler | `CODE_REVIEW.md` issues 3, 5, 7, 9 and 10. TERRA cuts ranked lists at the input size (lossless), so all 27 datasets run in the standard memory class. Dataset names carry the options (`_tiesbymean_detected`, `_span0p3` for Seurat, `_ownknn_cell64`). With raw-count ranks (the base and every arm whose rank is not normalized) the cut at 64 genes falls inside tied counts in many cells; `check_setup.py` (check 5) reports how often. The corpus-mean order also makes the base keep the same genes as the "Mean" arm with unnormalized ranks (counts divided by `mean`), so the two differ only in the values. |
 | Context and target masks | trimmed to the shortest in each batch: the sparsest cell sets how many tokens every cell uses | padded to the longest (`training_options`: `mask.pad_masks_to_batch_max`), with padded entries masked in attention and loss | `CODE_REVIEW.md` issue 8: trimming dropped 3.4% of the sampled tokens at 64 genes per cell and 20% at 256 on OVCA, biasing the sequence-length comparison. |
 | Metatoken at inference | removed | removed (category panels) and kept (`metatoken_inference` panel) | Training always sees the metatoken; dropping it at inference is out of distribution unless the model was trained with metatoken dropout. |

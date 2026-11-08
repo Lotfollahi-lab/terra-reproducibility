@@ -9,7 +9,10 @@ appended to the dataset name; TERRA counts the real gene tokens for the length-g
 without wandb logging. The tokenizer reads every h5ad file
 below `<data_directory_path>/silver/<dataset_name>`; they must be exactly `--silver_file_paths`, so that the
 evaluation's labels cover the tokenized cells. The dataset is written under a temporary name and renamed when
-complete, so that interrupted jobs are never mistaken for finished datasets.
+complete, so that interrupted jobs are never mistaken for finished datasets. It records its inputs (TERRA code version,
+tokenization settings, md5 of the token dictionary, the factor file and the silver files) in `ablation_provenance.json`;
+an existing dataset is skipped only if it was made from the same inputs, otherwise the job stops (the dataset name does
+not encode the code or the input files, so a changed pin or recomputed factors would otherwise reuse stale datasets).
 
 Usage (`submit_tokenization.sh` runs the first two; `tokenize_dataset.lsf` the last):
 ```bash
@@ -30,9 +33,13 @@ from pathlib import Path
 
 from ablation_utils import (NORM_METHOD_KEYS,
                             NUM_SHARDS,
+                            get_code_version,
+                            get_tokenization_provenance,
                             get_tokenized_dataset_path,
                             load_plan,
-                            needs_large_memory)
+                            needs_large_memory,
+                            provenance_differences,
+                            write_provenance)
 
 
 def check_silver_files(silver_folder_path: Path, silver_file_paths: list[str]):
@@ -67,12 +74,19 @@ def main(args):
     name = tokenization_names[args.tokenization_index - 1]
     tokenization = tokenizations[name]
     output_path = get_tokenized_dataset_path(tokenization, args.data_directory_path, args.dataset_name)
-    if output_path.exists():
-        print(f"{output_path} already exists. Skipping tokenization...")
-        return
     silver_folder_path = Path(args.data_directory_path) / "silver" / args.dataset_name
     check_silver_files(silver_folder_path, args.silver_file_paths)
-    print(f"Tokenization {args.tokenization_index} ({name}): {tokenization}.")
+    # The pinned TERRA copy (first on PYTHONPATH in tokenize_dataset.lsf)
+    provenance = get_tokenization_provenance(tokenization, get_code_version(), args.silver_file_paths,
+                                             args.norm_factor_file_path, args.token_dictionary_file_path)
+    if output_path.exists():
+        differences = provenance_differences(output_path, provenance)
+        if differences:
+            raise ValueError(f"{output_path} exists, but was not made from the current inputs (differs in: "
+                             f"{', '.join(differences)}). Move or delete it and resubmit.")
+        print(f"{output_path} already exists, made from the same inputs. Skipping tokenization...")
+        return
+    print(f"Tokenization {args.tokenization_index} ({name}): {tokenization}; code {provenance['code_version']}.")
 
     from terra.tokenizers.cell_tokenizers import CellGraphTokenizer, CellNeighborhoodTokenizer
 
@@ -115,6 +129,7 @@ def main(args):
                      cache_directory_path=cache_directory_path,
                      keep_in_memory=False,
                      num_shards=NUM_SHARDS)
+    write_provenance(incomplete_output_path, provenance)
     os.rename(incomplete_output_path, output_path)
     shutil.rmtree(cache_directory_path, ignore_errors=True)
     print(f"Saved tokenized dataset to {output_path}.")

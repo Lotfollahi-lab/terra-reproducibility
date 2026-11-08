@@ -10,6 +10,9 @@ longer start where the datasets read them, and loses its k farthest neighbors (T
 removing these cells before tokenization). The filtered files are what the normalization factors, the tokenization and
 the evaluation then read, so all three see the same cells.
 
+It also removes zeros stored explicitly in a sparse X (same values): on the sparse ranking path the tokenizer would
+turn them into gene tokens with a count of 0 (TERRA only warns), although such genes are not detected.
+
 Usage (`source datasets/<dataset>.env` first; README.md, e.g. Mouse rerun, step 3):
 ```bash
 python filter_silver_cells.py --source_silver_file_paths ${SOURCE_SILVER_FILE_PATHS} \
@@ -25,6 +28,7 @@ import shutil
 from pathlib import Path
 
 import anndata as ad
+import scipy.sparse as sp
 
 from ablation_utils import cells_without_vocabulary_genes
 
@@ -64,6 +68,11 @@ def main(args):
         if empty.all():
             raise ValueError(f"{source_file_path}: no cell has a detected gene of the token dictionary.")
         adata = adata[~empty].copy()
+        if sp.issparse(adata.X):
+            n_stored_zeros = int((adata.X.data == 0).sum())
+            if n_stored_zeros:
+                adata.X.eliminate_zeros()
+                print(f"Removed {n_stored_zeros} explicitly stored zeros from X (same values).")
         temporary_file_path = temporary_folder_path / source_file_path.name
         adata.write_h5ad(temporary_file_path)
         os.replace(temporary_file_path, output_folder_path / source_file_path.name)

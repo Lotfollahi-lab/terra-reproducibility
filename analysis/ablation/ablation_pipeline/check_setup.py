@@ -12,16 +12,19 @@ This script checks the setup of an ablation campaign on the farm before launchin
 2. Special values and vocabulary genes: the batch special value of every silver file fits into the special value
    embedding of the configs. TERRA maps the special values of `gt_type: rank` models to tokens with an offset
    hard-coded by vocabulary size: fails if it differs from the token dictionary's offset while the plan has a rank arm
-   (the mouse dictionary is reported too: whether the mouse rank arms trained with the right metatoken). Fails if a
-   silver cell has no detected gene of the token dictionary: its ranked gene lists are empty, which shifts the segments
-   of the cells around it on the sparse ranking path (remove such cells with filter_silver_cells.py).
+   (the mouse dictionary is reported too: whether the mouse rank arms trained with the right metatoken). Fails if two
+   silver files share a batch special value (the metatoken would not tell the sections apart), if a silver cell has no
+   detected gene of the token dictionary (its ranked gene lists are empty, which shifts the segments of the cells
+   around it on the sparse ranking path), or if a silver X stores explicit zeros (zero-count gene tokens on the sparse
+   ranking path); filter_silver_cells.py removes both.
 3. Labels and sections: every label file (LABEL_FILE_PATHS, default: the silver files) is one section, the batch of the
    integration metrics. Prints its cells, uns dataset id and batch, label keys and their most frequent values (to spot
    the unassigned value) and how many cells carry the unassigned label. Fails if a file is missing or has no
-   obs['cell_id'], a label key is in no file, a cell id occurs twice, or, with two or more sections, scib_metrics
-   does not import.
-4. Tokenized datasets: each exists, has one row per silver cell and all its cells are in the label files (with the
-   cells per section).
+   obs['cell_id'], a label key is in no file, a cell id occurs twice, UNASSIGNED_LABEL is still the placeholder of the
+   env file, or, with two or more sections, scib_metrics does not import.
+4. Tokenized datasets: each exists, was made from the current inputs (its ablation_provenance.json: TERRA code version,
+   tokenization settings, md5 of the token dictionary, the factor file and the silver files), has one row per silver
+   cell and all its cells are in the label files (with the cells per section).
 5. Normalization factors: the gene-corrected read depth columns of the dataset's factor file match the tokenizer's own
    normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`). The column of
    the plan's `rank_tie_break_norm_factor` has a finite value for every vocabulary gene of the silver files. Reports,
@@ -61,8 +64,12 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from ablation_utils import (cells_without_vocabulary_genes, get_section_names, get_seq_len_cell,
-                            get_tokenized_dataset_path, load_plan, ties_at_cut)
+from ablation_utils import (cells_without_vocabulary_genes, count_stored_zeros, get_code_version, get_section_names,
+                            get_seq_len_cell, get_tokenization_provenance, get_tokenized_dataset_path, load_plan,
+                            provenance_differences, ties_at_cut)
+
+# UNASSIGNED_LABEL of datasets/*.env until it is set from check 3's output (README step 5)
+UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
 
 # Keys that differ between the mouse runs and the reruns by design
 IGNORED_KEYS = {"code_version",
@@ -215,6 +222,8 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         n_special_values = yaml.safe_load(file)["data"]["n_special_values"]
     fits = True
     n_empty_cells = 0
+    n_stored_zeros = 0
+    batch_values = []
     for silver_file_path in silver_file_paths:
         adata = sc.read_h5ad(silver_file_path, backed="r")
         uns = adata.uns
@@ -225,11 +234,23 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         n_empty_cells += int(empty.sum())
         print(f"{silver_file_path}: {int(empty.sum())} of {adata.n_obs} cells without a detected gene of the token "
               f"dictionary{' (OK)' if not empty.any() else ', e.g. ' + str(list(adata.obs_names[empty][:3]))}")
+        n_file_stored_zeros = count_stored_zeros(adata)
+        n_stored_zeros += n_file_stored_zeros
+        print(f"{silver_file_path}: {n_file_stored_zeros} explicitly stored zeros in X"
+              f"{' (OK)' if n_file_stored_zeros == 0 else ''}")
         batch_value_token = token_dict[f"spv_{uns['dataset_id']}_{uns['batch']}"]
         batch_value = batch_value_token - spv_offset
+        batch_values.append(batch_value)
         fits &= batch_value <= n_special_values + 1
         print(f"{silver_file_path}: batch_value {batch_value}, special value embedding rows {n_special_values + 2}: "
               f"{'OK' if batch_value <= n_special_values + 1 else 'TOO SMALL'}")
+    distinct = len(set(batch_values)) == len(batch_values)
+    if not distinct:
+        print(f"ERROR: silver files share a batch special value ({batch_values}), so the metatoken does not tell their "
+              f"sections apart; check uns['dataset_id'] and uns['batch'] of the silver files.")
+    if n_stored_zeros > 0:
+        print(f"ERROR: the silver X stores {n_stored_zeros} explicit zeros, which the sparse ranking path turns into "
+              f"zero-count gene tokens. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
     print(f"`gt_type: rank` metatoken: the token dictionary's special value offset is {spv_offset}, TERRA's (hard-coded "
           f"for {len(token_dict)} tokens) {rank_offset}: {'same' if rank_offset == spv_offset else 'DIFFERENT'}")
     rank_ok = rank_offset == spv_offset or not has_rank_variant
@@ -252,7 +273,7 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         print(f"ERROR: {n_empty_cells} cells have no detected gene of the token dictionary, so their ranked gene lists "
               f"are empty; on the sparse ranking path the cells around them get shifted segments and lose their "
               f"farthest neighbors. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
-    return fits and rank_ok and n_empty_cells == 0
+    return fits and rank_ok and distinct and n_empty_cells == 0 and n_stored_zeros == 0
 
 
 def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str) -> tuple[bool, pd.Series]:
@@ -300,7 +321,12 @@ def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str
         else:
             print(f"ERROR: label key {key} is in none of the label files")
             ok = False
-    if n_unassigned == 0:
+    if unassigned_label == UNASSIGNED_LABEL_PLACEHOLDER:
+        print(f"ERROR: UNASSIGNED_LABEL is still the placeholder {unassigned_label!r}: set it in the env file to the "
+              f"unassigned value above, or to a value that occurs in no label file to score every labelled cell (as in "
+              f"the mouse evaluation), then regenerate the configs.")
+        ok = False
+    elif n_unassigned == 0:
         print(f"WARNING: UNASSIGNED_LABEL {unassigned_label!r} occurs in no label file, so every labelled cell is "
               f"scored (as in the mouse evaluation); set it to the unassigned value above if there is one.")
     cell_section = pd.concat(cell_sections) if cell_sections else pd.Series(dtype=object)
@@ -389,17 +415,29 @@ def check_rank_tie_break(tokenizations: dict, norm_factor_file_path: str, token_
 
 
 def check_tokenized_datasets(tokenizations: dict, silver_file_paths: list, data_directory_path: str,
-                             dataset_name: str, cell_section: pd.Series) -> bool:
-    print("== 4. Tokenized datasets (one row per silver cell; every cell in the label files)")
+                             dataset_name: str, cell_section: pd.Series, code_path: str, norm_factor_file_path: str,
+                             token_dictionary_file_path: str) -> bool:
+    print("== 4. Tokenized datasets (made from the current inputs; one row per silver cell; every cell in the label "
+          "files)")
     import scanpy as sc
     from datasets import load_from_disk
 
     n_cells = sum(sc.read_h5ad(silver_file_path, backed="r").n_obs for silver_file_path in silver_file_paths)
+    code_version = get_code_version(code_path)
+    md5_cache = {}
     complete = True
     for name, tokenization in tokenizations.items():
         dataset_path = get_tokenized_dataset_path(tokenization, data_directory_path, dataset_name)
         if not dataset_path.exists():
             print(f"{name}: missing ({dataset_path})")
+            complete = False
+            continue
+        differences = provenance_differences(
+            dataset_path, get_tokenization_provenance(tokenization, code_version, silver_file_paths,
+                                                      norm_factor_file_path, token_dictionary_file_path, md5_cache))
+        if differences:
+            print(f"{name}: NOT made from the current inputs (differs in: {', '.join(differences)}); move or delete "
+                  f"{dataset_path} and tokenize again")
             complete = False
             continue
         dataset = load_from_disk(str(dataset_path))
@@ -438,7 +476,8 @@ def main(args):
     ok &= labels_ok
     if not args.skip_datasets:
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_paths, args.data_directory_path,
-                                       args.dataset_name, cell_section)
+                                       args.dataset_name, cell_section, args.code_path, args.norm_factor_file_path,
+                                       args.token_dictionary_file_path)
     print("== 5. Normalization factors")
     from norm_factors import check_norm_factors
     from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth

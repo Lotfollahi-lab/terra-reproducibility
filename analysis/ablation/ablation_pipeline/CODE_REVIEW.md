@@ -7,7 +7,7 @@
 
 **Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes were first collected in `stjepa_ablation.patch` (20 changes; in git history up to commit 60a77a3 of terra-reproducibility).
 
-**Since 7 Nov 2026 the ablations run on TERRA** (`Lotfollahi-lab/terra` `fefbf01`, pinned by `setup_code.sh`), which holds every fix; see [TERRA port](#terra-port-7-nov-2026). Patch numbers below refer to the former patch.
+**Since 7 Nov 2026 the ablations run on TERRA** (`Lotfollahi-lab/terra` `5d8ecbc`, pinned by `setup_code.sh`), which holds every fix; see [TERRA port](#terra-port-7-nov-2026). Patch numbers below refer to the former patch.
 
 ## Bottom line
 
@@ -190,7 +190,7 @@ grep -l "Loaded pretrained encoder" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
 
 ## TERRA port (7 Nov 2026)
 
-The figure is rerun on the current code: the pipeline pins TERRA `fefbf01` (dev, 7 Nov 2026) instead of stjepa
+The figure is rerun on the current code: the pipeline pins TERRA `5d8ecbc` (dev, 8 Nov 2026) instead of stjepa
 `b433d5e` plus the patch. Each change of the former patch, in TERRA:
 
 | Patch | TERRA |
@@ -200,7 +200,7 @@ The figure is rerun on the current code: the pipeline pins TERRA `fefbf01` (dev,
 | 4 predictor segment table with two or more special tokens | not needed: the ablations use at most one metatoken |
 | 8 dataset-level padding of special tokens | one pad per special token, without reading the special value columns, as in the patch. A padded `gt_type: rank` special token gets the value offset instead of 0 in the dataset, but the collator zeroes padded special tokens before the model sees them |
 | 9 `gt_type: rank` offset from the token dictionary | still hard-coded by vocabulary size (1674 for the 2785-token mouse dictionary, else 21957); `check_setup.py` (check 2) fails if it differs from the dictionary's offset while the plan has a rank arm |
-| 13 `stable_rank_ties` | same option; ties are ordered by rank score, then count value (dense path), then token id. With `rank_tie_break_norm_factor: mean` (TERRA fefbf01, set in the plan), the corpus mean of the norm factor file (ascending: rarer and lower-expressed genes first) comes before the token id. The patch used the nonzero mean there, which measures the level where a gene is detected, not how often it is detected |
+| 13 `stable_rank_ties` | same option; ties are ordered by rank score, then count value (dense path), then token id. With `rank_tie_break_norm_factor: mean` (TERRA fefbf01, set in the plan), the corpus mean of the norm factor file (ascending: rarer and lower-expressed genes first) comes before the token id, and since 5d8ecbc it replaces the count value on the dense path, so both paths order ties the same way. The patch used the nonzero mean there, which measures the level where a gene is detected, not how often it is detected |
 | 14 `zero_expr_from_raw_counts`, 16 `seurat_loess_span`, 18 `aggregate_own_neighbors` | same options |
 | 15 `exact_n_nonzero_tokens` | always on (TERRA a936f2b); the ranked lists are cut at the input size on both paths, without the patch's extra trailing-pad trim |
 | 17 cell-neighborhood split | `split_cell_neigh_equally` (default): `seq_len_cell` = input size / 2, as the plan's 64 + 64 |
@@ -242,3 +242,22 @@ Validated:
   token-id tokenization. The base, cell-neighborhood and "Mean" (unnormalized ranks) arms train, package and evaluate
   (2 epochs on CPU). Re-tokenizing a section from a packaged model folder (TERRA's `tokenize_adata`, which reads the
   option and the bundled `norm_factors.csv`) reproduces the training tokens.
+
+### Audit fixes (8 Nov 2026, TERRA `5d8ecbc`)
+
+From the second audit of the pipeline and TERRA (8 Nov 2026):
+- **Dense-path tie order.** With `fefbf01` the dense path (ranking and count values normalized differently) still ordered
+  tied genes by their normalized count before the corpus mean. 5 of the 9 arms with unnormalized ranks (gene-corrected
+  read depth mean, nonzero mean, gene-corrected read depth nonzero mean, Seurat v3, Pearson residuals) therefore kept
+  other genes than the base: 0.4-3.1 of 64 genes in 37-73% of the cells of the synthetic campaign (with token-id ties,
+  about 9 genes in 81%). With the option set, TERRA `5d8ecbc` no longer uses the count value to order tied genes, so
+  every arm with unnormalized ranks keeps the base's genes and only the values differ.
+- **Stored zeros.** `filter_silver_cells.py` removes zeros stored explicitly in a sparse X; the sparse ranking path would
+  turn them into zero-count gene tokens. Check 2 fails on them.
+- **Dataset provenance.** The dataset name records the tokenization settings, but not the TERRA code or the input files,
+  so a re-pin or recomputed factors silently reused stale datasets. `tokenize_dataset.py` now writes
+  `ablation_provenance.json` (code version, tokenization, md5 of the token dictionary, the factor file and the silver
+  files) and skips an existing dataset only if it matches; check 4 compares it. Datasets tokenized before have no such
+  file and must be deleted.
+- **Pre-launch checks.** Check 2 fails if two sections share a batch special value; check 3 fails while
+  `UNASSIGNED_LABEL` is the placeholder of the env file.
