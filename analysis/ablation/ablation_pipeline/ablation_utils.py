@@ -181,6 +181,24 @@ def get_gene_set_silver_file_paths(silver_file_paths: list,
     return [str(silver_folder_path / Path(file_path).name) for file_path in silver_file_paths]
 
 
+def get_eval_dataset_path(train_dataset_path: Path | str, dataset_name: str, gene_set: str) -> Path:
+    """
+    Tokenized dataset that the evaluation of a run embeds, derived from the run's tokenized training dataset
+    (`get_tokenized_dataset_path` of `dataset_name`) and the gene set of the evaluation (EVAL_GENE_SET): the training
+    dataset itself (all_genes), or the same tokenization of the gene set's dataset (the dataset name in the folder and
+    file name replaced, as `get_tokenized_dataset_path` names it).
+    """
+    train_dataset_path = Path(train_dataset_path)
+    gene_set_dataset_name = get_gene_set_dataset_name(dataset_name, gene_set)
+    if gene_set == "all_genes":
+        return train_dataset_path
+    if train_dataset_path.parent.name != dataset_name or not train_dataset_path.name.startswith(f"{dataset_name}_"):
+        raise ValueError(f"{train_dataset_path} is not a tokenized dataset of {dataset_name} as named by "
+                         f"get_tokenized_dataset_path; cannot derive its {gene_set} evaluation data.")
+    return (train_dataset_path.parent.parent / gene_set_dataset_name /
+            f"{gene_set_dataset_name}{train_dataset_path.name[len(dataset_name):]}")
+
+
 def count_detected_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 100_000):
     """
     Number of detected genes of the token dictionary per cell of `adata` (raw count > 0 in `adata.X` for a gene whose

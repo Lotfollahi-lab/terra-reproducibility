@@ -52,9 +52,10 @@ Metrics:
 
 Evaluation data: the figures and tables state the gene set of the evaluation (`EVAL_GENE_SET` of `dataset.env`; mouse:
 the shared-gene re-tokenization of the training cells, as published). Runs whose evaluation_complete records other
-evaluation data than their config are excluded and listed. Runs evaluated by an earlier version (without AMI and the
-granularity columns, the integration readouts, the collapse statistics or the evaluation data in evaluation_complete)
-are included with a warning, their missing values empty; re-evaluate them (FORCE_EVAL=1).
+evaluation data than the current one (their training dataset with that gene set) are excluded and listed. Runs
+evaluated by an earlier version (without AMI and the granularity columns, the integration readouts, the collapse
+statistics or the evaluation data in evaluation_complete) are included with a warning, their missing values empty;
+re-evaluate them (FORCE_EVAL=1).
 
 Outputs under the artifact folder, `results/`:
 - `niche_identification_ablations.csv` (all metric rows), `niche_identification_ablations_runs.csv` (per run,
@@ -89,7 +90,7 @@ import pandas as pd
 import yaml
 from scipy import stats
 
-from ablation_utils import CATEGORY_ORDER
+from ablation_utils import CATEGORY_ORDER, get_eval_dataset_path
 
 BASE_LABELS = {"tokenizer": "Cell Graph (Combined)",
                "sequence_length": "64",
@@ -197,18 +198,19 @@ def read_marker(marker_file_path: Path) -> dict:
     return dict(line.split(": ", 1) for line in marker_file_path.read_text().splitlines() if ": " in line)
 
 
-def run_settings(config_file_path: str) -> dict:
+def run_settings(config_file_path: str, eval_gene_set: str) -> dict:
     """
     Metatoken modes evaluated for a run ('keep' only differs from 'drop' for models with special tokens), the mode of
-    its training input and the dataset its evaluation embeds (evaluate_ablation_run.py).
+    its training input and the dataset its evaluation embeds with the campaign's EVAL_GENE_SET
+    (evaluate_ablation_run.py).
     """
     with open(config_file_path) as file:
         config = yaml.safe_load(file)
     modes = ["drop", "keep"] if config["meta"]["special_tokens"] else ["drop"]
     return {"modes": modes,
             "training_mode": modes[-1],
-            "eval_data_path": (config.get("eval_tokenized_data_folder_path") or
-                               config["data"]["tokenized_data_folder_path"])}
+            "eval_data_path": str(get_eval_dataset_path(config["data"]["tokenized_data_folder_path"],
+                                                        config["data"]["dataset_name"], eval_gene_set))}
 
 
 def print_pairs(message: str, pairs: list):
@@ -221,8 +223,8 @@ def print_pairs(message: str, pairs: list):
 def evaluated_runs(manifest_df: pd.DataFrame) -> pd.DataFrame:
     """
     The runs with evaluation_complete, without those whose evaluation_complete records other evaluation data than
-    their config; prints the runs without it, the excluded runs and the runs evaluated by an earlier version that did
-    not record the evaluation data (included).
+    the current one (run_settings); prints the runs without it, the excluded runs and the runs evaluated by an earlier
+    version that did not record the evaluation data (included).
     """
     keep, not_evaluated, other_data, unrecorded = [], [], [], []
     for index, run in manifest_df.iterrows():
@@ -238,7 +240,7 @@ def evaluated_runs(manifest_df: pd.DataFrame) -> pd.DataFrame:
         keep.append(index)
     print(f"Evaluated runs (evaluation_complete): {len(keep) + len(other_data)} of {len(manifest_df)}.")
     print_pairs("Not evaluated (no evaluation_complete: not run yet, running or failed)", not_evaluated)
-    print_pairs("WARNING: excluded, evaluation_complete records other evaluation data than the run config "
+    print_pairs("WARNING: excluded, evaluation_complete records other evaluation data than the current EVAL_GENE_SET "
                 "(re-evaluate)", other_data)
     print_pairs("WARNING: evaluation_complete does not record the evaluation data (evaluated by an earlier version; "
                 "included, re-evaluate with FORCE_EVAL=1)", unrecorded)
@@ -780,11 +782,11 @@ def main(args):
     figures_folder_path.mkdir(parents=True, exist_ok=True)
 
     manifest_df = pd.read_csv(artifact_folder_path / "manifest.tsv", sep="\t")
-    manifest_df = manifest_df.join(pd.DataFrame([run_settings(file_path) for file_path in
-                                                 manifest_df["config_file_path"]], index=manifest_df.index))
     eval_gene_set = read_dataset_env(artifact_folder_path / "dataset.env").get("EVAL_GENE_SET", "unknown")
     eval_data_text = EVAL_DATA_TEXTS.get(eval_gene_set, f"EVAL_GENE_SET {eval_gene_set}")
     print(f"Evaluation data (EVAL_GENE_SET {eval_gene_set}): {eval_data_text}.")
+    manifest_df = manifest_df.join(pd.DataFrame([run_settings(file_path, eval_gene_set) for file_path in
+                                                 manifest_df["config_file_path"]], index=manifest_df.index))
     manifest_df = evaluated_runs(manifest_df)
 
     # Collapse flags per run and mode, used by every table and figure

@@ -92,7 +92,6 @@ UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
 
 # Keys that differ between the mouse runs and the reruns by design
 IGNORED_KEYS = {"code_version",
-                "eval_tokenized_data_folder_path",
                 "data.dataset_name",
                 "data.raw_data_folder_path",
                 "data.token_dict_folder_path",

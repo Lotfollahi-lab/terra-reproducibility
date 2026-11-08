@@ -6,9 +6,6 @@ of `datasets/<dataset>.env`). Every run config is the base config with
 - the dataset (silver folder, token dictionary, the variant's tokenized dataset and its tokenization keys; the keys
   are recorded so that a re-tokenization from the model folder, e.g. with `harmonize_tokenize_embed_pipeline` on other
   data, matches training),
-- `eval_tokenized_data_folder_path`: the tokenized dataset the evaluation embeds (`evaluate_ablation_run.py`), the
-  variant's tokenization of the `--eval_gene_set` data: the training dataset itself (all_genes) or its shared-gene
-  re-tokenization (shared_genes; TERRA ignores the key),
 - `n_special_values` large enough for the dataset's batch special values (the mouse value 200 is too small for the
   human token dictionary), and `vocab_size`, the size of the token dictionary (TERRA builds the models from the token
   dictionary and does not read the key; recorded for the packaged model config),
@@ -29,7 +26,9 @@ dataset-level values of the job array (`run_ablation_array.lsf`), so that the ar
 including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files), the
 unassigned value of each label key (`--unassigned_label`: one value, or `<key>=<value>` pairs separated by ';') and the
 gene set of the evaluation data (`--eval_gene_set`: the training data, or the same cells restricted to the genes of
-every section, `filter_shared_genes.py`).
+every section, `filter_shared_genes.py`). The configs, and with them the run ids, do not depend on the evaluation data:
+the evaluation derives it from the run's training dataset and EVAL_GENE_SET of `dataset.env` when it runs
+(`get_eval_dataset_path`), so a changed gene set re-evaluates the trained runs instead of training new ones.
 
 Usage (`source datasets/<dataset>.env` first, see README.md; LABEL_FILE_PATHS is optional):
 ```bash
@@ -59,6 +58,7 @@ from ablation_utils import (EVAL_GENE_SETS,
                             NORM_METHOD_KEYS,
                             SECTION_KEY,
                             TOKENIZER_OPTION_DEFAULTS,
+                            get_eval_dataset_path,
                             get_gene_set_dataset_name,
                             get_runs,
                             get_seq_len_cell,
@@ -151,8 +151,6 @@ def make_run_config(base_config: dict,
     config["state"]["checkpoint_freq"] = args.epochs + 1  # never write epoch snapshots, only the latest checkpoint
     config["seed"] = run["seed"]
     config["code_version"] = args.code_version
-    config["eval_tokenized_data_folder_path"] = str(get_tokenized_dataset_path(
-        tokenization, args.data_directory_path, get_gene_set_dataset_name(args.dataset_name, args.eval_gene_set)))
 
     for key, value in run["training_options"].items():
         set_key(config, key, value, allow_new=True)
@@ -234,6 +232,15 @@ def main(args):
     with open(args.token_dictionary_file_path, "rb") as file:
         args.vocab_size = len(pickle.load(file))
     tokenizations, variants = load_plan(args.plan_file_path)
+    # The evaluation derives its data from the training dataset (get_eval_dataset_path): it must be where
+    # tokenize_dataset.py --gene_set writes it
+    for name, tokenization in tokenizations.items():
+        train_dataset_path = get_tokenized_dataset_path(tokenization, args.data_directory_path, args.dataset_name)
+        eval_dataset_path = get_tokenized_dataset_path(
+            tokenization, args.data_directory_path, get_gene_set_dataset_name(args.dataset_name, args.eval_gene_set))
+        if get_eval_dataset_path(train_dataset_path, args.dataset_name, args.eval_gene_set) != eval_dataset_path:
+            raise ValueError(f"{name}: the evaluation would not find its {args.eval_gene_set} data {eval_dataset_path} "
+                             f"(get_eval_dataset_path).")
     with open(args.base_config_file_path) as file:
         base_config = yaml.safe_load(file)
 

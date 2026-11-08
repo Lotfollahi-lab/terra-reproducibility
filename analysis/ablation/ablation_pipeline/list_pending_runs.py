@@ -15,7 +15,8 @@ Usage:
 ```bash
 python list_pending_runs.py --manifest_file_path [MANIFEST] [--indices 1-4] --norm_factor_file_path [NORM_FACTORS] \
     --dataset_name [DATASET_NAME] --label_file_paths [LABEL_FILE ...] --label_keys [KEY ...] \
-    --unassigned_label [UNASSIGNED_LABEL] [--fp32_embeddings] [--force_evaluation] [--evaluation_only]
+    --unassigned_label [UNASSIGNED_LABEL] --eval_gene_set [EVAL_GENE_SET] [--fp32_embeddings] [--force_evaluation] \
+    [--evaluation_only]
 ```
 """
 
@@ -26,6 +27,8 @@ import io
 import runpy
 import sys
 from pathlib import Path
+
+from ablation_utils import EVAL_GENE_SETS
 
 # Exit code of both --check_only checks for "needs work" (NEEDS_EVALUATION_EXIT_CODE, NOT_FINISHED_EXIT_CODE)
 NEEDS_WORK_EXIT_CODE = 3
@@ -84,7 +87,8 @@ def main(args):
         sys.exit(f"ERROR: {args.manifest_file_path} has no rows with the indices {format_indices(missing_indices)}.")
 
     evaluation_args = ["--dataset_name", args.dataset_name, "--label_file_paths", *args.label_file_paths,
-                       "--label_keys", *args.label_keys, "--unassigned_label", args.unassigned_label]
+                       "--label_keys", *args.label_keys, "--unassigned_label", args.unassigned_label,
+                       "--eval_gene_set", args.eval_gene_set]
     if args.fp32_embeddings:
         evaluation_args.append("--fp32_embeddings")
     actions = {}
@@ -163,6 +167,12 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help='Unassigned label(s) of the evaluation (evaluate_ablation_run.py).')
+    parser.add_argument('--eval_gene_set',
+                        type=str,
+                        choices=EVAL_GENE_SETS,
+                        required=True,
+                        help='Gene set of the evaluation data, EVAL_GENE_SET of dataset.env '
+                             '(evaluate_ablation_run.py).')
     parser.add_argument('--fp32_embeddings',
                         action='store_true',
                         help='The evaluation embeds in fp32 (EVAL_FP32=1).')

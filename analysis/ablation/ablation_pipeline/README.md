@@ -60,12 +60,15 @@ and `prepare_ovca_data.lsf` the path of the env file. The Python scripts
 get every value as a command line argument (`LABEL_FILE_PATHS` as `${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}}`; the env
 files set shell variables, so use a fresh shell per dataset). `generate_ablation_runs.py` writes
 the values the job array needs into `<ARTIFACT_FOLDER_PATH>/dataset.env` (dataset, silver and label files, label keys,
-unassigned label, norm factors, tag, `CODE_PATH` and `CODE_VERSION`), so the artifact folder defines the campaign: every
-array element sources it and stops if `${CODE_PATH}/CODE_VERSION` is not the version the configs were generated for,
-and `check_setup.py` fails if it differs from the env file (regenerate after every change of the env file).
+unassigned label, norm factors, tag, `CODE_PATH`, `CODE_VERSION` and `EVAL_GENE_SET`), so the artifact folder defines
+the campaign: every array element sources it and stops if `${CODE_PATH}/CODE_VERSION` is not the version the configs
+were generated for, and `check_setup.py` fails if it differs from the env file (regenerate after every change of the
+env file).
 `CODE_VERSION` is also a top-level key of every run config (the training code ignores it), so the config hashes, and
-with them the run folders, change with the code. So does `eval_tokenized_data_folder_path`: changing `EVAL_GENE_SET`
-or the location of the shared-gene data gives every run a new id, i.e. retrains it.
+with them the run folders, change with the code. The evaluation data are not part of the run configs, so the run ids
+do not depend on them: the evaluation derives them from the run's training dataset and the current `EVAL_GENE_SET` of
+`dataset.env` (see Evaluation), and changing `EVAL_GENE_SET` re-evaluates the trained runs without retraining them.
+(The run ids differ from those of dev 44aefbe, whose configs held the evaluation data path.)
 
 ## What is run
 
@@ -92,11 +95,13 @@ Replicate `r` is trained with seed `1000 * r`. TERRA's opt-in fixes (`tokenizer_
 the plan) are on for every run; `CODE_REVIEW.md` lists them.
 
 **Evaluation** follows the mouse protocol:
-- Neighborhood embeddings from the target encoder, of the run's evaluation dataset (`eval_tokenized_data_folder_path`
-  of the run config): with `EVAL_GENE_SET=shared_genes` (mouse), the run's tokenization of the same cells restricted
-  to the genes measured in every section (`filter_shared_genes.py`), as the published mouse evaluation embedded
-  shared-gene data, so that the integration metrics do not measure the gene panels; with `all_genes` (OVCA, one
-  section), the run's own tokenized training dataset.
+- Neighborhood embeddings from the target encoder, of the run's evaluation dataset, derived when the run is evaluated
+  from its tokenized training dataset and `EVAL_GENE_SET` of `dataset.env`, which every entry point passes on
+  (`--eval_gene_set` of `evaluate_ablation_run.py`: the job arrays, `list_pending_runs.py` and the submit scripts;
+  `get_eval_dataset_path`): with `EVAL_GENE_SET=shared_genes` (mouse), the run's tokenization of the same cells
+  restricted to the genes measured in every section (`filter_shared_genes.py`), as the published mouse evaluation
+  embedded shared-gene data, so that the integration metrics do not measure the gene panels; with `all_genes` (OVCA,
+  one section), the run's own tokenized training dataset.
 - kNN graph with k = 15 on all embedded cells (numba compiled for a generic CPU, `NUMBA_CPU_NAME=generic`, so the
   graph does not depend on the node). The embeddings come from the job's GPU in bf16 autocast, as in training
   (`EVAL_FP32=1`: fp32); `evaluation_complete` records the GPU, the torch version and the precision.
@@ -140,7 +145,10 @@ the plan) are on for every run; `CODE_REVIEW.md` lists them.
   --check_only` exits 0 if these match the current inputs and every output file is there, 3 if the run needs its
   evaluation (with the reasons), other codes on errors. Any mismatch evaluates all modes again; `--overwrite` (the
   jobs' `FORCE_EVAL=1`) always does. Editing `evaluate_ablation_run.py`, or a function of `ablation_utils.py` it uses,
-  therefore makes every evaluation stale: re-evaluate with `submit_evaluation_array.sh` (1 GPU per run). The label
+  therefore makes every evaluation stale: re-evaluate with `submit_evaluation_array.sh` (1 GPU per run). So does a
+  changed `EVAL_GENE_SET` (regenerate `dataset.env` with `generate_ablation_runs.py`; the run ids stay the same): the
+  evaluation data path changes, `--check_only` exits 3, and the training array (which then only packages and
+  evaluates) or `submit_evaluation_array.sh` evaluates the trained runs on the new data. The label
   files are recorded by path, not content: after editing one in place, use `FORCE_EVAL=1`.
 
 ## Mouse rerun
@@ -274,9 +282,9 @@ bash submit_ablation_array.sh datasets/mouse.env 96-139 1  # 2nd and 3rd replica
 #     elements too: each starts when its training element has ended (GPUs in use: up to 4 N + N at MAX_CONCURRENT N).
 
 # 11. Results and figures (also works on a partial campaign; lists the runs not evaluated, those evaluated on other
-#     data than their config and those evaluated by an earlier version). Options: --error_bars sd (default; ci95, or
-#     published: the published SD over resolutions x replicates, with --category_mode drop), --category_mode training
-#     (default; drop: metatoken removed for all), --collapse_fraction 0.25
+#     data than the current EVAL_GENE_SET and those evaluated by an earlier version). Options: --error_bars sd
+#     (default; ci95, or published: the published SD over resolutions x replicates, with --category_mode drop),
+#     --category_mode training (default; drop: metatoken removed for all), --collapse_fraction 0.25
 python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --dataset_name "${DATASET_NAME}" \
     --label_keys ${LABEL_KEYS}
 ```

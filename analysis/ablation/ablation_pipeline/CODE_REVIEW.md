@@ -287,8 +287,7 @@ all opt-in changes off by default):
 Pipeline:
 - **Replicates.** The 21 normalization arms and 3 predictor layers have 3 replicates; the 44 new runs are manifest rows
   96-139 (seeds 2000 and 3000), so rows 1-95 keep their index (139 runs).
-- **Configs.** `data.vocab_size` is the size of the token dictionary (was the stale human 23407). Every config records
-  the evaluation dataset (`eval_tokenized_data_folder_path`).
+- **Configs.** `data.vocab_size` is the size of the token dictionary (was the stale human 23407).
 - **Shared-gene evaluation.** `filter_shared_genes.py` writes the silver files restricted to the genes of every
   section, without cells with fewer than 10 detected shared genes (counted as `sc.pp.filter_cells`), with its
   provenance written last. `submit_tokenization.sh` tokenizes them with every tokenization after the training array
@@ -311,6 +310,15 @@ Evaluation, launch and reporting:
   md5, precision, GPU, torch). `--check_only` (exit 0 / 3 / other) compares it with the current inputs and requires
   every output file; any mismatch re-evaluates all modes. The evaluation stops if the evaluation data was tokenized
   differently from the training data (provenance) or repeats a cell id.
+- **Evaluation data outside the run ids.** The configs no longer hold the evaluation dataset
+  (`eval_tokenized_data_folder_path`), which was covered by the config hash: a changed `EVAL_GENE_SET` or data location
+  gave all 139 runs new ids (retraining), and a finished run would have kept evaluating the path in its `params.yaml`.
+  `evaluate_ablation_run.py` now derives the path when it runs from the run's training dataset and `--eval_gene_set`
+  (`get_eval_dataset_path`), which the job arrays (`ablation_job_setup.sh`), `list_pending_runs.py` and the submit
+  scripts take from `dataset.env`, so all entry points agree; `generate_ablation_runs.py` checks that the derived path
+  is where `tokenize_dataset.py --gene_set` writes. A changed `EVAL_GENE_SET` changes the recorded `eval_data_path`, so
+  `--check_only` exits 3 and the trained runs are re-evaluated on the new data without retraining. Run ids differ from
+  those of dev 44aefbe.
 - **Finiteness.** Non-finite embeddings stop the evaluation before any metric, with counts per mode, section and
   labelled cells; `package_run.py` refuses non-finite target-encoder weights.
 - **Collapse.** Participation ratio, PCs for 90% of the variance, top PC share, RankMe, between-cell variance fraction
@@ -333,7 +341,8 @@ Evaluation, launch and reporting:
   differences, and `--error_bars published` reproduces the published panels (implies `--category_mode drop`). Category
   panels use the training input; `metatoken_contrasts` gives the seed-paired contrasts. Differences to base and the
   relative collapse flags use base in the same metatoken mode (No Metatoken: the panel mode). Only runs with
-  `evaluation_complete` and the config's evaluation data are used; the gene set is stated in every figure.
+  `evaluation_complete` and the current evaluation data (`EVAL_GENE_SET`) are used; the gene set is stated in every
+  figure.
 
 Verified on CPU only (TERRA 584 tests; the synthetic two-section campaign with the pinned copy: generation, shared-gene
 data, tokenization, check 0, the kernel check with the real guard, 2-epoch training of the base and no-metatoken arms,

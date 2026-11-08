@@ -49,11 +49,13 @@ These three are label-free: they reward mixing even where the sections differ in
   whether mixing is confined to some regions or uniform (mixing without biology).
 scib_metrics (with pynndescent and jax) is imported only if there are two or more sections; jax runs on the CPU.
 
-The embedded dataset is `eval_tokenized_data_folder_path` of the run config (generate_ablation_runs.py; configs
-without it: the training dataset): for a dataset with one section (OVCA), the run's own tokenized training dataset;
-with two or more sections (mouse), the shared-gene re-tokenization of the same cells with the run's tokenization
-(filter_shared_genes.py, tokenize_dataset.py --gene_set shared_genes), as the published mouse evaluation embedded
-shared-gene data, so that the integration metrics do not measure the gene panels. It is tokenized by the pipeline
+The embedded dataset follows from the run's tokenized training dataset (data.tokenized_data_folder_path of
+model_config.yaml) and `--eval_gene_set` (EVAL_GENE_SET of the campaign's dataset.env, passed by the job arrays and
+list_pending_runs.py; `get_eval_dataset_path`), not from the run config, so that the run ids do not depend on it: for a
+dataset with one section (OVCA, all_genes), the run's own tokenized training dataset; with two or more sections (mouse,
+shared_genes), the shared-gene re-tokenization of the same cells with the run's tokenization (filter_shared_genes.py,
+tokenize_dataset.py --gene_set shared_genes), as the published mouse evaluation embedded shared-gene data, so that the
+integration metrics do not measure the gene panels. It is tokenized by the pipeline
 with the training tokenizer settings, not by `harmonize_tokenize_embed_pipeline` (which needs ~0.5 TB of memory for
 the dense-path OVCA normalization arms without the ranked-list cut, and broke ties at the top-64 cut
 non-deterministically); the run aborts if its provenance (ablation_provenance.json of tokenize_dataset.py) records
@@ -87,7 +89,8 @@ prefix `<dataset_name>_` (drop) or `<dataset_name>_keep_metatoken_` (keep):
   <value>` lines with what produced the metrics. Compared with the current inputs (MARKER_INPUT_KEYS): the modes, label
   keys, label files and unassigned label of each key, the sha1 of the evaluation code (this script and the part of
   ablation_utils.py it uses, `evaluation_code_sha1s`), the TERRA code version, the checkpoint (epoch and md5), the
-  evaluation data (path and md5 of its provenance file) and the embedding precision; recorded only: the unassigned
+  evaluation data (path, i.e. the training dataset and --eval_gene_set, and md5 of its provenance file; a changed
+  EVAL_GENE_SET thus evaluates the trained run again) and the embedding precision; recorded only: the unassigned
   label as given, the modes with batch-integration metrics, the number of evaluated cells, the GPU, the torch version
   and the time.
 All modes are evaluated again unless evaluation_complete matches the current inputs and every output file is complete,
@@ -99,7 +102,8 @@ Usage:
 ```bash
 python evaluate_ablation_run.py --model_folder_path [RUN_FOLDER] --output_folder_path [EVAL_FOLDER] \
     --dataset_name [DATASET_NAME] --label_file_paths [LABEL_FILE ...] --label_keys [KEY ...] \
-    --unassigned_label [UNASSIGNED_LABEL] [--fp32_embeddings] [--overwrite | --check_only]
+    --unassigned_label [UNASSIGNED_LABEL] --eval_gene_set [EVAL_GENE_SET] [--fp32_embeddings] \
+    [--overwrite | --check_only]
 ```
 """
 
@@ -127,8 +131,9 @@ import sklearn.metrics as skm  # noqa: E402
 import yaml  # noqa: E402
 from sklearn.preprocessing import StandardScaler  # noqa: E402
 
-from ablation_utils import (PROVENANCE_FILE_NAME, SECTION_KEY, file_md5, format_unassigned_labels,  # noqa: E402
-                            get_code_version, get_section_names, parse_unassigned_labels)
+from ablation_utils import (EVAL_GENE_SETS, PROVENANCE_FILE_NAME, SECTION_KEY, file_md5,  # noqa: E402
+                            format_unassigned_labels, get_code_version, get_eval_dataset_path, get_section_names,
+                            parse_unassigned_labels)
 
 # Same resolution grid as the mouse sweep (base 1.0, 4 steps of 0.1 below and above)
 RESOLUTIONS = [round(step * 0.1, 1) for step in range(6, 15)]
@@ -410,7 +415,8 @@ def get_marker_inputs(args, unassigned_labels: dict, model_config: dict) -> dict
     checkpoint = torch.load(checkpoint_file_path, map_location="cpu", mmap=True, weights_only=False)
     checkpoint_epoch = checkpoint["epoch"]
     del checkpoint
-    eval_dataset_path = get_eval_dataset_path(model_config)
+    eval_dataset_path = get_eval_dataset_path(model_config["data"]["tokenized_data_folder_path"],
+                                              model_config["data"]["dataset_name"], args.eval_gene_set)
     provenance_file_path = Path(eval_dataset_path) / PROVENANCE_FILE_NAME
     return {"modes": " ".join(get_modes(args, model_config)),
             "label_keys": " ".join(args.label_keys),
@@ -427,11 +433,6 @@ def get_marker_inputs(args, unassigned_labels: dict, model_config: dict) -> dict
                                          "none"),
             "embedding_precision": ("fp32" if args.fp32_embeddings or not model_config["meta"]["use_bfloat16"] else
                                     "bf16")}
-
-
-def get_eval_dataset_path(model_config: dict) -> str:
-    """The dataset the evaluation embeds (generate_ablation_runs.py; configs without the key: the training dataset)."""
-    return model_config.get("eval_tokenized_data_folder_path") or model_config["data"]["tokenized_data_folder_path"]
 
 
 def get_modes(args, model_config: dict) -> list:
@@ -842,6 +843,12 @@ if __name__ == '__main__':
                         required=True,
                         help='Label of cells outside annotated regions, excluded from the metrics: one value for all '
                              'label keys, or <key>=<value> pairs separated by ";", one per key.')
+    parser.add_argument('--eval_gene_set',
+                        type=str,
+                        choices=EVAL_GENE_SETS,
+                        required=True,
+                        help='Gene set of the evaluation data (EVAL_GENE_SET of dataset.env): the run\'s tokenized '
+                             'training dataset (all_genes) or its shared-gene re-tokenization (shared_genes).')
     parser.add_argument('--emb_key',
                         type=str,
                         default="neighborhood_emb",

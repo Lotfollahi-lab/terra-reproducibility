@@ -4,8 +4,9 @@
 # submitting, list_pending_runs.py checks every row of INDICES on the login node with the jobs' own checks and leaves
 # out (and prints) the rows whose evaluation is up to date; a row is submitted if its training has not finished or its
 # evaluation is missing or stale (evaluation code, TERRA version, checkpoint, evaluation data, labels or precision
-# changed). The array reads the campaign from ARTIFACT_FOLDER_PATH (manifest.tsv, configs and dataset.env of
-# generate_ablation_runs.py) and runs in ENV_PATH; both come from the env file and are passed through bsub -env.
+# changed; a trained run whose EVAL_GENE_SET changed is evaluated again, not retrained). The array reads the campaign
+# from ARTIFACT_FOLDER_PATH (manifest.tsv, configs and dataset.env of generate_ablation_runs.py) and runs in ENV_PATH;
+# both come from the env file and are passed through bsub -env.
 #
 # Usage: bash submit_ablation_array.sh ENV_FILE [INDICES (default: all rows; e.g. 1-4 for the pilot)]
 #            [MAX_CONCURRENT (default: 2)] [RUN_LIMIT (default: RUN_LIMIT of the env file)]
@@ -141,7 +142,8 @@ PENDING_INDICES=$(
         --manifest_file_path "${MANIFEST_FILE_PATH}" --indices "${INDICES}" \
         --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" --dataset_name "${DATASET_NAME}" \
         --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} --label_keys ${LABEL_KEYS} \
-        --unassigned_label "${UNASSIGNED_LABEL}" ${LIST_OPTIONS[@]+"${LIST_OPTIONS[@]}"}
+        --unassigned_label "${UNASSIGNED_LABEL}" --eval_gene_set "${EVAL_GENE_SET:-}" \
+        ${LIST_OPTIONS[@]+"${LIST_OPTIONS[@]}"}
 )
 TRAIN_INDICES=$(printf '%s\n' "${PENDING_INDICES}" | awk -F'\t' '$1 == "train" { print $2 }')
 EVALUATE_INDICES=$(printf '%s\n' "${PENDING_INDICES}" | awk -F'\t' '$1 == "evaluate" { print $2 }')

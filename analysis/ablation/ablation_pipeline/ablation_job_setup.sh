@@ -19,11 +19,15 @@ for FILE_PATH in "${DATASET_ENV_FILE_PATH}" "${MANIFEST_FILE_PATH}"; do
     fi
 done
 # DATASET_NAME, SILVER_FILE_PATHS, LABEL_FILE_PATHS, LABEL_KEYS, UNASSIGNED_LABEL, NORM_FACTOR_FILE_PATH,
-# EXPERIMENT_TAG, CODE_PATH, CODE_VERSION
+# EXPERIMENT_TAG, CODE_PATH, CODE_VERSION, EVAL_GENE_SET
 source "${DATASET_ENV_FILE_PATH}"
 # dataset.env written before LABEL_FILE_PATHS existed: the labels are in the silver files
 LABEL_FILE_PATHS="${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}}"
 ADVANCED_BASH_SCRIPT_PATH="/software/isg/advanced-bsub-script"
+if [ -z "${EVAL_GENE_SET:-}" ]; then
+    echo "ERROR: ${DATASET_ENV_FILE_PATH} has no EVAL_GENE_SET; regenerate it with generate_ablation_runs.py." >&2
+    exit 1
+fi
 
 # The configs were generated for the pinned code at CODE_PATH; stop if it has another version
 if [ "$(cat "${CODE_PATH}/CODE_VERSION" 2>/dev/null)" != "${CODE_VERSION}" ]; then
@@ -71,11 +75,12 @@ if ! [[ "${CONFIG_HASH}" =~ ^[0-9a-f]{8}$ ]]; then
 fi
 
 # Arguments of evaluate_ablation_run.py, the same for its --check_only (lists are space-separated, hence unquoted;
-# UNASSIGNED_LABEL is one value or <key>=<value> pairs separated by ';', passed as one argument)
+# UNASSIGNED_LABEL is one value or <key>=<value> pairs separated by ';', passed as one argument). The evaluation data
+# follow from the run's training dataset and the current EVAL_GENE_SET, not from the run config
 # shellcheck disable=SC2206
 EVALUATION_ARGS=(--model_folder_path "${RUN_FOLDER_PATH}" --output_folder_path "${EVAL_FOLDER_PATH}"
     --dataset_name "${DATASET_NAME}" --label_file_paths ${LABEL_FILE_PATHS} --label_keys ${LABEL_KEYS}
-    --unassigned_label "${UNASSIGNED_LABEL}")
+    --unassigned_label "${UNASSIGNED_LABEL}" --eval_gene_set "${EVAL_GENE_SET}")
 if [ "${EVAL_FP32:-0}" = "1" ]; then
     EVALUATION_ARGS+=(--fp32_embeddings)
 fi
