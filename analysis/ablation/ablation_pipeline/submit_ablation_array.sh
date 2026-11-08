@@ -73,6 +73,12 @@ if [ "${PINNED_CODE_VERSION}" != "${CAMPAIGN_CODE_VERSION}" ]; then
          "configs (${CAMPAIGN_CODE_VERSION}); run setup_code.sh or regenerate the configs." >&2
     exit 1
 fi
+# The jobs read EVAL_GENE_SET from dataset.env only (not from the env file); list the rows against the same value
+CAMPAIGN_EVAL_GENE_SET=$(unset EVAL_GENE_SET && source "${DATASET_ENV_FILE_PATH}" && echo "${EVAL_GENE_SET:-}")
+if [ -z "${CAMPAIGN_EVAL_GENE_SET}" ]; then
+    echo "ERROR: ${DATASET_ENV_FILE_PATH} has no EVAL_GENE_SET; regenerate it with generate_ablation_runs.py." >&2
+    exit 1
+fi
 # bsub -env separates variables with commas
 for VALUE in "${ARTIFACT_FOLDER_PATH}" "${ENV_PATH}"; do
     if [[ "${VALUE}" =~ [,[:space:]] ]]; then
@@ -142,7 +148,7 @@ PENDING_INDICES=$(
         --manifest_file_path "${MANIFEST_FILE_PATH}" --indices "${INDICES}" \
         --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" --dataset_name "${DATASET_NAME}" \
         --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} --label_keys ${LABEL_KEYS} \
-        --unassigned_label "${UNASSIGNED_LABEL}" --eval_gene_set "${EVAL_GENE_SET:-}" \
+        --unassigned_label "${UNASSIGNED_LABEL}" --eval_gene_set "${CAMPAIGN_EVAL_GENE_SET}" \
         ${LIST_OPTIONS[@]+"${LIST_OPTIONS[@]}"}
 )
 TRAIN_INDICES=$(printf '%s\n' "${PENDING_INDICES}" | awk -F'\t' '$1 == "train" { print $2 }')

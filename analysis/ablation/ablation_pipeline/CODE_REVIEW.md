@@ -311,14 +311,17 @@ Evaluation, launch and reporting:
   every output file; any mismatch re-evaluates all modes. The evaluation stops if the evaluation data was tokenized
   differently from the training data (provenance) or repeats a cell id.
 - **Evaluation data outside the run ids.** The configs no longer hold the evaluation dataset
-  (`eval_tokenized_data_folder_path`), which was covered by the config hash: a changed `EVAL_GENE_SET` or data location
-  gave all 139 runs new ids (retraining), and a finished run would have kept evaluating the path in its `params.yaml`.
+  (`eval_tokenized_data_folder_path`), which was covered by the config hash: a changed `EVAL_GENE_SET` gave all 139
+  runs new ids (retraining), and a finished run would have kept evaluating the path in its `params.yaml`.
   `evaluate_ablation_run.py` now derives the path when it runs from the run's training dataset and `--eval_gene_set`
   (`get_eval_dataset_path`), which the job arrays (`ablation_job_setup.sh`), `list_pending_runs.py` and the submit
   scripts take from `dataset.env`, so all entry points agree; `generate_ablation_runs.py` checks that the derived path
   is where `tokenize_dataset.py --gene_set` writes. A changed `EVAL_GENE_SET` changes the recorded `eval_data_path`, so
-  `--check_only` exits 3 and the trained runs are re-evaluated on the new data without retraining. Run ids differ from
-  those of dev 44aefbe.
+  `--check_only` exits 3 and the trained runs are re-evaluated on the new data without retraining. The evaluation data
+  are always next to the training dataset (`<dataset>_shared_genes` in the same `gold/<tokenizer>` folder), so they
+  cannot be moved on their own; moving the data directory still gives every run a new id, as the training dataset
+  path is part of every config. The submit scripts and the jobs read `EVAL_GENE_SET` from `dataset.env` only, not from
+  the env file or the submitting shell. Run ids differ from those of dev 44aefbe.
 - **Finiteness.** Non-finite embeddings stop the evaluation before any metric, with counts per mode, section and
   labelled cells; `package_run.py` refuses non-finite target-encoder weights.
 - **Collapse.** Participation ratio, PCs for 90% of the variance, top PC share, RankMe, between-cell variance fraction

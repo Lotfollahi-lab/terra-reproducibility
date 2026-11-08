@@ -68,7 +68,10 @@ env file).
 with them the run folders, change with the code. The evaluation data are not part of the run configs, so the run ids
 do not depend on them: the evaluation derives them from the run's training dataset and the current `EVAL_GENE_SET` of
 `dataset.env` (see Evaluation), and changing `EVAL_GENE_SET` re-evaluates the trained runs without retraining them.
-(The run ids differ from those of dev 44aefbe, whose configs held the evaluation data path.)
+The shared-gene data are always next to the training dataset (`<dataset>_shared_genes` in the same `gold/<tokenizer>`
+folder) and cannot be moved on their own; moving the data directory (`--data_directory_path`) still gives every run a
+new id, as the training dataset path is part of every config. (The run ids differ from those of dev 44aefbe, whose
+configs held the evaluation data path.)
 
 ## What is run
 

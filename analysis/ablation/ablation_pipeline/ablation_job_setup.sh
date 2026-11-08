@@ -19,7 +19,9 @@ for FILE_PATH in "${DATASET_ENV_FILE_PATH}" "${MANIFEST_FILE_PATH}"; do
     fi
 done
 # DATASET_NAME, SILVER_FILE_PATHS, LABEL_FILE_PATHS, LABEL_KEYS, UNASSIGNED_LABEL, NORM_FACTOR_FILE_PATH,
-# EXPERIMENT_TAG, CODE_PATH, CODE_VERSION, EVAL_GENE_SET
+# EXPERIMENT_TAG, CODE_PATH, CODE_VERSION, EVAL_GENE_SET (only from dataset.env, not from the submitting shell's
+# environment that bsub -env all passes on)
+unset EVAL_GENE_SET
 source "${DATASET_ENV_FILE_PATH}"
 # dataset.env written before LABEL_FILE_PATHS existed: the labels are in the silver files
 LABEL_FILE_PATHS="${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}}"
