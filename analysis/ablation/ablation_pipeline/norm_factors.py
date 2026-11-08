@@ -122,9 +122,11 @@ def compute_norm_factors(adatas: ad.AnnData | str | Path | Iterable[ad.AnnData |
     gene_index = {}
     sums, gcrd_sums = np.zeros(0), np.zeros(0)
     n_cells, n_nonzero_cells = np.zeros(0, dtype=np.int64), np.zeros(0, dtype=np.int64)
+    file_gene_indices = {}  # genes of each file, to name the files of genes without counts
     for name, adata in iter_adatas(adatas):
         stats = file_statistics(adata, basis_target_read_depth, target_read_depth_per_gene)
         idx = np.array([gene_index.setdefault(gene_id, len(gene_index)) for gene_id in stats["gene_ids"]], dtype=int)
+        file_gene_indices[name] = set(idx.tolist())
         n_new = len(gene_index) - len(sums)
         sums, gcrd_sums = np.append(sums, np.zeros(n_new)), np.append(gcrd_sums, np.zeros(n_new))
         n_cells = np.append(n_cells, np.zeros(n_new, dtype=np.int64))
@@ -142,8 +144,15 @@ def compute_norm_factors(adatas: ad.AnnData | str | Path | Iterable[ad.AnnData |
                   + (f"; WARNING: {stats['n_zero_count_cells']} cells without counts" if stats["n_zero_count_cells"]
                      else "") + ".")
 
-    if np.any(n_nonzero_cells == 0):
-        raise ValueError(f"{np.sum(n_nonzero_cells == 0)} genes have no counts; their factors would be 0 or NaN.")
+    no_count_genes = np.flatnonzero(n_nonzero_cells == 0)
+    if len(no_count_genes):
+        gene_ids = list(gene_index)
+        listed = "; ".join(
+            f"{gene_ids[i]} (in {', '.join(name for name, indices in file_gene_indices.items() if i in indices)})"
+            for i in no_count_genes[:20])
+        raise ValueError(f"{len(no_count_genes)} genes have no counts in any file that measures them; their factors "
+                         f"would be 0 or NaN: {listed}{'; ...' if len(no_count_genes) > 20 else ''}. Remove these "
+                         f"features from the silver files.")
     norm_factor_df = pd.DataFrame({"gene_id": np.array(list(gene_index), dtype=object),
                                    "nonzero_mean": sums / n_nonzero_cells,
                                    "mean": sums / n_cells,
