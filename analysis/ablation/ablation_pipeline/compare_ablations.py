@@ -10,14 +10,17 @@ Bars show the mean over the runs (replicates) of an arm, error bars the standard
 tick label the number of runs n. Arms with one run get no error bar; panels with such an arm show a band around the
 base mean: plus/minus the pooled seed SD (the SD within arms, pooled over all arms with two or more runs; with ci95,
 the 95% interval of a single run around the base mean). Replicate r is trained with seed 1000 r in every arm, so the
-tables also give the differences to the base run of the same seed (`_diff_to_base`). `--error_bars published`
-reproduces the published panels: mean and SD (ddof = 0, as np.std in the notebooks) over all resolution x replicate
-values, so the SD mixes the resolution sweep with the seed spread and contains no seed spread for arms with one run.
-Every figure states what its bars, error bars and band show.
+tables also give the differences to the base run of the same seed (`_diff_to_base`; base in the same metatoken mode,
+or for the run trained without the metatoken, base in the mode of the category panels, the comparison they show).
+`--error_bars published` reproduces the published panels: mean and SD (ddof = 0, as np.std in the notebooks) over all
+resolution x replicate values, so the SD mixes the resolution sweep with the seed spread and contains no seed spread
+for arms with one run; it implies `--category_mode drop` (the published mode) unless that is given. Unlike the
+published figure, the architecture panel has a base bar. Every figure states what its bars, error bars and band show.
 
 Metatoken modes: the category panels show every run with its training input, the metatoken kept at inference for the
-runs trained with it and removed for the run without (`--category_mode drop`: removed for all, as in the mouse
-evaluation, which is out of distribution for runs trained with the metatoken). The base run is the reference bar of
+runs trained with it and removed for the run without (`--category_mode drop`, the default with `--error_bars
+published`: removed for all, as in the mouse evaluation, which is out of distribution for runs trained with the
+metatoken). The base run is the reference bar of
 each category, labelled with its setting in that category. The metatoken contrasts have their own panels:
 `metatoken_inference` (base and metatoken dropout with the metatoken removed and kept, next to the run without
 metatoken) and `metatoken_contrasts` (seed-paired differences, METATOKEN_CONTRASTS: kept minus removed for metatoken
@@ -30,17 +33,21 @@ Metrics:
   (k, all embedded cells), as the cluster number at a resolution differs between arms. The tables add the scores at
   the resolution whose number of clusters among the labelled cells is closest to the number of label categories
   (`_matched`, a granularity-matched robustness check).
-- Batch integration (two or more sections): iLISI relative to its ceiling for the section sizes (iLISI_relative; the
-  panels show iLISI only if no run has it), ASW, MMD and ASW_label_<key> (the section silhouette within labels, for
+- Batch integration (two or more sections): iLISI relative to the iLISI of random mixing on the same graph
+  (iLISI_relative, about 1: as mixed as random, comparable between section ratios; the panels show iLISI only if no
+  run has it), ASW, MMD and ASW_label_<key> (the section silhouette within labels, for
   keys that label two or more sections; none for the mouse keys). These are label-free (except ASW_label) and reward
   mixing without shared biology, so they are to be read with the niche scores: `ablation_summary_<label key>` plots NMI
   against iLISI_relative per arm. Per label key, `cross_section_mixing` is the label-aware readout: the mean over the
   labels with at least MIN_CELLS_PER_LABEL cells (weighted by cells) of the fraction of a cell's kNN neighbors from
   other sections, relative to random mixing (1: as mixed as random, 0: no neighbors from other sections; the tables
-  give the minimum and maximum over the labels, which show whether mixing is confined to some regions).
+  give the minimum and maximum over the labels, which show whether mixing is confined to some regions). For keys that
+  label one section each (mouse), regions differ between the sections, so more mixing is not better: these panels are
+  unsorted and have no direction.
 - Collapse (`_avg_cosine_similarity.csv`): a run is flagged if the evaluation flagged complete or dimensional collapse,
-  or if its participation ratio or between-cell variance fraction is below `--collapse_fraction` of the base mean in
-  the same metatoken mode (partial collapse, e.g. onto a few directions). Flagged runs are listed, marked in the tables
+  or if its participation ratio or between-cell variance fraction is below `--collapse_fraction` of the base mean
+  (partial collapse, e.g. onto a few directions), base in the same metatoken mode or, for the run trained without the
+  metatoken, in the mode of the category panels. Flagged runs are listed, marked in the tables
   and drawn as red crosses.
 
 Evaluation data: the figures and tables state the gene set of the evaluation (`EVAL_GENE_SET` of `dataset.env`; mouse:
@@ -53,8 +60,8 @@ Outputs under the artifact folder, `results/`:
 - `niche_identification_ablations.csv` (all metric rows), `niche_identification_ablations_runs.csv` (per run,
   metatoken mode and label key: resolution means, matched scores, cross-section mixing, differences to base, collapse
   flag), `niche_identification_ablations_summary.csv` (per arm, metatoken mode and label key: n_runs and per value the
-  mean, SD and 95% CI over the runs, the published SD of NMI, ARI and AMI, the number of flagged runs and whether the
-  row is the mode of the category panels) and `niche_identification_metatoken_mode_differences.csv`
+  mean, SD, 95% CI and number of runs with the value (`_n`, fewer than n_runs if a run lacks it), the published SD of
+  NMI, ARI and AMI, the number of flagged runs and whether the row is the mode of the category panels) and `niche_identification_metatoken_mode_differences.csv`
 - with batch-integration metrics: `batch_integration_ablations.csv` (one row per run, metatoken mode and metric),
   `batch_integration_ablations_summary.csv` and `batch_integration_metatoken_mode_differences.csv`
 - `collapse_diagnostics.csv` (per run and metatoken mode: the statistics, their ratio to base and the flags)
@@ -112,13 +119,13 @@ MIN_CELLS_PER_LABEL = 10
 # What the readouts other than the niche scores mean (figure captions)
 LABEL_FREE_TEXT = "Label-free: rewards mixing of the sections even without shared biology; read with the niche scores."
 METRIC_TEXTS = {"iLISI": LABEL_FREE_TEXT,
-                "iLISI_relative": "iLISI divided by its ceiling for the section sizes. " + LABEL_FREE_TEXT,
+                "iLISI_relative": "iLISI divided by the iLISI of random mixing (1). " + LABEL_FREE_TEXT,
                 "ASW": "Silhouette of the sections. " + LABEL_FREE_TEXT,
                 "MMD": "RBF MMD between the sections on standardized embeddings. " + LABEL_FREE_TEXT,
                 ASW_LABEL_PREFIX: "Section silhouette within labels shared by the sections (region-conditioned).",
                 CROSS_SECTION_METRIC: "Cross-section mixing: kNN neighbors from other sections relative to random "
-                                      "mixing (1), mean over the labels of the key; per region, not a quality score "
-                                      "on its own."}
+                                      "mixing (dashed, 1), mean over the labels of the key; per region, not a "
+                                      "quality score on its own (unsorted)."}
 # Collapse statistics of _avg_cosine_similarity.csv; the relative ones are compared with the base mean
 COLLAPSE_COLUMNS = ["participation_ratio", "between_cell_variance_fraction", "n_pcs_90_variance",
                     "top_pc_variance_fraction", "rankme", "mean_dim_std", "complete_collapse", "dimensional_collapse"]
@@ -364,19 +371,32 @@ def collect_collapse_statistics(manifest_df: pd.DataFrame, dataset_name: str) ->
     return pd.DataFrame(records, columns=RUN_KEYS + ["metatoken_mode"] + COLLAPSE_COLUMNS)
 
 
-def collapse_flags(collapse_df: pd.DataFrame, collapse_fraction: float) -> pd.DataFrame:
+def base_reference_modes(df: pd.DataFrame, category_mode: str) -> pd.Series:
     """
-    Adds the ratio of the relative collapse statistics (RELATIVE_COLLAPSE_COLUMNS) to the base mean in the same
-    metatoken mode and the flag with its reasons: complete or dimensional collapse as flagged by the evaluation, or a
-    ratio below `collapse_fraction` (partial collapse). Runs without the statistics are not flagged.
+    Metatoken mode of the base runs each row is compared with: the row's own mode, or for runs trained with another
+    input than base (No Metatoken), base in the mode of the category panels, the comparison those panels show.
+    """
+    base_training_modes = df.loc[df["category"] == "base", "training_mode"]
+    if base_training_modes.empty:
+        return df["metatoken_mode"]
+    base_panel_mode = base_training_modes.iloc[0] if category_mode == "training" else "drop"
+    return df["metatoken_mode"].where(df["training_mode"] == base_training_modes.iloc[0], base_panel_mode)
+
+
+def collapse_flags(collapse_df: pd.DataFrame, collapse_fraction: float, category_mode: str) -> pd.DataFrame:
+    """
+    Adds the ratio of the relative collapse statistics (RELATIVE_COLLAPSE_COLUMNS) to the base mean in the reference
+    mode (base_reference_modes) and the flag with its reasons: complete or dimensional collapse as flagged by the
+    evaluation, or a ratio below `collapse_fraction` (partial collapse). Runs without the statistics are not flagged.
     """
     base_df = collapse_df[collapse_df["category"] == "base"].groupby("metatoken_mode")[RELATIVE_COLLAPSE_COLUMNS].mean()
-    for mode in set(collapse_df["metatoken_mode"]) - set(base_df.dropna().index):
-        print(f"WARNING: no base run with collapse statistics in metatoken mode {mode}; runs in that mode are flagged "
-              f"only by the evaluation's absolute thresholds.")
+    reference_modes = base_reference_modes(collapse_df, category_mode)
+    for mode in set(reference_modes) - set(base_df.dropna().index):
+        print(f"WARNING: no base run with collapse statistics in metatoken mode {mode}; runs compared with it are "
+              f"flagged only by the evaluation's absolute thresholds.")
     for column in RELATIVE_COLLAPSE_COLUMNS:
         collapse_df[f"{column}_vs_base"] = (collapse_df[column].astype(float) /
-                                            collapse_df["metatoken_mode"].map(base_df[column]).astype(float))
+                                            reference_modes.map(base_df[column]).astype(float))
 
     def reasons(run) -> str:
         found = [name.replace("_", " ") for name in ["complete_collapse", "dimensional_collapse"]
@@ -422,13 +442,16 @@ def run_means(metrics_df: pd.DataFrame) -> pd.DataFrame:
     return means_df.reset_index()
 
 
-def add_differences_to_base(df: pd.DataFrame, value_keys: list, by: list) -> pd.DataFrame:
+def add_differences_to_base(df: pd.DataFrame, value_keys: list, by: list, category_mode: str) -> pd.DataFrame:
     """
     Adds `<value>_diff_to_base`: the difference to the base run of the same replicate (seed; and the same `by` values),
-    with the base in the metatoken mode of the category panels.
+    with the base in the reference mode (base_reference_modes: the same metatoken mode, or for No Metatoken the mode of
+    the category panels).
     """
-    base_df = df.loc[(df["category"] == "base") & df["category_panel"], by + ["replicate"] + value_keys]
-    reference_df = df[by + ["replicate"]].merge(base_df, on=by + ["replicate"], how="left")
+    keys = by + ["replicate", "metatoken_mode"]
+    base_df = df.loc[df["category"] == "base", keys + value_keys]
+    reference_df = (df[by + ["replicate"]].assign(metatoken_mode=base_reference_modes(df, category_mode))
+                    .merge(base_df, on=keys, how="left"))
     for key in value_keys:
         df[f"{key}_diff_to_base"] = df[key].to_numpy(dtype=float) - reference_df[key].to_numpy(dtype=float)
     return df
@@ -436,8 +459,9 @@ def add_differences_to_base(df: pd.DataFrame, value_keys: list, by: list) -> pd.
 
 def summarize(df: pd.DataFrame, group_keys: list, value_keys: list) -> pd.DataFrame:
     """
-    Per group (arm): the number of runs and per value the mean, SD (ddof = 1; empty for one run) and half-width of the
-    95% t confidence interval over the runs.
+    Per group (arm): the number of runs and per value the mean, SD (ddof = 1; empty for one run), half-width of the
+    95% t confidence interval and number of runs with the value (`_n`; fewer than n_runs if a run lacks it, e.g. AMI
+    of a run evaluated before it was added).
     """
     grouped = df.groupby(group_keys)
     summary_df = grouped["run_id"].nunique().rename("n_runs").to_frame()
@@ -446,6 +470,7 @@ def summarize(df: pd.DataFrame, group_keys: list, value_keys: list) -> pd.DataFr
         summary_df[f"{key}_mean"] = statistics_df["mean"]
         summary_df[f"{key}_sd"] = statistics_df["std"]
         summary_df[f"{key}_ci95"] = ci95(statistics_df["std"], statistics_df["count"])
+        summary_df[f"{key}_n"] = statistics_df["count"]
     return summary_df
 
 
@@ -534,13 +559,13 @@ def bar_statistics(points_df: pd.DataFrame, metric: str, error_bars: str) -> pd.
 
 def plot_category(points_df: pd.DataFrame, metric: str, title: str, caption: str, best: str = "higher",
                   error_bars: str = "sd", band: tuple = None, notes: dict = None, sort: bool = True,
-                  xlabel: str = None):
+                  xlabel: str = None, reference: float = None):
     """
     Horizontal bars per label (bar_statistics of `points_df`: one row per run, or per run and resolution for
     `error_bars` published) with error bars and dots, sorted best first (`best`: higher, lower or zero, i.e. closest
     to zero) unless `sort` is False. Tick labels give the number of runs, dots of collapse-flagged runs are crosses,
-    `band` (center, half-width) is shaded behind the bars, `notes` (per label) follow the values and `caption` (what
-    bars, error bars and band show) is printed under the axes.
+    `band` (center, half-width) is shaded behind the bars, `reference` is a dashed line, `notes` (per label) follow the
+    values and `caption` (what bars, error bars and band show) is printed under the axes.
     """
     summary_df = bar_statistics(points_df, metric, error_bars)
     if sort:
@@ -564,6 +589,8 @@ def plot_category(points_df: pd.DataFrame, metric: str, title: str, caption: str
                 ecolor="0.25", elinewidth=0.8, capsize=2.0, zorder=3)
     if best == "zero" or points_df[metric].min() < 0:
         ax.axvline(0, color="0.25", linewidth=0.6, zorder=1)
+    if reference is not None:
+        ax.axvline(reference, color="0.25", linewidth=0.6, linestyle="--", zorder=1)
     # Value labels right of the bars, dots, error bars and band (and of zero, for negative bars)
     band_max = band[0] + band[1] if band is not None else 0
     x_min, x_max = min(points_df[metric].min(), 0), max(points_df[metric].max(), band_max, 0)
@@ -682,11 +709,13 @@ def category_band(category_df: pd.DataFrame, metric: str, pooled: tuple, error_b
 
 def plot_metric_panels(df: pd.DataFrame, points_df: pd.DataFrame, metric: str, best: str, name: str,
                        title_suffix: str, args, eval_data_text: str, figures_folder_path: Path,
-                       n_resolutions: int = None, notes_key: str = None, metric_text: str = None):
+                       n_resolutions: int = None, notes_key: str = None, metric_text: str = None,
+                       direction: bool = True, xlabel: str = None, reference: float = None):
     """
     The panels of one metric: metatoken_inference, metatoken_contrasts and one per category. `df` has one row per run
     and mode; `points_df` the rows the bars and dots are computed from (with published error bars, the resolution
-    rows); `metric_text` is added to the captions.
+    rows); `metric_text` is added to the captions. Without `direction` (a readout with no better side), the bars are
+    not sorted, `xlabel` replaces the axis label with its arrow and `reference` is drawn as a dashed line.
     """
     df = df[df[metric].notna()]
     points_df = points_df[points_df[metric].notna()]
@@ -707,7 +736,8 @@ def plot_metric_panels(df: pd.DataFrame, points_df: pd.DataFrame, metric: str, b
     if not metatoken_df.empty:
         caption = caption_text(args, eval_data_text, n_resolutions, notes=bool(notes_key), metric_text=metric_text)
         fig = plot_category(metatoken_df, metric, f"Metatoken at inference ({title_suffix})", caption, best,
-                            args.error_bars, notes=notes(metatoken_df))
+                            args.error_bars, notes=notes(metatoken_df), sort=direction, xlabel=xlabel,
+                            reference=reference)
         save_figure(fig, figures_folder_path, f"ablation_metatoken_inference_{name}_{metric}")
     contrast_df = metatoken_contrasts(df, metric)
     if not contrast_df.empty:
@@ -734,11 +764,15 @@ def plot_metric_panels(df: pd.DataFrame, points_df: pd.DataFrame, metric: str, b
         caption = caption_text(args, eval_data_text, n_resolutions, band, pooled[1], category_mode_text,
                                bool(notes_key), metric_text)
         fig = plot_category(category_points_df, metric, f"{category.replace('_', ' ').capitalize()} ({title_suffix})",
-                            caption, best, args.error_bars, band, notes(category_points_df))
+                            caption, best, args.error_bars, band, notes(category_points_df), sort=direction,
+                            xlabel=xlabel, reference=reference)
         save_figure(fig, figures_folder_path, f"ablation_{category}_{name}_{metric}")
 
 
 def main(args):
+    # The published panels removed the metatoken for all runs
+    if args.category_mode is None:
+        args.category_mode = "drop" if args.error_bars == "published" else "training"
     artifact_folder_path = Path(args.artifact_folder_path)
     results_folder_path = artifact_folder_path / "results"
     figures_folder_path = artifact_folder_path / "figures"
@@ -754,7 +788,8 @@ def main(args):
     manifest_df = evaluated_runs(manifest_df)
 
     # Collapse flags per run and mode, used by every table and figure
-    collapse_df = collapse_flags(collect_collapse_statistics(manifest_df, args.dataset_name), args.collapse_fraction)
+    collapse_df = collapse_flags(collect_collapse_statistics(manifest_df, args.dataset_name), args.collapse_fraction,
+                                 args.category_mode)
     collapse_df.to_csv(results_folder_path / "collapse_diagnostics.csv", index=False)
     print_pairs(f"Runs flagged for collapse (participation ratio or between-cell variance fraction below "
                 f"{args.collapse_fraction:.0%} of base, or flagged by the evaluation)",
@@ -774,7 +809,7 @@ def main(args):
     # Scores and readouts compared between arms and modes; the label counts are summarized only
     niche_value_keys = (NICHE_METRICS + [f"{metric}_matched" for metric in NICHE_METRICS] + ["n_clusters"] +
                         ([CROSS_SECTION_METRIC] if CROSS_SECTION_METRIC in run_df else []))
-    run_df = add_differences_to_base(run_df, niche_value_keys, ["region_key"])
+    run_df = add_differences_to_base(run_df, niche_value_keys, ["region_key"], args.category_mode)
     run_df["eval_gene_set"] = eval_gene_set
     run_df.to_csv(results_folder_path / "niche_identification_ablations_runs.csv", index=False)
     arm_keys = ["category", "variant", "label", "metatoken_mode"]
@@ -803,7 +838,8 @@ def main(args):
         if CROSS_SECTION_METRIC in key_df:
             plot_metric_panels(key_df, key_df, CROSS_SECTION_METRIC, "higher", label_key,
                                f"{label_key}, label-aware mixing", args, eval_data_text, figures_folder_path,
-                               metric_text=METRIC_TEXTS[CROSS_SECTION_METRIC])
+                               metric_text=METRIC_TEXTS[CROSS_SECTION_METRIC], direction=False,
+                               xlabel="Cross-section neighbors / random mixing", reference=1.0)
 
     # Batch integration between the sections, if evaluated: the same panels
     integration_df = collect_integration_metrics(manifest_df, args.dataset_name)
@@ -813,7 +849,7 @@ def main(args):
         metrics = [metric for metric in integration_df.columns
                    if (metric in INTEGRATION_METRICS or metric.startswith(ASW_LABEL_PREFIX)) and
                    integration_df[metric].notna().any()]
-        integration_df = add_differences_to_base(integration_df, metrics, [])
+        integration_df = add_differences_to_base(integration_df, metrics, [], args.category_mode)
         integration_df.melt(id_vars=RUN_KEYS + ["metatoken_mode", "category_panel", "collapse_flag"],
                             value_vars=metrics, var_name="metric", value_name="score").to_csv(
             results_folder_path / "batch_integration_ablations.csv", index=False)
@@ -825,7 +861,7 @@ def main(args):
         integration_summary_df.to_csv(results_folder_path / "batch_integration_ablations_summary.csv")
         write_table(mode_differences(integration_df, ["category", "variant", "label"], metrics),
                     results_folder_path / "batch_integration_metatoken_mode_differences.csv")
-        # iLISI relative to its ceiling replaces iLISI in the panels, unless no run has it
+        # iLISI relative to random mixing replaces iLISI in the panels, unless no run has it
         plot_metrics = [metric for metric in metrics if not (metric == "iLISI" and "iLISI_relative" in metrics)]
         for metric in plot_metrics:
             plot_metric_panels(integration_df, integration_df, metric, INTEGRATION_METRICS.get(metric, "zero"),
@@ -901,18 +937,19 @@ if __name__ == '__main__':
                         default="sd",
                         help='Error bars over the runs of an arm, each averaged over the resolutions: SD (ddof 1) or '
                              'the 95%% t confidence interval; published: SD (ddof 0) over all resolution x replicate '
-                             'values, as in the published panels.')
+                             'values, as in the published panels (with --category_mode drop, its default then).')
     parser.add_argument('--category_mode',
                         type=str,
                         choices=["training", "drop"],
-                        default="training",
+                        default=None,
                         help='Metatoken mode of the category panels: the training input (kept for runs trained with '
-                             'the metatoken) or removed for all runs (mouse evaluation).')
+                             'the metatoken; the default) or removed for all runs (mouse evaluation; the default with '
+                             '--error_bars published).')
     parser.add_argument('--collapse_fraction',
                         type=float,
                         default=0.25,
                         help='Flag runs whose participation ratio or between-cell variance fraction is below this '
-                             'fraction of the base mean in the same metatoken mode.')
+                             'fraction of the base mean (same metatoken mode; No Metatoken: the category-panel mode).')
     args = parser.parse_args()
 
     main(args)
