@@ -32,8 +32,12 @@ embeddings are those of the all-cell pass used for the clustering:
   2,000 random cells per section (lower is better). The cells are drawn from np.random.default_rng(0) instead of the
   unseeded global state of the notebook, and the distances are computed in row chunks (same values, bounded memory).
 These three are label-free: they reward mixing even where the sections differ in region composition. Also written:
-- iLISI_max: the iLISI of perfectly mixed cells for the section sizes of the scored cells, (1 / sum p_s^2 - 1) /
-  (n_sections - 1) (0.8 at 2:1), and iLISI_relative = iLISI / iLISI_max.
+- iLISI_max: the asymptotic upper bound of iLISI for the section sizes of the scored cells, (1 / sum p_s^2 - 1) /
+  (n_sections - 1) (0.8 at 2:1), which randomly mixed cells do not reach (the per-cell LISI uses about 30 effective
+  neighbors; random 2:1 mixing gives about 0.75); iLISI_random: the mean iLISI of the same 90-NN graph with the
+  sections permuted over the cells (ILISI_RANDOM_PERMUTATIONS permutations, seeds 0, 1, ...; one permutation varies by
+  about 1-2%), i.e. of random mixing for these section sizes; iLISI_relative = iLISI /
+  iLISI_random (about 1: as mixed as random; comparable between section ratios).
 - ASW_label_<key>, for each label key that labels cells of two or more sections: the section silhouette within each
   label (labels with at least MIN_CELLS_PER_LABEL_SECTION cells in two or more sections; at most
   MAX_CELLS_PER_LABEL random cells each), mean |silhouette| over the cells of a label, averaged over the labels (0:
@@ -69,7 +73,7 @@ prefix `<dataset_name>_` (drop) or `<dataset_name>_keep_metatoken_` (keep):
   ARI), then AMI, n_labelled_cells (the cells scored for the key), n_label_categories (their labels) and
   n_clusters_labelled (the clusters among them), so that differences in granularity can be read off
 - `<prefix>neighborhood_emb_batch_integration_metrics.csv` (two or more sections; columns `metric,score` with the rows
-  iLISI, ASW and MMD, as in the mouse notebook, then iLISI_max, iLISI_relative and ASW_label_<key>)
+  iLISI, ASW and MMD, as in the mouse notebook, then iLISI_max, iLISI_random, iLISI_relative and ASW_label_<key>)
 - `<prefix>neighborhood_emb_cross_section_neighbors.csv` (two or more sections; see above)
 - `<prefix>neighborhood_emb_avg_cosine_similarity.csv`: collapse statistics (`embedding_statistics`): the average
   pairwise cosine similarity of the embeddings (as in the mouse runs) and of the mean-centered embeddings, kept for
@@ -81,11 +85,12 @@ prefix `<dataset_name>_` (drop) or `<dataset_name>_keep_metatoken_` (keep):
 - `<prefix>neighborhood_emb.npy` (float32 embeddings, rows in the order of the clusters CSV)
 - `evaluation_complete`, written last, once all modes are done (and removed before an evaluation starts): `<key>:
   <value>` lines with what produced the metrics. Compared with the current inputs (MARKER_INPUT_KEYS): the modes, label
-  keys, label files and unassigned label of each key, the sha1 of the evaluation code (EVALUATION_CODE_FILE_NAMES, in
-  the folder of this script), the TERRA code version, the checkpoint (epoch and md5), the evaluation data (path and md5
-  of its provenance file) and the embedding precision; recorded only: the unassigned label as given, the modes with
-  batch-integration metrics, the number of evaluated cells, the GPU, the torch version and the time.
-All modes are evaluated again unless evaluation_complete matches the current inputs and every metric file is complete,
+  keys, label files and unassigned label of each key, the sha1 of the evaluation code (this script and the part of
+  ablation_utils.py it uses, `evaluation_code_sha1s`), the TERRA code version, the checkpoint (epoch and md5), the
+  evaluation data (path and md5 of its provenance file) and the embedding precision; recorded only: the unassigned
+  label as given, the modes with batch-integration metrics, the number of evaluated cells, the GPU, the torch version
+  and the time.
+All modes are evaluated again unless evaluation_complete matches the current inputs and every output file is complete,
 or always with `--overwrite`. `--check_only` evaluates nothing: exit code 0 if the evaluation is up to date,
 NEEDS_EVALUATION_EXIT_CODE (3) with the reasons if not (also without evaluation_complete or a packaged checkpoint), any
 other code on errors.
@@ -127,23 +132,26 @@ from ablation_utils import (PROVENANCE_FILE_NAME, SECTION_KEY, file_md5, format_
 
 # Same resolution grid as the mouse sweep (base 1.0, 4 steps of 0.1 below and above)
 RESOLUTIONS = [round(step * 0.1, 1) for step in range(6, 15)]
-INTEGRATION_METRICS = ["iLISI", "ASW", "MMD"]
+# Rows of every batch-integration metrics file (ASW_label_<key> only for keys that label two or more sections)
+INTEGRATION_METRICS = ["iLISI", "ASW", "MMD", "iLISI_max", "iLISI_random", "iLISI_relative"]
 # Elements of the temporary difference array of the chunked pairwise distances (float32: 256 MB)
 DISTANCE_CHUNK_ELEMENTS = 2 ** 26
 # Label-conditioned section ASW: labels with at least this many cells in two or more sections, at most this many
 # random cells per label
 MIN_CELLS_PER_LABEL_SECTION = 10
 MAX_CELLS_PER_LABEL = 2000
+# Permutations of the sections for the iLISI of random mixing (iLISI_random)
+ILISI_RANDOM_PERMUTATIONS = 5
 # Collapse flags of the embeddings of a mode (embedding_statistics). Complete collapse: the between-cell variance is
 # below this fraction of the mean squared norm (i.e. a raw average cosine similarity above about 0.999; healthy
 # embeddings with the raw 0.99 of the mouse runs have about 0.01, cells collapsed onto one point up to 1% noise 1e-4).
-# Dimensional collapse: the participation ratio of the centered spectrum is below this, i.e. the variance lies in
-# effectively one or two directions. Smaller drops (e.g. below 25% of the base run) are for the comparison of runs.
+# Dimensional collapse: the top PC holds more than this share of the centered variance, i.e. the cells vary along one
+# direction only (rank 1 up to 1% noise: about 0.99). Not the participation ratio, which one dominant axis (e.g. two
+# sections or niches far apart) pushes below 2 although the remainder is full rank (two niches at +-6 along one axis
+# with 0.1 isotropic noise in 768 dimensions: participation ratio 1.5, top PC 0.82). Smaller drops (e.g. a
+# participation ratio below 25% of the base run) are for the comparison of runs (compare_ablations.py).
 COLLAPSE_MAX_VARIANCE_FRACTION = 1e-3
-COLLAPSE_MIN_PARTICIPATION_RATIO = 2.0
-# Code that produces the metrics (in the folder of this script; package_run.py links what is evaluated), recorded in
-# evaluation_complete by its sha1
-EVALUATION_CODE_FILE_NAMES = ["evaluate_ablation_run.py", "package_run.py", "ablation_utils.py"]
+COLLAPSE_MAX_TOP_PC_FRACTION = 0.95
 # evaluation_complete lines compared with the current inputs; the other lines are recorded only
 MARKER_INPUT_KEYS = ["modes",
                      "label_keys",
@@ -231,7 +239,8 @@ def embedding_statistics(embeddings: np.ndarray) -> dict:
     (sum l)^2 / sum l^2, PCs for 90% of the variance, the top PC's share, RankMe (exp of the entropy of the normalized
     singular values), which a small isotropic noise floor inflates) and their scale (between-cell variance fraction
     tr(Cov) / mean ||x||^2, per-dimension standard deviation). A spectrum metric alone misses cells collapsed onto one
-    point up to noise, a scale metric alone misses dimensional collapse; the flags use one of each.
+    point up to noise, a scale metric alone misses dimensional collapse; the flags use one of each (without any
+    between-cell variance, the top PC's share is 1).
     """
     X = embeddings.astype(np.float64)
     X_centered = X - X.mean(axis=0)
@@ -246,7 +255,7 @@ def embedding_statistics(embeddings: np.ndarray) -> dict:
         top_pc_share = float(shares[0])
         rankme = float(np.exp(-(singular_value_shares * np.log(singular_value_shares)).sum()))
     else:
-        participation_ratio, n_pcs_90, top_pc_share, rankme = 0.0, 0, np.nan, 0.0
+        participation_ratio, n_pcs_90, top_pc_share, rankme = 0.0, 0, 1.0, 0.0
     mean_squared_norm = float((X ** 2).sum(axis=1).mean())
     variance_fraction = float(total_variance / mean_squared_norm) if mean_squared_norm > 0 else 0.0
     dim_std = X_centered.std(axis=0)
@@ -262,9 +271,9 @@ def embedding_statistics(embeddings: np.ndarray) -> dict:
             "mean_dim_std": float(dim_std.mean()),
             "min_dim_std": float(dim_std.min()),
             "complete_collapse": variance_fraction < COLLAPSE_MAX_VARIANCE_FRACTION,
-            "dimensional_collapse": participation_ratio < COLLAPSE_MIN_PARTICIPATION_RATIO,
+            "dimensional_collapse": bool(top_pc_share > COLLAPSE_MAX_TOP_PC_FRACTION),
             "collapse_max_variance_fraction": COLLAPSE_MAX_VARIANCE_FRACTION,
-            "collapse_min_participation_ratio": COLLAPSE_MIN_PARTICIPATION_RATIO}
+            "collapse_max_top_pc_variance_fraction": COLLAPSE_MAX_TOP_PC_FRACTION}
 
 
 def check_finite(embeddings: dict, obs: pd.DataFrame, label_keys: list):
@@ -291,8 +300,8 @@ def check_finite(embeddings: dict, obs: pd.DataFrame, label_keys: list):
 
 def ilisi_max(batch: np.ndarray) -> float:
     """
-    iLISI (scaled as scib_metrics.ilisi_knn) of perfectly mixed cells with these batch sizes: (1 / sum p^2 - 1) /
-    (n_batches - 1), e.g. 0.8 for two batches at 2:1.
+    Asymptotic upper bound of iLISI (scaled as scib_metrics.ilisi_knn) for these batch sizes: (1 / sum p^2 - 1) /
+    (n_batches - 1), e.g. 0.8 for two batches at 2:1 (random mixing stays below it with ilisi_knn's neighborhoods).
     """
     shares = pd.Series(batch).value_counts(normalize=True).to_numpy()
     return float((1 / (shares ** 2).sum() - 1) / (len(shares) - 1))
@@ -348,9 +357,36 @@ def cross_section_neighbors(adata: sc.AnnData, neighbors_key: str, label_keys: l
 
 
 def evaluation_code_sha1s() -> dict:
-    """sha1 of each file of EVALUATION_CODE_FILE_NAMES (the copies next to this script)."""
-    return {file_name: hashlib.sha1((Path(__file__).resolve().parent / file_name).read_bytes()).hexdigest()
-            for file_name in EVALUATION_CODE_FILE_NAMES}
+    """
+    sha1 of the code that produces the metrics, recorded in evaluation_complete: this script, and of ablation_utils.py
+    only what it uses (the source of the functions imported from it and of the ablation_utils functions they reference,
+    the values of the constants), so that edits to the tokenization, setup or launch helpers there do not make every
+    evaluation stale. package_run.py is not part of it: the checkpoint md5 covers what it links.
+    """
+    import inspect
+
+    import ablation_utils
+
+    module_values = vars(ablation_utils)
+    pending = [name for name, value in globals().items() if module_values.get(name) is value]
+    used = {}
+    while pending:
+        name = pending.pop()
+        value = module_values[name]
+        if name in used or name.startswith("__") or inspect.ismodule(value) or inspect.isclass(value):
+            continue
+        if not inspect.isfunction(value):
+            used[name] = repr(value)
+        elif value.__module__ == ablation_utils.__name__:
+            used[name] = inspect.getsource(value)
+            codes = [value.__code__]
+            while codes:
+                code = codes.pop()
+                pending += [global_name for global_name in code.co_names if global_name in module_values]
+                codes += [constant for constant in code.co_consts if inspect.iscode(constant)]
+    used_source = "".join(f"{name}\n{used[name]}\n" for name in sorted(used))
+    return {"evaluate_ablation_run.py": hashlib.sha1(Path(__file__).resolve().read_bytes()).hexdigest(),
+            "ablation_utils.py:used": hashlib.sha1(used_source.encode()).hexdigest()}
 
 
 def get_device_info() -> dict:
@@ -411,7 +447,9 @@ def get_file_prefix(args, mode: str) -> str:
 def evaluation_differences(args, output_folder_path: Path, expected: dict) -> list:
     """
     Why the run must be evaluated (again): evaluation_complete is missing or records other inputs (MARKER_INPUT_KEYS),
-    or a metric file of a mode it records is missing or incomplete. Empty if the evaluation is up to date.
+    or an output of a mode it records is missing or incomplete (the niche metrics, collapse statistics, clusters and
+    embeddings, and with batch-integration metrics their file and the cross-section neighbors). Empty if the
+    evaluation is up to date.
     """
     recorded = read_marker(output_folder_path / "evaluation_complete")
     if not recorded:
@@ -439,6 +477,11 @@ def evaluation_differences(args, output_folder_path: Path, expected: dict) -> li
         integration_file_path = output_folder_path / f"{file_prefix}_batch_integration_metrics.csv"
         if mode in integration_modes and not integration_complete(integration_file_path):
             reasons.append(f"{integration_file_path.name} is missing or incomplete")
+        file_names = [f"{file_prefix}_avg_cosine_similarity.csv", f"{file_prefix}_clusters.csv", f"{file_prefix}.npy"]
+        if mode in integration_modes:
+            file_names.append(f"{file_prefix}_cross_section_neighbors.csv")
+        reasons += [f"{file_name} is missing" for file_name in file_names
+                    if not (output_folder_path / file_name).exists()]
     return reasons
 
 
@@ -493,7 +536,8 @@ def mmd_comparable(adata: sc.AnnData, emb_key: str, batch_key: str, n_sub: int =
 def batch_integration_metrics(adata: sc.AnnData, emb_key: str, batch_key: str, label_keys: list) -> pd.DataFrame:
     """
     iLISI, ASW and MMD between the batches of `batch_key` (mouse notebook, cell 42), with fixed seeds, then iLISI_max,
-    iLISI_relative and the label-conditioned ASW of each label key that labels cells of two or more batches.
+    iLISI_random, iLISI_relative and the label-conditioned ASW of each label key that labels cells of two or more
+    batches.
     """
     from scib_metrics import ilisi_knn
     from scib_metrics.nearest_neighbors import pynndescent
@@ -518,11 +562,16 @@ def batch_integration_metrics(adata: sc.AnnData, emb_key: str, batch_key: str, l
     print(f"MMD: {mmd_score:.4f}")
     results.append({"metric": "MMD", "score": mmd_score})
 
-    # The iLISI of perfect mixing for these section sizes, and the label-conditioned ASW (mixing within regions)
+    # The iLISI bound for these section sizes, the iLISI of random mixing on the same graph (sections permuted), and
+    # the label-conditioned ASW (mixing within regions)
     ilisi_ceiling = ilisi_max(batch)
-    print(f"iLISI_max: {ilisi_ceiling:.4f}; iLISI_relative: {ilisi / ilisi_ceiling:.4f}")
+    ilisi_random = float(np.mean([np.mean(ilisi_knn(knn, np.random.default_rng(seed).permutation(batch)))
+                                  for seed in range(ILISI_RANDOM_PERMUTATIONS)]))
+    print(f"iLISI_max: {ilisi_ceiling:.4f}; iLISI_random: {ilisi_random:.4f}; iLISI_relative: "
+          f"{ilisi / ilisi_random:.4f}")
     results.append({"metric": "iLISI_max", "score": ilisi_ceiling})
-    results.append({"metric": "iLISI_relative", "score": ilisi / ilisi_ceiling})
+    results.append({"metric": "iLISI_random", "score": ilisi_random})
+    results.append({"metric": "iLISI_relative", "score": ilisi / ilisi_random})
     for key in label_keys:
         if adata.obs.loc[adata.obs[key].notna(), batch_key].nunique() < 2:
             print(f"{key} labels cells of one section only: no label-conditioned ASW.")
@@ -708,8 +757,8 @@ def evaluate(args, embeddings, obs, output_folder_path, file_prefix, batch_integ
     if statistics["complete_collapse"] or statistics["dimensional_collapse"]:
         print(f"WARNING: the embeddings look collapsed (between-cell variance fraction "
               f"{statistics['between_cell_variance_fraction']:.2e}, threshold {COLLAPSE_MAX_VARIANCE_FRACTION}; "
-              f"participation ratio {statistics['participation_ratio']:.2f}, threshold "
-              f"{COLLAPSE_MIN_PARTICIPATION_RATIO}).")
+              f"top PC share {statistics['top_pc_variance_fraction']:.3f}, threshold {COLLAPSE_MAX_TOP_PC_FRACTION}; "
+              f"participation ratio {statistics['participation_ratio']:.2f}).")
     pd.DataFrame([{"emb_key": args.emb_key, **statistics}]).to_csv(
         output_folder_path / f"{file_prefix}_avg_cosine_similarity.csv", index=False)
 
