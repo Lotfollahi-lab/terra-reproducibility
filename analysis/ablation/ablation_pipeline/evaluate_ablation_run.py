@@ -31,10 +31,14 @@ embeddings are those of the all-cell pass used for the clustering:
   unseeded global state of the notebook, and the distances are computed in row chunks (same values, bounded memory).
 scib_metrics (with pynndescent and jax) is imported only if there are two or more sections; jax runs on the CPU.
 
-Unlike the mouse evaluation, which re-tokenized separate evaluation data with `harmonize_tokenize_embed_pipeline`,
-the run's own tokenized training dataset is embedded: training and evaluation data are the same cells, so this gives
-identical tokens without re-tokenizing (which needs ~0.5 TB of memory for the dense-path OVCA normalization arms
-without the ranked-list cut, and broke ties at the top-64 cut non-deterministically). The run aborts if the checkpoint
+The embedded dataset is `eval_tokenized_data_folder_path` of the run config (generate_ablation_runs.py; configs
+without it: the training dataset): for a dataset with one section (OVCA), the run's own tokenized training dataset;
+with two or more sections (mouse), the shared-gene re-tokenization of the same cells with the run's tokenization
+(filter_shared_genes.py, tokenize_dataset.py --gene_set shared_genes), as the published mouse evaluation embedded
+shared-gene data, so that the integration metrics do not measure the gene panels. It is tokenized by the pipeline
+with the training tokenizer settings, not by `harmonize_tokenize_embed_pipeline` (which needs ~0.5 TB of memory for
+the dense-path OVCA normalization arms without the ranked-list cut, and broke ties at the top-64 cut
+non-deterministically). The run aborts if the checkpoint
 does not load (`load_checkpoint` otherwise silently returns a randomly initialized model). `NUMBA_CPU_NAME=generic`
 (unless set) compiles the numba kNN code for the same generic CPU on every node, as in the mouse notebooks, so that the
 graph does not depend on the node.
@@ -235,10 +239,14 @@ def main(args):
     output_folder_path = Path(args.output_folder_path)
     output_folder_path.mkdir(parents=True, exist_ok=True)
 
-    # Tokenized training dataset of this run, and the labels and sections of its cells (checked before embedding)
+    # Evaluation dataset of this run (the training data or its shared-gene re-tokenization), and the labels and
+    # sections of its cells (checked before embedding)
     with open(Path(args.model_folder_path) / "model_config.yaml") as file:
         model_config = yaml.safe_load(file)
-    dataset = load_from_disk(model_config["data"]["tokenized_data_folder_path"])
+    eval_dataset_path = (model_config.get("eval_tokenized_data_folder_path")
+                         or model_config["data"]["tokenized_data_folder_path"])
+    print(f"Evaluation data: {eval_dataset_path}")
+    dataset = load_from_disk(eval_dataset_path)
     cell_ids = [str(cell_id) for cell_id in dataset["cell_id"]]
     labels = load_labels(args.label_file_paths, args.label_keys, args.unassigned_label)
     missing_cell_ids = pd.Index(cell_ids).difference(labels.index)

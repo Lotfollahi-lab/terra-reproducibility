@@ -5,8 +5,10 @@ the dataset given by the arguments (values
 of `datasets/<dataset>.env`). Every run config is the base config with
 - the dataset (silver folder, token dictionary, the variant's tokenized dataset and its tokenization keys; the keys
   are recorded so that a re-tokenization from the model folder, e.g. with `harmonize_tokenize_embed_pipeline` on other
-  data, matches training; the ablation evaluation itself embeds the run's own tokenized training dataset and does not
-  re-tokenize),
+  data, matches training),
+- `eval_tokenized_data_folder_path`: the tokenized dataset the evaluation embeds (`evaluate_ablation_run.py`), the
+  variant's tokenization of the `--eval_gene_set` data: the training dataset itself (all_genes) or its shared-gene
+  re-tokenization (shared_genes; TERRA ignores the key),
 - `n_special_values` large enough for the dataset's batch special values (the mouse value 200 is too small for the
   human token dictionary), and `vocab_size`, the size of the token dictionary (TERRA builds the models from the token
   dictionary and does not read the key; recorded for the packaged model config),
@@ -56,6 +58,7 @@ from ablation_utils import (EVAL_GENE_SETS,
                             NORM_METHOD_KEYS,
                             SECTION_KEY,
                             TOKENIZER_OPTION_DEFAULTS,
+                            get_gene_set_dataset_name,
                             get_runs,
                             get_seq_len_cell,
                             get_tokenized_dataset_path,
@@ -146,6 +149,8 @@ def make_run_config(base_config: dict,
     config["state"]["checkpoint_freq"] = args.epochs + 1  # never write epoch snapshots, only the latest checkpoint
     config["seed"] = run["seed"]
     config["code_version"] = args.code_version
+    config["eval_tokenized_data_folder_path"] = str(get_tokenized_dataset_path(
+        tokenization, args.data_directory_path, get_gene_set_dataset_name(args.dataset_name, args.eval_gene_set)))
 
     for key, value in run["training_options"].items():
         set_key(config, key, value, allow_new=True)
