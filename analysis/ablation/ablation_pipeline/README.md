@@ -31,6 +31,7 @@ dataset-specific defaults. Two datasets are defined:
 | `compare_ablations.py` | Results tables and figures: niche identification and granularity, batch integration and cross-section mixing (two or more sections), collapse flags, metatoken contrasts. |
 | `norm_factors.py`, `compute_norm_factors.py` | Per-gene normalization factors with the tokenizer's constants. |
 | `CODE_REVIEW.md` | Code review of the mouse ablations and where each fix is in TERRA. |
+| `tie_order_diagnostic.py` / `.lsf` | Whether a trained model uses the order of tied genes ([Tie-order diagnostic](#tie-order-diagnostic)). |
 
 ## Dataset parameter file
 
@@ -498,3 +499,32 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
    the factors, as in mouse step 3), else `all_genes`.
 4. Follow the mouse steps with the new env file (`setup_code.sh` only reruns the environment check if the pinned code
    is already there).
+
+## Tie-order diagnostic
+
+With raw-count ranks most genes of a cell are tied (count 1 on imaging data), and the tie rule
+(`stable_rank_ties` with `rank_tie_break_norm_factor: mean` here; numpy's unstable sort in the mouse runs and in
+TERRA-96M / TERRA-112M) sets their order. With rank-position embeddings (`gt_type` combined or rank) and
+`predict_gene: True`, a fixed rule lets the predictor narrow down a masked gene from the visible genes on either side of
+it in its tie group. `tie_order_diagnostic.py` measures whether a trained model uses that order: for a sample of cells
+it compares the JEPA loss (same masked genes, same context) and the embeddings of the stored order with those of a
+random order within each tie group (`tie_shuffle`) and within each segment (`full_shuffle`, a reference).
+
+```bash
+cd /nfs/team361/sb75/terra-reproducibility/analysis/ablation/ablation_pipeline
+mkdir -p ../../../logs/ablation/tie_order_diagnostic
+# A trained ablation run (run_folder_path of manifest.tsv; packaged or not)
+MODEL_FOLDER_PATH=<run folder> OUTPUT_FOLDER_PATH=<run folder>/tie_order_diagnostic bsub < tie_order_diagnostic.lsf
+# A released model on held-out data tokenized as its training data; the targets of TERRA-96M / TERRA-112M were
+# layer-normalized in training
+MODEL_FOLDER_PATH=<model folder> DATASET_PATH=<tokenized dataset> TARGET_ENC_LAYER_NORM=true \
+    OUTPUT_FOLDER_PATH=<output folder> bsub < tie_order_diagnostic.lsf
+```
+
+Reading `tie_order_targets.csv`: a loss increase under `tie_shuffle` on `bracketed` targets (both nearest visible genes
+in the target's tie group) that is clearly larger than on `untied` targets means the model uses the order of tied
+genes. `gt_type: counts` runs have no rank positions and serve as a negative control (no change beyond numerical
+noise). `tie_order_embeddings.csv` shows how much the embeddings move (cosine similarity, 15-nearest-neighbor
+overlap). `tie_order_data.json` also gives the share of gene tokens in tie groups and of the masked genes per class.
+Tie groups are read from the stored values, so tokenizations whose values are not an increasing function of the
+ranking value (e.g. raw-count ranks with gene-normalized values) are refused.

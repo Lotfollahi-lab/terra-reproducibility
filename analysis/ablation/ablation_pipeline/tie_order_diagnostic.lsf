@@ -1,0 +1,43 @@
+#!/bin/bash
+# Within-tie order diagnostic (tie_order_diagnostic.py) of one trained TERRA model on one GPU: how much its JEPA loss
+# and its embeddings change when tied genes (same ranking value, e.g. count 1) are reordered at random.
+# Submit from this directory; the variables are passed on by bsub, and the log folder must exist:
+#   mkdir -p ../../../logs/ablation/tie_order_diagnostic
+#   MODEL_FOLDER_PATH=<model or run folder> OUTPUT_FOLDER_PATH=<output folder> bsub < tie_order_diagnostic.lsf
+# Optional: DATASET_PATH (tokenized dataset; default: the model config's tokenized_data_folder_path), N_CELLS (5000),
+# METATOKEN (auto | keep | drop), TARGET_ENC_LAYER_NORM (config | true | false; true for TERRA-96M / TERRA-112M),
+# EXTRA_ARGS (e.g. "--save_embeddings"). CODE_PATH and ENV_PATH default to the ablations' pinned TERRA code and venv.
+#BSUB -G s10396
+#BSUB -J tie_order_diagnostic
+#BSUB -o ../../../logs/ablation/tie_order_diagnostic/tie_order_diagnostic_%J.out
+#BSUB -e ../../../logs/ablation/tie_order_diagnostic/tie_order_diagnostic_%J.err
+#BSUB -q inference
+#BSUB -n 8
+#BSUB -M 64GB
+#BSUB -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]"
+#BSUB -W 4:00
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+
+if [ -z "${MODEL_FOLDER_PATH:-}" ] || [ -z "${OUTPUT_FOLDER_PATH:-}" ]; then
+    echo "ERROR: set MODEL_FOLDER_PATH and OUTPUT_FOLDER_PATH at submission." >&2
+    exit 1
+fi
+CODE_PATH="${CODE_PATH:-/nfs/team361/sb75/terra_ablation}"
+ENV_PATH="${ENV_PATH:-/nfs/team361/sb75/.venvs/terra}"
+
+source "${ENV_PATH}/bin/activate"
+# The pinned TERRA code first, as in the ablation jobs
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
+echo "TERRA code: ${CODE_PATH} ($(cat "${CODE_PATH}/CODE_VERSION" 2>/dev/null || echo 'no CODE_VERSION'))"
+
+python3 -u tie_order_diagnostic.py \
+    --model_folder_path "${MODEL_FOLDER_PATH}" \
+    --output_folder_path "${OUTPUT_FOLDER_PATH}" \
+    ${DATASET_PATH:+--dataset_path "${DATASET_PATH}"} \
+    --n_cells "${N_CELLS:-5000}" \
+    --metatoken "${METATOKEN:-auto}" \
+    --target_enc_layer_norm "${TARGET_ENC_LAYER_NORM:-config}" \
+    --num_workers 8 \
+    ${EXTRA_ARGS:-}
