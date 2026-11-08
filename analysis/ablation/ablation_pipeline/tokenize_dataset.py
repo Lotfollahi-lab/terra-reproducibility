@@ -45,6 +45,7 @@ from ablation_utils import (EVAL_GENE_SETS,
                             load_plan,
                             needs_large_memory,
                             provenance_differences,
+                            shared_gene_folder_differences,
                             write_provenance)
 
 
@@ -86,6 +87,12 @@ def main(args):
     silver_file_paths = get_gene_set_silver_file_paths(args.silver_file_paths, args.data_directory_path,
                                                        args.dataset_name, args.gene_set)
     check_silver_files(silver_folder_path, silver_file_paths)
+    if args.gene_set == "shared_genes":
+        # A crashed or outdated filter_shared_genes.py run leaves files of other silver files (or of two runs)
+        differences = shared_gene_folder_differences(silver_folder_path, args.silver_file_paths)
+        if differences:
+            raise ValueError(f"{silver_folder_path} was not made completely from the current silver files (differs "
+                             f"in: {', '.join(differences)}). Rerun filter_shared_genes.py and resubmit.")
     # The pinned TERRA copy (first on PYTHONPATH in tokenize_dataset.lsf)
     provenance = get_tokenization_provenance(tokenization, get_code_version(), silver_file_paths,
                                              args.norm_factor_file_path, args.token_dictionary_file_path)

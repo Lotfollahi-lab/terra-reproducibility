@@ -82,8 +82,8 @@ import yaml
 from ablation_utils import (EVAL_GENE_SETS, cells_without_vocabulary_genes, count_detected_vocabulary_genes,
                             count_stored_zeros, get_code_version, get_gene_set_dataset_name,
                             get_gene_set_silver_file_paths, get_section_names, get_seq_len_cell,
-                            get_shared_gene_provenance, get_tokenization_provenance, get_tokenized_dataset_path,
-                            load_plan, provenance_differences, ties_at_cut)
+                            get_tokenization_provenance, get_tokenized_dataset_path, load_plan,
+                            provenance_differences, shared_gene_folder_differences, ties_at_cut)
 
 # UNASSIGNED_LABEL of datasets/*.env until it is set from check 3's output (README step 5)
 UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
@@ -687,9 +687,7 @@ def check_shared_gene_data(tokenizations: dict, silver_file_paths: list, data_di
     if other_files:
         print(f"ERROR: {shared_folder_path} holds other h5ad files, which the tokenizer would also read: {other_files}")
         return False
-    expected = get_shared_gene_provenance(silver_file_paths, None)
-    differences = provenance_differences(shared_folder_path, {"source_silver_file_md5s":
-                                                              expected["source_silver_file_md5s"]})
+    differences = shared_gene_folder_differences(shared_folder_path, silver_file_paths)
     if differences:
         print(f"ERROR: {shared_folder_path} was NOT made from the current silver files (differs in: "
               f"{', '.join(differences)}); rerun filter_shared_genes.py, then tokenize again")

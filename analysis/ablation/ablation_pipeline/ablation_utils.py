@@ -289,6 +289,15 @@ def get_shared_gene_provenance(silver_file_paths: list, min_shared_genes: int | 
             "min_shared_genes": min_shared_genes}
 
 
+def shared_gene_folder_differences(shared_folder_path: Path | str, silver_file_paths: list) -> list[str]:
+    """
+    Why a shared-gene silver folder was not made completely from the current silver files (empty if it was):
+    filter_shared_genes.py writes its provenance file last, after removing the old one.
+    """
+    expected = get_shared_gene_provenance(silver_file_paths, None)
+    return provenance_differences(shared_folder_path, {"source_silver_file_md5s": expected["source_silver_file_md5s"]})
+
+
 def write_provenance(dataset_path: Path | str, provenance: dict):
     with open(Path(dataset_path) / PROVENANCE_FILE_NAME, "w") as file:
         json.dump(provenance, file, indent=1)

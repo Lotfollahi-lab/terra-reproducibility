@@ -10,7 +10,8 @@
 #             (0.5-0.6 TB each for OVCA). Nothing to submit with the plan's options.
 # With EVAL_GENE_SET=shared_genes (env file), a second array tokenizes the shared-gene evaluation data of the dataset
 # (filter_shared_genes.py; the same cells with the genes of every section) with the same tokenizations, token dictionary
-# and factor file (job name <tag>_tokenize_shared_genes_<class>).
+# and factor file (job name <tag>_tokenize_shared_genes_<class>). It starts once the first array has ended, so that at
+# most MAX_CONCURRENT tokenizations run at a time.
 #
 # Usage: bash submit_tokenization.sh ENV_FILE standard|large
 # Example: bash submit_tokenization.sh datasets/ovca.env standard
@@ -84,6 +85,12 @@ case "${EVAL_GENE_SET:-}" in
                 exit 1
             fi
         done
+        # Written last by filter_shared_genes.py (tokenize_dataset.py checks that it matches the silver files)
+        if [ ! -f "${SHARED_GENE_FOLDER_PATH}/ablation_provenance.json" ]; then
+            echo "ERROR: ${SHARED_GENE_FOLDER_PATH}/ablation_provenance.json does not exist; filter_shared_genes.py did" \
+                 "not finish. Rerun it (README.md)." >&2
+            exit 1
+        fi
         ;;
     *)
         echo "ERROR: EVAL_GENE_SET must be all_genes or shared_genes in $1, not '${EVAL_GENE_SET:-}'." >&2
@@ -104,13 +111,18 @@ echo "Tokenizations (${MEMORY_CLASS}): ${INDICES}; gene sets: ${GENE_SETS[*]}"
 export PLAN_FILE_PATH DATA_DIRECTORY_PATH DATASET_NAME SILVER_FILE_PATHS NORM_FACTOR_FILE_PATH \
     TOKEN_DICTIONARY_FILE_PATH CODE_PATH ENV_PATH GENE_SET
 mkdir -p "${ARTIFACT_FOLDER_PATH}/logs"
+TRAINING_JOB_NAME="${EXPERIMENT_TAG}_tokenize_${MEMORY_CLASS}"
 for GENE_SET in "${GENE_SETS[@]}"; do
     if [ "${GENE_SET}" = "all_genes" ]; then
-        JOB_NAME="${EXPERIMENT_TAG}_tokenize_${MEMORY_CLASS}"
+        JOB_NAME="${TRAINING_JOB_NAME}"
+        DEPENDENCY=()
     else
+        # After the training data array (also if some of its elements failed)
         JOB_NAME="${EXPERIMENT_TAG}_tokenize_${GENE_SET}_${MEMORY_CLASS}"
+        DEPENDENCY=(-w "ended(${TRAINING_JOB_NAME})")
     fi
     bsub -J "${JOB_NAME}[${INDICES}]%${MAX_CONCURRENT}" \
+        ${DEPENDENCY[@]+"${DEPENDENCY[@]}"} \
         -env "all" \
         -q "${QUEUE}" \
         -M "${MEMORY}" \
