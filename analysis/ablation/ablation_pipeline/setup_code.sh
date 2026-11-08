@@ -1,7 +1,8 @@
 #!/bin/bash
 # One-time setup of the pinned TERRA code of the ablations: a plain copy (git archive) of Lotfollahi-lab/terra at
-# COMMIT (dev 5d8ecbc, 8 Nov 2026), which holds all fixes of the ablation code reviews and the corpus-mean tie-break of
-# ranked genes; those that change results are opt-in, and the plan switches them on. CODE_PATH and ENV_PATH are taken
+# COMMIT (dev d29e262, 8 Nov 2026), which holds all fixes of the ablation code reviews and audits, the corpus-mean
+# tie-break of ranked genes and the guard of fully masked attention rows; those that change results are opt-in, and the
+# plan and base config switch them on. CODE_PATH and ENV_PATH are taken
 # from the env file. The jobs put its src/ first on PYTHONPATH, so later changes of the farm checkout (editable install
 # of the venv) cannot change running jobs. The commit is taken from REPO_PATH if that checkout has it, otherwise fetched
 # from TERRA_URL into a temporary repository (REPO_PATH is not modified). The copy is built next to CODE_PATH and
@@ -22,7 +23,7 @@ fi
 source "$1"
 REPO_PATH="${REPO_PATH:-/nfs/team361/sb75/terra}"
 TERRA_URL="${TERRA_URL:-https://github.com/Lotfollahi-lab/terra.git}"
-COMMIT="5d8ecbc6a813788a0de5711964b50f8a4cf44d99"
+COMMIT="d29e262f9c0cdd12fdf4cf3fe91692c98eb796a2"
 CODE_VERSION="terra ${COMMIT}"
 if [[ "${CODE_PATH}" != /* ]]; then
     echo "ERROR: CODE_PATH must be an absolute path, not ${CODE_PATH}." >&2
@@ -66,13 +67,15 @@ fi
 BUILD_PATH="$(mktemp -d "${CODE_PATH}.setup.XXXXXX")"
 TEMPORARY_PATHS+=("${BUILD_PATH}")
 git -C "${SOURCE_REPO_PATH}" archive "${COMMIT}" | tar -x -C "${BUILD_PATH}"
-# The options the plan switches on (ablation_plan.yaml, tokenizer_options and training_options) and the metatoken
-# inference option of the evaluation
+# The options the plan and the base config switch on (ablation_plan.yaml, tokenizer_options and training_options;
+# base_config.yaml) and the metatoken inference option of the evaluation
 TERRA_SRC="${BUILD_PATH}/src/terra"
 for CHECK in "pad_masks_to_batch_max:masks/block_masking.py" "keep_special_tokens:inference/embed.py" \
              "stable_rank_ties:tokenizers/cell_tokenizers.py" "rank_tie_break_norm_factor:tokenizers/cell_tokenizers.py" \
              "zero_expr_from_raw_counts:tokenizers/cell_tokenizers.py" \
-             "seurat_loess_span:tokenizers/cell_tokenizers.py" "aggregate_own_neighbors:tokenizers/cell_tokenizers.py"; do
+             "seurat_loess_span:tokenizers/cell_tokenizers.py" "aggregate_own_neighbors:tokenizers/cell_tokenizers.py" \
+             "zero_fully_masked_attention_rows:training/train.py" \
+             "zero_fully_masked_attention_rows:utils/helper.py"; do
     if ! grep -q "${CHECK%%:*}" "${TERRA_SRC}/${CHECK#*:}"; then
         echo "ERROR: ${CHECK%%:*} is missing from ${TERRA_SRC}/${CHECK#*:}." >&2
         exit 1
