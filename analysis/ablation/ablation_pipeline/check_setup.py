@@ -1,20 +1,27 @@
 """
 This script checks the setup of an ablation campaign on the farm before launching the job array:
-0. Pinned code and campaign: the pinned TERRA copy (CODE_PATH) is the one imported and has the options of the plan
-   and the metatoken inference option, its CODE_VERSION is the `code_version` of the configs, and `dataset.env` of the
-   artifact folder (what the job array reads) holds the values of the arguments, i.e. the configs were regenerated
-   after the last change of the env file.
+0. Pinned code and campaign: the pinned TERRA copy (CODE_PATH) is the one imported and has the options of the plan,
+   the metatoken inference option and meta.zero_fully_masked_attention_rows, its CODE_VERSION is the `code_version` of
+   the configs, and `dataset.env` of the artifact folder (what the job array reads) holds the values of the arguments,
+   i.e. the configs were regenerated after the last change of the env file.
 1. Config parity: every variant's generated config is compared with the params of its mouse runs (model_config.yaml
    or params.yaml under --mouse_artifact_folder_path). Expected differences (data paths, special value rows, run
-   folder and resumption, seed, step-matched epochs, code version, the TERRA-only options, which are off) are ignored;
-   any other difference means the plan does not reproduce the mouse experiment and should be resolved first. Inferred
-   overrides (cell-neighborhood layout, dimension ablations) are verified here.
+   folder and resumption, seed, step-matched epochs, code version, the TERRA-only options) are ignored; any other
+   difference means the plan does not reproduce the mouse experiment and should be resolved first. Inferred overrides
+   (cell-neighborhood layout, dimension ablations) are verified here. Fails if the model layout of a cell-neighborhood
+   arm (seq_len_cell, seq_len_neighborhood, and model_input_size unless the mouse data held the same tokens at the
+   positions the model reads) differs from its mouse runs or cannot be checked, if a config does not set
+   meta.zero_fully_masked_attention_rows: true, or if the replicates of a variant differ in more than seed and run
+   folder (replicates beyond the mouse runs, e.g. of the normalization arms, are compared through replicate 1).
 2. Special values and vocabulary genes: the batch special value of every silver file fits into the special value
    embedding of the configs. TERRA maps the special values of `gt_type: rank` models to tokens with an offset
    hard-coded by vocabulary size: fails if it differs from the token dictionary's offset while the plan has a rank arm
-   (the mouse dictionary is reported too: whether the mouse rank arms trained with the right metatoken). Fails if two
-   silver files share a batch special value (the metatoken would not tell the sections apart), if a silver cell has no
-   detected gene of the token dictionary (its ranked gene lists are empty, which shifts the segments of the cells
+   (the mouse dictionary is reported too: whether the mouse rank arms trained with the right metatoken). Fails if the
+   batch metatoken's token id hard-coded in TERRA's datasets is not 'spt_batch' of the token dictionary, if the
+   configs' vocab_size is not the size of the token dictionary, if two silver files share a batch special value (the
+   metatoken would not tell the sections apart), if the median nearest-neighbour distances of the sections'
+   obsm['spatial'] differ by more than 2x (coordinates in different units; printed for every section), if a silver cell
+   has no detected gene of the token dictionary (its ranked gene lists are empty, which shifts the segments of the cells
    around it on the sparse ranking path), or if a silver X stores explicit zeros (zero-count gene tokens on the sparse
    ranking path); filter_silver_cells.py removes both.
 3. Labels and sections: every label file (LABEL_FILE_PATHS, default: the silver files) is one section, the batch of the
@@ -25,16 +32,22 @@ This script checks the setup of an ablation campaign on the farm before launchin
 4. Tokenized datasets: each exists, was made from the current inputs (its ablation_provenance.json: TERRA code version,
    tokenization settings, md5 of the token dictionary, the factor file and the silver files), has one row per silver
    cell and all its cells are in the label files (with the cells per section).
-5. Normalization factors: the gene-corrected read depth columns of the dataset's factor file match the tokenizer's own
-   normalizer (same constants), and every silver gene has factors (`norm_factors.check_norm_factors`). The column of
+5. Normalization factors: every feature of the silver files has an Ensembl id, a row of the factor file with finite
+   positive factors and counts in at least one section (the tokenizer looks up the factors of every feature by id);
+   the gene-corrected read depth columns of the dataset's factor file match the tokenizer's own normalizer (same
+   constants), and every silver gene has factors (`norm_factors.check_norm_factors`). The column of
    the plan's `rank_tie_break_norm_factor` has a finite value for every vocabulary gene of the silver files. Reports,
    for each per-cell sequence length of the plan, how many cells have more detected genes and how many of them a
    raw-count ranking (the base and every arm whose rank is not normalized) cuts inside tied counts, i.e. where the
    tie order decides which genes are kept.
 6. Schedule end values (report): the LR, weight decay and EMA schedules span `ipe_scale` x epochs (1.25, as in
    V-JEPA), but training stops after `epochs`, so they end at 80% of their path; the values to state in Methods.
-Exits with an error if check 0, 2, 3, 4 or 5 fails; check 1 differences have to be reviewed by eye. --skip_datasets
-skips check 4 (before tokenization).
+7. Cells with few detected genes (report for Methods): with one target block, the targets are ceil(r * K) of the K gene
+   tokens of the kept segments, so in index-cell-only batches (1 in 11) a cell has no context gene if ceil(r * K) = K
+   (K <= 2 at the base ratio 0.6, K <= 4 at 0.8, K <= 9 at 0.9); per section, the share of cells with at most that
+   many detected vocabulary genes for every mask ratio of the plan.
+Exits with an error if check 0, 1, 2, 3, 4 or 5 fails; the other check 1 differences have to be reviewed by eye.
+--skip_datasets skips check 4 (before tokenization).
 
 Usage (`source datasets/<dataset>.env` first, see README.md; add --skip_datasets before tokenization):
 ```bash
@@ -64,9 +77,9 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from ablation_utils import (cells_without_vocabulary_genes, count_stored_zeros, get_code_version, get_section_names,
-                            get_seq_len_cell, get_tokenization_provenance, get_tokenized_dataset_path, load_plan,
-                            provenance_differences, ties_at_cut)
+from ablation_utils import (cells_without_vocabulary_genes, count_detected_vocabulary_genes, count_stored_zeros,
+                            get_code_version, get_section_names, get_seq_len_cell, get_tokenization_provenance,
+                            get_tokenized_dataset_path, load_plan, provenance_differences, ties_at_cut)
 
 # UNASSIGNED_LABEL of datasets/*.env until it is set from check 3's output (README step 5)
 UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
@@ -87,6 +100,8 @@ IGNORED_KEYS = {"code_version",
                 "data.zero_expr_from_raw_counts",
                 "data.seurat_loess_span",
                 "data.aggregate_own_neighbors",
+                # TERRA option that the v2 code did not have, on in the reruns (checked separately)
+                "meta.zero_fully_masked_attention_rows",
                 "state.folder_path",
                 "state.load_checkpoint",
                 "state.read_checkpoint",
@@ -103,6 +118,11 @@ IGNORED_KEYS = {"code_version",
 # options that the v2 code did not have (all off in the base config)
 IGNORED_KEY_PREFIXES = ("meta.rope_", "meta.laplacian_", "protein_init.", "special_token_correction.",
                         "optimization.vicreg_granularity", "data.pf_targets_file_path")
+# Keys in which the replicates of a variant differ (check 1)
+REPLICATE_KEYS = {"seed", "state.folder_path"}
+# Ratio of the sections' median nearest-neighbour distances above which their coordinates are taken to be in different
+# units (check 2; the mouse sections are both in um, about 8-15)
+MAX_NN_DISTANCE_RATIO = 2.0
 # Label values listed per key (check 3), and values that may mark unassigned cells (listed in addition)
 TOP_VALUES = 10
 UNASSIGNED_PATTERN = re.compile(r"unassign|unknown|undefined|unlabel|^(none|nan|na|n/a|other|-|)$", re.IGNORECASE)
@@ -127,15 +147,78 @@ def find_mouse_params(mouse_artifact_folder_path: str, timestamp: str) -> Path |
     return None
 
 
-def check_config_parity(variants: dict, config_file_paths: dict, mouse_artifact_folder_path: str):
+def check_cell_neighborhood_layout(variant: str, timestamp: str, config: dict, mouse_config: dict) -> bool:
+    """
+    Check 1 for a cell-neighborhood arm, whose layout is inferred from the mouse run names (ablation_plan.yaml): the
+    model must read the same index-cell and neighborhood tokens as the mouse run. seq_len_cell and seq_len_neighborhood
+    must be equal. The datasets read the first seq_len_cell tokens as the index cell and the next seq_len_neighborhood
+    as the neighborhood, so model_input_size may differ only if the mouse data put the index cell into exactly the
+    first seq_len_cell tokens (the v2 split into n_neighs + 1 blocks, e.g. 704 / 11 = 64) and holds the tokens the model
+    reads: these are then the same top-ranked genes of the aggregated neighborhood. n_segments does not change the
+    cell-neighborhood batches (the collator output is the same for 11 and 2).
+    """
+    keys = ["data.seq_len_cell", "data.seq_len_neighborhood", "data.model_input_size", "data.n_segments"]
+    layout = {key.split(".")[1]: (mouse_config.get(key, "<missing>"), config.get(key, "<missing>")) for key in keys}
+    seq_len_cell, seq_len_neighborhood = config["data.seq_len_cell"], config["data.seq_len_neighborhood"]
+    ok = all(layout[key][0] == layout[key][1] for key in ["seq_len_cell", "seq_len_neighborhood"])
+    mouse_input_size, input_size = layout["model_input_size"]
+    if ok and mouse_input_size != input_size:
+        mouse_n_neighs = mouse_config.get("data.n_neighs", config["data.n_neighs"])
+        ok = (isinstance(mouse_input_size, int) and mouse_input_size / (mouse_n_neighs + 1) == seq_len_cell
+              and mouse_input_size >= seq_len_cell + seq_len_neighborhood)
+    print(f"{variant} | mouse run {timestamp}: cell-neighborhood layout (mouse, rerun) {layout}: "
+          f"{'same model input' if ok else 'DIFFERENT'}")
+    if not ok:
+        print(f"ERROR: {variant} does not read the tokens of mouse run {timestamp}.", end=" ")
+        if layout["seq_len_cell"][0] == 64 and layout["seq_len_neighborhood"][0] == 640:
+            print("The mouse cell-neighborhood runs were 64/640: in ablation_plan.yaml, set the tokenization to "
+                  "`cell_neigh: {tokenizer: cell-neighborhood-tokenizer, model_input_size: 704, n_neighs: 10, "
+                  "seq_len_cell: null}` and, in the overrides of cell_neigh_tokenizer_combined, "
+                  "cell_neigh_tokenizer_rank and cell_neigh_tokenizer_counts, `data.seq_len_neighborhood: 640` (keep "
+                  "data.seq_len_cell: 64); then regenerate the configs, tokenize (new dataset name) and rerun this "
+                  "check.")
+        else:
+            print("Set the cell_neigh tokenization and the data.seq_len_cell / data.seq_len_neighborhood overrides of "
+                  "the cell-neighborhood variants in ablation_plan.yaml to the mouse layout, regenerate the configs "
+                  "and tokenize.")
+    return ok
+
+
+def check_config_parity(variants: dict, tokenizations: dict, manifest_df: pd.DataFrame,
+                        mouse_artifact_folder_path: str) -> bool:
     print("== 1. Config parity with the mouse runs (differences other than data, run folder, seed and code version)")
+    ok = True
     for variant, spec in variants.items():
-        with open(config_file_paths[variant]) as file:
-            config = flatten(yaml.safe_load(file))
+        configs = {}
+        for replicate, config_file_path in (manifest_df[manifest_df["variant"] == variant]
+                                            .set_index("replicate")["config_file_path"].items()):
+            with open(config_file_path) as file:
+                configs[replicate] = flatten(yaml.safe_load(file))
+        config = configs[1]
+        if config.get("meta.zero_fully_masked_attention_rows") is not True:
+            print(f"ERROR: {variant}: meta.zero_fully_masked_attention_rows is "
+                  f"{config.get('meta.zero_fully_masked_attention_rows', '<missing>')}, not true: set it in the base "
+                  f"config and regenerate the configs")
+            ok = False
+        # Replicates differ only in their seed and run folder
+        for replicate, replicate_config in configs.items():
+            differences = sorted(key for key in set(config) | set(replicate_config)
+                                 if key not in REPLICATE_KEYS and config.get(key) != replicate_config.get(key))
+            if differences:
+                print(f"ERROR: {variant}: replicate {replicate} differs from replicate 1 in {differences}")
+                ok = False
+        if len(configs) > len(spec["mouse_runs"]):
+            print(f"{variant}: {len(configs)} replicates, {len(spec['mouse_runs'])} mouse runs; replicate 1 is "
+                  f"compared")
+        cell_neighborhood = tokenizations[spec["tokenization"]]["tokenizer"] == "cell-neighborhood-tokenizer"
         for timestamp in spec["mouse_runs"]:
             mouse_params_file_path = find_mouse_params(mouse_artifact_folder_path, timestamp)
             if mouse_params_file_path is None:
                 print(f"{variant} | mouse run {timestamp}: params not found")
+                if cell_neighborhood:
+                    print(f"ERROR: {variant}: the inferred cell-neighborhood layout cannot be checked without the "
+                          f"params of mouse run {timestamp}")
+                    ok = False
                 continue
             with open(mouse_params_file_path) as file:
                 mouse_config = flatten(yaml.safe_load(file))
@@ -145,6 +228,9 @@ def check_config_parity(variants: dict, config_file_paths: dict, mouse_artifact_
                            and mouse_config.get(key) != config.get(key)}
             print(f"{variant} | mouse run {timestamp}: "
                   f"{'identical' if not differences else f'mouse vs rerun {differences}'}")
+            if cell_neighborhood:
+                ok &= check_cell_neighborhood_layout(variant, timestamp, config, mouse_config)
+    return ok
 
 
 def check_pinned_code(code_path: str, config_file_path: str) -> bool:
@@ -168,12 +254,17 @@ def check_pinned_code(code_path: str, config_file_path: str) -> bool:
     print(f"{terra.__file__}: {version}; "
           f"{'pinned copy' if pinned else 'NOT THE PINNED COPY (check PYTHONPATH)'}, "
           f"{'with the options of the plan' if has_options else 'WITHOUT the options of the plan (rerun setup_code.sh)'}")
+    # TERRA ignores config keys it does not read, so a pin without the option would train without it
+    zero_rows = any("zero_fully_masked_attention_rows" in file_path.read_text()
+                    for file_path in Path(terra.__file__).parent.rglob("*.py"))
+    print(f"meta.zero_fully_masked_attention_rows (set in the configs): "
+          f"{'supported' if zero_rows else 'NOT SUPPORTED by this TERRA version (pin one that has it, setup_code.sh)'}")
     with open(config_file_path) as file:
         config_version = yaml.safe_load(file).get("code_version")
     same_version = config_version == version
     print(f"Code version of the configs: {config_version} "
           f"({'same' if same_version else 'DIFFERENT: regenerate the configs or set up that code version'})")
-    return pinned and has_options and same_version
+    return pinned and has_options and zero_rows and same_version
 
 
 def check_dataset_env(artifact_folder_path: str, expected: dict) -> bool:
@@ -207,6 +298,24 @@ def spv_token_offset(token_dict: dict) -> int:
     return min(spv_token_ids) - 2 - n_cls_tokens
 
 
+def hard_coded_batch_token_ids() -> list[int]:
+    """Token ids that TERRA's datasets hard-code for the batch metatoken (cell_datasets.py: `item['batch_token']`)."""
+    import inspect
+    from terra.datasets import cell_datasets
+
+    return sorted({int(token_id) for token_id in re.findall(r"\['batch_token'\]\s*=\s*torch\.tensor\(\[(\d+)\]\)",
+                                                             inspect.getsource(cell_datasets))})
+
+
+def median_nearest_neighbor_distance(adata) -> float:
+    """Median distance of each cell to its nearest other cell in obsm['spatial'] (the coordinates of the kNN graph)."""
+    from sklearn.neighbors import NearestNeighbors
+
+    coordinates = np.asarray(adata.obsm["spatial"], dtype=float)
+    distances, _ = NearestNeighbors().fit(coordinates).kneighbors(n_neighbors=1)
+    return float(np.median(distances))
+
+
 def check_special_values(config_file_path: Path, token_dictionary_file_path: str, silver_file_paths: list,
                          mouse_token_dictionary_file_path: str, has_rank_variant: bool) -> bool:
     print("== 2. Batch special values and vocabulary genes")
@@ -219,11 +328,27 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
     # TERRA maps the special values of `gt_type: rank` models to tokens with an offset hard-coded by vocabulary size
     rank_offset = rank_special_value_offset(len(token_dict))
     with open(config_file_path) as file:
-        n_special_values = yaml.safe_load(file)["data"]["n_special_values"]
+        data_config = yaml.safe_load(file)["data"]
+    n_special_values = data_config["n_special_values"]
+    # TERRA builds the models from the token dictionary; the configs record its size
+    vocab_size_ok = data_config.get("vocab_size") == len(token_dict)
+    print(f"vocab_size of the configs {data_config.get('vocab_size')}, token dictionary {len(token_dict)} tokens: "
+          f"{'same' if vocab_size_ok else 'DIFFERENT (regenerate the configs with this token dictionary)'}")
+    # The batch metatoken's token id is hard-coded in TERRA's datasets, not read from the token dictionary: a gene's id
+    # would make the metatoken share that gene's token embedding
+    batch_token_ids = hard_coded_batch_token_ids()
+    batch_token_ok = all(token_id == token_dict.get("spt_batch") for token_id in batch_token_ids)
+    print(f"Batch metatoken: token id {batch_token_ids or 'not hard-coded'} in TERRA's datasets, 'spt_batch' "
+          f"{token_dict.get('spt_batch', '<missing>')} in the token dictionary: "
+          f"{'OK' if batch_token_ok else 'DIFFERENT'}")
+    if not batch_token_ok:
+        print("ERROR: the batch metatoken would train with the token embedding of another token; make TERRA read the "
+              "metatoken's token id from the token dictionary before launching.")
     fits = True
     n_empty_cells = 0
     n_stored_zeros = 0
     batch_values = []
+    nn_distances = []
     for silver_file_path in silver_file_paths:
         adata = sc.read_h5ad(silver_file_path, backed="r")
         uns = adata.uns
@@ -238,6 +363,8 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         n_stored_zeros += n_file_stored_zeros
         print(f"{silver_file_path}: {n_file_stored_zeros} explicitly stored zeros in X"
               f"{' (OK)' if n_file_stored_zeros == 0 else ''}")
+        nn_distances.append(median_nearest_neighbor_distance(adata))
+        print(f"{silver_file_path}: median nearest-neighbour distance in obsm['spatial'] {nn_distances[-1]:.4g}")
         batch_value_token = token_dict[f"spv_{uns['dataset_id']}_{uns['batch']}"]
         batch_value = batch_value_token - spv_offset
         batch_values.append(batch_value)
@@ -248,6 +375,12 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
     if not distinct:
         print(f"ERROR: silver files share a batch special value ({batch_values}), so the metatoken does not tell their "
               f"sections apart; check uns['dataset_id'] and uns['batch'] of the silver files.")
+    # Sections in the same unit (um) have similar cell spacings; the coord arm feeds raw coordinate differences
+    scales_ok = max(nn_distances) <= MAX_NN_DISTANCE_RATIO * min(nn_distances)
+    if not scales_ok:
+        print(f"ERROR: the median nearest-neighbour distances of the sections "
+              f"({', '.join(f'{distance:.4g}' for distance in nn_distances)}) differ by more than "
+              f"{MAX_NN_DISTANCE_RATIO:g}x: check that obsm['spatial'] of every section is in um.")
     if n_stored_zeros > 0:
         print(f"ERROR: the silver X stores {n_stored_zeros} explicit zeros, which the sparse ranking path turns into "
               f"zero-count gene tokens. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
@@ -273,7 +406,8 @@ def check_special_values(config_file_path: Path, token_dictionary_file_path: str
         print(f"ERROR: {n_empty_cells} cells have no detected gene of the token dictionary, so their ranked gene lists "
               f"are empty; on the sparse ranking path the cells around them get shifted segments and lose their "
               f"farthest neighbors. Remove them with filter_silver_cells.py (README.md) and use the filtered files.")
-    return fits and rank_ok and distinct and n_empty_cells == 0 and n_stored_zeros == 0
+    return (fits and rank_ok and distinct and n_empty_cells == 0 and n_stored_zeros == 0 and vocab_size_ok
+            and batch_token_ok and scales_ok)
 
 
 def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str) -> tuple[bool, pd.Series]:
@@ -374,6 +508,82 @@ def report_schedule_end_values(config_file_paths: dict):
               f"EMA {opt['ema'][0]:g} -> {ema_end:.4g} (configured {opt['ema'][1]:g})")
 
 
+def check_gene_ids(norm_factor_file_path: str, silver_file_paths: list) -> bool:
+    """
+    Check 5 (gene ids), before the factor checks: the tokenizer looks up the factors of every feature of the silver
+    files by its var['ensembl_id'] in the factor file as pandas reads it (normalize_by_factor), and fails late
+    (IndexError in the factor-based tokenizations) on a feature without an Ensembl id, which compute_norm_factors.py
+    writes as 'nan' and pandas reads back as NaN. A gene without counts in any section has no factors.
+    """
+    import scanpy as sc
+
+    norm_factor_df = pd.read_csv(norm_factor_file_path)
+    factor_columns = [column for column in ["mean", "nonzero_mean", "gene_corrected_read_depth_mean",
+                                            "gene_corrected_read_depth_nonzero_mean"] if column in norm_factor_df]
+    ok = True
+    n_rows_without_id = int(norm_factor_df["gene_id"].isna().sum())
+    if n_rows_without_id:
+        print(f"ERROR: {n_rows_without_id} rows of {norm_factor_file_path} have no gene id (features of the silver "
+              f"files without an Ensembl id, written as 'nan')")
+        ok = False
+    factors = norm_factor_df.dropna(subset=["gene_id"]).drop_duplicates("gene_id").set_index("gene_id")[factor_columns]
+    total_counts = {}
+    for silver_file_path in silver_file_paths:
+        adata = sc.read_h5ad(silver_file_path, backed="r")
+        gene_ids = adata.var["ensembl_id"]
+        without_id = (gene_ids.isna()
+                      | gene_ids.astype(str).str.strip().str.lower().isin(["", "nan", "none"])).to_numpy()
+        if without_id.any():
+            print(f"ERROR: {silver_file_path}: {int(without_id.sum())} features without an Ensembl id, e.g. "
+                  f"{list(adata.var_names[without_id][:3])}; the factor-based tokenizations would fail on them: remove "
+                  f"them from the silver files")
+            ok = False
+        counts = np.zeros(adata.n_vars)
+        for start in range(0, adata.n_obs, 100_000):
+            counts += np.asarray(adata.X[start:start + 100_000].sum(axis=0)).ravel()
+        for gene_id, count in zip(gene_ids[~without_id].astype(str), counts[~without_id]):
+            total_counts[gene_id] = total_counts.get(gene_id, 0.0) + count
+    silver_gene_ids = pd.Index(sorted(total_counts))
+    missing = silver_gene_ids.difference(factors.index)
+    with_factors = silver_gene_ids.intersection(factors.index)
+    values = factors.loc[with_factors].to_numpy(dtype=float)
+    invalid = with_factors[~(np.isfinite(values) & (values > 0)).all(axis=1)]
+    without_counts = [gene_id for gene_id in silver_gene_ids if total_counts[gene_id] == 0]
+    print(f"Gene ids: {len(silver_gene_ids)} genes with an Ensembl id in the silver files; {len(missing)} without a "
+          f"row of the factor file, {len(invalid)} with a non-finite or non-positive factor, {len(without_counts)} "
+          f"without counts in any section{' (OK)' if not (len(missing) or len(invalid) or without_counts) else ''}")
+    for name, genes in [("without a row of the factor file", missing), ("with invalid factors", invalid),
+                        ("without counts in any section (no factors; remove them from the silver files)",
+                         without_counts)]:
+        if len(genes):
+            print(f"ERROR: genes {name}, e.g. {list(genes[:3])}")
+            ok = False
+    return ok
+
+
+def report_few_gene_cells(variants: dict, config_file_paths: dict, token_dictionary_file_path: str,
+                          silver_file_paths: list):
+    """Check 7: per section, the share of cells that index-cell-only batches leave without context gene, per ratio."""
+    print("== 7. Cells with few detected genes (no context gene in index-cell-only batches when ceil(r * K) = K)")
+    import scanpy as sc
+
+    with open(token_dictionary_file_path, "rb") as file:
+        token_dict = pickle.load(file)
+    mask_ratios = set()
+    for variant in variants:
+        with open(config_file_paths[variant]) as file:
+            mask_ratios.add(float(yaml.safe_load(file)["mask"]["per_block_mask_ratio"]))
+    # Largest K whose targets (BlockMaskCollator: min(int(K * r + 0.9999), K)) take every gene token, per ratio
+    max_genes = {ratio: max(K for K in range(1, 1000) if min(int(K * ratio + 0.9999), K) == K)
+                 for ratio in sorted(mask_ratios)}
+    thresholds = sorted(set(max_genes.values()))
+    for silver_file_path in silver_file_paths:
+        n_detected = count_detected_vocabulary_genes(sc.read_h5ad(silver_file_path, backed="r"), token_dict)
+        shares = ", ".join(f"<= {K} genes (ratio {', '.join(f'{r:g}' for r, k in max_genes.items() if k == K)}): "
+                           f"{int((n_detected <= K).sum())} ({(n_detected <= K).mean():.2%})" for K in thresholds)
+        print(f"{silver_file_path}: {len(n_detected)} cells; {shares}")
+
+
 def check_rank_tie_break(tokenizations: dict, norm_factor_file_path: str, token_dictionary_file_path: str,
                          silver_file_paths: list) -> bool:
     """Check 5 (rank ties): the tie-break column covers the vocabulary genes; report how often the tie order matters."""
@@ -417,8 +627,6 @@ def check_rank_tie_break(tokenizations: dict, norm_factor_file_path: str, token_
 def check_tokenized_datasets(tokenizations: dict, silver_file_paths: list, data_directory_path: str,
                              dataset_name: str, cell_section: pd.Series, code_path: str, norm_factor_file_path: str,
                              token_dictionary_file_path: str) -> bool:
-    print("== 4. Tokenized datasets (made from the current inputs; one row per silver cell; every cell in the label "
-          "files)")
     import scanpy as sc
     from datasets import load_from_disk
 
@@ -468,24 +676,29 @@ def main(args):
                              "UNASSIGNED_LABEL": args.unassigned_label,
                              "NORM_FACTOR_FILE_PATH": args.norm_factor_file_path,
                              "CODE_PATH": args.code_path})
-    check_config_parity(variants, config_file_paths, args.mouse_artifact_folder_path)
+    ok &= check_config_parity(variants, tokenizations, manifest_df, args.mouse_artifact_folder_path)
     has_rank_variant = any(variant["overrides"].get("meta.gt_type") == "rank" for variant in variants.values())
     ok &= check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_paths,
                                args.mouse_token_dictionary_file_path, has_rank_variant)
     labels_ok, cell_section = check_labels(label_file_paths, args.label_keys, args.unassigned_label)
     ok &= labels_ok
     if not args.skip_datasets:
+        print("== 4. Tokenized datasets (made from the current inputs; one row per silver cell; every cell in the "
+              "label files)")
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_paths, args.data_directory_path,
                                        args.dataset_name, cell_section, args.code_path, args.norm_factor_file_path,
                                        args.token_dictionary_file_path)
     print("== 5. Normalization factors")
     from norm_factors import check_norm_factors
     from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
-    ok &= check_norm_factors(args.norm_factor_file_path, args.silver_file_paths,
-                             normalize_by_gene_corrected_read_depth)
+    gene_ids_ok = check_gene_ids(args.norm_factor_file_path, args.silver_file_paths)
+    # The factor checks look genes up by id, which fails on the errors above
+    ok &= gene_ids_ok and check_norm_factors(args.norm_factor_file_path, args.silver_file_paths,
+                                             normalize_by_gene_corrected_read_depth)
     ok &= check_rank_tie_break(tokenizations, args.norm_factor_file_path, args.token_dictionary_file_path,
                                args.silver_file_paths)
     report_schedule_end_values(config_file_paths)
+    report_few_gene_cells(variants, config_file_paths, args.token_dictionary_file_path, args.silver_file_paths)
     if not ok:
         sys.exit("Setup check failed, see above.")
 

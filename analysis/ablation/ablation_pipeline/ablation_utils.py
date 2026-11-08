@@ -151,6 +151,22 @@ def get_seq_len_cell(tokenization: dict) -> int:
     return int(tokenization["model_input_size"] / (tokenization["n_neighs"] + 1))
 
 
+def count_detected_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 100_000):
+    """
+    Number of detected genes of the token dictionary per cell of `adata` (raw count > 0 in `adata.X` for a gene whose
+    `var['ensembl_id']` has a token, the genes the tokenizer keeps). Works on backed AnnData (row chunks).
+    """
+    import numpy as np
+    import scipy.sparse as sp
+
+    in_vocabulary = np.array([bool(token_dict.get(gene_id, False)) for gene_id in adata.var["ensembl_id"]])
+    n_detected = np.zeros(adata.n_obs, dtype=np.int64)
+    for start in range(0, adata.n_obs, chunk_size):
+        X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
+        n_detected[start:start + X.shape[0]] = np.asarray((X > 0).sum(axis=1)).ravel()
+    return n_detected
+
+
 def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 100_000):
     """
     Boolean array over the cells of `adata`: True for a cell without a detected gene of the token dictionary (raw count
@@ -162,15 +178,7 @@ def cells_without_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 10
     start where the datasets read them, and loses its k farthest neighbors (TERRA's pipeline removes these cells before
     tokenization since 7f6a30c). Works on backed AnnData (row chunks).
     """
-    import numpy as np
-    import scipy.sparse as sp
-
-    in_vocabulary = np.array([bool(token_dict.get(gene_id, False)) for gene_id in adata.var["ensembl_id"]])
-    n_detected = np.zeros(adata.n_obs, dtype=np.int64)
-    for start in range(0, adata.n_obs, chunk_size):
-        X = sp.csr_matrix(adata.X[start:start + chunk_size])[:, in_vocabulary]
-        n_detected[start:start + X.shape[0]] = np.asarray((X > 0).sum(axis=1)).ravel()
-    return n_detected == 0
+    return count_detected_vocabulary_genes(adata, token_dict, chunk_size) == 0
 
 
 def count_stored_zeros(adata, chunk_size: int = 100_000) -> int:
