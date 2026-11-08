@@ -7,7 +7,7 @@
 
 **Method:** the code was read and partly executed on OVCA data. Nothing was run on the farm, so items marked "farm check" are open. The upstream code was not changed; the fixes were first collected in `stjepa_ablation.patch` (20 changes; in git history up to commit 60a77a3 of terra-reproducibility).
 
-**Since 7 Nov 2026 the ablations run on TERRA** (`Lotfollahi-lab/terra` `5d8ecbc`, pinned by `setup_code.sh`), which holds every fix; see [TERRA port](#terra-port-7-nov-2026). Patch numbers below refer to the former patch.
+**Since 7 Nov 2026 the ablations run on TERRA** (`Lotfollahi-lab/terra` `d29e262`, pinned by `setup_code.sh`), which holds every fix; see [TERRA port](#terra-port-7-nov-2026). Patch numbers below refer to the former patch.
 
 ## Bottom line
 
@@ -190,7 +190,7 @@ grep -l "Loaded pretrained encoder" $A/mmb0-1b_smb1-1b_2p*/*_o.* 2>/dev/null
 
 ## TERRA port (7 Nov 2026)
 
-The figure is rerun on the current code: the pipeline pins TERRA `5d8ecbc` (dev, 8 Nov 2026) instead of stjepa
+The figure is rerun on the current code: the pipeline pins TERRA `d29e262` (dev, 8 Nov 2026) instead of stjepa
 `b433d5e` plus the patch. Each change of the former patch, in TERRA:
 
 | Patch | TERRA |
@@ -261,3 +261,103 @@ From the second audit of the pipeline and TERRA (8 Nov 2026):
   file and must be deleted.
 - **Pre-launch checks.** Check 2 fails if two sections share a batch special value; check 3 fails while
   `UNASSIGNED_LABEL` is the placeholder of the env file.
+
+### Audit fixes, round 3 (8 Nov 2026, TERRA `d29e262`)
+
+From the two-round audit of the mouse campaign (7-8 Nov 2026) and the reviews of its fixes. TERRA (dev `d29e262`,
+all opt-in changes off by default):
+- **Contexts of padding only.** `meta.zero_fully_masked_attention_rows` (set in `base_config.yaml`, required by
+  `generate_ablation_runs.py`, checked by `setup_code.sh` and check 0): an attention query without a valid key outputs
+  zeros with finite gradients instead of NaN, on every attention path and whatever the SDPA kernel; all other rows are
+  bit-identical. This makes the no-metatoken and metatoken-dropout arms safe on any GPU kernel; arms with a metatoken
+  are unchanged.
+- **Non-finite training state.** Training stops with `FloatingPointError` at the first non-finite loss or gradient
+  norm, before the optimizer step and on all ranks at the same step, and never writes a non-finite checkpoint.
+- **Resume.** Checkpoints hold the random number generator states of every rank, and a resumed run restores them, so
+  it continues the mask and worker-seed stream; all ranks must resume from the same epoch (the check missing from the
+  port of patch 7). A run that falls back to a fresh start (`allow_checkpoint_load_failure`) keeps the fresh stream.
+- **Launcher and data loading.** `main.py` honours `WANDB_MODE` (e.g. `offline`). DataLoader workers are started with
+  `fork` explicitly; they always were on the farm (the `spawn` request never took effect after `load_from_disk`), so
+  the re-spawn cost of the training audit does not apply.
+- **Equidistant neighbours.** With `stable_rank_ties`, the cell graph tokenizer orders equidistant neighbours with a
+  stable sort, so the segments do not depend on the CPU type.
+- From the review: the eager attention guard saves no second attention matrix for backward, and the per-step gradient
+  norms use the fused kernels of `clip_grad_norm_`.
+
+Pipeline:
+- **Replicates.** The 21 normalization arms and 3 predictor layers have 3 replicates; the 44 new runs are manifest rows
+  96-139 (seeds 2000 and 3000), so rows 1-95 keep their index (139 runs).
+- **Configs.** `data.vocab_size` is the size of the token dictionary (was the stale human 23407). Every config records
+  the evaluation dataset (`eval_tokenized_data_folder_path`).
+- **Shared-gene evaluation.** `filter_shared_genes.py` writes the silver files restricted to the genes of every
+  section, without cells with fewer than 10 detected shared genes (counted as `sc.pp.filter_cells`), with its
+  provenance written last. `submit_tokenization.sh` tokenizes them with every tokenization after the training array
+  (`EVAL_GENE_SET=shared_genes`), `tokenize_dataset.py` refuses an incomplete or outdated folder, and
+  `evaluate_ablation_run.py` embeds them; OVCA (one section) embeds its training data.
+- **Checks.** Check 0: the pin knows the attention-row option. Check 1 fails on a cell-neighborhood layout that cannot
+  read the mouse runs' tokens (for 64/640 it prints the plan change), on missing mouse params and on replicates that
+  differ in more than seed and folder. Check 2: median nearest-neighbour distance per section (fails above a 2x
+  ratio), the batch metatoken id hard-coded in TERRA against `spt_batch`, and `vocab_size`. Check 5: features without
+  Ensembl id, factor or counts (`compute_norm_factors.py` names genes without counts, and stops there first). Check 7
+  (report): share of cells too sparse for a context gene at each mask ratio.
+- **Attention kernel.** `check_attention_kernel.py` runs the context encoder of a campaign config on one farm GPU with
+  a sample whose context is padding only, with the option false and true, and fails unless true is finite and leaves
+  the other samples bit-identical.
+
+Verified on CPU only (TERRA 584 tests; the synthetic two-section campaign with the pinned copy: generation, shared-gene
+data, tokenization, check 0, the kernel check with the real guard, 2-epoch training of the base and no-metatoken arms,
+evaluation on the shared-gene data). Still open, on the farm: the kernel check on a training GPU (step 8), the NCCL path
+of the RNG gather and the non-finite reduction (the pilot), the cell-neighborhood layout of the mouse params (check 1)
+and the datasets version of the venv (the `fork` claim rests on `load_from_disk` fixing the start method).
+
+## Methods notes
+
+What the Methods (or the Supplement) must state about the reruns:
+- **Tie order.** Raw-count ties at the per-cell cut are ordered by ascending corpus mean (`mean` of the factor file),
+  then token id, the same for every cell. Within a tie, the rank position therefore encodes the gene's corpus mean, a
+  positional cue the predictor can use; there is no per-cell random tie order. Check 5 reports how many cells each
+  sequence length cuts inside ties.
+- **Contexts without a gene.** With `n_targets` 1 the targets are ceil(r K) of a sequence's K gene tokens. In
+  index-cell-only batches (one kept segment, probability 1/11) a cell with K < 1/(1-r) genes (K <= 2 at r 0.6, <= 4 at
+  0.8, <= 9 at 0.9) has no context gene: its targets are predicted from the metatoken and positions, or, without a
+  metatoken (or with it dropped), from an empty context, whose attention rows output zeros
+  (`meta.zero_fully_masked_attention_rows`). Report the per-section shares of check 7 at r 0.6, 0.8 and 0.9.
+- **Effective schedules and objective.** `ipe_scale` 1.25 stretches the schedules over 1.25 x epochs and training
+  stops at 80%: LR 2e-5 -> 6e-5 -> 2.39e-5, weight decay ends at 0.366 (0.4), EMA at 0.999 (1.0) (check 6 prints
+  them). Targets come from a segment-subsampled graph (`sample_segments`: k = 1 with probability 1/11, else uniform
+  2-11 of the 11 cells, for both encoders), while evaluation embeds all 11 cells. The loss is L1 between the predictor
+  outputs and the affine-free layer norm of the target-encoder outputs at target gene tokens (metatoken excluded),
+  averaged over the batch's target tokens; gradients are clipped at 2.0 per module from epoch 3.
+- **Masking.** A fraction r (rounded up) of all non-padding gene tokens of the sampled sequence, drawn uniformly across
+  its cells, forms the targets and the rest (and the metatoken) the context; it is not stratified per cell.
+- **Shared-gene evaluation, as published.** With two sections (mouse), embeddings, clusters and integration metrics
+  come from re-tokenizations of the training cells restricted to the genes measured in both sections, as the published
+  evaluation. Differences: the reruns tokenize them with the training tokenizer settings and factor file, keep
+  unlabelled cells (the published evaluation removed them before tokenizing, so its neighborhoods lacked them) and
+  drop cells with fewer than 10 detected shared genes (as published). The gene-corrected read depth target uses each
+  file's gene count, so on the shared genes the count values of those arms are scaled by T(G_shared)/T(G_panel) per
+  section (ranks unchanged). OVCA (one section) embeds its training data.
+- **Arms.** `gt_type` changes both the encoder input and the predictor query (rank + segment for rank and combined, gene
+  id + segment for counts). The value-bin arms set the size of a learned soft codebook on raw counts, and the MLP
+  count encoder acts on raw counts. The cell-neighborhood segment is the raw sum over the index cell and its 10 own
+  nearest neighbours, ranked, top 64, and its neighborhood embedding pools that segment only (cell graph: all tokens).
+  The layout is 64 + 64 unless check 1 shows otherwise. The coordinate arm computes its sincos phases in bf16, as the
+  mouse runs (`meta.fp32_position_encoding` off), and about 43% of its channels are near-constant at the 10-60 um
+  scale of the neighborhoods. Architecture arms vary width or depth at fixed LR, heads, EMA
+  and weight decay, with the predictor width tied to the encoder width; the base predictor has one full-width layer,
+  and 3 predictor layers has 3 replicates. Sequence-length arms also change the targets and the attention cost per
+  step.
+- **Normalization factors** come from the two sections, pooled per gene over the sections that measure it, with the
+  tokenizer's gene-corrected read depth constants.
+- **Compute.** With padded masks every attention call carries a mask, so SDPA uses a kernel that supports masks, not
+  FlashAttention; embeddings are computed in bf16 autocast on the GPU, so only the CPU part (kNN graph, Leiden) is
+  independent of the node.
+- **Sampling and seeds.** Length-grouped batches (Geneformer-style mega-batches sorted by length). DataLoader worker
+  seeds are equal across ranks (about 0.6% of steps share their segment count and metatoken-drop decision across
+  ranks). First replicates with the same model shape share initial weights, data order and worker seeds (a paired
+  design). A resumed run continues the random streams and matches an uninterrupted run up to GPU nondeterminism
+  (end-of-epoch checkpoints; mid-epoch checkpoints are never written here, as an epoch has 722 (mouse) or 2,646
+  (OVCA) iterations, below `checkpoint_freq_iter` 50,000).
+- **Metrics.** The integration metrics are label-free and reward mixing even without shared biology; the iLISI ceiling
+  depends on the section sizes. The average cosine similarity is not a collapse check (centred it is about 0 by
+  construction, raw about 0.99 for healthy and collapsed embeddings alike).

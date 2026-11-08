@@ -16,12 +16,14 @@ dataset-specific defaults. Two datasets are defined:
 |---|---|
 | `datasets/<dataset>.env` | Parameters of one dataset (bash assignments; lists space-separated): `mouse.env`, `ovca.env`. |
 | `ablation_plan.yaml`, `base_config.yaml` | The variants, tokenizations and replicates; the mouse base model config in TERRA's config format. |
-| `setup_code.sh` | Pinned model code: TERRA `5d8ecbc` (`Lotfollahi-lab/terra` dev, 8 Nov 2026) at `CODE_PATH`, with `CODE_VERSION`. |
+| `setup_code.sh` | Pinned model code: TERRA `d29e262` (`Lotfollahi-lab/terra` dev, 8 Nov 2026) at `CODE_PATH`, with `CODE_VERSION`. |
 | `prepare_ovca_data.py` / `.lsf` | OVCA only: silver AnnData, normalization factors, token dictionary checks. |
 | `filter_silver_cells.py` | Silver copies without the cells that have no detected gene of the token dictionary (mouse: step 3). |
+| `filter_shared_genes.py` | Evaluation data of a dataset with two or more sections: the silver files restricted to the genes of every section (mouse: step 3). |
 | `generate_ablation_runs.py` | Run configs, `manifest.tsv` and `dataset.env` in the artifact folder. |
 | `submit_tokenization.sh`, `tokenize_dataset.lsf` / `.py` | Tokenized datasets of the plan (job array). |
-| `check_setup.py`, `check_mouse_norm_factors.py` | Checks before launch: pinned code, parity with the mouse configs, special values, labels and sections, datasets, factors. |
+| `check_setup.py`, `check_mouse_norm_factors.py` | Checks before launch: pinned code, parity with the mouse configs, special values, labels and sections, datasets, factors, schedule ends, cells with few genes. |
+| `check_attention_kernel.py` | 1-GPU check of the attention kernel for a context of padding only (mouse: step 8). |
 | `submit_ablation_array.sh`, `run_ablation_array.lsf` | Training, packaging (`package_run.py`) and evaluation (`evaluate_ablation_run.py`), one element per run. |
 | `compare_ablations.py` | Results tables and figures (niche identification; batch integration with two or more sections). |
 | `norm_factors.py`, `compute_norm_factors.py` | Per-gene normalization factors with the tokenizer's constants. |
@@ -43,6 +45,7 @@ dataset-specific defaults. Two datasets are defined:
 | `PLAN_FILE_PATH`, `BASE_CONFIG_FILE_PATH` | run configs | the files of this folder | the files of this folder |
 | `CODE_PATH`, `ENV_PATH` | pinned TERRA code and the TERRA venv that runs it | as OVCA | `/nfs/team361/sb75/terra_ablation`, `.../.venvs/terra` |
 | `MOUSE_ARTIFACT_FOLDER_PATH`, `MOUSE_TOKEN_DICTIONARY_FILE_PATH` | checks against the mouse runs | as OVCA | |
+| `EVAL_GENE_SET` | evaluation data: `shared_genes` (the same cells restricted to the genes of every section, as the published mouse evaluation) or `all_genes` (the training data) | `shared_genes` | `all_genes` (one section) |
 | `BRONZE_FILE_PATH`, `GENE_MAPPING_DICT_FILE_PATH` | OVCA data preparation only | | |
 
 The submit scripts and `setup_code.sh` take the env file as their first argument. The LSF jobs get their values through
@@ -60,7 +63,8 @@ with them the run folders, change with the code.
 ## What is run
 
 The variants and replicates are listed in `ablation_plan.yaml`:
-- 51 variants, 95 training runs.
+- 51 variants, 139 training runs: 95, plus 42 replicates of the normalization arms and 2 of the predictor-depth arm
+  (manifest rows 96-139, appended so that rows 1-95 keep their index and wandb id).
 - Every variant keeps its mouse method name, and `mouse_runs` lists the mouse run timestamps. One arm is new:
   `metatoken_dropout` (no mouse run).
 
@@ -73,14 +77,19 @@ The variants and replicates are listed in `ablation_plan.yaml`:
 | Supp. Fig. 4 | spatial encoding | coordinate (`cell_pos_enc: coord`) | 3 |
 | Supp. Fig. 4 | masking ratio | 0.3, 0.4, 0.5, 0.7, 0.8, 0.9 | 3 |
 | Supp. Fig. 6 | metatoken | no metatoken; metatoken dropout (new: metatoken removed from a random half of the training batches) | 3 |
-| Supp. Fig. 5 | normalization | 21 normalization tuples, in the three mouse groups | 1 |
-| none | architecture | width 192 / 384 / 960 / 1152; 1, 4 or 5 encoder layers; 3 predictor layers | 1 |
+| Supp. Fig. 5 | normalization | 21 normalization tuples, in the three mouse groups | 3 (2nd and 3rd: rows 96-139) |
+| none | architecture | width 192 / 384 / 960 / 1152; 1, 4 or 5 encoder layers | 1 |
+| none | architecture | 3 predictor layers | 3 (2nd and 3rd: rows 96-139) |
 
 Replicate `r` is trained with seed `1000 * r`. TERRA's opt-in fixes (`tokenizer_options` and `training_options` of
 the plan) are on for every run; `CODE_REVIEW.md` lists them.
 
 **Evaluation** follows the mouse protocol:
-- Neighborhood embeddings from the target encoder, of the run's own tokenized training dataset.
+- Neighborhood embeddings from the target encoder, of the run's evaluation dataset (`eval_tokenized_data_folder_path`
+  of the run config): with `EVAL_GENE_SET=shared_genes` (mouse), the run's tokenization of the same cells restricted
+  to the genes measured in every section (`filter_shared_genes.py`), as the published mouse evaluation embedded
+  shared-gene data, so that the integration metrics do not measure the gene panels; with `all_genes` (OVCA, one
+  section), the run's own tokenized training dataset.
 - kNN graph with k = 15 on all embedded cells (numba compiled for a generic CPU, `NUMBA_CPU_NAME=generic`, so the
   graph does not depend on the node).
 - Leiden on the fixed grid of resolutions 0.6–1.4. The grid is identical for all variants, so the protocol is
@@ -128,11 +137,14 @@ cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/ablation/a
 #    if an import fails, install it into that venv). If the copy is there, only the environment check runs.
 bash setup_code.sh datasets/mouse.env
 
-# 3. Silver files and norm factors (92,520 cells, a few minutes; run it interactively, e.g. in a bsub -Is job).
-#    First the two section files without the cells that have no detected gene of the mouse token dictionary, into the
-#    dataset's own silver folder (prints how many it removes; the source files are not modified), then the factors of
-#    the filtered files (new file, tokenizer constants). compute_norm_factors.py writes <norm factors>.done last; the
-#    tokenization waits for it.
+# 3. Silver files, norm factors and the shared-gene evaluation data (92,520 cells, a few minutes; run it
+#    interactively, e.g. in a bsub -Is job). First the two section files without the cells that have no detected gene
+#    of the mouse token dictionary, into the dataset's own silver folder (prints how many it removes; the source files
+#    are not modified), then the factors of the filtered files (new file, tokenizer constants; stops on genes without
+#    counts and names them). compute_norm_factors.py writes <norm factors>.done last; the tokenization waits for it.
+#    Then the evaluation data: the filtered files restricted to the genes of both sections, without cells with fewer
+#    than 10 detected shared genes, into silver/${DATASET_NAME}_shared_genes (prints genes and cells kept per section;
+#    writes ablation_provenance.json last).
 source datasets/mouse.env
 ls "${DATA_DIRECTORY_PATH}/silver/${SOURCE_DATASET_NAME}"   # the two section files of SOURCE_SILVER_FILE_PATHS
 source "${ENV_PATH}/bin/activate" && export PYTHONPATH="${CODE_PATH}/src"
@@ -142,23 +154,31 @@ python filter_silver_cells.py --source_silver_file_paths ${SOURCE_SILVER_FILE_PA
 source datasets/mouse.env     # again: SILVER_FILE_PATHS lists the filtered files once they exist
 echo "${SILVER_FILE_PATHS}"   # two files, MERFISH and STARmap PLUS
 python compute_norm_factors.py --silver_file_paths ${SILVER_FILE_PATHS} --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}"
+python filter_shared_genes.py --silver_file_paths ${SILVER_FILE_PATHS} --data_directory_path "${DATA_DIRECTORY_PATH}" \
+    --dataset_name "${DATASET_NAME}" --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}"
 
-# 4. Run configs, manifest.tsv and dataset.env (95 runs; 300 epochs, 3 warmup)
+# 4. Run configs, manifest.tsv and dataset.env (139 runs; 300 epochs, 3 warmup)
 python generate_ablation_runs.py --plan_file_path "${PLAN_FILE_PATH}" --base_config_file_path "${BASE_CONFIG_FILE_PATH}" \
     --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --data_directory_path "${DATA_DIRECTORY_PATH}" \
     --dataset_name "${DATASET_NAME}" --silver_file_paths ${SILVER_FILE_PATHS} \
     --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --label_keys ${LABEL_KEYS} --unassigned_label "${UNASSIGNED_LABEL}" --experiment_tag "${EXPERIMENT_TAG}" \
-    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}"
+    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}" \
+    --eval_gene_set "${EVAL_GENE_SET}"
 
 # 5. Labels and sections, before tokenization. Review check 3: per label file the cells, uns dataset id and batch,
 #    label keys and their most frequent values. Each key must be in the file of its section; if the silver files lack
 #    them, set LABEL_FILE_PATHS in datasets/mouse.env (e.g. the commented evaluation files of the mouse notebook).
 #    Set UNASSIGNED_LABEL (a placeholder; check 3 fails until it is set) to the value of unannotated cells, or to a
 #    value that occurs in no label file to score every labelled cell. Check 2 must show that the batch special values
-#    fit (200 rows) and differ between the sections, and no stored zeros. Check 5 reports how many cells the raw-count ranking cuts inside tied
-#    counts (ordered by corpus mean). After a change: source datasets/mouse.env again, rerun steps 4 and 5.
+#    fit (200 rows) and differ between the sections, no stored zeros, median nearest-neighbour distances of a few um
+#    (about 8-15) within 2x of each other, the batch metatoken id equal to spt_batch and vocab_size equal to the
+#    dictionary size. Check 1 fails if the cell-neighborhood layout cannot read the tokens of the mouse runs (for
+#    64/640 it prints the plan change), if the mouse params are missing or if replicates differ in more than seed and
+#    folder. Check 5 reports how many cells the raw-count ranking cuts inside tied counts (ordered by corpus mean) and
+#    fails on genes without id, factor or counts. Check 7 reports the share of cells with too few genes for a context
+#    gene at each mask ratio (for Methods). After a change: source datasets/mouse.env again, rerun steps 4 and 5.
 python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" \
     --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}" \
     --silver_file_paths ${SILVER_FILE_PATHS} --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} \
@@ -166,13 +186,15 @@ python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_pat
     --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --code_path "${CODE_PATH}" \
     --mouse_token_dictionary_file_path "${MOUSE_TOKEN_DICTIONARY_FILE_PATH}" \
-    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --skip_datasets
+    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --eval_gene_set "${EVAL_GENE_SET}" --skip_datasets
 
-# 6. Tokenization: all 27 datasets in the standard class. WAIT until all elements have finished
-#    (bjobs -J mouse_tokenize_standard)
+# 6. Tokenization: all 27 datasets in the standard class, then the same 27 tokenizations of the shared-gene data (a
+#    second array that starts when the first has ended). WAIT until both have finished
+#    (bjobs -J mouse_tokenize_standard; bjobs -J mouse_tokenize_shared_genes_standard)
 bash submit_tokenization.sh datasets/mouse.env standard
 
-# 7. Checks (fails on errors, e.g. tokenized cells that are not in the label files; review the config parity output)
+# 7. Checks (fails on errors, e.g. tokenized cells that are not in the label files; check 4 also covers the
+#    shared-gene data and its provenance)
 python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" \
     --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}" \
     --silver_file_paths ${SILVER_FILE_PATHS} --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} \
@@ -180,32 +202,45 @@ python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_pat
     --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --code_path "${CODE_PATH}" \
     --mouse_token_dictionary_file_path "${MOUSE_TOKEN_DICTIONARY_FILE_PATH}" \
-    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}"
+    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --eval_gene_set "${EVAL_GENE_SET}"
 
-# 8. Pilot: base_rep1 (train + evaluate, about 3 h; wandb id mouse_001_<config hash>). WAIT until it has finished and
-#    check eval/base/base_rep1_<hash>/: niche and batch-integration metrics of both metatoken modes, evaluation_complete
-bash submit_ablation_array.sh datasets/mouse.env 1
+# 8. Attention kernel check on one GPU of the training queue (base_rep1, config from the manifest; a few minutes).
+#    The log must end with "OK: ..."; record the torch version, the GPU and the result with the option false.
+bsub -G team361 -q training-parallel -n 4 -gpu "num=1:gmem=40000:mode=exclusive_process:block=yes" -M 32G \
+    -R "select[mem>32G] rusage[mem=32G] span[hosts=1]" -W 0:30 \
+    -o "${ARTIFACT_FOLDER_PATH}/logs/check_attention_kernel_%J.out" \
+    -e "${ARTIFACT_FOLDER_PATH}/logs/check_attention_kernel_%J.err" \
+    "source ${ENV_PATH}/bin/activate && PYTHONPATH=${CODE_PATH}/src python check_attention_kernel.py \
+     --artifact_folder_path ${ARTIFACT_FOLDER_PATH}"
 
-# 9. All 95 runs (the pilot is skipped): 2 elements x 4 GPUs = 8 GPUs at a time (the default %2); never two arrays at once
-bash submit_ablation_array.sh datasets/mouse.env
+# 9. Pilot: rows 1-4 (base_rep1, cell-graph rank and counts, cell-neighborhood combined; about 3 h each, 2 at a time;
+#    wandb ids mouse_001_<config hash> ...). WAIT until they have finished and check eval/<variant>/<run>/: niche and
+#    batch-integration metrics of both metatoken modes, evaluation_complete; and the training logs: no
+#    FloatingPointError
+bash submit_ablation_array.sh datasets/mouse.env 1-4
+
+# 10. The other runs in batches, one array at a time (submit_ablation_array.sh refuses while one is pending or
+#     running; finished runs are skipped): 2 elements x 4 GPUs = 8 GPUs at a time (the default %2)
+bash submit_ablation_array.sh datasets/mouse.env 5-51      # the other first replicates
+bash submit_ablation_array.sh datasets/mouse.env 52-95     # 2nd and 3rd replicates of the other categories
+bash submit_ablation_array.sh datasets/mouse.env 96-139    # 2nd and 3rd replicates of normalization, 3 predictor layers
 #    or 4 GPUs at a time (one run at a time, about twice the wall time; every run keeps its 4 GPUs, so the batch size
-#    and schedule are unchanged): bash submit_ablation_array.sh datasets/mouse.env "" 1
+#    and schedule are unchanged): bash submit_ablation_array.sh datasets/mouse.env 5-51 1
 #    The limit of a submitted array can be changed at any time: bmod -J "%1" <JOBID> (or "%2")
 
-# 10. Results and figures (also works on a partial campaign; lists the missing runs)
+# 11. Results and figures (also works on a partial campaign; lists the missing runs)
 python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --dataset_name "${DATASET_NAME}" \
     --label_keys ${LABEL_KEYS}
 ```
 
-- **Runs:** 95 (51 variants), in the order and with the seeds of the OVCA campaign.
+- **Runs:** 139 (51 variants), in the order and with the seeds of the OVCA campaign.
 - **Runtime:** 722 iterations per epoch on 4 GPUs, 300 epochs (216,600 steps): about 3 h per run for the base config,
-  so about 6 days for all 95 runs at 2 at a time (95 × 3 h / 2; about 12 days at 1 at a time), plus evaluation and
-  the slower arms (128 and 256
-  genes, widths 960 and 1152). Evaluation per run: two embedding passes, then per pass a kNN graph, nine Leiden runs
-  and the integration metrics (about 2.5 min per pass at this size, measured on synthetic data: mostly the
-  single-threaded 90-NN graph of iLISI; MMD about 25 s, 1.6 GB). Tokenization: 27 small jobs (92,520 cells).
-- **Storage:** about 125 GB in the artifact folder (embeddings 284 MB per set, two sets for 92 runs: 53 GB;
-  checkpoints 71 GB).
+  so about 9 days for all 139 runs at 2 at a time (139 × 3 h / 2; about 17 days at 1 at a time), plus evaluation and
+  the slower arms (128 and 256 genes, widths 960 and 1152). Evaluation per run: two embedding passes, then per pass a
+  kNN graph, nine Leiden runs and the integration metrics (about 2.5 min per pass at this size, measured on synthetic
+  data: mostly the single-threaded 90-NN graph of iLISI; MMD about 25 s, 1.6 GB). Tokenization: 2 × 27 small jobs (92,520 cells).
+- **Storage:** about 180 GB in the artifact folder (embeddings up to 284 MB per set, two sets for 136 runs: 78 GB;
+  checkpoints 104 GB).
 - **Outputs** under `/nfs/team361/sb75/terra-reproducibility/artifacts/mouse_ablation/`: `configs/`, `manifest.tsv`,
   `dataset.env`, `runs/<run>/`, `logs/` and
   - `eval/<variant>/<run>/`, per metatoken mode (prefix `mmb0-1b_smb1-1b_2p_coord_aligned_`, kept metatoken
@@ -217,9 +252,12 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
     `ablation_metatoken_inference_*` panels (metatoken removed vs kept for the base and metatoken dropout runs, next to
     no metatoken).
 - **Differences from the original mouse runs:** those of the OVCA table below that are not specific to OVCA (tokenizer
-  fixes, padded masks, seeds 1000/2000/3000, latest checkpoint only, the run's own tokenized dataset with all cells
-  embedded, metatoken removed and kept at inference), plus norm factors computed on the two sections with the
-  tokenizer's constants instead of the mouse cohort file. Schedule and `n_special_values` are the mouse values.
+  fixes, padded masks, `meta.zero_fully_masked_attention_rows`, seeds 1000/2000/3000, latest checkpoint only,
+  metatoken removed and kept at inference), plus norm factors computed on the two sections with the tokenizer's
+  constants instead of the mouse cohort file. The evaluation embeds shared-gene re-tokenizations of the training
+  cells, as published, but tokenized with the run's own tokenizer settings, keeping unlabelled cells (the published
+  evaluation removed them before tokenizing, so they were not in its neighborhoods) and dropping cells with fewer
+  than 10 detected shared genes (as published). Schedule and `n_special_values` are the mouse values.
 - **Check on the farm:** that `silver/mmb0-1b_smb1-1b_2p_coord_aligned/` holds exactly the two sections (the base
   config's `raw_data_folder_path` names `silver/mmb0-1b_smb1-1b_2p`, its tokenized data `..._coord_aligned`), that the
   label keys are in them (else `LABEL_FILE_PATHS`), and the unassigned value (step 5).
@@ -242,7 +280,7 @@ bash setup_code.sh datasets/ovca.env
 mkdir -p ../../../logs/ablation/ovca_ablation
 bsub -env "all,DATASET_ENV_FILE_PATH=datasets/ovca.env" < prepare_ovca_data.lsf
 
-# 3. Run configs, manifest.tsv and dataset.env (95 runs; 82 epochs, 1 warmup)
+# 3. Run configs, manifest.tsv and dataset.env (139 runs; 82 epochs, 1 warmup)
 source datasets/ovca.env
 source "${ENV_PATH}/bin/activate" && export PYTHONPATH="${CODE_PATH}/src"
 python generate_ablation_runs.py --plan_file_path "${PLAN_FILE_PATH}" --base_config_file_path "${BASE_CONFIG_FILE_PATH}" \
@@ -251,7 +289,8 @@ python generate_ablation_runs.py --plan_file_path "${PLAN_FILE_PATH}" --base_con
     --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --label_keys ${LABEL_KEYS} --unassigned_label "${UNASSIGNED_LABEL}" --experiment_tag "${EXPERIMENT_TAG}" \
-    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}"
+    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}" \
+    --eval_gene_set "${EVAL_GENE_SET}"
 
 # 4. Tokenization: all 27 datasets in the standard class (refuses to submit until step 2 has written <norm factors>.done, its last output). WAIT until
 #    all elements have finished (bjobs -J ovca_tokenize_standard)
@@ -267,24 +306,29 @@ python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_pat
     --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --code_path "${CODE_PATH}" \
     --mouse_token_dictionary_file_path "${MOUSE_TOKEN_DICTIONARY_FILE_PATH}" \
-    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}"
+    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --eval_gene_set "${EVAL_GENE_SET}"
 python check_mouse_norm_factors.py --plan_file_path "${PLAN_FILE_PATH}" \
     --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --data_directory_path "${DATA_DIRECTORY_PATH}"
 
-# 6. Pilot: base_rep1 (train + evaluate). WAIT until it has finished and check its eval folder
+# 6. Attention kernel check: as mouse step 8, with datasets/ovca.env sourced
+
+# 7. Pilot: rows 1-4 (train + evaluate). WAIT until they have finished and check their eval folders and logs
 # (submit_ablation_array.sh refuses while an array of the same campaign is pending or running)
-bash submit_ablation_array.sh datasets/ovca.env 1
+bash submit_ablation_array.sh datasets/ovca.env 1-4
 
-# 7. All 95 runs (finished runs are skipped); never two arrays at once
-bash submit_ablation_array.sh datasets/ovca.env
+# 8. The other runs in batches as for mouse (finished runs are skipped); never two arrays at once
+bash submit_ablation_array.sh datasets/ovca.env 5-51
+bash submit_ablation_array.sh datasets/ovca.env 52-95
+bash submit_ablation_array.sh datasets/ovca.env 96-139
 
-# 8. Results and figures (also works on a partial campaign; lists the missing runs)
+# 9. Results and figures (also works on a partial campaign; lists the missing runs)
 python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --dataset_name "${DATASET_NAME}" \
     --label_keys ${LABEL_KEYS}
 ```
 
 - **Training and evaluation:** one array element per manifest row, 4 GPUs each, at most 2 running at a time (8 GPUs).
-- **Launch order:** all first replicates (base first, figure order), then the second and third replicates.
+- **Launch order:** all first replicates (base first, figure order), then the second and third replicates, then the
+  appended second and third replicates of the normalization arms and of 3 predictor layers (rows 96-139).
 - **wandb:** run id `<EXPERIMENT_TAG>_<manifest index, 3 digits>_<config hash>` (e.g. `ovca_042_1a2b3c4d`), display
   name the descriptive run id (`<run name>_<config hash>`, also the run folder name). The index follows the plan, so
   regenerating after changing the plan gives the runs new wandb ids.
@@ -293,7 +337,11 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
     (`evaluation_complete`).
   - It stops with an error, instead of retraining, if the latest checkpoint cannot be read, if the pinned code has
     another `CODE_VERSION` than the configs, or if its manifest row is missing or malformed.
-  - Retry a failed element with `brequeue -e "<JOBID>[<INDEX>]"`; it resumes from its latest checkpoint.
+  - Training stops with `FloatingPointError` at the first non-finite loss or gradient norm, before the optimizer step
+    and on all ranks at once, and never writes a non-finite checkpoint.
+  - Retry a failed element with `brequeue -e "<JOBID>[<INDEX>]"`; it resumes from its latest checkpoint, with the
+    random number generator states saved in it. A `FloatingPointError` that comes back after a retry is a real
+    divergence.
   - Change concurrency with `bmod -J "%<N>" <JOBID>`.
 - **Outputs** under `ARTIFACT_FOLDER_PATH` (OVCA: `/nfs/team361/sb75/terra-reproducibility/artifacts/ovca_ablation/`):
   `configs/`, `manifest.tsv`, `dataset.env`, `runs/<run>/`, `eval/<variant>/<run>/`, `logs/`, `results/`, `figures/`
@@ -307,28 +355,28 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 | Iterations per epoch on 4 GPUs | 722 | 2,646 (3.66× mouse) |
 | Training schedule | 300 epochs (216,600 steps) | 82 epochs (216,972 steps) |
 | Time per run | about 3 h | about 3 h for the base config |
-| All 95 runs, 2 at a time | — | about 6 days of training (95 × 3 h / 2), plus evaluation |
+| All 139 runs, 2 at a time | about 9 days | about 9 days of training (139 × 3 h / 2), plus evaluation |
 
 - **Slower arms:** the 128- and 256-gene arms (2× and 4× the tokens of the base) and the widths 960 and 1152 take
-  longer than the base, so plan for more than 6 days.
+  longer than the base, so plan for more than 9 days.
 - **Evaluation** runs in the same element after training: two embedding passes (metatoken removed and kept), a kNN
   graph and nine Leiden runs per pass, on all 338,695 cells.
-- **Epoch-matched alternative:** `EPOCHS=300`, `WARMUP=3` takes about 8–11 h per run and 2.5–3 weeks in total.
+- **Epoch-matched alternative:** `EPOCHS=300`, `WARMUP=3` takes about 8–11 h per run and 3–4.5 weeks in total.
 - **Tokenization:** all 27 datasets in the standard class (200 GB). Measured peak memory: about 83 GB for the base,
   dense-path and 256-gene datasets and about 105 GB for Seurat v3 and Pearson residuals. The large class (1 TB,
   hugemem) is only needed without the plan's ranked-list cut (`stable_rank_ties` / `zero_expr_from_raw_counts`).
 - **Storage**, computed with the base width (`enc_emb_dim` 768):
-  - Embeddings: 768 × 338,695 cells × 4 bytes = 1.04 GB per set, two sets per run with a metatoken (92 of 95 runs),
-    one for the 3 runs without: about 195 GB.
-  - Checkpoints: about 0.75 GB per run (only `terra-latest.pth.tar`): about 71 GB.
-  - Total about 265 GB in the artifact folder, plus a few GB of cluster tables and logs.
+  - Embeddings: 768 × 338,695 cells × 4 bytes = 1.04 GB per set, two sets per run with a metatoken (136 of 139
+    runs), one for the 3 runs without: about 285 GB.
+  - Checkpoints: about 0.75 GB per run (only `terra-latest.pth.tar`): about 104 GB.
+  - Total about 390 GB in the artifact folder, plus a few GB of cluster tables and logs.
   - Tokenized datasets go to `/lustre/.../DATASETS/gold/*/xho50-1b_1p_spatialfusion/`.
 
 ## OVCA: differences from the mouse runs, and why
 
 | Item | Mouse | OVCA | Reason |
 |---|---|---|---|
-| Code | ST-JEPA v2 (`sebastianbirk/stjepa` `b433d5e`), the farm checkout of the time | copy of TERRA `5d8ecbc` (`setup_code.sh`), the mouse base config in TERRA's config format, `attention_backend: torch` (PyTorch chooses the SDPA kernel, as in the mouse runs and the released models) | The figure is rerun on the current code. TERRA holds every fix of the reviews (`CODE_REVIEW.md`): opt-in seed, atomic latest checkpoint, metatoken fixes, padded masks, resumption on all ranks and the opt-in tokenizer fixes; the options are switched on in the plan. A separate copy, so changes to the farm checkout (`/nfs/team361/sb75/terra`) cannot change running jobs. |
+| Code | ST-JEPA v2 (`sebastianbirk/stjepa` `b433d5e`), the farm checkout of the time | copy of TERRA `d29e262` (`setup_code.sh`), the mouse base config in TERRA's config format, `attention_backend: torch` (PyTorch chooses the SDPA kernel, as in the mouse runs and the released models) | The figure is rerun on the current code. TERRA holds every fix of the reviews (`CODE_REVIEW.md`): opt-in seed, atomic latest checkpoint, metatoken fixes, padded masks, resumption on all ranks and the opt-in tokenizer fixes; the options are switched on in the plan. A separate copy, so changes to the farm checkout (`/nfs/team361/sb75/terra`) cannot change running jobs. |
 | Tokenization | ties at the top-64 cut broken by gene order and sort algorithm; Seurat / Pearson ranks include undetected genes; dense-path cells all stored with the full token count, so their batches were not grouped by size; Seurat v3 LOESS span silently 0.75; cell neighborhood aggregated over reverse kNN | `tokenizer_options` of the plan: deterministic ties (rank score, then count value on the dense path, then ascending corpus mean `mean` of the norm factor file, so rarer and lower-expressed genes first, then token id), detected genes only, Seurat v3 LOESS span 0.3 (gene-order independent), each cell's own kNN for the cell neighborhood; TERRA always counts the real gene tokens for the sampler | `CODE_REVIEW.md` issues 3, 5, 7, 9 and 10. TERRA cuts ranked lists at the input size (lossless), so all 27 datasets run in the standard memory class. Dataset names carry the options (`_tiesbymean_detected`, `_span0p3` for Seurat, `_ownknn_cell64`). With raw-count ranks (the base and every arm whose rank is not normalized) the cut at 64 genes falls inside tied counts in many cells; `check_setup.py` (check 5) reports how often. The corpus-mean order also makes the base keep the same genes as the "Mean" arm with unnormalized ranks (counts divided by `mean`), so the two differ only in the values. |
 | Context and target masks | trimmed to the shortest in each batch: the sparsest cell sets how many tokens every cell uses | padded to the longest (`training_options`: `mask.pad_masks_to_batch_max`), with padded entries masked in attention and loss | `CODE_REVIEW.md` issue 8: trimming dropped 3.4% of the sampled tokens at 64 genes per cell and 20% at 256 on OVCA, biasing the sequence-length comparison. |
 | Metatoken at inference | removed | removed (category panels) and kept (`metatoken_inference` panel) | Training always sees the metatoken; dropping it at inference is out of distribution unless the model was trained with metatoken dropout. |
@@ -342,14 +390,16 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
 
 **Inferred from run names; verified by `check_setup.py` against the mouse `params.yaml` before launch:**
 - The cell-neighborhood layout: 64 cell + 64 neighborhood tokens (input size 128, `seq_len_cell: 64` in the plan, as in
-  later v2 tokenizers). The dataset class needs exactly that many tokens.
+  later v2 tokenizers). The dataset class needs exactly that many tokens. Check 1 fails if the mouse runs read other
+  tokens (e.g. 64 + 640 with 704 input tokens) and then prints the plan change.
 - `pred_emb_dim` following `enc_emb_dim` in the width ablation.
 - The coordinate arm being `cell_pos_enc: coord`.
 
 **Caveats:**
 - **Not held out from TERRA-112M pretraining.** This section is `xho50-1b_1p` in the TERRA-112M corpus. That doesn't
   matter here, because every arm is trained from scratch on this section alone.
-- **Known code issues** are listed in `CODE_REVIEW.md` with their resolution. The OVCA tokenizations use the tokenizer
+- **Known code issues** are listed in `CODE_REVIEW.md` with their resolution, and what the Methods must state in its
+  [Methods notes](CODE_REVIEW.md#methods-notes). The OVCA tokenizations use the tokenizer
   fixes, which the mouse tokenizations lacked, so arm-level differences between mouse and OVCA can partly reflect them
   (most for the Seurat / Pearson and cell-neighborhood arms).
 - **Schedules end at 80%:** `ipe_scale: 1.25` (the V-JEPA value; I-JEPA's configs use 1.0) stretches the LR, weight
@@ -376,5 +426,7 @@ python compare_ablations.py --artifact_folder_path "${ARTIFACT_FOLDER_PATH}" --d
    a new `ARTIFACT_FOLDER_PATH` and `EXPERIMENT_TAG`, `EPOCHS` / `WARMUP` matched to the mouse runs in optimizer steps,
    `N_SPECIAL_VALUES` covering the batch special values (`check_setup.py` checks it), `LABEL_KEYS` (one or more; a key
    may cover only some files). With two or more label files, the evaluation adds the batch-integration metrics.
+   `EVAL_GENE_SET`: `shared_genes` for sections with different gene panels (then run `filter_shared_genes.py` after
+   the factors, as in mouse step 3), else `all_genes`.
 4. Follow the mouse steps with the new env file (`setup_code.sh` only reruns the environment check if the pinned code
    is already there).

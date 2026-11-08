@@ -1,9 +1,9 @@
 # Base model config of the ablations, in the TERRA config format: Lotfollahi-lab/terra
 # configs/model/mmb0-1b_smb1-1b/mmb0-1b_smb1-1b_2p_coord_aligned.yaml with the model and schedule of the mouse
 # ablation base (sebastianbirk/stjepa v2, the published Supp. Figs 4-6): count_count_norm_method null, enc_depth 3,
-# ema [0.995, 1.0], ipe_scale 1.25. attention_backend 'torch' lets PyTorch choose the SDPA kernel (FlashAttention
-# where it applies), as the mouse runs and the released TERRA models were trained; the TERRA default 'auto' excludes
-# it. Unused paths are null; the new TERRA options (protein_init, special_token_correction) are off. The TERRA option
+# ema [0.995, 1.0], ipe_scale 1.25. attention_backend 'torch' lets PyTorch choose the SDPA kernel, as the mouse runs
+# and the released TERRA models were trained (the TERRA default 'auto' excludes FlashAttention); with the padded masks
+# of the plan every attention call carries a mask, so PyTorch uses a kernel that supports masks, not FlashAttention. Unused paths are null; the new TERRA options (protein_init, special_token_correction) are off. The TERRA option
 # meta.zero_fully_masked_attention_rows is on: an attention query whose keys are all padding (a context of padding
 # only) gives zeros instead of NaN; all other queries are unchanged.
 # generate_ablation_runs.py replaces the dataset, schedule and state keys for the ablation dataset and applies the
