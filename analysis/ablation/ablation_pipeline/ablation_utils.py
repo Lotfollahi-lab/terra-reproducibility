@@ -43,6 +43,11 @@ TOKENIZATION_DEFAULTS = {"tokenizer": "cell-graph-tokenizer",
                          **TOKENIZER_OPTION_DEFAULTS}
 # Obs column of the evaluation with the section of every cell (its label file): the batch of the integration metrics
 SECTION_KEY = "section"
+# Gene sets of the evaluation data (EVAL_GENE_SET of datasets/<dataset>.env): the training data (each section with its
+# own gene panel) or a copy of the same cells restricted to the genes measured in every section
+# (filter_shared_genes.py), tokenized like the training data (tokenize_dataset.py --gene_set), as the published mouse
+# evaluation embedded them
+EVAL_GENE_SETS = ["all_genes", "shared_genes"]
 # Launch and plotting order (figure order of the mouse ablations)
 CATEGORY_ORDER = ["base",
                   "tokenizer",
@@ -151,6 +156,27 @@ def get_seq_len_cell(tokenization: dict) -> int:
     return int(tokenization["model_input_size"] / (tokenization["n_neighs"] + 1))
 
 
+def get_gene_set_dataset_name(dataset_name: str, gene_set: str) -> str:
+    """Name of the dataset of a gene set (silver folder and tokenized dataset names): `<dataset>_shared_genes`."""
+    if gene_set not in EVAL_GENE_SETS:
+        raise ValueError(f"Unknown gene set {gene_set!r} (one of {EVAL_GENE_SETS}).")
+    return dataset_name if gene_set == "all_genes" else f"{dataset_name}_{gene_set}"
+
+
+def get_gene_set_silver_file_paths(silver_file_paths: list,
+                                   data_directory_path: Path | str,
+                                   dataset_name: str,
+                                   gene_set: str) -> list[str]:
+    """
+    Silver files of a gene set: the dataset's silver files for all_genes, otherwise the files of the same names in the
+    gene set's silver folder.
+    """
+    if gene_set == "all_genes":
+        return list(silver_file_paths)
+    silver_folder_path = Path(data_directory_path) / "silver" / get_gene_set_dataset_name(dataset_name, gene_set)
+    return [str(silver_folder_path / Path(file_path).name) for file_path in silver_file_paths]
+
+
 def count_detected_vocabulary_genes(adata, token_dict: dict, chunk_size: int = 100_000):
     """
     Number of detected genes of the token dictionary per cell of `adata` (raw count > 0 in `adata.X` for a gene whose
@@ -198,7 +224,8 @@ def count_stored_zeros(adata, chunk_size: int = 100_000) -> int:
 
 # What each tokenized dataset was made from, written into its folder by tokenize_dataset.py and compared by
 # tokenize_dataset.py (before skipping an existing dataset) and check_setup.py (check 4): the dataset name records the
-# tokenization settings, but not the TERRA code or the input files
+# tokenization settings, but not the TERRA code or the input files. filter_shared_genes.py writes the same file into the
+# silver folder of the shared-gene data (the source files it was made from)
 PROVENANCE_FILE_NAME = "ablation_provenance.json"
 
 
@@ -250,6 +277,16 @@ def provenance_differences(dataset_path: Path | str, expected: dict) -> list[str
     with open(provenance_file_path) as file:
         recorded = json.load(file)
     return [key for key in expected if recorded.get(key) != expected[key]]
+
+
+def get_shared_gene_provenance(silver_file_paths: list, min_shared_genes: int | None) -> dict:
+    """
+    The inputs of a shared-gene silver folder (filter_shared_genes.py, written into the folder as PROVENANCE_FILE_NAME):
+    the md5 of each source silver file (by file name) and the minimum number of detected shared genes per cell.
+    """
+    return {"source_silver_file_md5s": {Path(file_path).name: file_md5(file_path)
+                                        for file_path in sorted(silver_file_paths)},
+            "min_shared_genes": min_shared_genes}
 
 
 def write_provenance(dataset_path: Path | str, provenance: dict):

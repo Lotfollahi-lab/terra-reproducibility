@@ -13,6 +13,9 @@ complete, so that interrupted jobs are never mistaken for finished datasets. It 
 tokenization settings, md5 of the token dictionary, the factor file and the silver files) in `ablation_provenance.json`;
 an existing dataset is skipped only if it was made from the same inputs, otherwise the job stops (the dataset name does
 not encode the code or the input files, so a changed pin or recomputed factors would otherwise reuse stale datasets).
+With `--gene_set shared_genes`, it tokenizes the shared-gene evaluation data of the dataset instead (the same cells
+restricted to the genes of every section, `filter_shared_genes.py`: dataset `<dataset_name>_shared_genes`, its silver
+files named as `--silver_file_paths`), with the same tokenization, token dictionary and factor file.
 
 Usage (`submit_tokenization.sh` runs the first two; `tokenize_dataset.lsf` the last):
 ```bash
@@ -21,7 +24,7 @@ python tokenize_dataset.py --list_indices standard [DATASET ARGS]               
 python tokenize_dataset.py --tokenization_index ${LSB_JOBINDEX} [DATASET ARGS] \
     --silver_file_paths ... --norm_factor_file_path ... --token_dictionary_file_path ...   # create one dataset
 ```
-DATASET ARGS: --plan_file_path ... --data_directory_path ... --dataset_name ...
+DATASET ARGS: --plan_file_path ... --data_directory_path ... --dataset_name ... [--gene_set all_genes|shared_genes]
 """
 
 from __future__ import annotations
@@ -31,9 +34,12 @@ import os
 import shutil
 from pathlib import Path
 
-from ablation_utils import (NORM_METHOD_KEYS,
+from ablation_utils import (EVAL_GENE_SETS,
+                            NORM_METHOD_KEYS,
                             NUM_SHARDS,
                             get_code_version,
+                            get_gene_set_dataset_name,
+                            get_gene_set_silver_file_paths,
                             get_tokenization_provenance,
                             get_tokenized_dataset_path,
                             load_plan,
@@ -57,13 +63,15 @@ def check_silver_files(silver_folder_path: Path, silver_file_paths: list[str]):
 def main(args):
     tokenizations, _ = load_plan(args.plan_file_path)
     tokenization_names = list(tokenizations)
+    # The dataset of the gene set (the dataset itself for all_genes)
+    dataset_name = get_gene_set_dataset_name(args.dataset_name, args.gene_set)
 
     if args.list or args.list_indices:
         for idx, name in enumerate(tokenization_names, start=1):
             memory_class = "large" if needs_large_memory(tokenizations[name]) else "standard"
             if args.list:
                 print(f"{idx}\t{name}\t{memory_class}\t"
-                      f"{get_tokenized_dataset_path(tokenizations[name], args.data_directory_path, args.dataset_name)}")
+                      f"{get_tokenized_dataset_path(tokenizations[name], args.data_directory_path, dataset_name)}")
         if args.list_indices:
             print(",".join(str(idx) for idx, name in enumerate(tokenization_names, start=1)
                            if ("large" if needs_large_memory(tokenizations[name]) else "standard") == args.list_indices))
@@ -73,11 +81,13 @@ def main(args):
         raise ValueError(f"--tokenization_index {args.tokenization_index} is not in 1-{len(tokenization_names)}.")
     name = tokenization_names[args.tokenization_index - 1]
     tokenization = tokenizations[name]
-    output_path = get_tokenized_dataset_path(tokenization, args.data_directory_path, args.dataset_name)
-    silver_folder_path = Path(args.data_directory_path) / "silver" / args.dataset_name
-    check_silver_files(silver_folder_path, args.silver_file_paths)
+    output_path = get_tokenized_dataset_path(tokenization, args.data_directory_path, dataset_name)
+    silver_folder_path = Path(args.data_directory_path) / "silver" / dataset_name
+    silver_file_paths = get_gene_set_silver_file_paths(args.silver_file_paths, args.data_directory_path,
+                                                       args.dataset_name, args.gene_set)
+    check_silver_files(silver_folder_path, silver_file_paths)
     # The pinned TERRA copy (first on PYTHONPATH in tokenize_dataset.lsf)
-    provenance = get_tokenization_provenance(tokenization, get_code_version(), args.silver_file_paths,
+    provenance = get_tokenization_provenance(tokenization, get_code_version(), silver_file_paths,
                                              args.norm_factor_file_path, args.token_dictionary_file_path)
     if output_path.exists():
         differences = provenance_differences(output_path, provenance)
@@ -86,7 +96,8 @@ def main(args):
                              f"{', '.join(differences)}). Move or delete it and resubmit.")
         print(f"{output_path} already exists, made from the same inputs. Skipping tokenization...")
         return
-    print(f"Tokenization {args.tokenization_index} ({name}): {tokenization}; code {provenance['code_version']}.")
+    print(f"Tokenization {args.tokenization_index} ({name}) of {dataset_name}: {tokenization}; code "
+          f"{provenance['code_version']}.")
 
     from terra.tokenizers.cell_tokenizers import CellGraphTokenizer, CellNeighborhoodTokenizer
 
@@ -121,7 +132,7 @@ def main(args):
     incomplete_file_prefix = f"{output_path.stem}_incomplete"
     incomplete_output_path = output_path.with_name(f"{incomplete_file_prefix}.dataset")
     shutil.rmtree(incomplete_output_path, ignore_errors=True)
-    cache_directory_path = Path(args.data_directory_path) / "cache" / args.dataset_name / name
+    cache_directory_path = Path(args.data_directory_path) / "cache" / dataset_name / name
     tk.tokenize_data(input_directory=silver_folder_path,
                      output_directory=output_path.parent,
                      output_file_prefix=incomplete_file_prefix,
@@ -161,10 +172,18 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help='Name of the silver dataset folder.')
+    parser.add_argument('--gene_set',
+                        type=str,
+                        choices=EVAL_GENE_SETS,
+                        default='all_genes',
+                        help='all_genes: the dataset (training data); shared_genes: its shared-gene evaluation data '
+                             '(filter_shared_genes.py; dataset <dataset_name>_shared_genes, silver files named as '
+                             '--silver_file_paths).')
     parser.add_argument('--silver_file_paths',
                         type=str,
                         nargs='+',
-                        help='Silver AnnData files of the dataset: all h5ad files of the silver folder (tokenization).')
+                        help='Silver AnnData files of the dataset: all h5ad files of the silver folder (tokenization; '
+                             'with --gene_set shared_genes, those of the training data).')
     parser.add_argument('--norm_factor_file_path',
                         type=str,
                         help='Per-gene normalization factors of the dataset (tokenization).')

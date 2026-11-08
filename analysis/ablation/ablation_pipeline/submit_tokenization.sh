@@ -8,6 +8,9 @@
 #   large:    1 TB each, only for tokenizations without the ranked-list cut: the dense tokenizer path (rank and count
 #             streams normalized differently), Seurat v3 / Pearson residuals and sequences above 128 genes
 #             (0.5-0.6 TB each for OVCA). Nothing to submit with the plan's options.
+# With EVAL_GENE_SET=shared_genes (env file), a second array tokenizes the shared-gene evaluation data of the dataset
+# (filter_shared_genes.py; the same cells with the genes of every section) with the same tokenizations, token dictionary
+# and factor file (job name <tag>_tokenize_shared_genes_<class>).
 #
 # Usage: bash submit_tokenization.sh ENV_FILE standard|large
 # Example: bash submit_tokenization.sh datasets/ovca.env standard
@@ -65,6 +68,28 @@ if [ ! -f "${CODE_PATH}/CODE_VERSION" ]; then
     echo "ERROR: ${CODE_PATH}/CODE_VERSION does not exist; set up the pinned code with setup_code.sh first." >&2
     exit 1
 fi
+# The training data, and the shared-gene evaluation data if the evaluation uses it (written by filter_shared_genes.py
+# under the silver file names)
+case "${EVAL_GENE_SET:-}" in
+    all_genes)
+        GENE_SETS=(all_genes)
+        ;;
+    shared_genes)
+        GENE_SETS=(all_genes shared_genes)
+        SHARED_GENE_FOLDER_PATH="${DATA_DIRECTORY_PATH}/silver/${DATASET_NAME}_shared_genes"
+        for FILE_PATH in ${SILVER_FILE_PATHS}; do
+            SHARED_GENE_FILE_PATH="${SHARED_GENE_FOLDER_PATH}/$(basename "${FILE_PATH}")"
+            if [ ! -f "${SHARED_GENE_FILE_PATH}" ]; then
+                echo "ERROR: ${SHARED_GENE_FILE_PATH} does not exist; run filter_shared_genes.py first (README.md)." >&2
+                exit 1
+            fi
+        done
+        ;;
+    *)
+        echo "ERROR: EVAL_GENE_SET must be all_genes or shared_genes in $1, not '${EVAL_GENE_SET:-}'." >&2
+        exit 1
+        ;;
+esac
 
 INDICES=$("${ENV_PATH}/bin/python" tokenize_dataset.py --list_indices "${MEMORY_CLASS}" \
     --plan_file_path "${PLAN_FILE_PATH}" --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}")
@@ -72,19 +97,26 @@ if [ -z "${INDICES}" ]; then
     echo "No tokenizations in the ${MEMORY_CLASS} memory class; nothing to submit."
     exit 0
 fi
-echo "Tokenizations (${MEMORY_CLASS}): ${INDICES}"
+echo "Tokenizations (${MEMORY_CLASS}): ${INDICES}; gene sets: ${GENE_SETS[*]}"
 
 # tokenize_dataset.lsf receives these values through bsub -env "all" (the submission environment; it keeps the
 # space-separated list of silver files intact)
 export PLAN_FILE_PATH DATA_DIRECTORY_PATH DATASET_NAME SILVER_FILE_PATHS NORM_FACTOR_FILE_PATH \
-    TOKEN_DICTIONARY_FILE_PATH CODE_PATH ENV_PATH
+    TOKEN_DICTIONARY_FILE_PATH CODE_PATH ENV_PATH GENE_SET
 mkdir -p "${ARTIFACT_FOLDER_PATH}/logs"
-bsub -J "${EXPERIMENT_TAG}_tokenize_${MEMORY_CLASS}[${INDICES}]%${MAX_CONCURRENT}" \
-    -env "all" \
-    -q "${QUEUE}" \
-    -M "${MEMORY}" \
-    -R "select[mem>${MEMORY}] rusage[mem=${MEMORY}] span[hosts=1]" \
-    -W "${TIME}" \
-    -o "${ARTIFACT_FOLDER_PATH}/logs/tokenize_%J_%I.out" \
-    -e "${ARTIFACT_FOLDER_PATH}/logs/tokenize_%J_%I.err" \
-    < tokenize_dataset.lsf
+for GENE_SET in "${GENE_SETS[@]}"; do
+    if [ "${GENE_SET}" = "all_genes" ]; then
+        JOB_NAME="${EXPERIMENT_TAG}_tokenize_${MEMORY_CLASS}"
+    else
+        JOB_NAME="${EXPERIMENT_TAG}_tokenize_${GENE_SET}_${MEMORY_CLASS}"
+    fi
+    bsub -J "${JOB_NAME}[${INDICES}]%${MAX_CONCURRENT}" \
+        -env "all" \
+        -q "${QUEUE}" \
+        -M "${MEMORY}" \
+        -R "select[mem>${MEMORY}] rusage[mem=${MEMORY}] span[hosts=1]" \
+        -W "${TIME}" \
+        -o "${ARTIFACT_FOLDER_PATH}/logs/tokenize_%J_%I.out" \
+        -e "${ARTIFACT_FOLDER_PATH}/logs/tokenize_%J_%I.err" \
+        < tokenize_dataset.lsf
+done

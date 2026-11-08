@@ -24,7 +24,9 @@ all padding (e.g. a context of padding only) then gives zeros instead of NaN.
 The manifest lists the runs in launch order for the job array (`get_runs`: replicates added later to the plan,
 `appended_replicates`, come last, so the other runs keep their rows). `dataset.env` in the artifact folder holds the
 dataset-level values of the job array (`run_ablation_array.lsf`), so that the artifact folder defines the campaign,
-including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files).
+including the label files of the evaluation (`--label_file_paths`, one per section; default: the silver files) and the
+gene set of the evaluation data (`--eval_gene_set`: the training data, or the same cells restricted to the genes of
+every section, `filter_shared_genes.py`).
 
 Usage (`source datasets/<dataset>.env` first, see README.md; LABEL_FILE_PATHS is optional):
 ```bash
@@ -34,7 +36,8 @@ python generate_ablation_runs.py --plan_file_path "${PLAN_FILE_PATH}" --base_con
     --label_file_paths ${LABEL_FILE_PATHS:-${SILVER_FILE_PATHS}} \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --label_keys ${LABEL_KEYS} --unassigned_label "${UNASSIGNED_LABEL}" --experiment_tag "${EXPERIMENT_TAG}" \
-    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}"
+    --epochs "${EPOCHS}" --warmup "${WARMUP}" --n_special_values "${N_SPECIAL_VALUES}" --code_path "${CODE_PATH}" \
+    --eval_gene_set "${EVAL_GENE_SET}"
 ```
 """
 
@@ -49,7 +52,8 @@ from pathlib import Path
 
 import yaml
 
-from ablation_utils import (NORM_METHOD_KEYS,
+from ablation_utils import (EVAL_GENE_SETS,
+                            NORM_METHOD_KEYS,
                             SECTION_KEY,
                             TOKENIZER_OPTION_DEFAULTS,
                             get_runs,
@@ -180,6 +184,9 @@ def validate_args(args):
                                  f"space-separated).")
         if len(set(getattr(args, name))) != len(getattr(args, name)):
             raise ValueError(f"--{name} {getattr(args, name)} has duplicates.")
+    if args.eval_gene_set == "shared_genes" and len(args.silver_file_paths) < 2:
+        raise ValueError("--eval_gene_set shared_genes needs two or more sections; with one section, the shared genes "
+                         "are all genes: use all_genes.")
     if SECTION_KEY in args.label_keys:
         raise ValueError(f"--label_keys: '{SECTION_KEY}' holds the section of each cell in the evaluation; rename the "
                          f"key.")
@@ -202,7 +209,8 @@ def write_dataset_env(args, dataset_env_file_path: Path):
               "NORM_FACTOR_FILE_PATH": args.norm_factor_file_path,
               "EXPERIMENT_TAG": args.experiment_tag,
               "CODE_PATH": args.code_path,
-              "CODE_VERSION": args.code_version}
+              "CODE_VERSION": args.code_version,
+              "EVAL_GENE_SET": args.eval_gene_set}
     with open(dataset_env_file_path, "w") as file:
         file.write("# Written by generate_ablation_runs.py: dataset-level values of this campaign, sourced by every\n"
                    "# element of run_ablation_array.lsf (regenerate instead of editing).\n")
@@ -266,7 +274,7 @@ def main(args):
     label_files = ("the silver files" if args.label_file_paths == args.silver_file_paths else
                    f"{len(args.label_file_paths)} files that are not the silver files")
     print(f"Evaluation labels: {args.label_keys} (unassigned label {args.unassigned_label!r}) from {label_files}: "
-          f"{args.label_file_paths}.")
+          f"{args.label_file_paths}; evaluation data: {args.eval_gene_set}.")
     n_appended = sum(run["appended"] for run in runs)
     if n_appended:
         print(f"Rows {len(manifest_rows) - n_appended + 1}-{len(manifest_rows)}: the {n_appended} appended replicates "
@@ -344,6 +352,12 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help='Pinned code (setup_code.sh); its CODE_VERSION is written into every config.')
+    parser.add_argument('--eval_gene_set',
+                        type=str,
+                        choices=EVAL_GENE_SETS,
+                        required=True,
+                        help='Evaluation data (EVAL_GENE_SET): the training data (all_genes) or the same cells with '
+                             'the genes measured in every section (shared_genes, filter_shared_genes.py).')
     args = parser.parse_args()
 
     main(args)

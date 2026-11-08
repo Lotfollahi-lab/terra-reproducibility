@@ -31,7 +31,9 @@ This script checks the setup of an ablation campaign on the farm before launchin
    env file, or, with two or more sections, scib_metrics does not import.
 4. Tokenized datasets: each exists, was made from the current inputs (its ablation_provenance.json: TERRA code version,
    tokenization settings, md5 of the token dictionary, the factor file and the silver files), has one row per silver
-   cell and all its cells are in the label files (with the cells per section).
+   cell and all its cells are in the label files (with the cells per section). With --eval_gene_set shared_genes, the
+   same for the shared-gene evaluation data: its silver files (filter_shared_genes.py) were made from the current
+   silver files, and its tokenized datasets (every tokenization of the plan, same token dictionary and factor file).
 5. Normalization factors: every feature of the silver files has an Ensembl id, a row of the factor file with finite
    positive factors and counts in at least one section (the tokenizer looks up the factors of every feature by id);
    the gene-corrected read depth columns of the dataset's factor file match the tokenizer's own normalizer (same
@@ -58,7 +60,7 @@ python check_setup.py --plan_file_path "${PLAN_FILE_PATH}" --artifact_folder_pat
     --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}" --code_path "${CODE_PATH}" \
     --mouse_token_dictionary_file_path "${MOUSE_TOKEN_DICTIONARY_FILE_PATH}" \
-    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}"
+    --mouse_artifact_folder_path "${MOUSE_ARTIFACT_FOLDER_PATH}" --eval_gene_set "${EVAL_GENE_SET}"
 ```
 """
 
@@ -77,9 +79,11 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from ablation_utils import (cells_without_vocabulary_genes, count_detected_vocabulary_genes, count_stored_zeros,
-                            get_code_version, get_section_names, get_seq_len_cell, get_tokenization_provenance,
-                            get_tokenized_dataset_path, load_plan, provenance_differences, ties_at_cut)
+from ablation_utils import (EVAL_GENE_SETS, cells_without_vocabulary_genes, count_detected_vocabulary_genes,
+                            count_stored_zeros, get_code_version, get_gene_set_dataset_name,
+                            get_gene_set_silver_file_paths, get_section_names, get_seq_len_cell,
+                            get_shared_gene_provenance, get_tokenization_provenance, get_tokenized_dataset_path,
+                            load_plan, provenance_differences, ties_at_cut)
 
 # UNASSIGNED_LABEL of datasets/*.env until it is set from check 3's output (README step 5)
 UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
@@ -661,6 +665,40 @@ def check_tokenized_datasets(tokenizations: dict, silver_file_paths: list, data_
     return complete
 
 
+def check_shared_gene_data(tokenizations: dict, silver_file_paths: list, data_directory_path: str,
+                           dataset_name: str, cell_section: pd.Series, code_path: str, norm_factor_file_path: str,
+                           token_dictionary_file_path: str) -> bool:
+    """
+    Check 4 for the shared-gene evaluation data: its silver files exist, are all the files of its folder (the tokenizer
+    reads every h5ad file) and were made from the current silver files (filter_shared_genes.py), and its tokenized
+    datasets pass the checks of the training datasets.
+    """
+    shared_dataset_name = get_gene_set_dataset_name(dataset_name, "shared_genes")
+    shared_file_paths = get_gene_set_silver_file_paths(silver_file_paths, data_directory_path, dataset_name,
+                                                       "shared_genes")
+    shared_folder_path = Path(data_directory_path) / "silver" / shared_dataset_name
+    print(f"Shared-gene evaluation data {shared_dataset_name}:")
+    missing = [file_path for file_path in shared_file_paths if not Path(file_path).is_file()]
+    if missing:
+        print(f"ERROR: {missing} missing: run filter_shared_genes.py")
+        return False
+    other_files = sorted({str(file_path) for file_path in shared_folder_path.glob("**/*.h5ad")}
+                         - set(shared_file_paths))
+    if other_files:
+        print(f"ERROR: {shared_folder_path} holds other h5ad files, which the tokenizer would also read: {other_files}")
+        return False
+    expected = get_shared_gene_provenance(silver_file_paths, None)
+    differences = provenance_differences(shared_folder_path, {"source_silver_file_md5s":
+                                                              expected["source_silver_file_md5s"]})
+    if differences:
+        print(f"ERROR: {shared_folder_path} was NOT made from the current silver files (differs in: "
+              f"{', '.join(differences)}); rerun filter_shared_genes.py, then tokenize again")
+        return False
+    print(f"{shared_folder_path}: made from the current silver files")
+    return check_tokenized_datasets(tokenizations, shared_file_paths, data_directory_path, shared_dataset_name,
+                                    cell_section, code_path, norm_factor_file_path, token_dictionary_file_path)
+
+
 def main(args):
     label_file_paths = args.label_file_paths or args.silver_file_paths
     tokenizations, variants = load_plan(args.plan_file_path)
@@ -675,7 +713,8 @@ def main(args):
                              "LABEL_KEYS": " ".join(args.label_keys),
                              "UNASSIGNED_LABEL": args.unassigned_label,
                              "NORM_FACTOR_FILE_PATH": args.norm_factor_file_path,
-                             "CODE_PATH": args.code_path})
+                             "CODE_PATH": args.code_path,
+                             "EVAL_GENE_SET": args.eval_gene_set})
     ok &= check_config_parity(variants, tokenizations, manifest_df, args.mouse_artifact_folder_path)
     has_rank_variant = any(variant["overrides"].get("meta.gt_type") == "rank" for variant in variants.values())
     ok &= check_special_values(config_file_paths["base"], args.token_dictionary_file_path, args.silver_file_paths,
@@ -688,6 +727,10 @@ def main(args):
         ok &= check_tokenized_datasets(tokenizations, args.silver_file_paths, args.data_directory_path,
                                        args.dataset_name, cell_section, args.code_path, args.norm_factor_file_path,
                                        args.token_dictionary_file_path)
+        if args.eval_gene_set == "shared_genes":
+            ok &= check_shared_gene_data(tokenizations, args.silver_file_paths, args.data_directory_path,
+                                         args.dataset_name, cell_section, args.code_path, args.norm_factor_file_path,
+                                         args.token_dictionary_file_path)
     print("== 5. Normalization factors")
     from norm_factors import check_norm_factors
     from terra.preprocessors.normalizers import normalize_by_gene_corrected_read_depth
@@ -761,6 +804,12 @@ if __name__ == '__main__':
                         type=str,
                         required=True,
                         help='Artifact folder of the mouse ablation runs (models/<timestamp>/model_config.yaml).')
+    parser.add_argument('--eval_gene_set',
+                        type=str,
+                        choices=EVAL_GENE_SETS,
+                        required=True,
+                        help='Evaluation data (EVAL_GENE_SET); with shared_genes, check 4 also checks the shared-gene '
+                             'data.')
     parser.add_argument('--skip_datasets',
                         action='store_true',
                         help='Skip the tokenized dataset checks (check 4; before tokenization).')

@@ -1,14 +1,15 @@
 #!/bin/bash
 # Ablations: one job array element creates the tokenized dataset LSB_JOBINDEX of the ablation plan with the pinned
-# ST-JEPA v2 tokenizer. Submit with submit_tokenization.sh <env file> standard|large from this directory, which sets the
-# queue, memory, indices and logs and passes the dataset values below through bsub -env.
+# ST-JEPA v2 tokenizer, of the training data (GENE_SET all_genes) or of the shared-gene evaluation data (shared_genes).
+# Submit with submit_tokenization.sh <env file> standard|large from this directory, which sets the queue, memory,
+# indices and logs and passes the dataset values below through bsub -env.
 #BSUB -G team361
 #BSUB -n 12
 
 set -euo pipefail
 
 for NAME in PLAN_FILE_PATH DATA_DIRECTORY_PATH DATASET_NAME SILVER_FILE_PATHS NORM_FACTOR_FILE_PATH \
-    TOKEN_DICTIONARY_FILE_PATH CODE_PATH ENV_PATH; do
+    TOKEN_DICTIONARY_FILE_PATH CODE_PATH ENV_PATH GENE_SET; do
     if [ -z "${!NAME:-}" ]; then
         echo "ERROR: ${NAME} is not set; submit with submit_tokenization.sh <env file> standard|large." >&2
         exit 1
@@ -20,6 +21,6 @@ export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
 
 # shellcheck disable=SC2086
 python -u tokenize_dataset.py --tokenization_index "${LSB_JOBINDEX}" --plan_file_path "${PLAN_FILE_PATH}" \
-    --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}" \
+    --data_directory_path "${DATA_DIRECTORY_PATH}" --dataset_name "${DATASET_NAME}" --gene_set "${GENE_SET}" \
     --silver_file_paths ${SILVER_FILE_PATHS} --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
     --token_dictionary_file_path "${TOKEN_DICTIONARY_FILE_PATH}"
