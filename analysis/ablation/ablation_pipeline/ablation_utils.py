@@ -43,6 +43,10 @@ TOKENIZATION_DEFAULTS = {"tokenizer": "cell-graph-tokenizer",
                          **TOKENIZER_OPTION_DEFAULTS}
 # Obs column of the evaluation with the section of every cell (its label file): the batch of the integration metrics
 SECTION_KEY = "section"
+# UNASSIGNED_LABEL of datasets/*.env: one value for all label keys, or one per key as `<key>=<value>` pairs separated
+# by ';' (values may contain spaces, but not ';'; bsub -env splits at commas, and the value is passed on as one
+# argument)
+UNASSIGNED_LABEL_SEPARATOR = ";"
 # Gene sets of the evaluation data (EVAL_GENE_SET of datasets/<dataset>.env): the training data (each section with its
 # own gene panel) or a copy of the same cells restricted to the genes measured in every section
 # (filter_shared_genes.py), tokenized like the training data (tokenize_dataset.py --gene_set), as the published mouse
@@ -332,6 +336,36 @@ def get_section_names(label_file_paths: list) -> list[str]:
     """Section of each label file (one file = one section): its name without extension, its path if names coincide."""
     names = [Path(file_path).stem for file_path in label_file_paths]
     return names if len(set(names)) == len(names) else [str(file_path) for file_path in label_file_paths]
+
+
+def parse_unassigned_labels(unassigned_label: str, label_keys: list) -> dict:
+    """
+    The unassigned value of each label key from UNASSIGNED_LABEL: a value without '=' applies to every key (the former
+    single value); otherwise `<key>=<value>` pairs separated by ';', exactly one per label key (e.g.
+    `ccf_region_name=unassigned;Sub_molecular_tissue_region=Unassigned`).
+    """
+    if "=" not in unassigned_label:
+        return dict.fromkeys(label_keys, unassigned_label)
+    unassigned_labels = {}
+    for pair in unassigned_label.split(UNASSIGNED_LABEL_SEPARATOR):
+        key, separator, value = pair.strip().partition("=")
+        if not separator or not key.strip():
+            raise ValueError(f"UNASSIGNED_LABEL {unassigned_label!r}: {pair!r} is not <key>=<value> (pairs are "
+                             f"separated by '{UNASSIGNED_LABEL_SEPARATOR}').")
+        if key.strip() in unassigned_labels:
+            raise ValueError(f"UNASSIGNED_LABEL {unassigned_label!r}: label key {key.strip()!r} occurs twice.")
+        unassigned_labels[key.strip()] = value
+    unknown_keys = [key for key in unassigned_labels if key not in label_keys]
+    missing_keys = [key for key in label_keys if key not in unassigned_labels]
+    if unknown_keys or missing_keys:
+        raise ValueError(f"UNASSIGNED_LABEL {unassigned_label!r} must give one value per label key {label_keys}: "
+                         f"unknown keys {unknown_keys}, keys without a value {missing_keys}.")
+    return {key: unassigned_labels[key] for key in label_keys}
+
+
+def format_unassigned_labels(unassigned_labels: dict) -> str:
+    """The per-key form of `parse_unassigned_labels`' result (recorded in evaluation_complete)."""
+    return UNASSIGNED_LABEL_SEPARATOR.join(f"{key}={value}" for key, value in unassigned_labels.items())
 
 
 def get_runs(variants: dict) -> list[dict]:

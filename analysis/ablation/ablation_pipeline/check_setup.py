@@ -26,9 +26,10 @@ This script checks the setup of an ablation campaign on the farm before launchin
    ranking path); filter_silver_cells.py removes both.
 3. Labels and sections: every label file (LABEL_FILE_PATHS, default: the silver files) is one section, the batch of the
    integration metrics. Prints its cells, uns dataset id and batch, label keys and their most frequent values (to spot
-   the unassigned value) and how many cells carry the unassigned label. Fails if a file is missing or has no
-   obs['cell_id'], a label key is in no file, a cell id occurs twice, UNASSIGNED_LABEL is still the placeholder of the
-   env file, or, with two or more sections, scib_metrics does not import.
+   the unassigned value) and, per label key, how many cells carry its unassigned label (UNASSIGNED_LABEL: one value,
+   or `<key>=<value>` pairs separated by ';'). Fails if a file is missing or has no obs['cell_id'], a label key is in no
+   file, a cell id occurs twice, UNASSIGNED_LABEL is not one value or one per key, the unassigned label of any key is
+   still the placeholder of the env file, or, with two or more sections, scib_metrics does not import.
 4. Tokenized datasets: each exists, was made from the current inputs (its ablation_provenance.json: TERRA code version,
    tokenization settings, md5 of the token dictionary, the factor file and the silver files), has one row per silver
    cell and all its cells are in the label files (with the cells per section). With --eval_gene_set shared_genes, the
@@ -83,7 +84,8 @@ from ablation_utils import (EVAL_GENE_SETS, cells_without_vocabulary_genes, coun
                             count_stored_zeros, get_code_version, get_gene_set_dataset_name,
                             get_gene_set_silver_file_paths, get_section_names, get_seq_len_cell,
                             get_tokenization_provenance, get_tokenized_dataset_path, load_plan,
-                            provenance_differences, shared_gene_folder_differences, ties_at_cut)
+                            parse_unassigned_labels, provenance_differences, shared_gene_folder_differences,
+                            ties_at_cut)
 
 # UNASSIGNED_LABEL of datasets/*.env until it is set from check 3's output (README step 5)
 UNASSIGNED_LABEL_PLACEHOLDER = "PLACEHOLDER_SET_FROM_CHECK_SETUP"
@@ -422,9 +424,15 @@ def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str
     import scanpy as sc
 
     ok = True
+    try:
+        unassigned_labels = parse_unassigned_labels(unassigned_label, label_keys)
+    except ValueError as error:
+        # The values are still listed; no unassigned counts
+        print(f"ERROR: {error}")
+        unassigned_labels, ok = dict.fromkeys(label_keys), False
     cell_sections = []
     files_with_key = {key: [] for key in label_keys}
-    n_unassigned = 0
+    n_unassigned = dict.fromkeys(label_keys, 0)
     for file_path, section_name in zip(label_file_paths, get_section_names(label_file_paths)):
         if not Path(file_path).is_file():
             print(f"{file_path}: MISSING")
@@ -445,29 +453,35 @@ def check_labels(label_file_paths: list, label_keys: list, unassigned_label: str
             # Values as the evaluation compares them (strings; missing values are unlabelled)
             labelled = obs[key].notna().to_numpy()
             counts = pd.Series(obs[key].astype(str).to_numpy()[labelled]).value_counts()
-            n_key_unassigned = int(counts.get(unassigned_label, 0))
-            n_unassigned += n_key_unassigned
+            n_key_unassigned = int(counts.get(unassigned_labels[key], 0))
+            n_unassigned[key] += n_key_unassigned
             print(f"  {key}: {len(counts)} values, {int((~labelled).sum())} cells without a value; top "
                   f"{min(TOP_VALUES, len(counts))}: "
                   f"{', '.join(f'{value} ({count})' for value, count in counts.head(TOP_VALUES).items())}")
             candidates = [f"{value} ({count})" for value, count in counts.items() if UNASSIGNED_PATTERN.search(value)]
             if candidates:
                 print(f"    values that may mark unassigned cells: {', '.join(candidates)}")
-            print(f"    UNASSIGNED_LABEL {unassigned_label!r}: {n_key_unassigned} cells")
+            print(f"    unassigned label of {key} {unassigned_labels[key]!r}: {n_key_unassigned} cells")
     for key, file_paths in files_with_key.items():
         if file_paths:
-            print(f"Label key {key}: in {len(file_paths)} of {len(label_file_paths)} label files")
+            print(f"Label key {key}: in {len(file_paths)} of {len(label_file_paths)} label files; unassigned label "
+                  f"{unassigned_labels[key]!r}: {n_unassigned[key]} cells (not scored)")
         else:
             print(f"ERROR: label key {key} is in none of the label files")
             ok = False
-    if unassigned_label == UNASSIGNED_LABEL_PLACEHOLDER:
-        print(f"ERROR: UNASSIGNED_LABEL is still the placeholder {unassigned_label!r}: set it in the env file to the "
-              f"unassigned value above, or to a value that occurs in no label file to score every labelled cell (as in "
-              f"the mouse evaluation), then regenerate the configs.")
-        ok = False
-    elif n_unassigned == 0:
-        print(f"WARNING: UNASSIGNED_LABEL {unassigned_label!r} occurs in no label file, so every labelled cell is "
-              f"scored (as in the mouse evaluation); set it to the unassigned value above if there is one.")
+    for key in label_keys:
+        if unassigned_labels[key] is None:
+            continue
+        if unassigned_labels[key] == UNASSIGNED_LABEL_PLACEHOLDER:
+            print(f"ERROR: the unassigned label of {key} is still the placeholder {UNASSIGNED_LABEL_PLACEHOLDER!r}: "
+                  f"set UNASSIGNED_LABEL in the env file to the unassigned value above (one value, or <key>=<value> "
+                  f"pairs separated by ';'), or to a value that occurs in no label file to score every labelled cell "
+                  f"(as in the mouse evaluation), then regenerate the configs.")
+            ok = False
+        elif files_with_key[key] and n_unassigned[key] == 0:
+            print(f"WARNING: the unassigned label of {key} ({unassigned_labels[key]!r}) occurs in no label file, so "
+                  f"every labelled cell of {key} is scored (as in the mouse evaluation); set it to the unassigned "
+                  f"value above if there is one.")
     cell_section = pd.concat(cell_sections) if cell_sections else pd.Series(dtype=object)
     duplicated = cell_section.index[cell_section.index.duplicated()].unique()
     if len(duplicated) > 0:
@@ -782,7 +796,8 @@ if __name__ == '__main__':
     parser.add_argument('--unassigned_label',
                         type=str,
                         required=True,
-                        help='Label of cells outside annotated regions (excluded from the metrics).')
+                        help='Label of cells outside annotated regions (excluded from the metrics): one value for '
+                             'all label keys, or <key>=<value> pairs separated by ";", one per key.')
     parser.add_argument('--norm_factor_file_path',
                         type=str,
                         required=True,
