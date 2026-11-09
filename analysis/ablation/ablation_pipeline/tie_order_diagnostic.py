@@ -25,9 +25,12 @@ the stored ones.
 
 Reading the results:
 - A loss increase under `tie_shuffle` on `bracketed` targets that is much larger than on `untied` targets means that
-  the predictor uses the order of tied genes.
-- Models trained with numpy's unstable tie order (e.g. TERRA-96M and TERRA-112M, the mouse runs) have not seen a
-  learnable order, so `tie_shuffle` should change little. `gt_type: counts` models have no rank positions, so both
+  the predictor uses the order of tied genes. The reference is a model trained with tied genes in random order, not
+  zero: in small test models such a model still changed by up to about 0.3% on `bracketed` or `tied` targets.
+- The tie order of TERRA-96M, TERRA-112M and the mouse runs is deterministic too: numpy's unstable sort on sparse
+  matrices, a stable sort (column order) on dense ones. In tests with numpy on arm64 (x86 builds may use a SIMD sort;
+  not tested), the unstable sort's order of tied genes depended largely on gene identity. These models may therefore
+  have learned the order as well and are no negative control. `gt_type: counts` models have no rank positions, so both
   shuffles should change nothing beyond numerical noise (negative control).
 - Embeddings: cosine similarity to the stored embedding of the same cell, the share of each cell's 15 nearest neighbors
   (euclidean, as `sc.pp.neighbors`) that are kept, whether a cell's shuffled embedding is nearest to its own stored
@@ -443,6 +446,10 @@ def main(args):
     if args.n_cells < n_dataset_cells:
         rng = np.random.default_rng(args.seed)
         dataset = dataset.select(np.sort(rng.choice(n_dataset_cells, args.n_cells, replace=False)).tolist())
+    # Datasets saved by the tokenizer have no format, and the dataset classes expect tensors. Cell-id strings stay
+    # Python objects, as in TERRA's inference tokenization.
+    dataset.set_format(type="torch", columns=[c for c in dataset.column_names if c not in ("cell_id", "cell_ids")],
+                       output_all_columns=True)
 
     special_tokens = meta.get("special_tokens") or []
     n_special_tokens = len(special_tokens)
