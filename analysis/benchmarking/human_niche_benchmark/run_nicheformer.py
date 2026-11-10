@@ -21,7 +21,7 @@ The embedding is the mean over the last layer's gene-token outputs of a single
 cell; there is no spatial context.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the nicheformer environment on a GPU (run_gpu_method.lsf).
+score.py. Run in the nicheformer environment on a GPU (run_method.lsf, PYTHON_ENV=PYTHON_NICHEFORMER).
 """
 import argparse
 import sys

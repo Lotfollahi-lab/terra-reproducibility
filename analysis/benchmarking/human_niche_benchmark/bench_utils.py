@@ -1,12 +1,12 @@
-"""Shared helpers for the human niche-identification benchmark.
+"""Shared definitions for the human niche-identification benchmark.
 
-Every method script uses these so that all methods (baselines, TERRA and the
-re-scored foundation models) are evaluated on identical cells with an identical
-clustering and scoring protocol. Data loading mirrors
+Paths, protocol constants, the datasets and the method registry, plus the two
+functions every method script uses: ``load_benchmark_dataset`` (identical cells
+for every method) and ``save_embedding`` (hands the embedding over to scoring,
+score.py). Data loading mirrors
 ``analysis/benchmarking/human_benchmarking/terra_benchmarking.ipynb``; method
 settings and metrics mirror ``analysis/benchmarking/mouse_benchmarking``.
 """
-import itertools
 import json
 import os
 import time
@@ -16,10 +16,6 @@ import anndata as ad
 import numpy as np
 import pandas as pd
 import scanpy as sc
-import sklearn.metrics as skm
-from scipy.spatial.distance import cdist
-from sklearn.metrics import silhouette_score
-from sklearn.preprocessing import StandardScaler
 
 # ---------------------------------------------------------------------------
 # Paths (adapt here; the .lsf scripts and job_wrapper.sh hold the matching
@@ -40,24 +36,6 @@ CACHE_FOLDER_PATH = os.environ.get(
     'BENCH_CACHE_DIR',
     f'/lustre/scratch126/cellgen/lotfollahi/{os.environ.get("USER", "user")}/'
     'human_niche_benchmark/cache')
-# Inputs produced elsewhere in the repo (read only)
-# Published TERRA models (Hugging Face Lotfollahi-lab/TERRA-96M / TERRA-112M;
-# the local bundles are byte-identical, checked by SHA-256). TERRA-96M was
-# trained with held-out data and is the benchmark's main TERRA model;
-# TERRA-112M was trained on the full corpus (no held-out split) and has a
-# 'batch' meta token (padded at zero-shot inference).
-TERRA_MODELS = {
-    '96m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/01112025_081731_614',
-    '112m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/11012026_190057_836',
-    # TERRA-96M retrained with all neighbour segments masked (epoch-2 checkpoint,
-    # same budget as the 96m bundle); see README.txt in the folder.
-    'noneigh': '/nfs/team361/me13/terra_models/96m_no_neighbours_ep2',
-}
-TERRA_MODEL_FOLDER_PATH = TERRA_MODELS['96m']
-FM_EMBEDDINGS_FOLDER_PATH = ('/nfs/team361/sb75/terra-reproducibility/'
-                             'artifacts/benchmarking')   # <Method>/<dataset>_embedded.h5ad
-NICHECOMPASS_GP_DATA_PATH = ('/nfs/team361/sb75/terra-reproducibility/'
-                             'artifacts/nichecompass/data')
 
 # ---------------------------------------------------------------------------
 # Protocol constants
@@ -114,28 +92,6 @@ DATASETS = {
         coord_scale=0.18,   # NanoString px -> um
         spot_size=80 * 0.18,
         cell_type_levels=dict(fine='cell_type')),
-    'xhl3001-22b_1p': dict(
-        label='Xenium lung (fibrosis, CAMEO)',
-        # Built from theislab/CAMEO-Lung by
-        # analysis/data_preparation/process_cameo_lung.py (22 samples; niche =
-        # pathologist label of the 224-px patches containing the cell).
-        silver_folder='/nfs/team361/me13/DATASETS/silver',
-        file_patterns=[f'adata_batch{k}.h5ad' for k in range(22)],
-        niche_key='niche',
-        drop_unlabeled=True,
-        coord_scale=1.0,
-        spot_size=20),
-    'vhl3002-1b_1p': dict(
-        label='Visium HD lung (LUAD)',
-        # Built by analysis/data_preparation/process_visium_hd_luad.py (one
-        # segmented section; niche = pathologist region, 'Unassigned' dropped;
-        # counts rounded to integers).
-        silver_folder='/nfs/team361/me13/DATASETS/silver',
-        file_patterns=['adata_batch0.h5ad'],
-        niche_key='niche',
-        drop_unlabeled=True,
-        coord_scale=1.0,
-        spot_size=10),
     'vhb3003-3b_1p': dict(
         label='Visium HD breast (8 um bins)',
         # Built by analysis/data_preparation/process_visium_hd_breast.py
@@ -149,6 +105,9 @@ DATASETS = {
         spot_size=8),
 }
 DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
+# Datasets of the main figure (plot_results.py); the others get their own
+# figures (plot_results.py --dataset).
+MAIN_DATASETS = ['xhs1000-39b_1p', 'xhs49-1b_1p', 'chr78-11b_1p', 'chl59-8b_1p']
 
 # ---------------------------------------------------------------------------
 # Methods: order, labels and colours as in the paper's mouse figure
@@ -156,6 +115,11 @@ DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
 # method_emb_pairs). The paper assigns colours by position in its order, which
 # includes GraphST (#78c7d2) between Banksy and Novae; colours are fixed per
 # method here so dropping GraphST does not shift the others.
+#
+# A method's key is its result folder (artifacts/benchmarking/human/<key>/) and
+# the ``method`` argument of save_embedding. New methods get a unique key and
+# colour; the order here is the order in the figures. The run scripts of the
+# methods below are on the branch human-niche-benchmark.
 # ---------------------------------------------------------------------------
 METHODS = {
     'terra': dict(label='TERRA', color='#73b7a2', note=''),
@@ -203,7 +167,6 @@ NOT_APPLICABLE = {
     # only 27 of the 169 panel genes.
     ('nicheformer_rerun', 'chr78-11b_1p'): 'ISS not supported by Nicheformer',
     # Visium HD: no technology token and no technology mean in Nicheformer.
-    ('nicheformer_rerun', 'vhl3002-1b_1p'): 'Visium HD not supported by Nicheformer',
     ('nicheformer_rerun', 'vhb3003-3b_1p'): 'Visium HD not supported by Nicheformer',
 }
 
@@ -280,224 +243,11 @@ def n_target_clusters(adata: ad.AnnData) -> int:
                 > MIN_CELLS_PER_NICHE).sum())
 
 
-def _leiden(adata, neighbors_key, resolution, key_added):
-    sc.tl.leiden(adata,
-                 neighbors_key=neighbors_key,
-                 key_added=key_added,
-                 resolution=resolution,
-                 flavor='igraph',
-                 n_iterations=2,
-                 random_state=0)
-    return adata.obs[key_added].nunique()
-
-
-_SCAN_STATE = {}
-
-GRID_STEP = 0.01          # one resolution grid for headline, sweep and matching
-FINE_STEP = 0.001         # only used if no grid point hits the target
-SCAN_PATIENCE = 5         # stop after this many consecutive steps above target
-SCAN_MAX_RES = 5.0
-N_SWEEP_STEPS = 4         # sweep = +/- 4 grid steps around the matching range
-
-
-def _scan_worker(resolution):
-    """Leiden at one resolution; returns cluster count and NMI/ARI (forked)."""
-    adata = _SCAN_STATE['adata']
-    key = f'_scan_{resolution}'
-    n = _leiden(adata, _SCAN_STATE['neighbors_key'], resolution, key)
-    scores = niche_metrics(adata.obs['niche_gt'], adata.obs[key])
-    del adata.obs[key]
-    return dict(leiden_resolution=float(resolution), n_niches=int(n), **scores)
-
-
-def _run_resolutions(pool, resolutions):
-    return pool.map(_scan_worker, [round(float(r), 6) for r in resolutions])
-
-
-def scan_resolutions(adata, neighbors_key, n_target, n_workers=None):
-    """Single upward Leiden scan on a 0.01 grid; every run is kept and scored.
-
-    - Resolutions 0.01, 0.02, ... are clustered (in parallel, in order) until
-      the cluster count has been above the target for ``SCAN_PATIENCE``
-      consecutive steps (counts are not monotonic in the resolution, so one
-      overshoot is not enough) or ``SCAN_MAX_RES`` is reached.
-    - If no grid point gives exactly the target, the first interval where the
-      count crosses the target is refined on a 0.001 grid.
-    - If the target is still not reached and even the lowest grid resolution
-      overshoots (graph split into more components than the target), lower
-      resolutions down to 1e-6 are tried (best reachable).
-    The ±``N_SWEEP_STEPS`` grid points around the median matching resolution
-    are always included. Returns a DataFrame with one row per run.
-    """
-    import multiprocessing as mp
-
-    if n_workers is None:
-        n_workers = int(os.environ.get('LSB_DJOB_NUMPROC', os.cpu_count() or 1))
-    n_workers = max(1, n_workers)
-    chunk = n_workers * 2
-    _SCAN_STATE.update(adata=adata, neighbors_key=neighbors_key)
-    rows = []
-    try:
-        with mp.get_context('fork').Pool(processes=n_workers) as pool:
-            # 1. Upward scan on the grid
-            grid = np.round(np.arange(GRID_STEP, SCAN_MAX_RES + GRID_STEP / 2,
-                                      GRID_STEP), 6)
-            for i in range(0, len(grid), chunk):
-                rows += [dict(r, grid='coarse')
-                         for r in _run_resolutions(pool, grid[i:i + chunk])]
-                counts = [r['n_niches'] for r in rows]
-                if (len(counts) >= SCAN_PATIENCE
-                        and min(counts[-SCAN_PATIENCE:]) > n_target):
-                    break
-            df = pd.DataFrame(rows)
-
-            # 2. Refine the first crossing if the grid never hits the target
-            if not (df['n_niches'] == n_target).any():
-                below = df['n_niches'] < n_target
-                cross = np.flatnonzero(below.values[:-1] & ~below.values[1:])
-                if len(cross):
-                    lo = df['leiden_resolution'].iloc[cross[0]]
-                    fine = np.round(np.arange(lo + FINE_STEP,
-                                              lo + GRID_STEP, FINE_STEP), 6)
-                    rows += [dict(r, grid='fine')
-                             for r in _run_resolutions(pool, fine)]
-                elif df['n_niches'].iloc[0] > n_target:
-                    # 3. Best reachable below the grid (e.g. disconnected graph)
-                    rows += [dict(r, grid='below_grid') for r in
-                             _run_resolutions(pool, [1e-3, 1e-4, 1e-5, 1e-6])]
-                df = pd.DataFrame(rows)
-
-            # 4. Make sure the full sweep window exists on the grid
-            matched = df[df['n_niches'] == n_target]['leiden_resolution']
-            centre = (matched.median() if len(matched)
-                      else df.loc[(df['n_niches'] - n_target).abs().idxmin(),
-                                  'leiden_resolution'])
-            centre = max(GRID_STEP, round(centre / GRID_STEP) * GRID_STEP)
-            window = [round(centre + k * GRID_STEP, 6)
-                      for k in range(-N_SWEEP_STEPS, N_SWEEP_STEPS + 1)
-                      if centre + k * GRID_STEP > GRID_STEP / 2]
-            missing = [r for r in window
-                       if not np.isclose(df['leiden_resolution'], r).any()]
-            if missing:
-                rows += [dict(r, grid='coarse')
-                         for r in _run_resolutions(pool, missing)]
-                df = pd.DataFrame(rows)
-    finally:
-        _SCAN_STATE.clear()
-
-    df = df.sort_values('leiden_resolution').reset_index(drop=True)
-    df['n_target'] = n_target
-    df['matched'] = df['n_niches'] == n_target
-    df['in_sweep'] = df['leiden_resolution'].apply(
-        lambda r: any(np.isclose(r, w) for w in window))
-    if df['matched'].any():
-        head_idx = df[df['matched']]['leiden_resolution'].idxmin()
-    else:
-        dist = (df['n_niches'] - n_target).abs()
-        head_idx = df[dist == dist.min()]['leiden_resolution'].idxmin()
-        print(f'Target {n_target} not reachable; best reachable: '
-              f'{df.loc[head_idx, "n_niches"]} clusters at resolution '
-              f'{df.loc[head_idx, "leiden_resolution"]}.')
-    df['headline'] = False
-    df.loc[head_idx, 'headline'] = True
-    return df
-
-
-def niche_metrics(labels_true, labels_pred) -> dict:
-    return dict(
-        NMI=skm.normalized_mutual_info_score(labels_true, labels_pred,
-                                             average_method='arithmetic'),
-        ARI=skm.adjusted_rand_score(labels_true, labels_pred))
-
-
-def _mmd(X_a, X_b, sigma, n_sub=2000, seed=0):
-    rng = np.random.default_rng(seed)
-    a = X_a[rng.choice(len(X_a), min(n_sub, len(X_a)), replace=False)]
-    b = X_b[rng.choice(len(X_b), min(n_sub, len(X_b)), replace=False)]
-
-    def rbf(A, B):
-        # Pairwise squared distances without materialising an n x m x dim array
-        # (the latter took > 10 h for 512-dim embeddings on 55 section pairs).
-        d2 = cdist(A, B, metric='sqeuclidean')
-        return np.exp(-d2 / (2 * sigma ** 2))
-
-    return rbf(a, a).mean() + rbf(b, b).mean() - 2 * rbf(a, b).mean()
-
-
-def batch_integration_metrics(adata, emb_key, seed=0) -> pd.DataFrame:
-    """iLISI, batch ASW and MMD as in the mouse notebooks.
-
-    The mouse MMD compared exactly two batches; with more sections it is
-    averaged over all section pairs.
-    """
-    from scib_metrics import ilisi_knn
-    from scib_metrics.nearest_neighbors import pynndescent
-
-    X = np.asarray(adata.obsm[emb_key], dtype=np.float32)
-    batch = adata.obs[SECTION_KEY].values
-    results = []
-
-    knn = pynndescent(X, n_neighbors=90)
-    results.append(dict(metric='iLISI',
-                        score=float(np.mean(ilisi_knn(knn, batch)))))
-    results.append(dict(metric='ASW', score=float(silhouette_score(
-        X, batch, metric='euclidean',
-        sample_size=min(10000, len(X)), random_state=seed))))
-
-    X_std = StandardScaler().fit_transform(X)
-    rng = np.random.default_rng(seed)
-    sub = X_std[rng.choice(len(X_std), min(1000, len(X_std)), replace=False)]
-    dists = cdist(sub, sub)
-    sigma = np.median(dists[dists > 0])
-    sections = adata.obs[SECTION_KEY].cat.categories
-    mmds = [_mmd(X_std[batch == a], X_std[batch == b], sigma, seed=seed)
-            for a, b in itertools.combinations(sections, 2)]
-    results.append(dict(metric='MMD', score=float(np.mean(mmds))))
-    return pd.DataFrame(results)
-
-
 def avg_cosine_similarity(X: np.ndarray) -> float:
     X = X / np.linalg.norm(X, axis=1, keepdims=True)
     n = X.shape[0]
     S = X.sum(axis=0)
     return float((S @ S - n) / (n * (n - 1)))
-
-
-def cluster_and_score(adata: ad.AnnData,
-                      method: str,
-                      emb_key: str,
-                      out_dir: Path) -> pd.DataFrame:
-    """Cluster an embedding at the common cluster number and score it.
-
-    1. kNN graph (15) on the embedding.
-    2. One upward Leiden scan on a 0.01 grid (``scan_resolutions``); every run
-       is scored (NMI/ARI) and kept.
-    3. From that single table:
-       - headline = lowest grid resolution giving exactly the common cluster
-         number (``obs['predicted_niche']``);
-       - matched = all resolutions giving exactly the common cluster number;
-       - sweep = +/- 4 grid steps (0.01) around the median matching
-         resolution (centred on the matching range, as the mouse benchmark's
-         sweep was centred on a typical matching resolution).
-    Writes ``{dataset}_{method}_metric_scores.csv`` with flags ``headline``,
-    ``matched``, ``in_sweep`` and returns it.
-    """
-    dataset_name = adata.uns['benchmark']['dataset_name']
-    n_target = adata.uns['benchmark']['n_target_clusters']
-    neighbors_key = f'{emb_key}_neighbors'
-
-    sc.pp.neighbors(adata, n_neighbors=N_LATENT_NEIGHBORS, use_rep=emb_key,
-                    key_added=neighbors_key, random_state=0)
-
-    metrics_df = scan_resolutions(adata, neighbors_key, n_target)
-    head = metrics_df[metrics_df['headline']].iloc[0]
-    _leiden(adata, neighbors_key, head['leiden_resolution'], 'predicted_niche')
-
-    metrics_df.insert(0, 'method', method)
-    metrics_df.insert(1, 'dataset', dataset_name)
-    metrics_df.to_csv(out_dir / f'{dataset_name}_{method}_metric_scores.csv',
-                      index=False)
-    return metrics_df
 
 
 def save_embedding(adata: ad.AnnData, method: str, emb_key: str,

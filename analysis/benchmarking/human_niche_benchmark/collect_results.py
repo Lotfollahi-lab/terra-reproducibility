@@ -1,4 +1,4 @@
-"""Collect all method results into tidy tables for the comparison notebook.
+"""Collect all method results into tidy tables (summary/*.csv; used by plot_results.py).
 
 Reads the per-method outputs in ``<FINAL_OUTPUT_FOLDER_PATH>/<method>/`` and
 writes to ``<FINAL_OUTPUT_FOLDER_PATH>/summary/``:

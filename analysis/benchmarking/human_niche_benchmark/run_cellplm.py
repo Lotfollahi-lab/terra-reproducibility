@@ -7,7 +7,7 @@ The embedding is per cell; there is no spatial context. ``--batch_size`` splits
 very large sections (Visium HD) into chunks of cells for the forward pass.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the cellplm environment on a GPU (run_gpu_method.lsf).
+score.py. Run in the cellplm environment on a GPU (run_method.lsf, PYTHON_ENV=PYTHON_CELLPLM).
 """
 import argparse
 import sys

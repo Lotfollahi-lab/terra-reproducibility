@@ -19,7 +19,8 @@ cluster number instead of the Leiden scan (e.g. the cell-type composition
 baseline as ``cell_type_composition_kmeans``).
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the banksy environment (reuse_embedding.lsf).
+score.py. Run in the banksy environment (run_method.lsf, PYTHON_ENV=PYTHON_BANKSY, the
+options above in EXTRA_ARGS).
 """
 import argparse
 import json

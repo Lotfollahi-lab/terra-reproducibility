@@ -1,0 +1,102 @@
+#!/bin/bash
+# Ablations: one job array element trains (or resumes) the run of manifest.tsv row LSB_JOBINDEX on 4 GPUs with the
+# launch setup of the mouse ablations (bsub_script.sh and train_model_lsf_mpirun_sanger.sh, as in TERRA's scripts/),
+# then packages and evaluates it. Submit with submit_ablation_array.sh <env file> from this directory, which sets the
+# job name, array indices (the rows that still need training or evaluation), concurrency (2 elements = 8 GPUs), run
+# limit and log files, and passes ARTIFACT_FOLDER_PATH, ENV_PATH and the options FORCE_EVAL, EVAL_FP32 and
+# SEPARATE_EVALUATION through bsub -env. The campaign's dataset values (dataset, silver and label files, label keys,
+# unassigned labels, norm factors, wandb tag, pinned code and its version) come from
+# ${ARTIFACT_FOLDER_PATH}/dataset.env, written by generate_ablation_runs.py. An element stops at once if the run's
+# evaluation is up to date (evaluate_ablation_run.py --check_only; not with FORCE_EVAL=1), trains only if training has
+# not finished, and with SEPARATE_EVALUATION=1 leaves the evaluation to the dependent 1-GPU evaluation array
+# (evaluate_ablation_array.lsf).
+#BSUB -G team361
+#BSUB -q training-parallel
+#BSUB -n 32
+#BSUB -gpu "num=4:gmem=40000:mode=exclusive_process:block=yes"
+#BSUB -M 128G
+#BSUB -R "select[mem>128G] rusage[mem=128G] span[ptile=32]"
+
+set -euo pipefail
+
+# The campaign (dataset.env), the run of manifest row LSB_JOBINDEX and its evaluation (check_evaluation, evaluate_run)
+source ablation_job_setup.sh
+
+# Environment as in bsub_script.sh (single node, 4 GPUs, one MPI rank per GPU). wandb: main.py uses the run id
+# ${EXPERIMENT_NAME}_${RUN_NAME} = <tag>_<manifest index>_<config hash> (e.g. ovca_042_1a2b3c4d) and WANDB_NAME, the
+# descriptive run id, as the display name
+export CONFIG_FILE
+export EXPERIMENT_NAME="${EXPERIMENT_TAG}"
+RUN_NAME="$(printf '%03d' "${INDEX}")_${CONFIG_HASH}"
+export RUN_NAME
+export WANDB_NAME="${RUN_ID}"
+export BACKEND="nccl"
+export TRAINING_SCRIPT_PATH="${CODE_PATH}/src/terra/training/main.py"
+export NUM_NODES=1 NUM_GPUS_NODE=4 NUM_PROCESSES_NODE=32 TOTAL_NUM_GPUS=4 TOTAL_NUM_CORES=32
+export NCCL_IB_DISABLE=1
+export OUTPUT_DIR="${RUN_FOLDER_PATH}"
+export LOG_DIR="${ARTIFACT_FOLDER_PATH}/logs"
+export NCCL_DEBUG=INFO
+export NCCL_TOPO_DUMP_FILE="${LOG_DIR}/nccl_topo_dump-${LSB_JOBID}_${LSB_JOBINDEX}.xml"
+export NCCL_DEBUG_FILE="${LOG_DIR}/nccl_debug-${LSB_JOBID}_${LSB_JOBINDEX}.log"
+export TORCH_CPP_LOG_LEVEL="INFO"
+# numba (kNN of the evaluation) compiles for a generic CPU, so the graph does not depend on the node
+export NUMBA_CPU_NAME=generic
+. "${ADVANCED_BASH_SCRIPT_PATH}/nccl_setup.sh"
+unset LSB_AFFINITY_HOSTFILE
+. /usr/share/modules/init/sh
+module load ISG/experimental/fg12/openmpi/5.0.4-cuda12.1-lsf
+source "${ADVANCED_BASH_SCRIPT_PATH}/check_and_load_cuda.sh"
+check_and_load_cuda
+source "${ENV_PATH}/bin/activate"
+# The venv's editable install points at the farm checkout, which may change; use the pinned code
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
+python3 -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__"
+# Done if the evaluation is up to date: it records the evaluation code, the TERRA version, the checkpoint, the
+# evaluation data, the labels and the precision, so a change of any of them evaluates the run again
+check_evaluation
+. "${ADVANCED_BASH_SCRIPT_PATH}/find_master_port.sh"
+. "${ADVANCED_BASH_SCRIPT_PATH}/build_mpi_host_string.sh"
+# find_master_port.sh derives the port from the job ID, which all array elements share
+MASTER_PORT=$(python3 -c 'import socket; s = socket.socket(); s.bind(("", 0)); print(s.getsockname()[1])')
+export MASTER_PORT
+
+# Train unless finished (the run config resumes from terra-latest.pth.tar if it exists). Exit code 3 means not
+# finished; any other failure (e.g. an unreadable checkpoint) stops here instead of silently retraining from scratch.
+set +e
+python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}" \
+    --check_only
+CHECK_STATUS=$?
+set -e
+if [ "${CHECK_STATUS}" -eq 3 ]; then
+    mkdir -p "${RUN_FOLDER_PATH}"
+    # TERRA loads state.read_checkpoint whenever state.load_checkpoint is set and raises if it is missing: the launch
+    # config resumes only if the run has a latest checkpoint (one that exists but cannot be loaded still raises)
+    LAUNCH_CONFIG_FILE="${RUN_FOLDER_PATH}/launch_config.yaml"
+    python3 - "${CONFIG_FILE}" "${LAUNCH_CONFIG_FILE}" <<'PY'
+import sys
+from pathlib import Path
+
+import yaml
+
+config = yaml.safe_load(open(sys.argv[1]))
+latest_checkpoint_path = Path(config["state"]["folder_path"]) / config["state"]["read_checkpoint"]
+config["state"]["load_checkpoint"] = latest_checkpoint_path.is_file()
+print(f"{'Resuming from' if latest_checkpoint_path.is_file() else 'Training from scratch; no'} {latest_checkpoint_path}")
+with open(sys.argv[2], "w") as file:
+    yaml.safe_dump(config, file, sort_keys=False)
+PY
+    export CONFIG_FILE="${LAUNCH_CONFIG_FILE}"
+    "${CODE_PATH}/scripts/train_model_lsf_mpirun_sanger.sh"
+elif [ "${CHECK_STATUS}" -ne 0 ]; then
+    echo "Could not check ${RUN_FOLDER_PATH} (exit code ${CHECK_STATUS}); inspect it before resubmitting."
+    exit 1
+fi
+
+# Package (fails if training did not finish) and evaluate
+python3 package_run.py --run_folder_path "${RUN_FOLDER_PATH}" --norm_factor_file_path "${NORM_FACTOR_FILE_PATH}"
+if [ "${SEPARATE_EVALUATION:-0}" = "1" ]; then
+    echo "Packaged; the evaluation array evaluates the run once this element has ended (SEPARATE_EVALUATION=1)."
+    exit 0
+fi
+evaluate_run

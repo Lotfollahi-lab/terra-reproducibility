@@ -8,7 +8,7 @@ Single-section datasets are left unintegrated, as for BANKSY. This is forced
 integration. Writes the embedding only; job_wrapper.sh then clusters and
 scores it with score.py.
 
-Run in the banksy environment (run_harmony.lsf).
+Run in the banksy environment (run_method.lsf, PYTHON_ENV=PYTHON_BANKSY).
 """
 import argparse
 import json

@@ -23,7 +23,7 @@ shared Leiden scan. Composition vectors are discrete, so many cells share
 identical vectors and the Leiden kNN graph splits into cliques.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the banksy environment (run_cell_type_composition.lsf).
+score.py. Run in the banksy environment (run_method.lsf, PYTHON_ENV=PYTHON_BANKSY).
 """
 import argparse
 import sys

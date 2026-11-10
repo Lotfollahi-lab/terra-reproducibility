@@ -29,8 +29,11 @@ from terra.inference.harmonize import harmonize_adata
 from terra.tokenizers.tokenize import rank_gene_tokens
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
-from bench_utils import (SECTION_KEY, TERRA_MODEL_FOLDER_PATH,  # noqa: E402
-                         load_benchmark_dataset, method_output_dir)
+from bench_utils import (SECTION_KEY, load_benchmark_dataset,  # noqa: E402
+                         method_output_dir)
+from run_terra import TERRA_MODELS  # noqa: E402
+
+TERRA_MODEL_FOLDER_PATH = TERRA_MODELS['96m']
 
 TOP_K = 10   # "top of the sequence"
 # Informal list of broadly expressed genes, only used to annotate the tables

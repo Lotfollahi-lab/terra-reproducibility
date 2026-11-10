@@ -17,7 +17,7 @@ Xenium 5k panels about half of the cells express more genes than TERRA's
 per-cell budget of 256 tokens, and the cut-off falls among count-1 genes, so
 which of them are kept is arbitrary.
 
-``--model`` selects the model bundle (bench_utils.TERRA_MODELS): ``96m``
+``--model`` selects the model bundle (TERRA_MODELS): ``96m``
 (TERRA-96M, default; methods ``terra`` / ``terra_hvg``) or ``112m``
 (TERRA-112M; methods ``terra_112m`` / ``terra_112m_hvg``) or ``noneigh``
 (TERRA-96M retrained with the neighbour cells masked; method ``terra_noneigh``).
@@ -27,7 +27,7 @@ same architecture is built by TERRA's own ``init_model`` (seeded) and used
 untrained, as a capacity control.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the terra environment on a GPU node (run_terra.lsf).
+score.py. Run in the terra environment on a GPU node (run_method.lsf, PYTHON_ENV=PYTHON_TERRA).
 """
 import argparse
 import pickle
@@ -45,8 +45,21 @@ TERRA_SOURCE = Path(terra.__file__).resolve().parents[2]
 
 sys.path.append(str(Path(__file__).parent))
 from bench_utils import (CACHE_FOLDER_PATH, SECTION_KEY,  # noqa: E402
-                         TERRA_MODELS, Timer, git_commit,
+                         Timer, git_commit,
                          load_benchmark_dataset, save_embedding)
+
+# Published TERRA models (Hugging Face Lotfollahi-lab/TERRA-96M / TERRA-112M;
+# the local bundles are byte-identical, checked by SHA-256). TERRA-96M was
+# trained with held-out data and is the benchmark's main TERRA model;
+# TERRA-112M was trained on the full corpus (no held-out split) and has a
+# 'batch' meta token (padded at zero-shot inference).
+TERRA_MODELS = {
+    '96m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/01112025_081731_614',
+    '112m': '/nfs/team361/sb75/terra-reproducibility/artifacts/models/11012026_190057_836',
+    # TERRA-96M retrained with all neighbour segments masked (epoch-2 checkpoint,
+    # same budget as the 96m bundle); see README.txt in the folder.
+    'noneigh': '/nfs/team361/me13/terra_models/96m_no_neighbours_ep2',
+}
 
 EMB_KEY = 'neighborhood_emb'
 
@@ -184,7 +197,7 @@ if __name__ == '__main__':
                         help='Random subset of cells (smoke tests only).')
     parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--model', choices=sorted(TERRA_MODELS), default='96m',
-                        help='TERRA model bundle (bench_utils.TERRA_MODELS).')
+                        help='TERRA model bundle (TERRA_MODELS).')
     parser.add_argument('--preprocess', choices=['none', 'hvg'], default='none',
                         help="'hvg': highly variable genes before tokenization.")
     parser.add_argument('--n_top_genes', type=int, default=2000)

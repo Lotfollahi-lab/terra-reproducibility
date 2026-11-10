@@ -16,13 +16,16 @@ import json
 import sys
 from pathlib import Path
 
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import scanpy as sc
 
 sys.path.append(str(Path(__file__).resolve().parent))
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent.parent / 'utils'))
-import plotting as P  # noqa: E402
+_BACKEND = matplotlib.get_backend()
+import plot_results as P  # noqa: E402
+matplotlib.use(_BACKEND)   # plot_results selects Agg (scripts); keep the notebook's inline backend
 from bench_utils import DATASET_LABELS, FINAL_OUTPUT_FOLDER_PATH, METHODS  # noqa: E402
 from benchmarking_utils import max_overlap_plot  # noqa: E402
 

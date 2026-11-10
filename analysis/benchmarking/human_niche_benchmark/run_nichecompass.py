@@ -7,7 +7,7 @@ with self loop, made symmetric (required by NicheCompass). The section is the
 categorical covariate (embedding injected into the gene expression decoder, no
 edges between sections). Integration is native, no post-hoc alignment.
 
-Run in the nichecompass environment on a GPU node (run_gpu_method.lsf).
+Run in the nichecompass environment on a GPU node (run_method.lsf, PYTHON_ENV=PYTHON_NICHECOMPASS).
 """
 import argparse
 import sys
@@ -26,8 +26,11 @@ from nichecompass.utils import (add_gps_from_gp_dict_to_adata,
 
 sys.path.append(str(Path(__file__).parent))
 from bench_utils import (CACHE_FOLDER_PATH, N_NEIGHS,  # noqa: E402
-                         NICHECOMPASS_GP_DATA_PATH, SECTION_KEY, Timer,
+                         SECTION_KEY, Timer,
                          git_commit, load_benchmark_dataset, save_embedding)
+
+# Gene-program resources (OmniPath, NicheNet, MEBOCOST) as local files
+NICHECOMPASS_GP_DATA_PATH = '/nfs/team361/sb75/terra-reproducibility/artifacts/nichecompass/data'
 
 METHOD = 'nichecompass'
 EMB_KEY = 'nichecompass_latent'

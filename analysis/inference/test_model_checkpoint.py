@@ -15,7 +15,6 @@ from itertools import chain, compress
 from pathlib import Path
 
 import anndata as ad
-import celltypist
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
@@ -29,8 +28,7 @@ from scipy.sparse import csr_matrix
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 from sklearn.model_selection import train_test_split
 
-from app.infer import get_gene_embed, get_average_gene_embed, infer
-from app.train import train
+from terra.inference import get_average_gene_embed, get_gene_embed, infer
 from terra.datasets import prepare_dataset
 from terra.utils.config import create_params_from_YAML_wandb_config
 from terra.utils.distributed import init_distributed
@@ -82,6 +80,8 @@ def main(args):
     ### Load config ###
     params = create_params_from_YAML_wandb_config(
         f'{folder_path}/params.yaml', logger)
+    trained_tokenized_data_folder_path = params['data'].get(
+        'tokenized_data_folder_path')
 
     params['data']['batch_size'] = args.batch_size
 
@@ -125,6 +125,22 @@ def main(args):
             del(params['data']['val_batch_ids'])
 
     #params['data']['precomputed_n_nonzero_tokens'] = f'{args.datasets_path}/tokenizer/{params['data']['tokenized_data_folder_path'].split('/')[-1].split('.dataset')[0]}_n_nonzero_tokens_train.pkl"
+    # The model must be evaluated on data tokenized exactly like its training
+    # data (normalization, kNN, ...). With --aws_run the tokenized dataset is
+    # replaced by --overwrite_tokenized_data_folder_path, whose default is one
+    # specific tokenization, so make any mismatch visible.
+    used_tokenized_data_folder_path = params['data']['tokenized_data_folder_path']
+    logger.info(f'Model trained on tokenized data: {trained_tokenized_data_folder_path}')
+    logger.info(f'Evaluating on tokenized data: {used_tokenized_data_folder_path}')
+    if (trained_tokenized_data_folder_path is not None
+            and Path(str(trained_tokenized_data_folder_path).rstrip('/')).name
+            != Path(str(used_tokenized_data_folder_path).rstrip('/')).name):
+        logger.warning(
+            'Evaluation dataset differs from the training dataset; results are '
+            'only meaningful if both use the same tokenization and number of '
+            'neighbours. Pass an empty --overwrite_tokenized_data_folder_path to '
+            'evaluate on the training dataset unless intended.')
+
     global layer
     layer = params['meta']['enc_depth']
     ###################
@@ -167,7 +183,7 @@ def main(args):
                           obs_cols=obs_cols,
                           agg_type='avg',
                           masked_tokens=None,
-                          agg_excluded_tokens=None,
+                          agg_excluded_genes=None,
                           cell_gene_ids=[],
                           neighborhood_gene_ids=[])
 
@@ -517,7 +533,7 @@ def main(args):
         params['data']['precomputed_split'] = False
         params['data']['test_batch_ids'] = [
             '1002_batch3',
-            '1002_batch15'
+            '1002_batch15',
             '1002_batch27']
         params['data']['val_batch_ids'] = None
         if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():

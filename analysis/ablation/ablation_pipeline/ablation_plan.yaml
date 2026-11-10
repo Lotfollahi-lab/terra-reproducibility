@@ -1,0 +1,149 @@
+# Ablation plan: the mouse ablations of stjepa-reproducibility/analysis/mouse_ablation (Supp. Figs. 4-6), rerun with
+# the pinned TERRA code (setup_code.sh) on the dataset given by a parameter file (datasets/<dataset>.env: the mouse
+# sections themselves, then e.g. the SpatialFusion ovarian cancer section with its pathologist niche labels).
+#
+# Every variant is the base model config plus `overrides` (dotted config keys) and is trained on the tokenized dataset
+# named in `tokenization`. Variant names are the mouse method names (stjepa_v2_<name>), so results can be matched
+# one-to-one. `replicates`: 3 runs for Supp. Figs. 4-6 and 3_pred_layer, 1 run for the other architecture arms (the
+# mouse figures had 1 run for normalization, Supp. Fig. 5, and architecture). Replicate r has seed 1000 * r in every
+# variant (paired by seed). `appended_replicates` (default 0): the last replicates of a variant, added after the first
+# manifest (95 runs) was fixed; they come after all other runs (manifest rows 96-139), so that the first 95 runs keep
+# their rows and wandb ids. Categories and labels follow the mouse comparison notebooks.
+
+# Opt-in tokenizer fixes of TERRA (CODE_REVIEW.md), enabled for every tokenization; the mouse tokenizations had them
+# off. Their names are appended to the dataset names. TERRA counts the real gene tokens for the length-grouped sampler
+# (n_nonzero_tokens) without an option.
+tokenizer_options:
+  stable_rank_ties: true           # top-k ties: rank score, then count value (dense path), then token id
+  rank_tie_break_norm_factor: mean # ... with the corpus mean (norm factor file) before the token id: rarer genes first
+  zero_expr_from_raw_counts: true  # candidate genes = detected genes (raw count > 0), also for Seurat / Pearson
+  seurat_loess_span: 0.3           # Seurat v3 LOESS span, gene-order independent (was: ignored, span 0.75)
+  aggregate_own_neighbors: true    # cell neighborhood: each cell's own k neighbours (was reverse kNN, C.T @ X)
+
+# Opt-in training fixes of TERRA, set in every run config (dotted keys; the mouse runs had them off). Variant
+# overrides are applied after these.
+training_options:
+  mask.pad_masks_to_batch_max: true  # pad context/target masks to the longest in the batch (was: trimmed to the shortest)
+
+tokenizations:
+  # Keys: tokenizer, model_input_size, n_neighs and the six normalization methods (null = no normalization).
+  # Training and evaluation read the tokenized dataset as is; the same keys (and the tokenizer options) are written
+  # into each variant's data config, so that a re-tokenization from the model folder matches training.
+  base:            {tokenizer: cell-graph-tokenizer, model_input_size: 704, n_neighs: 10}
+  seq_len_16:      {tokenizer: cell-graph-tokenizer, model_input_size: 176, n_neighs: 10}
+  seq_len_32:      {tokenizer: cell-graph-tokenizer, model_input_size: 352, n_neighs: 10}
+  seq_len_128:     {tokenizer: cell-graph-tokenizer, model_input_size: 1408, n_neighs: 10}
+  seq_len_256:     {tokenizer: cell-graph-tokenizer, model_input_size: 2816, n_neighs: 10}
+  cell_neigh:      {tokenizer: cell-neighborhood-tokenizer, model_input_size: 128, n_neighs: 10, seq_len_cell: 64}
+  # Normalization (rank stream: rank_*; count stream: count_*)
+  shifted_log:                                      {count_count_norm_method: shifted_log}
+  read_depth_shifted_log:                           {count_cell_norm_method: read_depth, count_count_norm_method: shifted_log}
+  gene_corrected_read_depth_shifted_log:            {count_cell_norm_method: gene_corrected_read_depth, count_count_norm_method: shifted_log}
+  mean_no_norm_rank:                                {count_gene_norm_method: mean}
+  nz_mean_no_norm_rank:                             {count_gene_norm_method: nonzero_mean}
+  gene_corrected_read_depth_mean_no_norm_rank:      {count_cell_norm_method: gene_corrected_read_depth, count_gene_norm_method: mean}
+  gene_corrected_read_depth_nz_mean_no_norm_rank:   {count_cell_norm_method: gene_corrected_read_depth, count_gene_norm_method: nonzero_mean}
+  seurat_no_norm_rank:                              {count_gene_norm_method: seurat_v3}
+  pearson_residuals_no_norm_rank:                   {count_count_norm_method: analytic_pearson_residuals}
+  mean:                                             {rank_gene_norm_method: mean, count_gene_norm_method: mean}
+  nz_mean:                                          {rank_gene_norm_method: nonzero_mean, count_gene_norm_method: nonzero_mean}
+  gene_corrected_read_depth_mean:                   {rank_cell_norm_method: gene_corrected_read_depth, count_cell_norm_method: gene_corrected_read_depth, rank_gene_norm_method: mean, count_gene_norm_method: mean}
+  gene_corrected_read_depth_nz_mean:                {rank_cell_norm_method: gene_corrected_read_depth, count_cell_norm_method: gene_corrected_read_depth, rank_gene_norm_method: nonzero_mean, count_gene_norm_method: nonzero_mean}
+  seurat:                                           {rank_gene_norm_method: seurat_v3, count_gene_norm_method: seurat_v3}
+  pearson_residuals:                                {rank_count_norm_method: analytic_pearson_residuals, count_count_norm_method: analytic_pearson_residuals}
+  no_norm_mean_rank:                                {rank_gene_norm_method: mean}
+  no_norm_nz_mean_rank:                             {rank_gene_norm_method: nonzero_mean}
+  no_norm_gene_corrected_read_depth_mean_rank:      {rank_cell_norm_method: gene_corrected_read_depth, rank_gene_norm_method: mean}
+  no_norm_gene_corrected_read_depth_nz_mean_rank:   {rank_cell_norm_method: gene_corrected_read_depth, rank_gene_norm_method: nonzero_mean}
+  no_norm_seurat_rank:                              {rank_gene_norm_method: seurat_v3}
+  no_norm_pearson_residuals_rank:                   {rank_count_norm_method: analytic_pearson_residuals}
+
+variants:
+  # name: {category, label, replicates, appended_replicates (default: 0), tokenization (default: base), overrides
+  # (default: none), mouse_runs}
+  # The base run is shared by all Supp. Fig. 4 panels and is the "No Norm" bar of Supp. Fig. 5
+  # (mouse: cell_graph_tokenizer_combined = combined_mlp = segment = combined_64_seq_len = 06_mask = no_norm).
+  base: {category: base, label: "Cell Graph (Combined) | MLP | Rank | 64 | 0.6 | No Norm", replicates: 3, mouse_runs: ["21032026_085513_196", "11042026_190115_580", "11042026_202814_332"]}
+
+  # Tokenizer (Supp. Fig. 4)
+  cell_graph_tokenizer_rank:   {category: tokenizer, label: "Cell Graph (Rank)", replicates: 3, overrides: {meta.gt_type: rank}, mouse_runs: ["09042026_115045_337", "11042026_214647_337", "11042026_214158_037"]}
+  cell_graph_tokenizer_counts: {category: tokenizer, label: "Cell Graph (Counts)", replicates: 3, overrides: {meta.gt_type: counts}, mouse_runs: ["08042026_100918_294", "12042026_093931_657", "12042026_101322_076"]}
+  # Cell-neighborhood tokenizer: 64 index-cell and 64 aggregated-neighborhood tokens (model_input_size 128 with
+  # `seq_len_cell: 64`, as in later v2 tokenizers; the dataset class requires seq_len_cell + seq_len_neighborhood tokens). The
+  # separate mouse "_640_neigh_seq_len" runs used 640 neighborhood tokens. Inferred from the method names, verify with
+  # check_setup.py against the mouse params.yaml before launching.
+  cell_neigh_tokenizer_combined:
+    {category: tokenizer, label: "Cell Neigh. (Combined)", replicates: 3, tokenization: cell_neigh,
+     overrides: {data.tokenizer_type: cell_neigh, data.seq_len_cell: 64, data.seq_len_neighborhood: 64},
+     mouse_runs: ["11042026_110853_342", "12042026_005513_734", "11042026_175126_089"]}
+  cell_neigh_tokenizer_rank:
+    {category: tokenizer, label: "Cell Neigh. (Rank)", replicates: 3, tokenization: cell_neigh,
+     overrides: {data.tokenizer_type: cell_neigh, data.seq_len_cell: 64, data.seq_len_neighborhood: 64, meta.gt_type: rank},
+     mouse_runs: ["11042026_142119_393", "12042026_075235_266", "12042026_012801_320"]}
+  cell_neigh_tokenizer_counts:
+    {category: tokenizer, label: "Cell Neigh. (Counts)", replicates: 3, tokenization: cell_neigh,
+     overrides: {data.tokenizer_type: cell_neigh, data.seq_len_cell: 64, data.seq_len_neighborhood: 64, meta.gt_type: counts},
+     mouse_runs: ["11042026_142613_749", "11042026_233718_851", "11042026_174340_550"]}
+
+  # Sequence length per cell (Supp. Fig. 4); 64 is the base
+  combined_16_seq_len:  {category: sequence_length, label: "16", replicates: 3, tokenization: seq_len_16, overrides: {data.seq_len_cell: 16, data.seq_len_neighborhood: 160}, mouse_runs: ["13042026_230143_209", "13042026_220510_109", "13042026_182320_120"]}
+  combined_32_seq_len:  {category: sequence_length, label: "32", replicates: 3, tokenization: seq_len_32, overrides: {data.seq_len_cell: 32, data.seq_len_neighborhood: 320}, mouse_runs: ["09042026_033903_490", "12042026_223333_300", "13042026_083350_625"]}
+  combined_128_seq_len: {category: sequence_length, label: "128", replicates: 3, tokenization: seq_len_128, overrides: {data.seq_len_cell: 128, data.seq_len_neighborhood: 1280}, mouse_runs: ["09042026_023348_601", "12042026_222057_719", "12042026_205823_668"]}
+  combined_256_seq_len: {category: sequence_length, label: "256", replicates: 3, tokenization: seq_len_256, overrides: {data.seq_len_cell: 256, data.seq_len_neighborhood: 2560}, mouse_runs: ["11042026_013748_814", "12042026_164325_804", "12042026_170508_470"]}
+
+  # Expression encoding (Supp. Fig. 4); MLP is the base
+  combined_value_bins_20:  {category: expression_encoding, label: "20 Bins", replicates: 3, overrides: {meta.count_encoding: value_bins, meta.n_value_bins: 20}, mouse_runs: ["09042026_182252_289", "12042026_122636_110", "12042026_123553_566"]}
+  combined_value_bins_50:  {category: expression_encoding, label: "50 Bins", replicates: 3, overrides: {meta.count_encoding: value_bins, meta.n_value_bins: 50}, mouse_runs: ["10042026_193035_854", "12042026_022807_399", "12042026_032456_856"]}
+  combined_value_bins_100: {category: expression_encoding, label: "100 Bins", replicates: 3, overrides: {meta.count_encoding: value_bins, meta.n_value_bins: 100}, mouse_runs: ["11042026_013716_476", "12042026_012925_526", "12042026_022418_970"]}
+
+  # Spatial encoding (Supp. Fig. 4); segment is the base
+  coord_aligned: {category: spatial_encoding, label: "Coordinate", replicates: 3, overrides: {meta.cell_pos_enc: coord}, mouse_runs: ["10042026_193042_980", "14042026_001543_594", "14042026_003429_740"]}
+
+  # Masking ratio (Supp. Fig. 4); 0.6 is the base
+  03_mask: {category: masking_ratio, label: "0.3", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.3}, mouse_runs: ["10042026_193040_939", "13042026_081820_978", "13042026_081829_476"]}
+  04_mask: {category: masking_ratio, label: "0.4", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.4}, mouse_runs: ["10042026_193005_683", "13042026_010822_133", "13042026_000907_092"]}
+  05_mask: {category: masking_ratio, label: "0.5", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.5}, mouse_runs: ["09042026_143419_031", "13042026_021454_332", "13042026_011724_791"]}
+  07_mask: {category: masking_ratio, label: "0.7", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.7}, mouse_runs: ["09042026_115308_738", "13042026_041129_183", "13042026_023554_354"]}
+  08_mask: {category: masking_ratio, label: "0.8", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.8}, mouse_runs: ["09042026_120745_754", "12042026_083712_309", "12042026_083751_854"]}
+  09_mask: {category: masking_ratio, label: "0.9", replicates: 3, overrides: {mask.per_block_mask_ratio: 0.9}, mouse_runs: ["09042026_134026_577", "12042026_130417_075", "12042026_083851_341"]}
+
+  # Metatoken (Supp. Fig. 6)
+  no_metatk: {category: metatoken, label: "No Metatoken", replicates: 3, overrides: {meta.special_tokens: []}, mouse_runs: ["14042026_132037_066"]}
+  # New arm (no mouse run): the batch metatoken is removed from a random half of the training batches, so the model
+  # also learns to work without it, as at inference. Needs TERRA's predictor fix for padded special tokens.
+  metatoken_dropout: {category: metatoken, label: "Metatoken Dropout", replicates: 3, overrides: {mask.special_token_pad_ratio: 0.5}, mouse_runs: []}
+
+  # Normalization (Supp. Fig. 5; 1 mouse run each, 3 replicates here, the 2nd and 3rd appended); groups as in the
+  # mouse notebook
+  shifted_log:                                    {category: normalization_unnormalized_ranks, label: "Shifted Log", replicates: 3, appended_replicates: 2, tokenization: shifted_log, mouse_runs: ["24032026_224828_432"]}
+  read_depth_shifted_log:                         {category: normalization_unnormalized_ranks, label: "RD Shifted Log", replicates: 3, appended_replicates: 2, tokenization: read_depth_shifted_log, mouse_runs: ["20032026_215239_257"]}
+  gene_corrected_read_depth_shifted_log:          {category: normalization_unnormalized_ranks, label: "Gene Corr. RD Shifted Log", replicates: 3, appended_replicates: 2, tokenization: gene_corrected_read_depth_shifted_log, mouse_runs: ["21032026_213950_914"]}
+  mean_no_norm_rank:                              {category: normalization_unnormalized_ranks, label: "Mean", replicates: 3, appended_replicates: 2, tokenization: mean_no_norm_rank, mouse_runs: ["23032026_204349_268"]}
+  nz_mean_no_norm_rank:                           {category: normalization_unnormalized_ranks, label: "NZ Mean", replicates: 3, appended_replicates: 2, tokenization: nz_mean_no_norm_rank, mouse_runs: ["25032026_010748_327"]}
+  gene_corrected_read_depth_mean_no_norm_rank:    {category: normalization_unnormalized_ranks, label: "Gene Corr. RD Mean", replicates: 3, appended_replicates: 2, tokenization: gene_corrected_read_depth_mean_no_norm_rank, mouse_runs: ["25032026_031148_546"]}
+  gene_corrected_read_depth_nz_mean_no_norm_rank: {category: normalization_unnormalized_ranks, label: "Gene Corr. RD NZ Mean", replicates: 3, appended_replicates: 2, tokenization: gene_corrected_read_depth_nz_mean_no_norm_rank, mouse_runs: ["25032026_052014_360"]}
+  seurat_no_norm_rank:                            {category: normalization_unnormalized_ranks, label: "Seurat v3", replicates: 3, appended_replicates: 2, tokenization: seurat_no_norm_rank, mouse_runs: ["22032026_135514_292"]}
+  pearson_residuals_no_norm_rank:                 {category: normalization_unnormalized_ranks, label: "Pearson Residuals", replicates: 3, appended_replicates: 2, tokenization: pearson_residuals_no_norm_rank, mouse_runs: ["25032026_071947_719"]}
+  mean:                                           {category: normalization_full, label: "Mean", replicates: 3, appended_replicates: 2, tokenization: mean, mouse_runs: ["24032026_022512_769"]}
+  nz_mean:                                        {category: normalization_full, label: "NZ Mean", replicates: 3, appended_replicates: 2, tokenization: nz_mean, mouse_runs: ["24032026_040014_694"]}
+  gene_corrected_read_depth_mean:                 {category: normalization_full, label: "Gene Corr. RD Mean", replicates: 3, appended_replicates: 2, tokenization: gene_corrected_read_depth_mean, mouse_runs: ["21032026_190736_759"]}
+  gene_corrected_read_depth_nz_mean:              {category: normalization_full, label: "Gene Corr. RD NZ Mean", replicates: 3, appended_replicates: 2, tokenization: gene_corrected_read_depth_nz_mean, mouse_runs: ["21032026_182612_890"]}
+  seurat:                                         {category: normalization_full, label: "Seurat v3", replicates: 3, appended_replicates: 2, tokenization: seurat, mouse_runs: ["21032026_154941_529"]}
+  pearson_residuals:                              {category: normalization_full, label: "Pearson Residuals", replicates: 3, appended_replicates: 2, tokenization: pearson_residuals, mouse_runs: ["21032026_172808_828"]}
+  no_norm_mean_rank:                              {category: normalization_unnormalized_counts, label: "Mean", replicates: 3, appended_replicates: 2, tokenization: no_norm_mean_rank, mouse_runs: ["23032026_220800_207"]}
+  no_norm_nz_mean_rank:                           {category: normalization_unnormalized_counts, label: "NZ Mean", replicates: 3, appended_replicates: 2, tokenization: no_norm_nz_mean_rank, mouse_runs: ["23032026_192023_653"]}
+  no_norm_gene_corrected_read_depth_mean_rank:    {category: normalization_unnormalized_counts, label: "Gene Corr. RD Mean", replicates: 3, appended_replicates: 2, tokenization: no_norm_gene_corrected_read_depth_mean_rank, mouse_runs: ["23032026_233225_877"]}
+  no_norm_gene_corrected_read_depth_nz_mean_rank: {category: normalization_unnormalized_counts, label: "Gene Corr. RD NZ Mean", replicates: 3, appended_replicates: 2, tokenization: no_norm_gene_corrected_read_depth_nz_mean_rank, mouse_runs: ["24032026_005846_090"]}
+  no_norm_seurat_rank:                            {category: normalization_unnormalized_counts, label: "Seurat v3", replicates: 3, appended_replicates: 2, tokenization: no_norm_seurat_rank, mouse_runs: ["08042026_193915_019"]}
+  no_norm_pearson_residuals_rank:                 {category: normalization_unnormalized_counts, label: "Pearson Residuals", replicates: 3, appended_replicates: 2, tokenization: no_norm_pearson_residuals_rank, mouse_runs: ["08042026_201620_913"]}
+
+  # Architecture (not in the submitted figures; 1 run each as in the mouse study, 3 for predictor depth, the 2nd and
+  # 3rd appended)
+  192_dim:     {category: architecture, label: "192 Dim", replicates: 1, overrides: {meta.enc_emb_dim: 192, meta.pred_emb_dim: 192}, mouse_runs: ["11042026_112907_817"]}
+  384_dim:     {category: architecture, label: "384 Dim", replicates: 1, overrides: {meta.enc_emb_dim: 384, meta.pred_emb_dim: 384}, mouse_runs: ["11042026_095131_396"]}
+  960_dim:     {category: architecture, label: "960 Dim", replicates: 1, overrides: {meta.enc_emb_dim: 960, meta.pred_emb_dim: 960}, mouse_runs: ["11042026_123358_582"]}
+  1152_dim:    {category: architecture, label: "1152 Dim", replicates: 1, overrides: {meta.enc_emb_dim: 1152, meta.pred_emb_dim: 1152}, mouse_runs: ["11042026_145232_295"]}
+  1_enc_layer: {category: architecture, label: "1 Enc. Layer", replicates: 1, overrides: {meta.enc_depth: 1}, mouse_runs: ["11042026_121511_136"]}
+  4_enc_layer: {category: architecture, label: "4 Enc. Layers", replicates: 1, overrides: {meta.enc_depth: 4}, mouse_runs: ["11042026_030931_080"]}
+  5_enc_layer: {category: architecture, label: "5 Enc. Layers", replicates: 1, overrides: {meta.enc_depth: 5}, mouse_runs: ["11042026_143823_714"]}
+  3_pred_layer: {category: architecture, label: "3 Pred. Layers", replicates: 3, appended_replicates: 2, overrides: {meta.pred_depth: 3}, mouse_runs: ["11042026_122926_203"]}

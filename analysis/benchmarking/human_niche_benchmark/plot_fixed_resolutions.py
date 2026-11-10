@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent))
-import plotting as P  # noqa: E402
+import plot_results as P  # noqa: E402
 from bench_utils import DATASET_LABELS, FINAL_OUTPUT_FOLDER_PATH, METHODS  # noqa: E402
 
 RESULTS = Path(FINAL_OUTPUT_FOLDER_PATH)

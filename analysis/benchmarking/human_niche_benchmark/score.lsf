@@ -2,7 +2,7 @@
 # Re-score a finished result with the current protocol (score.py), no
 # re-embedding, e.g. after a change to the clustering protocol.
 # Submit from this folder (logs and config are resolved relative to it):
-#   METHOD=terra DATASET=chr78-11b_1p bsub -q normal -n 8 -M 48GB \
+#   METHOD=neigh_expr_pca DATASET=xhs1000-39b_1p bsub -q normal -n 8 -M 48GB \
 #       -R "select[mem>48GB] rusage[mem=48GB] span[hosts=1]" -W 12:00 < score.lsf
 #
 #BSUB -G team361

@@ -12,7 +12,7 @@ well. The Novae embedding that is clustered is batch-corrected with Novae's
 own correction based on these domains, exactly as in the paper's mouse
 benchmark (mouse_benchmarking/novae_benchmarking.ipynb).
 
-    python import_fm.py --method novae --dataset xhs1000-39b_1p   (via import_fm.lsf)
+    python import_fm.py --method novae --dataset xhs1000-39b_1p   (run_method.lsf, PYTHON_ENV=PYTHON_BANKSY, EXTRA_ARGS="--method novae")
 """
 import argparse
 import sys
@@ -23,9 +23,11 @@ import numpy as np
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent))
-from bench_utils import (FM_EMBEDDINGS_FOLDER_PATH, SECTION_KEY,  # noqa: E402
-                         load_benchmark_dataset, method_output_dir,
-                         save_embedding)
+from bench_utils import (SECTION_KEY, load_benchmark_dataset,  # noqa: E402
+                         method_output_dir, save_embedding)
+
+# Existing zero-shot embeddings: <Method>/<dataset>_embedded.h5ad
+FM_EMBEDDINGS_FOLDER_PATH = '/nfs/team361/sb75/terra-reproducibility/artifacts/benchmarking'
 
 FM = {
     'novae': dict(folder='Novae', emb_key='novae_latent'),

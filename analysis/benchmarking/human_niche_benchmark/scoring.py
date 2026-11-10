@@ -22,7 +22,7 @@ from sklearn.preprocessing import StandardScaler
 
 from bench_utils import N_LATENT_NEIGHBORS, SECTION_KEY
 
-# Package versions of the reference (banksy) environment, see envs/banksy.txt
+# Package versions of the reference (banksy) environment
 REFERENCE_VERSIONS = {
     'igraph': '1.0.0',
     'leidenalg': '0.11.0',

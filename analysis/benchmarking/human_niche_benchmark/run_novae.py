@@ -14,7 +14,7 @@ The notebook was run with an earlier Novae version (``slide_key`` passed to
 ``compute_representations``); Novae 1.0.3 takes it in ``spatial_neighbors``.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the novae environment (run_gpu_method.lsf). The default
+score.py. Run in the novae environment (run_method.lsf, PYTHON_ENV=PYTHON_NOVAE). The default
 accelerator is the CPU, as in the notebook: the environment's torch needs a
 newer NVIDIA driver than the farm and tiger GPU nodes have.
 """

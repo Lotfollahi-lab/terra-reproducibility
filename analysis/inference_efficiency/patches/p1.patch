@@ -1,0 +1,92 @@
+diff --git a/src/terra/models/gene_transformers.py b/src/terra/models/gene_transformers.py
+index fb49a22..9602e79 100755
+--- a/src/terra/models/gene_transformers.py
++++ b/src/terra/models/gene_transformers.py
+@@ -469,6 +469,22 @@ class GeneTransformerBaseEncoder(ABC, nn.Module):
+         if masks is not None and not isinstance(masks, list):
+             masks = [masks]
+ 
++        # Without JEPA masks, the cell-only context is closed: its special
++        # token and index-cell queries attend only to special token and
++        # index-cell keys, and every other operation of a block acts on each
++        # token on its own. Their outputs therefore do not depend on the
++        # neighborhood tokens, so the cell-only context is computed on that
++        # block alone (the same values; the neighborhood positions of the
++        # returned embeddings are zero instead of the outputs of zeroed
++        # inputs, which no entry point reads). Without an attention mask the
++        # cell queries would attend to the zeroed neighborhood tokens, so
++        # that case keeps the full-length pass.
++        n_cell_block = self.n_special_tokens + self.cell_only_seq_len
++        if (cell_only and masks is None and attn_base is not None
++                and n_cell_block < x.size(1)):
++            return self._compute_cell_block_emb(
++                x, attn_base, layers, n_cell_block, coords=coords, cond=cond)
++
+         attn = None
+         if attn_base is not None:
+             if attn_base.size(2) == 1: # [B, 1, 1, L] -> [B, 1, L, L]
+@@ -529,6 +545,64 @@ class GeneTransformerBaseEncoder(ABC, nn.Module):
+ 
+         return out
+ 
++    def _run_blocks(
++            self,
++            x: torch.Tensor,
++            attn: torch.Tensor | None,
++            layers: Sequence[int],
++            coords: torch.Tensor | None = None,
++            cond: torch.Tensor | None = None,
++            ) -> dict[int, torch.Tensor]:
++        """
++        Run the blocks on `x` with the attention mask `attn` and return the
++        embeddings (special tokens removed) of the requested 1-based
++        `layers`; the final norm is applied after the last block, as in
++        training.
++        """
++        layers: list[int] = sorted({int(l) for l in layers})
++        max_layer: int = max(layers)
++        out: dict[int, torch.Tensor] = {}
++        for i, blk in enumerate(self.blocks, start=1):
++            x = blk(x, masks=attn, coords=coords, cond=cond)
++            if i == len(self.blocks) and (self.norm is not None):
++                x = self.norm(x)
++            if i in layers:
++                out[i] = x[:, self.n_special_tokens:, :]
++            if i == max_layer:
++                break
++        return out
++
++    def _compute_cell_block_emb(
++            self,
++            x: torch.Tensor,
++            attn_base: torch.Tensor,
++            layers: Sequence[int],
++            n_cell_block: int,
++            coords: torch.Tensor | None = None,
++            cond: torch.Tensor | None = None,
++            ) -> dict[int, torch.Tensor]:
++        """
++        Cell-only context computed on the special token and index-cell block
++        (the first `n_cell_block` tokens) only. The returned embeddings have
++        the full length (``[B, L - n_special_tokens, D]``, as from the
++        full-length pass); their neighborhood positions are zero.
++        """
++        if attn_base.size(2) == 1:  # [B, 1, 1, L] key padding mask
++            attn = attn_base[:, :, :, :n_cell_block]
++        else:  # [B, 1 or H, L, L] mask or additive (ALiBi) bias
++            attn = attn_base[:, :, :n_cell_block, :n_cell_block]
++        block_out = self._run_blocks(
++            x[:, :n_cell_block], attn, layers,
++            coords=None if coords is None else coords[:, :n_cell_block],
++            cond=cond)
++        out: dict[int, torch.Tensor] = {}
++        for i, emb in block_out.items():
++            full = emb.new_zeros(
++                emb.size(0), x.size(1) - self.n_special_tokens, emb.size(2))
++            full[:, :emb.size(1)] = emb
++            out[i] = full
++        return out
++
+     def _get_seg_emb(
+             self,
+             batch: dict):

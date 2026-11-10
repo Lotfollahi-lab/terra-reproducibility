@@ -10,14 +10,17 @@ FINAL_OUTPUT_DIR=$(cd "$BENCH_DIR/../../.." && pwd)/artifacts/benchmarking/human
 # Job-local working folders on lustre (fast I/O; deleted after a successful copy).
 LUSTRE_WORK_ROOT=${BENCH_LUSTRE_ROOT:-/lustre/scratch126/cellgen/lotfollahi/$USER/human_niche_benchmark}
 
-# Python environments (existing environments, used read-only).
-PYTHON_BANKSY=/nfs/team361/sb75/.venvs/banksy/bin/python             # BANKSY, neighbourhood PCA, re-scoring
+# Python environments. PYTHON_BANKSY is the reference environment: all clustering
+# and scoring runs in it (scoring.py checks its package versions). Add one line
+# per method environment and pass its name as PYTHON_ENV to run_method.lsf.
+PYTHON_BANKSY=/nfs/team361/sb75/.venvs/banksy/bin/python             # scoring; neighbourhood PCA example
+# Method environments (branch human-niche-benchmark)
+PYTHON_TERRA=/nfs/team361/sb75/.venvs/terra/bin/python               # TERRA, token diagnostic
 PYTHON_CELLCHARTER=/nfs/team361/sb75/.venvs/cellcharter/bin/python
 PYTHON_NICHECOMPASS=/nfs/team361/sb75/.venvs/nichecompass/bin/python
 PYTHON_NICHEFORMER=/nfs/team361/sb75/.venvs/nicheformer/bin/python
-PYTHON_TERRA=/nfs/team361/sb75/.venvs/terra/bin/python
 PYTHON_NOVAE=/nfs/team361/sb75/.venvs/novae/bin/python
 PYTHON_CELLPLM=/nfs/team361/sb75/.venvs/cellplm/bin/python
-PYTHON_SCGPT_SPATIAL=/nfs/team361/sb75/.venvs/scgpt/bin/python   # scgpt-spatial venv cannot import scgpt_spatial (run_scgpt_spatial.py)
+PYTHON_SCGPT_SPATIAL=/nfs/team361/sb75/.venvs/scgpt/bin/python      # the scgpt-spatial venv cannot import scgpt_spatial (run_scgpt_spatial.py)
 
 export NUMBA_CPU_NAME=generic   # reproducible UMAP/Leiden (as in the repo notebooks)

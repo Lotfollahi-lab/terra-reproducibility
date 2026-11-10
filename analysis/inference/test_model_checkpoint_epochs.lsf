@@ -1,0 +1,55 @@
+#!/bin/bash
+#BSUB -G s10396                                                                        # LSF group
+#BSUB -J test_model_checkpoint_epochs[1-24]                                            # Array job: 24 jobs (4 epochs x 6 datasets)
+#BSUB -o ../../logs/inference/test_model_checkpoint/test_model_checkpoint_epochs_%J_%I.out    # Standard output (%J = job ID, %I = array index)
+#BSUB -e ../../logs/inference/test_model_checkpoint/test_model_checkpoint_epochs_%J_%I.err    # Standard error
+#BSUB -q inference                                                                     # Queue name
+#BSUB -n 12                                                                            # Number of CPU cores
+#BSUB -M 128GB                                                                         # Memory
+#BSUB -R "select[mem>128GB] rusage[mem=128GB] span[hosts=1]"                           # Resource requirements: reserve 128GB RAM on a single host
+#BSUB -W 48:00                                                                         # Walltime (hh:mm)
+#BSUB -gpu "num=1:mode=exclusive_process"                                              # Request 1 GPU
+
+# Evaluates one model checkpoint at several epochs on all zero-shot datasets.
+# Array index i (1..24) maps to epoch EPOCHS[(i-1)/6] and dataset DATASETS[(i-1)%6].
+# COHORT_NAME, LOAD_TIMESTAMP, WRITE_TAG, EPOCHS and TOKENIZED_DATA can be set at
+# submission (bsub passes the environment on); shrink the array to n_epochs x 6, e.g.
+#   LOAD_TIMESTAMP=03112026_165611_219 EPOCHS="0_3" bsub -J "test_model_checkpoint_epochs[1-6]" < test_model_checkpoint_epochs.lsf
+# Mid-epoch checkpoints use epoch "<epoch>_<iter>" (terra-ep0_3.pth.tar -> EPOCHS="0_3").
+# The logs directory must exist before submission:
+#   mkdir -p ../../logs/inference/test_model_checkpoint
+
+# Load your environment
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+
+# Define the run to evaluate
+COHORT_NAME=${COHORT_NAME:-hst_corpus_110m}
+LOAD_TIMESTAMP=${LOAD_TIMESTAMP:-31102026_000942_250}
+WRITE_TAG=${WRITE_TAG:-terra}                                                          # Checkpoints are named {WRITE_TAG}-ep{epoch}.pth.tar
+read -ra EPOCHS <<< "${EPOCHS:-0 1 2 3}"                                               # Space-separated, e.g. "0 1 2 3" or "0_3"
+
+# Empty = evaluate on the dataset the run was trained on (tokenized_data_folder_path in params.yaml),
+# so tokenization and number of neighbours match the model. Set a path only to deliberately override.
+TOKENIZED_DATA=${TOKENIZED_DATA:-}
+
+# Define your datasets
+DATASETS=(--include_xhs49 --include_xhs1000 --include_xhk1007 --include_xhb1002 --include_chl59 --include_chr78)
+
+# Select epoch and dataset based on job index (LSF arrays start at 1)
+idx=$((LSB_JOBINDEX-1))
+if (( idx < 0 || idx >= ${#EPOCHS[@]} * ${#DATASETS[@]} )); then
+    echo "LSB_JOBINDEX=${LSB_JOBINDEX} out of range" >&2
+    exit 1
+fi
+epoch=${EPOCHS[$((idx / ${#DATASETS[@]}))]}
+dataset=${DATASETS[$((idx % ${#DATASETS[@]}))]}
+echo "Evaluating ${LOAD_TIMESTAMP} ${WRITE_TAG}-ep${epoch}.pth.tar on ${dataset}"
+
+# Run your Python script
+python test_model_checkpoint.py \
+    --cohort_name "$COHORT_NAME" \
+    --load_timestamp "$LOAD_TIMESTAMP" \
+    --read_checkpoint "${WRITE_TAG}-ep${epoch}.pth.tar" \
+    --datasets_path /nfs/team361/sb75/DATASETS \
+    --overwrite_tokenized_data_folder_path "$TOKENIZED_DATA" \
+    "$dataset"

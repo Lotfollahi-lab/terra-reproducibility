@@ -12,7 +12,7 @@ has the combination of envs/scgpt-spatial.yaml (torch 2.0.1+cu117,
 flash-attn 1.0.4) and is used instead (PYTHON_SCGPT_SPATIAL in config.sh).
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run on a GPU (run_gpu_method.lsf).
+score.py. Run on a GPU (run_method.lsf, PYTHON_ENV=PYTHON_SCGPT_SPATIAL).
 """
 import argparse
 import sys

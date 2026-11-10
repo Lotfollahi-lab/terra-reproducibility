@@ -7,7 +7,7 @@ counts, 10-NN spatial graph per section (with self loop), then
 native (scVI batch covariate), no post-hoc alignment.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the cellcharter environment on a GPU node (run_gpu_method.lsf).
+score.py. Run in the cellcharter environment on a GPU node (run_method.lsf, PYTHON_ENV=PYTHON_CELLCHARTER).
 """
 import argparse
 import sys

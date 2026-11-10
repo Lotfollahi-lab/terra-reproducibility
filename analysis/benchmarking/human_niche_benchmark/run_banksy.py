@@ -16,7 +16,7 @@ highly variable genes (scanpy ``seurat`` on log-normalised counts, sections as
 BANKSY matrix of all ~18,000 genes does not fit in memory for > 1M bins.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the banksy environment (run_cpu_methods.lsf).
+score.py. Run in the banksy environment (run_method.lsf, PYTHON_ENV=PYTHON_BANKSY).
 """
 import argparse
 import sys
