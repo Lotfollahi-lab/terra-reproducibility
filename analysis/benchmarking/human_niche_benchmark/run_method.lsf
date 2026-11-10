@@ -1,0 +1,31 @@
+#!/bin/bash
+# One method on one dataset: run_<method>.py in its environment, then scoring
+# (score.py, reference environment) and the verified copy to the result folder,
+# all via job_wrapper.sh. Submit from this folder:
+#   SCRIPT=run_neigh_expr_pca.py PYTHON_ENV=PYTHON_BANKSY DATASET=xhs1000-39b_1p \
+#       bsub -q normal -n 8 -M 64GB -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]" \
+#       -W 12:00 < run_method.lsf
+# GPU methods: add e.g. -q gpu -gpu "num=1:mode=exclusive_process".
+# PYTHON_ENV is the name of an interpreter variable in config.sh.
+# EXTRA_ARGS is appended to the script's arguments, e.g. EXTRA_ARGS="--subsample 3000"
+# for a smoke test.
+#
+#BSUB -G team361
+#BSUB -J human_niche_method
+#BSUB -o ../../../artifacts/benchmarking/human/logs/method_%J.out
+#BSUB -e ../../../artifacts/benchmarking/human/logs/method_%J.err
+set -euo pipefail
+: "${SCRIPT:?Set SCRIPT, e.g. SCRIPT=run_neigh_expr_pca.py}"
+: "${PYTHON_ENV:?Set PYTHON_ENV, e.g. PYTHON_ENV=PYTHON_BANKSY}"
+: "${DATASET:?Set DATASET, e.g. DATASET=xhs1000-39b_1p}"
+EXTRA_ARGS=${EXTRA_ARGS:-}
+source "$LS_SUBCWD/config.sh"
+PYTHON=${!PYTHON_ENV:?Unknown PYTHON_ENV $PYTHON_ENV (not set in config.sh)}
+
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
+export MKL_NUM_THREADS=$OMP_NUM_THREADS
+export OPENBLAS_NUM_THREADS=$OMP_NUM_THREADS
+echo "Host: $(hostname) | Job: $LSB_JOBID | Script: $SCRIPT | Python: $PYTHON | Dataset: $DATASET | Extra: $EXTRA_ARGS"
+nvidia-smi --query-gpu=name,memory.total --format=csv 2>/dev/null || echo 'No GPU'
+# shellcheck disable=SC2086
+"$BENCH_DIR/job_wrapper.sh" "$PYTHON" "$SCRIPT" --dataset "$DATASET" $EXTRA_ARGS
