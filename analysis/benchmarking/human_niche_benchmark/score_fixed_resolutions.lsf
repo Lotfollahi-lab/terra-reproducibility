@@ -1,0 +1,19 @@
+#!/bin/bash
+# Leiden at fixed resolutions (score_fixed_resolutions.py), one array element per method x dataset pair
+# (58 pairs; elements beyond the number of pairs exit without work). Submit from this folder:
+#   bsub < score_fixed_resolutions.lsf
+#
+#BSUB -G team361                                                                  # LSF group
+#BSUB -J human_niche_fixed_res[1-58]                                              # Array job: one per method x dataset
+#BSUB -o ../../../artifacts/benchmarking/human/logs/fixed_res_%J_%I.out           # Standard output
+#BSUB -e ../../../artifacts/benchmarking/human/logs/fixed_res_%J_%I.err           # Standard error
+#BSUB -q normal                                                                   # Queue name
+#BSUB -n 10                                                                       # One core per resolution
+#BSUB -M 96GB                                                                     # Memory (largest dataset)
+#BSUB -R "select[mem>96GB] rusage[mem=96GB] span[hosts=1]"                        # Reserve memory on one host
+#BSUB -W 8:00                                                                     # Walltime (hh:mm)
+set -euo pipefail
+source "$LS_SUBCWD/config.sh"
+
+echo "Host: $(hostname) | Job: $LSB_JOBID[$LSB_JOBINDEX]"
+"$PYTHON_BANKSY" score_fixed_resolutions.py --index "$LSB_JOBINDEX"

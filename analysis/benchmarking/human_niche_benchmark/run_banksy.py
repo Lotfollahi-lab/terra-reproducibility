@@ -10,6 +10,11 @@ neighbour graph is built per tissue section (block-diagonal), so no cell gets
 neighbours from another section. The BANKSY matrix itself (z-scoring, lambda
 weighting, PCA) is computed jointly over all sections, as in the mouse run.
 
+``--n_top_genes`` (whole-transcriptome datasets, e.g. Visium HD): keep only the
+highly variable genes (scanpy ``seurat`` on log-normalised counts, sections as
+``batch_key``) before BANKSY, as in BANKSY's own preprocessing; the dense
+BANKSY matrix of all ~18,000 genes does not fit in memory for > 1M bins.
+
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
 score.py. Run in the banksy environment (run_cpu_methods.lsf).
 """
@@ -19,6 +24,7 @@ from pathlib import Path
 
 import harmonypy
 import numpy as np
+import scanpy as sc
 import scipy.sparse as sp
 from banksy.embed_banksy import generate_banksy_matrix
 from banksy.initialize_banksy import initialize_banksy
@@ -70,6 +76,20 @@ def main(args):
     adata.uns['benchmark']['dataset_name'] = dataset
     print(adata)
 
+    n_genes_input = adata.n_vars
+    if args.n_top_genes and adata.n_vars > args.n_top_genes:
+        # 'seurat' flavour on log-normalised counts (seurat_v3 needs scikit-misc, absent in the banksy env);
+        # the selected genes keep their raw counts
+        lognorm = sc.AnnData(X=adata.X.copy(), obs=adata.obs[[SECTION_KEY]].copy(), var=adata.var[[]].copy())
+        sc.pp.normalize_total(lognorm, target_sum=1e4)
+        sc.pp.log1p(lognorm)
+        sc.pp.highly_variable_genes(
+            lognorm, flavor='seurat', n_top_genes=args.n_top_genes,
+            batch_key=SECTION_KEY if adata.obs[SECTION_KEY].nunique() > 1 else None)
+        adata = adata[:, lognorm.var['highly_variable'].values].copy()
+        del lognorm
+        print(f'HVG: kept {adata.n_vars} of {n_genes_input} genes.')
+
     adata.X = adata.X.astype(np.float32)   # raw counts, as in the mouse run
     adata.obs['spatial_x'] = adata.obsm['spatial'][:, 0]
     adata.obs['spatial_y'] = adata.obsm['spatial'][:, 1]
@@ -100,12 +120,15 @@ def main(args):
         params=dict(n_neighs=N_NEIGHS, max_m=MAX_M,
                     nbr_weight_decay=NBR_WEIGHT_DECAY, lambda_param=LAMBDA,
                     pca_dims=PCA_DIMS, input='raw counts',
+                    n_top_genes=args.n_top_genes, n_genes_used=adata.n_vars,
                     integration='harmony (post-hoc, forced)')))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', required=True)
+    parser.add_argument('--n_top_genes', type=int, default=None,
+                        help='Highly variable genes before BANKSY (default: all genes).')
     parser.add_argument('--subsample', type=int, default=None,
                         help='Random subset of cells (smoke tests only).')
     main(parser.parse_args())

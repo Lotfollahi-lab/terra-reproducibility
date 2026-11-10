@@ -26,7 +26,7 @@ sys.path.insert(0, SCGPT_SPATIAL_FOLDER_PATH)
 import scgpt_spatial  # noqa: E402
 
 sys.path.append(str(Path(__file__).parent))
-from bench_utils import Timer, load_benchmark_dataset, save_embedding  # noqa: E402
+from bench_utils import SECTION_KEY, Timer, load_benchmark_dataset, save_embedding  # noqa: E402
 
 MODEL_FOLDER_PATH = f'{SCGPT_SPATIAL_FOLDER_PATH}/checkpoints/scGPT_spatial_v1'
 GENE_COL = 'feature_name'
@@ -40,17 +40,28 @@ def main(args):
     print(adata)
 
     with Timer() as t_embed:
-        adata_in = adata.copy()
-        adata_in.var[GENE_COL] = adata_in.var_names.astype(str)
-        if sp.issparse(adata_in.X):
-            adata_in.X = adata_in.X.toarray()
-        embedded = scgpt_spatial.tasks.embed_data(
-            adata_in, MODEL_FOLDER_PATH, gene_col=GENE_COL, obs_to_save=[],
-            batch_size=args.batch_size, return_new_adata=True)
-        if embedded.n_obs != adata.n_obs:
-            raise ValueError(f'scGPT-spatial embedded {embedded.n_obs} of {adata.n_obs} cells.')
-        adata.obsm[EMB_KEY] = np.asarray(embedded.X, dtype=np.float32)
-        del adata_in, embedded
+        # Cells are embedded independently, so sections are embedded one at a
+        # time (the dense count matrix of a whole Visium HD dataset does not
+        # fit in memory)
+        parts = []
+        for section in adata.obs[SECTION_KEY].cat.categories:
+            mask = (adata.obs[SECTION_KEY] == section).values
+            adata_in = adata[mask].copy()
+            adata_in.var[GENE_COL] = adata_in.var_names.astype(str)
+            if sp.issparse(adata_in.X):
+                adata_in.X = adata_in.X.astype(np.float32).toarray()
+            embedded = scgpt_spatial.tasks.embed_data(
+                adata_in, MODEL_FOLDER_PATH, gene_col=GENE_COL, obs_to_save=[],
+                batch_size=args.batch_size, return_new_adata=True)
+            if embedded.n_obs != adata_in.n_obs:
+                raise ValueError(f'scGPT-spatial embedded {embedded.n_obs} of {adata_in.n_obs} cells.')
+            parts.append((np.where(mask)[0], np.asarray(embedded.X, dtype=np.float32)))
+            print(f'{section}: {mask.sum()} cells embedded.', flush=True)
+            del adata_in, embedded
+        emb = np.zeros((adata.n_obs, parts[0][1].shape[1]), dtype=np.float32)
+        for idx, part in parts:
+            emb[idx] = part
+        adata.obsm[EMB_KEY] = emb
 
     save_embedding(adata, args.method, EMB_KEY, dict(
         embedding_seconds=t_embed.seconds,

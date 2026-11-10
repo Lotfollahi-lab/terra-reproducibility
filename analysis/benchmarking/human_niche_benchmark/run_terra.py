@@ -10,7 +10,8 @@ neighbourhoods never cross sections.
 
 ``--preprocess hvg`` (method ``terra_hvg``) keeps only the ``--n_top_genes``
 highly variable genes (scanpy ``seurat_v3`` on raw counts, sections as
-``batch_key``) before tokenization; panels with at most ``--n_top_genes``
+``batch_key``), chosen among the genes TERRA tokenizes (mapped to an Ensembl
+ID and seen in pretraining), before tokenization; panels with at most ``--n_top_genes``
 genes are left unchanged. Motivation (diagnostics/token_diagnostic.py): on the
 Xenium 5k panels about half of the cells express more genes than TERRA's
 per-cell budget of 256 tokens, and the cut-off falls among count-1 genes, so
@@ -29,6 +30,7 @@ Writes the embedding only; job_wrapper.sh then clusters and scores it with
 score.py. Run in the terra environment on a GPU node (run_terra.lsf).
 """
 import argparse
+import pickle
 import sys
 from pathlib import Path
 
@@ -67,6 +69,33 @@ def skip_checkpoint_loading():
     embed_module.load_checkpoint = load_no_checkpoint
 
 
+# Minimum number of pretraining occurrences for a gene to be tokenized
+# (harmonize_tokenize_embed_pipeline's gene_occurrence_count_filter_value)
+MIN_PRETRAINING_OCCURRENCES = 10
+
+
+def terra_vocabulary_genes(var_names, model_folder_path):
+    """Genes TERRA keeps when harmonizing (terra.inference.harmonize.harmonize_adata).
+
+    A gene is kept if it maps to an Ensembl ID with the bundle's gene mapping
+    and occurred more than MIN_PRETRAINING_OCCURRENCES times in pretraining
+    (bundle's gene_count_dictionary.pkl); all other genes are dropped before
+    tokenization.
+    """
+    folder = Path(model_folder_path)
+    with open(folder / 'ensembl_dictionary.pkl', 'rb') as f:
+        name_to_ensembl = pickle.load(f)
+    with open(folder / 'gene_count_dictionary.pkl', 'rb') as f:
+        occurrences = pickle.load(f)
+    ensembl_ids = set(name_to_ensembl.values())
+    keep = []
+    for gene in var_names:
+        ensembl = name_to_ensembl.get(gene, gene if gene in ensembl_ids else None)
+        keep.append(ensembl is not None
+                    and occurrences.get(ensembl, 0) > MIN_PRETRAINING_OCCURRENCES)
+    return np.array(keep)
+
+
 def select_hvg(adata, n_top_genes, batch_key):
     """Subset to highly variable genes (seurat_v3 on raw counts)."""
     if adata.n_vars <= n_top_genes:
@@ -101,8 +130,16 @@ def main(args):
     multi_section = adata.obs[SECTION_KEY].nunique() > 1
     preprocess_info = {}
     if args.preprocess == 'hvg':
+        # HVGs only among the genes TERRA tokenizes; otherwise the
+        # harmonization drops part of the selection afterwards (e.g. 1,039 of
+        # 2,000 HVGs on Visium HD LUAD)
+        in_vocabulary = terra_vocabulary_genes(adata.var_names.astype(str), model_folder_path)
+        print(f'{in_vocabulary.sum()} of {adata.n_vars} genes in the TERRA vocabulary.')
+        n_panel = adata.n_vars
+        adata = adata[:, in_vocabulary].copy()
         adata, preprocess_info = select_hvg(
             adata, args.n_top_genes, SECTION_KEY if multi_section else None)
+        preprocess_info.update(n_genes_panel=n_panel, hvg_among='TERRA vocabulary genes')
         preprocess_info.update(flavor='seurat_v3', n_top_genes=args.n_top_genes,
                                batch_key=SECTION_KEY if multi_section else None)
     cache_dir = Path(CACHE_FOLDER_PATH) / dataset

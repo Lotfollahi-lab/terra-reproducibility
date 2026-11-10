@@ -33,24 +33,30 @@ def main(args):
 
     with Timer() as t_embed:
         # Per-section kNN graph (library_key keeps sections separate).
-        sq.gr.spatial_neighbors(adata, library_key=SECTION_KEY,
-                                coord_type='generic', spatial_key='spatial',
-                                n_neighs=N_NEIGHS, set_diag=True)
-        adata.layers['X_neigh'] = (
-            adata.obsp['spatial_connectivities'].T @ adata.X).astype(np.float32)
+        if args.no_neighbours:
+            # Diagnostic (method expr_pca): each cell's own counts only
+            adata.layers['X_neigh'] = adata.X.astype(np.float32)
+        else:
+            sq.gr.spatial_neighbors(adata, library_key=SECTION_KEY,
+                                    coord_type='generic', spatial_key='spatial',
+                                    n_neighs=N_NEIGHS, set_diag=True)
+            adata.layers['X_neigh'] = (
+                adata.obsp['spatial_connectivities'].T @ adata.X).astype(np.float32)
         sc.pp.normalize_total(adata, target_sum=1e4, layer='X_neigh')
         sc.pp.log1p(adata, layer='X_neigh')
         sc.pp.pca(adata, layer='X_neigh', n_comps=N_PCS, random_state=0)
 
-    save_embedding(adata, METHOD, EMB_KEY, dict(
+    save_embedding(adata, 'expr_pca' if args.no_neighbours else METHOD, EMB_KEY, dict(
         embedding_seconds=t_embed.seconds,
-        params=dict(n_neighs=N_NEIGHS, target_sum=1e4, n_pcs=N_PCS,
+        params=dict(n_neighs=0 if args.no_neighbours else N_NEIGHS, target_sum=1e4, n_pcs=N_PCS,
                     integration='none')))
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', required=True)
+    parser.add_argument('--no_neighbours', action='store_true',
+                        help='Diagnostic: PCA of each cell\'s own counts (method expr_pca).')
     parser.add_argument('--subsample', type=int, default=None,
                         help='Random subset of cells (smoke tests only).')
     main(parser.parse_args())

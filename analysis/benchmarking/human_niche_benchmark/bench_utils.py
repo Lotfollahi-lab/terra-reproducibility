@@ -136,6 +136,17 @@ DATASETS = {
         drop_unlabeled=True,
         coord_scale=1.0,
         spot_size=10),
+    'vhb3003-3b_1p': dict(
+        label='Visium HD breast (8 um bins)',
+        # Built by analysis/data_preparation/process_visium_hd_breast.py
+        # (samples P26, P29, P32; 8-um bins with >= 50 counts; niche =
+        # pathologist annotation of the bin).
+        silver_folder='/nfs/team361/me13/DATASETS/silver',
+        file_patterns=[f'adata_batch{k}.h5ad' for k in range(3)],
+        niche_key='niche',
+        drop_unlabeled=True,
+        coord_scale=1.0,
+        spot_size=8),
 }
 DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
 
@@ -193,6 +204,7 @@ NOT_APPLICABLE = {
     ('nicheformer_rerun', 'chr78-11b_1p'): 'ISS not supported by Nicheformer',
     # Visium HD: no technology token and no technology mean in Nicheformer.
     ('nicheformer_rerun', 'vhl3002-1b_1p'): 'Visium HD not supported by Nicheformer',
+    ('nicheformer_rerun', 'vhb3003-3b_1p'): 'Visium HD not supported by Nicheformer',
 }
 
 

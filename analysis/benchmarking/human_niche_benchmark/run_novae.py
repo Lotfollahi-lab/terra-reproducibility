@@ -14,7 +14,9 @@ The notebook was run with an earlier Novae version (``slide_key`` passed to
 ``compute_representations``); Novae 1.0.3 takes it in ``spatial_neighbors``.
 
 Writes the embedding only; job_wrapper.sh then clusters and scores it with
-score.py. Run in the novae environment on a GPU (run_gpu_method.lsf).
+score.py. Run in the novae environment (run_gpu_method.lsf). The default
+accelerator is the CPU, as in the notebook: the environment's torch needs a
+newer NVIDIA driver than the farm and tiger GPU nodes have.
 """
 import argparse
 import sys
@@ -23,7 +25,10 @@ from pathlib import Path
 import novae
 import numpy as np
 import pandas as pd
-import torch
+
+# pandas 3 (novae environment) would store text as its string dtype, which this
+# anndata cannot write; keep text as object dtype as in earlier pandas versions
+pd.set_option('future.infer_string', False)
 from sklearn.metrics.cluster import adjusted_rand_score, normalized_mutual_info_score
 
 sys.path.append(str(Path(__file__).parent))
@@ -33,6 +38,25 @@ from import_fm import novae_batch_effect_correction  # noqa: E402
 
 MODEL = 'MICS-Lab/novae-human-0'
 EMB_KEY = 'fm_emb'
+
+
+def object_strings(df):
+    """Text columns and index as object dtype.
+
+    pandas 3 (novae environment) stores text as its string dtype, which this
+    anndata cannot write and older anndata versions (scoring environment)
+    cannot read.
+    """
+    df = df.copy()
+    df.index = pd.Index(np.asarray(df.index, dtype=object), dtype=object)
+    for column in df.columns:
+        values = df[column]
+        if isinstance(values.dtype, pd.CategoricalDtype):
+            categories = pd.Index(np.asarray(values.cat.categories, dtype=object), dtype=object)
+            df[column] = pd.Categorical(np.asarray(values, dtype=object), categories=categories)
+        elif pd.api.types.is_string_dtype(values.dtype):
+            df[column] = np.asarray(values, dtype=object)
+    return df
 
 
 def main(args):
@@ -46,7 +70,7 @@ def main(args):
     with Timer() as t_embed:
         novae.spatial_neighbors(adata, slide_key=SECTION_KEY if multi_section else None)
         model = novae.Novae.from_pretrained(MODEL)
-        accelerator = 'cuda' if torch.cuda.is_available() else 'cpu'
+        accelerator = args.accelerator
         model.compute_representations(adata, zero_shot=True, accelerator=accelerator)
         domain_key = model.assign_domains(adata, level=n_target)
     latent = np.asarray(adata.obsm['novae_latent'], dtype=np.float32)
@@ -72,6 +96,8 @@ def main(args):
     adata.obs = adata.obs.drop(columns=[c for c in adata.obs.columns
                                         if c.startswith('novae_') and c != 'novae_native_domain'])
 
+    adata.obs = object_strings(adata.obs)
+    adata.var = object_strings(adata.var)
     save_embedding(adata, args.method, EMB_KEY, dict(
         embedding_seconds=t_embed.seconds, native_novae=native,
         params=dict(model=MODEL, novae_version=novae.__version__, zero_shot=True,
@@ -86,6 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('--dataset', required=True)
     parser.add_argument('--method', default='novae',
                         help="Result name; e.g. 'novae_rerun' to compare with the imported embeddings.")
+    parser.add_argument('--accelerator', default='cpu', help="'cpu' (default) or 'cuda'.")
     parser.add_argument('--subsample', type=int, default=None,
                         help='Random subset of cells (smoke tests only).')
     main(parser.parse_args())

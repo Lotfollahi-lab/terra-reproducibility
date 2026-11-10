@@ -31,5 +31,5 @@ esac
 export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
 
 echo "Host: $(hostname) | Job: $LSB_JOBID | Method: $METHOD | Dataset: $DATASET | Extra: $EXTRA_ARGS"
-nvidia-smi --query-gpu=name,memory.total --format=csv
+nvidia-smi --query-gpu=name,memory.total --format=csv || echo 'No GPU (CPU run)'
 "$BENCH_DIR/job_wrapper.sh" "$PYTHON" "run_${METHOD}.py" --dataset "$DATASET" $EXTRA_ARGS
