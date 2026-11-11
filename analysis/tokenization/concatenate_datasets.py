@@ -1,9 +1,11 @@
 import argparse
+import json
 import os
 import tracemalloc
 from pathlib import Path
 
 import datasets
+import pyarrow.compute as pc
 import pandas as pd
 
 
@@ -24,6 +26,7 @@ def main(args):
     print(hparam_prefix)
 
     ds_list = []
+    tokenizer_params = []
 
     # Read datasets
     datasets_df = pd.read_csv(
@@ -43,6 +46,10 @@ def main(args):
         print(gold_dataset_dir)
 
         ds = datasets.load_from_disk(str(gold_dataset_dir))
+        params_path = gold_dataset_dir / 'terra_tokenizer_params.json'
+        tokenizer_params.append(
+            json.loads(params_path.read_text()) if params_path.exists()
+            else None)
 
         ds_list.append(ds)
 
@@ -62,6 +69,26 @@ def main(args):
         output_path
         #num_shards=args.num_shards
         )
+    # The concatenated dataset keeps the tokenizer settings record (which
+    # train() checks the model config against) only if all parts share it
+    if any(p is None for p in tokenizer_params):
+        print('WARNING: some datasets have no terra_tokenizer_params.json; '
+              'the concatenated dataset gets none.')
+    else:
+        if any(p != tokenizer_params[0] for p in tokenizer_params[1:]):
+            raise ValueError(
+                'The datasets were tokenized with different settings '
+                '(terra_tokenizer_params.json differs); re-tokenize them '
+                'with one configuration before concatenating.')
+        with open(Path(output_path) / 'terra_tokenizer_params.json', 'w') as f:
+            json.dump(tokenizer_params[0], f, indent=2, sort_keys=True)
+    # Cell ids must be unique: duplicated rows were once removed by a
+    # hard-coded row range (fix_dataset_duplicates.py)
+    n_unique = pc.count_distinct(
+        concatenated_dataset.data.column('cell_id')).as_py()
+    n_duplicates = len(concatenated_dataset) - n_unique
+    if n_duplicates:
+        raise ValueError(f'{n_duplicates} duplicated cell ids in {output_path}.')
     current, peak = tracemalloc.get_traced_memory()
     print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.')
 

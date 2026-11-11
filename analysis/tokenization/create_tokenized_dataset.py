@@ -144,6 +144,18 @@ def main(config: dict):
     # Optional: per-file streaming assembly (lower peak memory). Default off
     # -> legacy single-dict assembly. Verify output equivalence before use.
     stream_per_file = config["tokenization"].get("stream_per_file", False)
+    # Optional tokenizer settings (TERRA opt-in fixes). They are recorded with
+    # the dataset (terra_tokenizer_params.json), and train() checks the model
+    # config against them, so set them here, not only in the model config
+    optional_tokenizer_kwargs = {
+        key: config["tokenization"][key] for key in (
+            "stable_rank_ties", "rank_tie_break_norm_factor",
+            "zero_expr_from_raw_counts", "gcrd_basis_target_read_depth",
+            "gcrd_target_read_depth_per_gene", "seurat_loess_span",
+            "eliminate_stored_zeros", "pad_empty_neighbors",
+            "aggregate_own_neighbors")
+        if key in config["tokenization"]}
+    print(f"Optional tokenizer settings: {optional_tokenizer_kwargs}")
 
     nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
 
@@ -234,7 +246,8 @@ def main(config: dict):
             norm_factor_file_path=norm_factor_file_path,
             pf_targets_file_path=pf_targets_file_path,
             stream_per_file=stream_per_file,
-            token_dictionary_file_path=token_dictionary_file_path)
+            token_dictionary_file_path=token_dictionary_file_path,
+            **optional_tokenizer_kwargs)
 
         # Tokenize data 
         tk.tokenize_data(input_directory=input_directory,

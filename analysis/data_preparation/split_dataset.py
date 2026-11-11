@@ -2,6 +2,7 @@ import argparse
 import pickle
 
 from datasets import load_from_disk
+from terra.datasets.utils import save_precomputed_split
 
 
 def main(args):
@@ -10,8 +11,11 @@ def main(args):
 
     if args.full_dataset:
         indices = list(range(len(dataset)))
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_full.pkl', 'wb') as f:
-            pickle.dump(indices, f)
+        # The split file records the dataset it was made for, so training
+        # refuses it for another tokenization (TERRA save_precomputed_split)
+        save_precomputed_split(
+            dataset, indices,
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_full.pkl')
         print("Saved full dataset split.")
 
     else:       
@@ -30,6 +34,18 @@ def main(args):
             elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
                 test_indices.append(index)
         print('done1')
+
+        # Every listed held-out batch must match cells (a listed id that
+        # matches nothing, e.g. a batch number that does not exist, leaves
+        # the batch meant to be held out in training)
+        batch_ids = {f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}"
+                     for cell_id in cell_ids}
+        unmatched = sorted(
+            (set(args.val_batch_ids) | set(args.test_batch_ids)) - batch_ids)
+        if unmatched:
+            raise ValueError(
+                f'{len(unmatched)} listed held-out batch ids match no cell of '
+                f'the dataset: {unmatched}')
 
         # Another loop to determine train indices
         excluded_indices = set(validation_indices).union(test_indices)
@@ -54,12 +70,15 @@ def main(args):
         #print('done4')
 
         # Save the splits as pickle files
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'wb') as f:
-            pickle.dump(train_indices, f)
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'wb') as f:
-            pickle.dump(validation_indices, f)
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'wb') as f:
-            pickle.dump(test_indices, f)
+        save_precomputed_split(
+            dataset, train_indices,
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl')
+        save_precomputed_split(
+            dataset, validation_indices,
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl')
+        save_precomputed_split(
+            dataset, test_indices,
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl')
         print("Saved train, validation, and test dataset splits.")
 
 

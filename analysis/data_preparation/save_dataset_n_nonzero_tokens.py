@@ -2,6 +2,7 @@ import argparse
 import pickle
 
 from datasets import load_from_disk
+from terra.datasets.utils import load_precomputed_split
 
 
 # Helper function to save n_nonzero_tokens
@@ -27,12 +28,18 @@ def main(args):
 
     else:
         # Load split indices
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl', 'rb') as f:
-            train_indices = pickle.load(f)
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl', 'rb') as f:
-            validation_indices = pickle.load(f)
-        with open(f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl', 'rb') as f:
-            test_indices = pickle.load(f)
+        # Refuses split files made for another tokenization of the data
+        train_indices = load_precomputed_split(
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl',
+            dataset)
+        # Refuses split files made for another tokenization of the data
+        validation_indices = load_precomputed_split(
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl',
+            dataset)
+        # Refuses split files made for another tokenization of the data
+        test_indices = load_precomputed_split(
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_test.pkl',
+            dataset)
 
         # Save n_nonzero_tokens for train, validation, and test
         save_n_nonzero_tokens(
