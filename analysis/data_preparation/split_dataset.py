@@ -70,9 +70,12 @@ def main(args):
         #print('done4')
 
         # Save the splits as pickle files
+        # The training split records the held-out batches it excludes, so
+        # training need not scan every cell id to check it
         save_precomputed_split(
             dataset, train_indices,
-            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl')
+            f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_train.pkl',
+            excluded_batch_ids=list(args.val_batch_ids) + list(args.test_batch_ids))
         save_precomputed_split(
             dataset, validation_indices,
             f'{args.tokenizer_folder_path}/{args.tokenized_data_folder_path.rsplit("/", 1)[-1].removesuffix(".dataset")}_precomputed_split_validation.pkl')

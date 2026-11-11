@@ -65,30 +65,41 @@ def main(args):
     print('Concatenating datasets...')
     tracemalloc.start()
     concatenated_dataset = datasets.concatenate_datasets(ds_list)
+
+    # Checks before the (long) save. The concatenated dataset keeps the
+    # tokenizer settings record (which train() checks the model config
+    # against) only if all parts were tokenized alike; file paths and the
+    # TERRA version may differ (the files' sha256 are compared instead)
+    not_compared = ('terra_version', 'pf_targets_file_path',
+                    'norm_factor_file_path')
+    settings = [None if p is None else
+                {k: v for k, v in p.items() if k not in not_compared}
+                for p in tokenizer_params]
+    if any(p is None for p in settings):
+        print('WARNING: some datasets have no terra_tokenizer_params.json; '
+              'the concatenated dataset gets none.')
+    elif any(p != settings[0] for p in settings[1:]):
+        raise ValueError(
+            'The datasets were tokenized with different settings '
+            '(terra_tokenizer_params.json differs); re-tokenize them '
+            'with one configuration before concatenating.')
+    # Cell ids must be present and unique: duplicated rows were once removed
+    # by a hard-coded row range (fix_dataset_duplicates.py)
+    cell_id_column = concatenated_dataset.data.column('cell_id')
+    if cell_id_column.null_count:
+        raise ValueError(f'{cell_id_column.null_count} cells have no cell id.')
+    n_duplicates = (len(concatenated_dataset)
+                    - pc.count_distinct(cell_id_column).as_py())
+    if n_duplicates:
+        raise ValueError(f'{n_duplicates} duplicated cell ids.')
+
     concatenated_dataset.save_to_disk(
         output_path
         #num_shards=args.num_shards
         )
-    # The concatenated dataset keeps the tokenizer settings record (which
-    # train() checks the model config against) only if all parts share it
-    if any(p is None for p in tokenizer_params):
-        print('WARNING: some datasets have no terra_tokenizer_params.json; '
-              'the concatenated dataset gets none.')
-    else:
-        if any(p != tokenizer_params[0] for p in tokenizer_params[1:]):
-            raise ValueError(
-                'The datasets were tokenized with different settings '
-                '(terra_tokenizer_params.json differs); re-tokenize them '
-                'with one configuration before concatenating.')
+    if all(p is not None for p in tokenizer_params):
         with open(Path(output_path) / 'terra_tokenizer_params.json', 'w') as f:
             json.dump(tokenizer_params[0], f, indent=2, sort_keys=True)
-    # Cell ids must be unique: duplicated rows were once removed by a
-    # hard-coded row range (fix_dataset_duplicates.py)
-    n_unique = pc.count_distinct(
-        concatenated_dataset.data.column('cell_id')).as_py()
-    n_duplicates = len(concatenated_dataset) - n_unique
-    if n_duplicates:
-        raise ValueError(f'{n_duplicates} duplicated cell ids in {output_path}.')
     current, peak = tracemalloc.get_traced_memory()
     print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.')
 
