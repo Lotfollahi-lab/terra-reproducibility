@@ -30,7 +30,12 @@ import scanpy as sc
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SILVER_FOLDER_PATH = os.environ.get(
     'BENCH_SILVER_DIR', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver')
-FINAL_OUTPUT_FOLDER_PATH = str(REPO_ROOT / 'artifacts' / 'benchmarking' / 'human')
+FINAL_OUTPUT_FOLDER_PATH = os.environ.get(
+    'BENCH_FINAL_OUTPUT_DIR', str(REPO_ROOT / 'artifacts' / 'benchmarking' / 'human'))
+if not os.path.isabs(FINAL_OUTPUT_FOLDER_PATH):
+    # job_wrapper.sh resolves it in another folder than the scripts do
+    raise ValueError(f'BENCH_FINAL_OUTPUT_DIR must be an absolute path: '
+                     f'{FINAL_OUTPUT_FOLDER_PATH}')
 OUTPUT_FOLDER_PATH = os.environ.get('BENCH_OUTPUT_DIR', FINAL_OUTPUT_FOLDER_PATH)
 CACHE_FOLDER_PATH = os.environ.get(
     'BENCH_CACHE_DIR',
@@ -159,6 +164,13 @@ METHODS = {
                               note='authors\' recipe: NaN technology mean -> 1, context tokens'),
     'cellplm': dict(label='CellPLM', color='#ea9776', note=''),
     'scgpt-spatial': dict(label='scGPT-spatial', color='#db96c0', note=''),
+    'cifm': dict(label='CIFM', color='#c47b4b',
+                 note='zero-shot ynyou/CIFM, 20 um radius graph; xhs49 (10x Xenium '
+                      'Prime skin) likely in its pretraining data'),
+    'heist': dict(label='HEIST', color='#a0526b',
+                  note='zero-shot HirenMadhu/HEIST nonmarker_all, gene networks per '
+                       'Leiden cluster; xhs49 (10x Xenium Prime skin) in its '
+                       'pretraining data'),
 }
 
 # (method, dataset) pairs left out (n/a) although results exist on disk.
@@ -248,6 +260,31 @@ def avg_cosine_similarity(X: np.ndarray) -> float:
     n = X.shape[0]
     S = X.sum(axis=0)
     return float((S @ S - n) / (n * (n - 1)))
+
+
+def row_groups(X: np.ndarray) -> np.ndarray:
+    """An integer id per row of X; rows with identical bytes share one."""
+    return pd.factorize(pd.Series([row.tobytes() for row in np.ascontiguousarray(X)]))[0]
+
+
+def frac_duplicate_rows(X: np.ndarray) -> float:
+    """Fraction of rows (e.g. cell embeddings) identical to another row."""
+    ids = row_groups(X)
+    return float((np.bincount(ids)[ids] > 1).mean())
+
+
+def hf_snapshot_revision(snapshot_path, filename: str, revision: str,
+                         setup: str) -> tuple[str, str]:
+    """Commit and sha256 of a file of a local Hugging Face snapshot, from
+    huggingface_hub's download metadata. The commit must be ``revision`` (pinned
+    in the ``setup`` script)."""
+    meta = (Path(snapshot_path) / '.cache' / 'huggingface' / 'download'
+            / f'{filename}.metadata')
+    commit, sha256 = meta.read_text().splitlines()[:2]
+    if commit != revision:
+        raise ValueError(f'Snapshot at {snapshot_path} is revision {commit}, '
+                         f'expected {revision} ({setup}).')
+    return commit, sha256
 
 
 def save_embedding(adata: ad.AnnData, method: str, emb_key: str,
