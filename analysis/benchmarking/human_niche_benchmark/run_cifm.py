@@ -55,8 +55,8 @@ from models_cifm.cifm import CIFM  # noqa: E402
 from torch_geometric.nn import radius_graph  # noqa: E402
 
 sys.path.append(str(Path(__file__).parent))
-from bench_utils import (DATASETS, SECTION_KEY, SILVER_FOLDER_PATH,  # noqa: E402
-                         Timer, frac_duplicate_rows, hf_snapshot_revision,
+from bench_utils import (SECTION_KEY, Timer, ensembl_ids,  # noqa: E402
+                         frac_duplicate_rows, hf_snapshot_revision,
                          load_benchmark_dataset, save_embedding)
 
 METHOD = 'cifm'
@@ -84,26 +84,6 @@ def load_model(device, model_path=CIFM_MODEL_PATH):
     if len(set(model_genes)) != len(model_genes) or len(model_genes) != args.in_dim:
         raise ValueError('CIFM input channels are not unique Ensembl IDs.')
     return model, model_genes, args
-
-
-def ensembl_ids(dataset_name, gene_names):
-    """Ensembl IDs of the panel genes, from the silver files' var.
-
-    As in run_nicheformer.py (branch human-niche-benchmark):
-    load_benchmark_dataset concatenates sections with ad.concat, which drops
-    var columns, so they are read from the source files here.
-    """
-    cfg = DATASETS[dataset_name]
-    folder = Path(cfg.get('silver_folder', SILVER_FOLDER_PATH)) / dataset_name
-    mapping = {}
-    for file in sorted(folder.glob('*.h5ad')):
-        if not any(p in file.name for p in cfg['file_patterns']):
-            continue
-        var = ad.read_h5ad(file, backed='r').var
-        for name, ensembl in zip(var.index.astype(str), var['ensembl_id'].astype(str)):
-            if mapping.setdefault(name, ensembl) != ensembl:
-                raise ValueError(f'{name} has two Ensembl IDs across sections.')
-    return np.array([mapping[g] for g in gene_names])
 
 
 def normalized_panel(adata):

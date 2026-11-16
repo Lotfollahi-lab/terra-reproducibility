@@ -10,6 +10,7 @@ settings and metrics mirror ``analysis/benchmarking/mouse_benchmarking``.
 import json
 import os
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 import anndata as ad
@@ -171,6 +172,10 @@ METHODS = {
                   note='zero-shot HirenMadhu/HEIST nonmarker_all, gene networks per '
                        'Leiden cluster; xhs49 (10x Xenium Prime skin) in its '
                        'pretraining data'),
+    'stofm': dict(label='SToFM', color='#5a6fb0',
+                  note='zero-shot PharMolix/SToFM: Geneformer-style cell encoder + SE(2) '
+                       'transformer over ~1000-cell sub-slices with whole-section virtual '
+                       'cells; no benchmark dataset in its pretraining corpus'),
 }
 
 # (method, dataset) pairs left out (n/a) although results exist on disk.
@@ -285,6 +290,37 @@ def hf_snapshot_revision(snapshot_path, filename: str, revision: str,
         raise ValueError(f'Snapshot at {snapshot_path} is revision {commit}, '
                          f'expected {revision} ({setup}).')
     return commit, sha256
+
+
+def ensembl_ids(dataset_name, gene_names):
+    """Ensembl IDs of the panel genes, from the silver files' var.
+
+    As in run_nicheformer.py (branch human-niche-benchmark):
+    load_benchmark_dataset concatenates sections with ad.concat, which drops
+    var columns, so they are read from the source files here.
+    """
+    cfg = DATASETS[dataset_name]
+    folder = Path(cfg.get('silver_folder', SILVER_FOLDER_PATH)) / dataset_name
+    mapping = {}
+    for file in sorted(folder.glob('*.h5ad')):
+        if not any(p in file.name for p in cfg['file_patterns']):
+            continue
+        var = ad.read_h5ad(file, backed='r').var
+        for name, ensembl in zip(var.index.astype(str), var['ensembl_id'].astype(str)):
+            if mapping.setdefault(name, ensembl) != ensembl:
+                raise ValueError(f'{name} has two Ensembl IDs across sections.')
+    return np.array([mapping[g] for g in gene_names])
+
+
+@contextmanager
+def patched(module, name, replacement):
+    """Inside: module.<name> is replacement."""
+    original = getattr(module, name)
+    setattr(module, name, replacement)
+    try:
+        yield
+    finally:
+        setattr(module, name, original)
 
 
 def save_embedding(adata: ad.AnnData, method: str, emb_key: str,

@@ -109,7 +109,7 @@ from utils.preprocess import filter_genes_to_vocab, spatial_chunks  # noqa: E402
 sys.path.append(str(Path(__file__).parent))
 from bench_utils import (CACHE_FOLDER_PATH, SECTION_KEY, Timer,  # noqa: E402
                          frac_duplicate_rows, git_commit, hf_snapshot_revision,
-                         load_benchmark_dataset, row_groups, save_embedding)
+                         load_benchmark_dataset, patched, row_groups, save_embedding)
 
 METHOD = 'heist'
 EMB_KEY = 'X_heist'
@@ -181,17 +181,6 @@ def ksg_batch(n_cells):
     by_memory = int(KSG_MEMORY_BUDGET / (5 * 4 * n_cells ** 2))
     # the authors' cap: torch.topk fails on tensors with >= 2**31 elements
     return max(1, min(by_memory, (2**31 - 1) // n_cells ** 2))
-
-
-@contextmanager
-def patched(module, name, replacement):
-    """Inside: module.<name> is replacement."""
-    original = getattr(module, name)
-    setattr(module, name, replacement)
-    try:
-        yield
-    finally:
-        setattr(module, name, original)
 
 
 def reproducible_gene_networks():

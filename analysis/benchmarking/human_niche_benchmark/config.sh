@@ -24,5 +24,6 @@ LUSTRE_WORK_ROOT=${BENCH_LUSTRE_ROOT:-/lustre/scratch126/cellgen/lotfollahi/$USE
 PYTHON_BANKSY=/nfs/team361/sb75/.venvs/banksy/bin/python             # scoring; neighbourhood PCA example
 PYTHON_CIFM=/nfs/team361/jr43/.venvs/cifm/bin/python                 # CIFM (envs/cifm.sh)
 PYTHON_HEIST=/nfs/team361/jr43/.venvs/heist/bin/python               # HEIST (envs/heist.sh)
+PYTHON_STOFM=/nfs/team361/jr43/.venvs/stofm/bin/python               # SToFM (envs/stofm.sh)
 
 export NUMBA_CPU_NAME=generic   # reproducible UMAP/Leiden (as in the repo notebooks)

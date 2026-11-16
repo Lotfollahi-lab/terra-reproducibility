@@ -52,6 +52,7 @@ so all methods are compared on identical cells with an identical protocol.
 | `checks/test_resolution_scan.py` | Check of the resolution scan against brute force |
 | `run_cifm.py`, `checks/test_cifm.py` | CIFM zero-shot embeddings; check against the authors' code |
 | `run_heist.py`, `checks/test_heist.py` | HEIST zero-shot embeddings; check against the authors' code |
+| `run_stofm.py`, `checks/test_stofm.py` | SToFM zero-shot embeddings; check against the authors' code and demo |
 
 Results: `<repo>/artifacts/benchmarking/human/<method>/`, one folder per method:
 
@@ -176,6 +177,7 @@ commands in the same shell still use the shared folder.
 python checks/test_resolution_scan.py   # banksy env: scan vs. brute force on toy data
 python checks/test_cifm.py              # cifm env, GPU: run_cifm.py vs. the authors' CIFM code
 python checks/test_heist.py             # heist env, GPU: run_heist.py vs. the authors' HEIST code
+python checks/test_stofm.py             # stofm env, GPU: run_stofm.py vs. the authors' SToFM code and demo
 ```
 
 ## Methods on this branch
@@ -185,6 +187,7 @@ python checks/test_heist.py             # heist env, GPU: run_heist.py vs. the a
 | `neigh_expr_pca` | `run_neigh_expr_pca.py` | `PYTHON_BANKSY` | summed 10-NN counts, CP10k + log1p, PCA 20 |
 | `cifm` | `run_cifm.py` | `PYTHON_CIFM` (GPU; peak 15 GB) | `ynyou/CIFM` rev. `19c507f`, zero-shot; 20 µm radius graph per section, tiled with a 45 µm halo (exact) |
 | `heist` | `run_heist.py` | `PYTHON_HEIST` (GPU) | `HirenMadhu/HEIST` `nonmarker_all` rev. `b3cfb2a`, code `3679a98`, zero-shot; authors' `embed_adata` per section |
+| `stofm` | `run_stofm.py` | `PYTHON_STOFM` (GPU) | `PharMolix/SToFM` code `2354d57`, checkpoint pinned by sha256, zero-shot; authors' `load_data` per section |
 
 ### CIFM
 
@@ -324,4 +327,145 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
 # Needs >= 35 GB of free GPU memory (L40S, A100); smaller GPUs stop at the start.
 # Resume an interrupted run: delete its unfinished section's section<i>[_*].pt files, then
 #   EXTRA_ARGS="--cache_dir <its graph cache>"   (checked at the start; kept afterwards)
+```
+
+### SToFM
+
+- Environment, code and checkpoint: `envs/stofm.sh` (login node).
+  - The authors' code is a clone of `PharMolix/SToFM` at `2354d57` (`STOFM_CODE_PATH`).
+    Its bundled Geneformer 0.0.1 is installed from that copy.
+  - The checkpoint and the authors' demo come from the Google Drive folder linked in
+    their README (`STOFM_MODEL_PATH`). Drive keeps no versions, so `run_stofm.py` pins
+    the sha256 of every checkpoint file and stops on any other.
+  - `run_info.json` records the code commit and the sha256s.
+- Model: a Geneformer-style cell encoder (BERT, 12 layers, width 512; CLS → 256-d,
+  L2-normalized) and an SE(2) transformer (12 layers, d = 256). The SE(2) transformer
+  runs over sub-slices of ~1,000 cells, plus whole-section "virtual cells". The
+  embedding is the last hidden state of each cell token (256-d), as in the authors'
+  `get_embeddings.py`.
+- Recipe: the authors' `get_embeddings.py`, `model/extraction.py` and
+  `preprocessing/preprocess.py`, with their defaults; one `load_data` call per section:
+  - cell-encoder input (Geneformer tokenizer): counts / the cell's total over all panel
+    genes × 10⁴ / Geneformer's gene medians, then the dictionary genes ranked by that
+    value (at most 2,048 tokens, `<cls>` first);
+  - coordinates centred and divided by the section's bounding-box diagonal (units cancel);
+  - sub-slices: a square grid with one square per ~1,000 cells. A square with ≥ 2,000
+    cells is cut into ~1,000-cell chunks **in obs order** (as released, see Caveats);
+  - virtual cells: Leiden (resolution 1.0) on `0.2·xy + 0.8·PCA₂(cell embedding)` of the
+    whole section. Their means are added to every sub-slice;
+  - attention bias from the 50-NN distances within a sub-slice and the distances to the
+    virtual cells;
+  - batch sizes 32 (cell encoder) and 4 (sub-slices; padding is masked), seed 1
+    (`get_embeddings.sh`) before each section, deterministic torch algorithms.
+- Fixes to the released code, each compared with the authors' code in
+  `checks/test_stofm.py`:
+  - `encode_cell` crashes with `KeyError: 'label'`: it removes every column except
+    `input_ids`, and Geneformer's collator then deletes `label`. Here each cell gets a
+    dummy label, so the authors' `CellEncoderCollator` runs unchanged.
+  - `preprocess.py` densifies the whole cells × genes matrix (~75 GB for a Visium HD
+    section). Its tokenizer is re-implemented on row chunks of the sparse matrix (tokens
+    identical).
+  - `extraction.py` imports `rapids_singlecell` and `cupy`. On a GPU it builds the
+    virtual cells' kNN graph exactly with rapids. When that fails it silently falls back to
+    scanpy, which is approximate (pynndescent) from 8,192 cells on. rapids is not installed
+    here: stubs satisfy the import, and `load_data` runs on its CPU path with scanpy's exact
+    brute-force kNN. This is what scanpy does by itself below 8,192 points, so the sub-slice
+    graphs are unchanged.
+  - The SE(2) pass runs under `torch.no_grad()` (same output, less memory).
+  - Embeddings start as NaN instead of 0: a cell left out of every sub-slice stops the run.
+    Every cell must be in exactly one sub-slice.
+- Benchmark choices:
+  - genes are matched to Geneformer's dictionary by the silver Ensembl ID. IDs it lacks
+    fall back to Geneformer's own ID for the symbol: the pseudo-autosomal CD99, CSF2RA,
+    IL3RA, IL9R and SHOX, whose silver IDs are the chrY copies.
+  - Coverage of the panels in Geneformer's dictionary:
+    - `xhs1000` 4,938/4,948 and `xhs49` 4,944/4,954 (`ABO`, `ZAN`, … missing);
+    - `chr78` 172/173 (`TUBA4B`);
+    - `chl59` 944/946 (`SOD2`, `TPSB2`);
+    - `vhb3003` 17,914/18,085.
+
+    There are no control probes in the panels. Cells have a median of 11 (ISS),
+    121 (CosMx) and 220–270 (Xenium) dictionary genes. One Xenium cell exceeds 2,047
+    and loses its lowest-ranked genes.
+  - No MT-gene removal (CIFM's preprint asks for it; Geneformer and SToFM do not).
+- In the result h5ad, for interpretation (not scored):
+  - `obs['stofm_virtual_cell']`: the virtual-cell Leiden clusters, no labels used;
+  - `obs['stofm_subslice']`;
+  - `obsm['X_stofm_cell']`: the cell-encoder embedding without spatial context.
+- Caveats:
+  - Pretraining data: no benchmark dataset is in SToCorpus-88M (Hugging Face
+    `Toycat/SToCorpus-88M`, which still contains the paper's downstream slides). Its 10x
+    Xenium files are colon, kidney, lung, lymph node, pancreas and brain (no skin). Its
+    CosMx files are frontal cortex, pancreas and mouse brain (not the NSCLC lung set).
+    There is no ISS and no Visium HD. Unlike CIFM and HEIST, SToFM has not seen `xhs49`.
+  - The paper evaluates spatial domains only with a head trained on frozen embeddings.
+    Its zero-shot Leiden result is for cell types (MERFISH mouse brain). Visium HD bins
+    are not cells.
+  - Obs-order chunks. A grid square with ≥ 2,000 cells is cut into chunks by its cells'
+    order in the file, not by position. Measured on the benchmark sections, this affects:
+    - 37–80% of the Xenium cells and 0–84% per ISS section;
+    - no CosMx or Visium HD cell.
+    The silver obs order is spatial for ISS: the chunks are as compact as their square,
+    with the same 10-NN distance. For Xenium it is partly so: the median distance is 1.0–1.24×
+    the square's and the p90 1.4–1.9×, against 1.4–1.7× for a random order. Per section,
+    `run_info.json` records `frac_cells_obs_order_split` and
+    `obs_order_chunk_knn_ratio_{median,p90}`. `checks/test_stofm.py` (e) measures how
+    much the order changes the embedding.
+  - The number of virtual cells is not capped: the authors' `< 200` loop is dead code,
+    overwritten by the Leiden call after it. It grows with the section size
+    (`n_virtual_cells` per section in `run_info.json`). It is 27–69 for sections of
+    up to 18k cells, and 108–143 for 66k–151k cells, so a sub-slice has at most
+    ~2,100 tokens.
+  - Results: the headline reaches the target cluster count exactly on every dataset.
+    Headline NMI/ARI:
+
+    | Dataset | NMI | ARI |
+    |---|---|---|
+    | `xhs1000` | .341 | .209 |
+    | `xhs49` | .271 | .124 |
+    | `chr78` | .246 | .117 |
+    | `chl59` | .346 | .208 |
+
+    That is below CIFM and above HEIST on each dataset. The virtual-cell clusters
+    (`obs['stofm_virtual_cell']`; 127–760 per dataset) are small spatial patches
+    (ARI vs. the ground truth ≈ 0.01). Unlike HEIST's internal clusters, they say
+    little about the niches.
+
+Runs (on L40S GPUs):
+- Embedding takes 3.4 min (`xhs1000`), 3.1 min (`chr78`), 9.9 min (`xhs49`) and 12 min
+  (`chl59`). Most of that is the cell encoder.
+- Peak GPU memory is 5–10 GB; peak host memory is 2.5–6 GB.
+- Scoring takes 1–18 min.
+- `checks/test_stofm.py` (all passed, job 231472, L40S):
+  - (a) The authors' demo:
+    - the cell encoder on their tokenized cells reproduces their `ce_emb.npy` (max
+      |diff| 1.8e-6);
+    - their loop (seed 1) gives their `stofm_emb.npy` to a mean cosine of 0.99993 (p1
+      0.9995, min 0.983). With the approximate kNN fallback the cosine is the same
+      (0.99994), so the demo cannot tell which path made the shipped file. The residual
+      is presumably from package versions in the virtual-cell PCA and Leiden.
+  - (b) Tokens are identical to the authors' tokenizer on Xenium (17,384 cells), CosMx
+    (20,000) and Visium HD (5,000 bins) sections. ISS passed on CPU.
+  - (c) `embed_section` equals the authors' loop exactly, on the demo and on an `xhs1000`
+    section (17,384 cells, 21 sub-slices, 69 virtual cells). Batch size 1 vs 4 differs by
+    at most 2.9e-6. On that section the approximate kNN gives the same embedding as the
+    exact one.
+  - (d) Seed 1 vs 2 on the smallest ISS section (randomized PCA): mean cosine 1.00000,
+    min 0.998.
+  - (e) Obs order, on the `xhs1000` section (37% of cells in obs-order chunks; chunk/square
+    10-NN ratio median 1.24, p90 1.89):
+    - those cells move to a mean cosine of 0.982 (p1 0.92, min 0.80) for a random order
+      (ratio 1.73) and 0.983 (p1 0.92) for cells sorted by x (ratio 1.0);
+    - the other cells barely move (0.99995).
+    The silver order is therefore one of several equally arbitrary choices for these
+    cells. The protocol keeps it, as released.
+
+```bash
+source config.sh
+OUT=/nfs/team361/jr43/terra/benchmarking/human; LOGS=$OUT/logs; mkdir -p $LOGS
+BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_stofm.py PYTHON_ENV=PYTHON_STOFM DATASET=xhs49-1b_1p \
+    bsub -G s10396 -q inference -n 8 -M 64GB -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]" \
+    -gpu "num=1:mode=exclusive_process" -W 12:00 \
+    -o $LOGS/method_%J.out -e $LOGS/method_%J.err < run_method.lsf
+# vhb3003-3b_1p: -M 128GB
 ```
