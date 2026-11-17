@@ -37,7 +37,6 @@ so all methods are compared on identical cells with an identical protocol.
 | `xhs49-1b_1p` | Xenium skin (melanoma) | 1 | `niche_name` | 7 |
 | `chr78-11b_1p` | ISS reproductive tract | 11 | `broad_anatomy` | 19 |
 | `chl59-8b_1p` | CosMx lung (NSCLC) | 6 | `niche` | 12 |
-| `vhb3003-3b_1p` | Visium HD breast, 8 µm bins (separate figure) | 3 | pathology annotation | 8 |
 
 ## Files
 
@@ -129,28 +128,20 @@ results are copied to the result folder and the copy is verified by checksum,
 then the lustre folder is removed. On any failure nothing is copied and the
 lustre folder is kept for debugging (path in the log).
 
-Memory: the largest datasets (CosMx lung, 534k cells; Visium HD breast, 1.5M
-bins) need 64–128 GB for CPU methods and up to 256 GB host memory for GPU
-methods; scoring itself fits in 48–96 GB.
+Memory: on the largest dataset (CosMx lung, 534k cells) the CPU method and
+scoring jobs peaked below 40 GB.
 
 ## Results and figures
 
 ```bash
 python collect_results.py   # tables only: summary/headline.csv, scan.csv, sweep.csv, matched.csv, batch.csv
 python plot_results.py      # collects, then main figure: summary/figures/niche_{NMI,ARI}_comparison_human[_matched].*
-python plot_results.py --dataset vhb3003-3b_1p          # bars for one dataset: summary/figures/<dataset>/
-python plot_results.py --dataset vhb3003-3b_1p --maps   # + spatial maps (high memory, run via LSF)
+python plot_results.py --dataset chl59-8b_1p          # bars for one dataset: summary/figures/<dataset>/
+python plot_results.py --dataset chl59-8b_1p --maps   # + spatial maps (reads every method's clustered result)
 ```
 
 Figures include every method in `METHODS` with results, in `METHODS` order.
-They run in the terra or banksy environment. The bars take seconds; the
-spatial maps read every method's clustered result (up to ~200 GB for Visium HD),
-e.g.:
-```bash
-bsub -G team361 -q normal -n 4 -M 200GB -R "select[mem>200GB] rusage[mem=200GB] span[hosts=1]" -W 4:00 \
-    -o ../../../artifacts/benchmarking/human/logs/maps_%J.out \
-    "$PYTHON_BANKSY plot_results.py --dataset vhb3003-3b_1p --maps"   # after: source config.sh
-```
+They run in the terra or banksy environment.
 
 ## Environments
 

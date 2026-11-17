@@ -9,14 +9,14 @@ Collects the results first (collect_results.py -> summary/*.csv), then:
   mean; paper convention, mouse_benchmarking/benchmarking_comparison.ipynb) and
   ``niche_{NMI,ARI}_comparison_human_matched.*`` (only the runs giving exactly
   the ground-truth number of niches).
-- ``python plot_results.py --dataset vhb3003-3b_1p``: the same bars for one
+- ``python plot_results.py --dataset chl59-8b_1p``: the same bars for one
   dataset plus ``scores_<dataset>.csv``, in ``summary/figures/<dataset>/``.
 - ``--maps`` (with ``--dataset``): spatial maps of the ground truth and every
   method's headline clustering; ``spatial_maps_<dataset>_selected.png`` (the
   sections with the most ground-truth niches) and ``..._part<k>.png`` (all
   sections). Predicted clusters take the colour of the ground-truth niche they
   overlap most (Hungarian matching); unmatched clusters are grey. Reads every
-  method's clustered result: up to ~200 GB for Visium HD, so run it via LSF.
+  method's clustered result.
 
 Methods: every method in ``bench_utils.METHODS`` with results, in that order
 (colours and labels from there); ``NOT_APPLICABLE`` pairs show "n/a"; methods
