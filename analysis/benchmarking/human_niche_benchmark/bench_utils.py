@@ -22,9 +22,9 @@ import scanpy as sc
 # job-level paths in a block at their top).
 #
 # Storage layout: jobs read inputs from lustre and write into a job-local lustre
-# working folder (BENCH_OUTPUT_DIR / BENCH_CACHE_DIR, set by job_wrapper.sh); on
-# success the wrapper copies results to FINAL_OUTPUT_FOLDER_PATH on NFS (backed
-# up) and deletes the lustre folder. Without BENCH_OUTPUT_DIR, outputs go
+# working folder (BENCH_OUTPUT_DIR, set by job_wrapper.sh); on success the
+# wrapper copies results to FINAL_OUTPUT_FOLDER_PATH on NFS (backed up) and
+# deletes the lustre folder. Without BENCH_OUTPUT_DIR, outputs go
 # straight to the NFS folder (e.g. when results are read in notebooks).
 # ---------------------------------------------------------------------------
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -32,10 +32,6 @@ SILVER_FOLDER_PATH = os.environ.get(
     'BENCH_SILVER_DIR', '/lustre/scratch126/cellgen/lotfollahi/DATASETS/silver')
 FINAL_OUTPUT_FOLDER_PATH = str(REPO_ROOT / 'artifacts' / 'benchmarking' / 'human')
 OUTPUT_FOLDER_PATH = os.environ.get('BENCH_OUTPUT_DIR', FINAL_OUTPUT_FOLDER_PATH)
-CACHE_FOLDER_PATH = os.environ.get(
-    'BENCH_CACHE_DIR',
-    f'/lustre/scratch126/cellgen/lotfollahi/{os.environ.get("USER", "user")}/'
-    'human_niche_benchmark/cache')
 
 # ---------------------------------------------------------------------------
 # Protocol constants
@@ -56,24 +52,13 @@ DATASETS = {
                        'adata_batch32.h5ad'],
         niche_key='niche_type',
         drop_unlabeled=True,
-        coord_scale=1.0,
-        spot_size=20,
-        # Cell-type annotations (cell-type composition baseline): finest level
-        # first; 'coarse' = key of the paper's cell-type benchmark.
-        cell_type_levels=dict(fine='cell_type', coarse='new_annotation')),
+        coord_scale=1.0),
     'xhs49-1b_1p': dict(
         label='Xenium skin (melanoma)',
         file_patterns=['Xenium_Prime_Human_Skin_FFPE_outs'],
         niche_key='niche_name',
         drop_unlabeled=True,
-        coord_scale=1.0,
-        spot_size=20,
-        # Not in silver: read from the annotated source file, matched on
-        # obs['original_cell_id'] == source obs['cell_id'] (all 98,749 cells).
-        cell_type_levels=dict(fine='fine_celltypes', broad='broad_celltypes',
-                              coarse='celltype'),
-        cell_type_source=('/nfs/team361/sb75/DATASETS/bronze/xhs49-1b_1p/'
-                          'adata_xenium5k_melanoma_11jan.h5ad')),
+        coord_scale=1.0),
     'chr78-11b_1p': dict(
         label='ISS reproductive tract',
         file_patterns=['CM007', 'CM008', 'CM009', 'CM011', 'CM013', 'CM015',
@@ -81,17 +66,14 @@ DATASETS = {
         niche_key='broad_anatomy',
         drop_unlabeled=False,
         coord_scale=0.093,
-        label_replace={'Urogenital Sinus': 'UrogenitalSinus'},
-        spot_size=240 * 0.093),
+        label_replace={'Urogenital Sinus': 'UrogenitalSinus'}),
     'chl59-8b_1p': dict(
         label='CosMx lung (NSCLC)',
         file_patterns=['Lung9_Rep1', 'Lung9_Rep2', 'Lung5_Rep1',
                        'Lung5_Rep2', 'Lung6', 'Lung12'],
         niche_key='niche',
         drop_unlabeled=True,
-        coord_scale=0.18,   # NanoString px -> um
-        spot_size=80 * 0.18,
-        cell_type_levels=dict(fine='cell_type')),
+        coord_scale=0.18),   # NanoString px -> um
     'vhb3003-3b_1p': dict(
         label='Visium HD breast (8 um bins)',
         # Built by analysis/data_preparation/process_visium_hd_breast.py
@@ -101,8 +83,7 @@ DATASETS = {
         file_patterns=[f'adata_batch{k}.h5ad' for k in range(3)],
         niche_key='niche',
         drop_unlabeled=True,
-        coord_scale=1.0,
-        spot_size=8),
+        coord_scale=1.0),
 }
 DATASET_LABELS = {name: cfg['label'] for name, cfg in DATASETS.items()}
 # Datasets of the main figure (plot_results.py); the others get their own
@@ -204,9 +185,6 @@ def load_benchmark_dataset(dataset_name: str,
             adata = adata[~adata.obs[niche_key].isna()].copy()
         adata.obs[SECTION_KEY] = adata.obs['cell_id'].apply(
             lambda x: '_'.join(x.split('_')[:2]))
-        # Original silver obs_names, used to match embeddings that were saved
-        # without cell_id (e.g. some scGPT-spatial outputs).
-        adata.obs['orig_obs_name'] = adata.obs_names.astype(str)
         adata_list.append(adata)
 
     adata = ad.concat(adata_list, join='outer', index_unique=None)
@@ -232,8 +210,7 @@ def load_benchmark_dataset(dataset_name: str,
 
     adata.uns['benchmark'] = dict(dataset_name=dataset_name,
                                   niche_key=niche_key,
-                                  n_target_clusters=n_target_clusters(adata),
-                                  spot_size=cfg['spot_size'])
+                                  n_target_clusters=n_target_clusters(adata))
     return adata
 
 
@@ -305,22 +282,3 @@ def save_results(adata: ad.AnnData, path: Path) -> None:
     adata_out.uns = _drop_none(dict(adata_out.uns))
     adata_out.write_h5ad(path)
 
-
-def git_commit(repo_path) -> str:
-    """Short commit of a git checkout, with '+dirty' if it has local changes.
-
-    Recorded in run_info so results can be traced to the exact code version
-    (e.g. the terra / nichecompass checkouts the environments load from).
-    """
-    import subprocess
-    git = ['git', '-c', f'safe.directory={repo_path}', '-C', str(repo_path)]
-    try:
-        commit = subprocess.run(git + ['rev-parse', '--short', 'HEAD'],
-                                capture_output=True, text=True,
-                                check=True).stdout.strip()
-        dirty = subprocess.run(git + ['status', '--porcelain'],
-                               capture_output=True, text=True,
-                               check=True).stdout.strip()
-        return commit + ('+dirty' if dirty else '')
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return 'unknown'

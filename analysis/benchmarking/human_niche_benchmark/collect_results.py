@@ -6,7 +6,7 @@ writes to ``<FINAL_OUTPUT_FOLDER_PATH>/summary/``:
 - ``headline.csv``  one row per method x dataset: headline NMI/ARI (lowest grid
   resolution giving the common cluster number, or best reachable), number of
   clusters, mean NMI/ARI over all runs that hit the target exactly
-  (robustness), runtime, coverage, note.
+  (robustness), runtime, note.
 - ``scan.csv``      every Leiden run of the 0.01-grid scan (flags: headline,
   matched, in_sweep).
 - ``sweep.csv``     sweep rows: +/- 4 grid steps around the median matching
@@ -83,7 +83,6 @@ def main():
                 NMI_matched_mean=matched['NMI'].mean() if len(matched) else None,
                 ARI_matched_mean=matched['ARI'].mean() if len(matched) else None,
                 embedding_minutes=(info.get('embedding_seconds') or 0) / 60 or None,
-                coverage=info.get('coverage', 1.0),
                 n_cells=info.get('n_cells')))
 
             batch_path = (RESULTS / method

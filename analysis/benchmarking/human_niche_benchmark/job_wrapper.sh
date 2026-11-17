@@ -6,7 +6,7 @@
 #   job_wrapper.sh <python> <script.py> [args...]
 #
 # - Inputs are read from lustre (SILVER_FOLDER_PATH in bench_utils.py).
-# - Results and caches are written to $WORK on lustre (fast I/O).
+# - Results are written to $WORK on lustre (fast I/O).
 # - Method scripts only write embeddings (*_embedded.h5ad); every embedding is
 #   then clustered and scored by score.py --pending in the reference (banksy)
 #   environment, in the same job. Scoring never runs in a method environment.
@@ -20,9 +20,8 @@ PYTHON=$1; shift
 SCRIPT=$1; shift
 
 WORK=$LUSTRE_WORK_ROOT/jobs/${LSB_JOBID:-local}_${LSB_JOBINDEX:-0}
-mkdir -p "$WORK/results" "$WORK/cache" "$FINAL_OUTPUT_DIR"
+mkdir -p "$WORK/results" "$FINAL_OUTPUT_DIR"
 export BENCH_OUTPUT_DIR=$WORK/results
-export BENCH_CACHE_DIR=$WORK/cache
 echo "Working folder (lustre): $WORK"
 
 cd "$BENCH_DIR"

@@ -49,7 +49,6 @@ so all methods are compared on identical cells with an identical protocol.
 | `job_wrapper.sh`, `config.sh` | Job steps (method → scoring → verified copy to the result folder); environments and job paths |
 | `run_method.lsf`, `score.lsf` | LSF jobs: one method on one dataset; re-scoring a finished result |
 | `collect_results.py`, `plot_results.py` | Result tables; figures (main figure, one dataset, spatial maps) |
-| `checks/test_resolution_scan.py` | Check of the resolution scan against brute force |
 
 Results: `<repo>/artifacts/benchmarking/human/<method>/`, one folder per method:
 
@@ -159,9 +158,3 @@ The paths in `config.sh` point to existing environments (read-only). The
 reference environment's package versions are pinned in
 `scoring.REFERENCE_VERSIONS`; every result records the versions of its
 scoring environment in `run_info.json`.
-
-## Checks
-
-```bash
-python checks/test_resolution_scan.py   # banksy env: scan vs. brute force on toy data
-```

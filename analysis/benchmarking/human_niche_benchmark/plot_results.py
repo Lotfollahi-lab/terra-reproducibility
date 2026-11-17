@@ -194,8 +194,6 @@ def read_obs_and_coords(path):
     with h5py.File(path, 'r') as f:
         obs = read_elem(f['obs'])
         coords = read_elem(f['obsm/spatial'])
-    if 'sample' in obs:  # sample names as section titles
-        obs['section'] = obs['sample'].astype(str).astype('category')
     adata = ad.AnnData(obs=obs)
     adata.obsm['spatial'] = coords
     return adata
