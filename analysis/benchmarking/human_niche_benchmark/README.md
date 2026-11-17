@@ -274,12 +274,15 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_cifm.py PYTHON_ENV=PYTHON_CIFM DATASET=xh
   - the benchmark's input path equals the authors' `embed_adata` on a silver
     section: identical graphs, and embeddings identical to the bit;
   - a different seed moves the embedding by mean cosine 0.9965 (min 0.88);
-  - added on 2026-11-16, not yet run on a GPU: in (b), the authors' path builds
-    the polygons and run_heist's does not; (c) only cells with identical HVG
-    expression share a gene input; (d) the gene networks differ from the authors'
-    unpatched estimator no more than two of its runs differ from each other. A
-    CPU run on 707 cells passed (c), and its embedding without polygons was
-    identical to the authors' path with them.
+  - in (b) the authors' path builds the polygons and run_heist's does not; the
+    graphs and embeddings are still identical to the bit;
+  - (c) only cells with identical HVG expression share a gene input (1.9% of the
+    section's cells share one at all; 1.9% have no counts in the HVGs);
+  - (d) the gene networks differ from the authors' unpatched estimator no more than
+    two of its runs differ from each other (mean fraction of differing edges 0.024
+    vs. 0.025; max 0.108 vs. 0.111; 8 clusters);
+  - all passed on an L40S (job 231063). A 3,000-cell `xhs1000` run resumed from
+    its graph cache gave the same embedding to the bit.
 - `obs['heist_tile']` and `obs['heist_cluster']` in the result h5ad hold HEIST's
   tiles and internal Leiden clusters, which use no labels. They help interpret
   the embedding; they are not scored.
@@ -306,15 +309,20 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_cifm.py PYTHON_ENV=PYTHON_CIFM DATASET=xh
   - Results: on every dataset, the embedding's 15-NN graph is one giant
     component plus small islands. The target cluster count is never reached
     exactly (`below_grid`), and HEIST scores lowest of all methods (headline NMI
-    0.006–0.108). Even the best run anywhere in the scan reaches only NMI
-    0.24–0.27. HEIST's own internal Leiden clusters (`obs['heist_cluster']`)
-    agree better with the ground truth (NMI 0.23–0.49) than its embedding does.
+    0.006–0.108 on the main datasets, 0.004 on `vhb3003`). Even the best run
+    anywhere in the scan reaches only NMI 0.24–0.27 (0.07 on `vhb3003`). HEIST's
+    own internal Leiden clusters (`obs['heist_cluster']`) agree better with the
+    ground truth (NMI 0.23–0.49) than its embedding does.
+  - On `vhb3003`, up to 38% of a tile's bins share their gene input with another
+    bin (`max_frac_duplicate_gene_inputs`), against up to 8% on Xenium.
 
 Runs (on L40S GPUs): embedding takes 25 min (`xhs1000`), 34 min (`chr78`),
 60 min (`xhs49`) and 2.7 h (`chl59`), and ~9 h per section of `vhb3003`. Most
-of that is the per-cluster mutual-information networks. Peak GPU memory is 25.5
-GB (the fixed KSG budget plus the model). Peak host memory is 6–11 GB, and 32 GB
-on `vhb3003`.
+of that is the per-cluster mutual-information networks. `vhb3003` failed in its
+third section (geovoronoi) and was resumed from the cache of the first two (job
+230959: 5.6 h for that section, 34 min scoring). Peak GPU memory is 25.5 GB (the
+fixed KSG budget plus the model). Peak host memory is 6–11 GB, and 32 GB on
+`vhb3003`.
 
 ```bash
 source config.sh
@@ -414,8 +422,8 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
   - The number of virtual cells is not capped: the authors' `< 200` loop is dead code,
     overwritten by the Leiden call after it. It grows with the section size
     (`n_virtual_cells` per section in `run_info.json`). It is 27–69 for sections of
-    up to 18k cells, and 108–143 for 66k–151k cells, so a sub-slice has at most
-    ~2,100 tokens.
+    up to 18k cells, 108–143 for 66k–151k cells, and 207–223 for the 459k–574k
+    bins of a `vhb3003` section, so a sub-slice has at most ~2,100 tokens.
   - Results: the headline reaches the target cluster count exactly on every dataset.
     Headline NMI/ARI:
 
@@ -425,6 +433,7 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
     | `xhs49` | .271 | .124 |
     | `chr78` | .246 | .117 |
     | `chl59` | .346 | .208 |
+    | `vhb3003` | .225 | .145 |
 
     That is below CIFM and above HEIST on each dataset. The virtual-cell clusters
     (`obs['stofm_virtual_cell']`; 127–760 per dataset) are small spatial patches
@@ -432,8 +441,10 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
     little about the niches.
 
 Runs (on L40S GPUs):
-- Embedding takes 3.4 min (`xhs1000`), 3.1 min (`chr78`), 9.9 min (`xhs49`) and 12 min
-  (`chl59`). Most of that is the cell encoder.
+- Embedding takes 3.4 min (`xhs1000`), 3.1 min (`chr78`), 9.9 min (`xhs49`), 12 min
+  (`chl59`) and 1.4 h (`vhb3003`). Most of that is the cell encoder.
+- `vhb3003` needs 22 GB of host memory for the embedding and 18 GB for scoring
+  (43 min); no bin reaches the 2,048-token limit (median 183 genes per bin).
 - Peak GPU memory is 5–10 GB; peak host memory is 2.5–6 GB.
 - Scoring takes 1–18 min.
 - `checks/test_stofm.py` (all passed, job 231472, L40S):
