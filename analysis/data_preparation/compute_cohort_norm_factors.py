@@ -5,12 +5,16 @@ import pickle
 import tracemalloc
 from pathlib import Path
 
-import anndata as ad
 import datasets
+import h5py
 import numpy as np
 import pandas as pd
 import scanpy as sc
 import scipy.sparse as sp
+try:
+    from anndata.io import read_elem
+except ImportError:  # anndata < 0.11
+    from anndata.experimental import read_elem
 
 from heldout_batch_ids import TEST_BATCH_IDS, VAL_BATCH_IDS
 
@@ -39,27 +43,30 @@ def select_cells(adata, excluded_batch_ids):
 
 def scan_cohort(file_paths, excluded_batch_ids):
     """
-    Read the cell ids and genes of every file, without the counts. Checks that
-    every excluded batch id matches cells before the long passes start, and
-    collects the genes of the cohort, those of the excluded batches included.
+    Read only the cell ids and genes of every file. Checks that every excluded
+    batch id matches cells before the long passes start, collects the genes of
+    the cohort (those of the excluded batches included), and returns the files
+    whose cells are all excluded, which the passes then skip.
     """
-    found_batch_ids, gene_ids = set(), set()
+    found_batch_ids, gene_ids, excluded_files = set(), set(), set()
     n_cells_excluded = 0
     for file in file_paths:
-        adata = ad.read_h5ad(file, backed='r')
-        batch_ids = cell_batch_ids(adata.obs['cell_id'])
+        with h5py.File(file, 'r') as f:
+            cell_ids = read_elem(f['obs/cell_id'])
+            gene_ids.update(np.asarray(read_elem(f['var/ensembl_id'])))
+        batch_ids = cell_batch_ids(cell_ids)
         found_batch_ids.update(np.unique(batch_ids))
-        n_cells_excluded += int(
-            np.isin(batch_ids, sorted(excluded_batch_ids)).sum())
-        gene_ids.update(adata.var['ensembl_id'].values)
-        adata.file.close()
+        is_excluded = np.isin(batch_ids, sorted(excluded_batch_ids))
+        n_cells_excluded += int(is_excluded.sum())
+        if is_excluded.all():
+            excluded_files.add(file)
     unmatched = sorted(set(excluded_batch_ids) - found_batch_ids)
     if unmatched:
         raise ValueError(
             f'{len(unmatched)} excluded batch ids match no cell of the '
             f'cohort: {unmatched}. Correct the list (heldout_batch_ids.py), '
             'as split_dataset.py would refuse it too.')
-    return gene_ids, n_cells_excluded
+    return gene_ids, n_cells_excluded, excluded_files
 
 
 def main(args):
@@ -96,14 +103,23 @@ def main(args):
         file for dataset_name, _ in datasets_df.iterrows()
         for file in sorted((silver_data_path / dataset_name).glob('*.h5ad'))]
 
+    # Vocabulary genes, which all get a row (see tie_break_mean below)
+    vocabulary_gene_ids = set()
+    if args.token_dictionary_file_path:
+        with open(args.token_dictionary_file_path, 'rb') as file:
+            vocabulary_gene_ids = {
+                key for key in pickle.load(file) if 'ENS' in str(key)}
+        print(f"Vocabulary genes: {len(vocabulary_gene_ids)}.")
+
     # Statistics of the training data only: the cells of excluded (held-out)
-    # batches are left out of every pass
-    cohort_gene_ids, n_cells_excluded = None, 0
+    # batches are left out of every pass, and files without other cells are
+    # not read again
     if excluded_batch_ids:
         print(f"Excluding the cells of {len(excluded_batch_ids)} batches.")
-        cohort_gene_ids, n_cells_excluded = scan_cohort(
-            file_paths, excluded_batch_ids)
-        print(f"Excluded cells: {n_cells_excluded}.")
+    cohort_gene_ids, n_cells_excluded, excluded_files = scan_cohort(
+        file_paths, excluded_batch_ids)
+    print(f"Excluded cells: {n_cells_excluded}; files skipped: "
+          f"{len(excluded_files)}.")
 
     running_n_cells = 0
     batchwise_norm_factor_dict = {}
@@ -126,6 +142,8 @@ def main(args):
         print("Computing PFlog1pPF first-PF target (corpus mean depth)...")
         pf_count_sum, pf_n_cells = 0.0, 0
         for file in file_paths:
+            if file in excluded_files:
+                continue
             adata = select_cells(sc.read_h5ad(file), excluded_batch_ids)
             cell_sums = np.asarray(adata.X.sum(axis=1)).ravel()
             pf_count_sum += float(cell_sums.sum())
@@ -143,10 +161,10 @@ def main(args):
         silver_dataset_path = silver_data_path / dataset_name
 
         for file in sorted(silver_dataset_path.glob('*.h5ad')):
-            adata = select_cells(sc.read_h5ad(file), excluded_batch_ids)
-            if adata.n_obs == 0:
+            if file in excluded_files:
                 print(f"Skipping {file}: all cells are in excluded batches.")
                 continue
+            adata = select_cells(sc.read_h5ad(file), excluded_batch_ids)
             running_n_cells += len(adata)
 
             # PFlog1pPF second-PF target (s2) -- pass 2 of 2. Accumulate
@@ -218,6 +236,9 @@ def main(args):
                     batchwise_norm_factor_dict[f"{gene_id}_gene_corrected_read_depth_means"] = [means_gcrd[idx]]
                     batchwise_norm_factor_dict[f"{gene_id}_n_cells"] = [n_cells]
                     batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"] = [n_nonzero_cells]
+                # Cells that probe the gene, whether or not it is detected
+                batchwise_norm_factor_dict.setdefault(
+                    f"{gene_id}_n_probing_cells", []).append(len(adata))
 
             print(f"Running number of cells: {running_n_cells}.")
 
@@ -252,33 +273,48 @@ def main(args):
         ) / np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
         norm_factor_dict[gene_id]["n_cells"] = np.array(batchwise_norm_factor_dict[f"{gene_id}_n_cells"]).sum()
         norm_factor_dict[gene_id]["n_nonzero_cells"] = np.array(batchwise_norm_factor_dict[f"{gene_id}_n_nonzero_cells"]).sum()
+        # 'mean' leaves out the batches in which the gene is never detected;
+        # this mean includes all cells that probe the gene
+        n_probing_cells = np.array(
+            batchwise_norm_factor_dict[f"{gene_id}_n_probing_cells"])
+        norm_factor_dict[gene_id]["probing_cell_mean"] = np.dot(
+            np.array(batchwise_norm_factor_dict[f"{gene_id}_means"]),
+            n_probing_cells) / n_probing_cells.sum()
+        norm_factor_dict[gene_id]["n_probing_cells"] = n_probing_cells.sum()
 
     norm_factor_df = pd.DataFrame.from_dict(norm_factor_dict, orient='index').reset_index()
     norm_factor_df = norm_factor_df.rename(columns={'index': 'gene_id'})
 
-    # Genes of the cohort that only occur in excluded batches get a row
-    # without statistics, so that the excluded batches can be tokenized too
-    n_genes_only_excluded = 0
-    if cohort_gene_ids is not None:
-        genes_only_excluded = sorted(
-            cohort_gene_ids - set(norm_factor_df['gene_id']))
-        n_genes_only_excluded = len(genes_only_excluded)
-        norm_factor_df = pd.concat([
-            norm_factor_df,
-            pd.DataFrame({'gene_id': genes_only_excluded,
-                          'n_cells': 0,
-                          'n_nonzero_cells': 0})],
-            ignore_index=True)
+    # Genes of the cohort that only occur in excluded batches, and vocabulary
+    # genes that no file of the cohort probes, get a row without statistics,
+    # so that every batch of the cohort and new data can be tokenized
+    genes_with_row = set(norm_factor_df['gene_id'])
+    genes_only_excluded = sorted(cohort_gene_ids - genes_with_row)
+    genes_only_vocabulary = sorted(
+        vocabulary_gene_ids - cohort_gene_ids - genes_with_row)
+    norm_factor_df = pd.concat([
+        norm_factor_df,
+        pd.DataFrame({'gene_id': genes_only_excluded + genes_only_vocabulary,
+                      'n_cells': 0,
+                      'n_nonzero_cells': 0,
+                      'n_probing_cells': 0})],
+        ignore_index=True)
 
     # Key for ordering tied genes at tokenization (TERRA tokenizer
-    # rank_tie_break_norm_factor: tie_break_mean): the mean, ascending, so
-    # rarer or lower expressed genes come first. Genes without a mean (never
-    # detected, or only in excluded batches) never occur in the training data;
+    # rank_tie_break_norm_factor: tie_break_mean): the mean count over the
+    # training cells that probe the gene, ascending, so rarer or lower
+    # expressed genes come first. Genes never detected in the training cells
+    # (always zero, only in excluded batches, or only in the vocabulary) never
+    # occur in the training data, so their token embeddings are untrained;
     # they come after all other tied genes
-    has_mean = np.isfinite(norm_factor_df['mean'].to_numpy(dtype=np.float64))
-    tie_break_fill = float(norm_factor_df['mean'][has_mean].max()) + 1.0
-    norm_factor_df['tie_break_mean'] = norm_factor_df['mean'].where(
-        has_mean, tie_break_fill)
+    probing_cell_mean = norm_factor_df['probing_cell_mean'].to_numpy(
+        dtype=np.float64)
+    detected = norm_factor_df['n_nonzero_cells'].to_numpy(
+        dtype=np.float64) > 0
+    has_key = detected & np.isfinite(probing_cell_mean)
+    tie_break_fill = float(probing_cell_mean[has_key].max()) + 1.0
+    norm_factor_df['tie_break_mean'] = np.where(
+        has_key, probing_cell_mean, tie_break_fill)
 
     # Write to disk
     norm_factor_df.to_csv(norm_factor_file_path, index=False)
@@ -293,9 +329,11 @@ def main(args):
             'n_cells': running_n_cells,
             'excluded_batch_ids': sorted(excluded_batch_ids),
             'n_cells_excluded': n_cells_excluded,
+            'token_dictionary_file_path': args.token_dictionary_file_path,
             'n_genes': len(norm_factor_df),
-            'n_genes_without_mean': int((~has_mean).sum()),
-            'n_genes_only_in_excluded_batches': n_genes_only_excluded,
+            'n_genes_not_detected_in_training': int((~has_key).sum()),
+            'n_genes_only_in_excluded_batches': len(genes_only_excluded),
+            'n_genes_only_in_vocabulary': len(genes_only_vocabulary),
             'tie_break_mean_fill': tie_break_fill,
         }, file, indent=4)
 
@@ -346,12 +384,20 @@ if __name__ == '__main__':
                              'batches are excluded.')
     parser.add_argument('--exclude_heldout_batches',
                         action=argparse.BooleanOptionalAction,
-                        default=False,
+                        default=True,
                         help='Leave the cells of the held-out validation and '
                              'test batches (heldout_batch_ids.py, the defaults '
                              'of split_dataset.py) out of every statistic, so '
                              'that the training data is tokenized without '
-                             'information from held-out batches.')
+                             'information from held-out batches (default). '
+                             '--no-exclude_heldout_batches uses all cells.')
+    parser.add_argument('--token_dictionary_file_path',
+                        type=str,
+                        default=None,
+                        help='Token dictionary (.pkl). Its genes that no '
+                             'file of the cohort probes get a row, so that '
+                             'tie_break_mean covers every vocabulary gene '
+                             'and new data can be tokenized with this file.')
     parser.add_argument('--exclude_batch_ids',
                         type=str,
                         nargs='+',

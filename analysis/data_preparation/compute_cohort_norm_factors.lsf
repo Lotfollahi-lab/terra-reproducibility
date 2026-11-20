@@ -13,6 +13,8 @@
 # (heldout_batch_ids.py) are excluded, and the outputs are named
 # hst_corpus_110m_train_norm_factors.csv (+ .json), ..._pf_targets.csv and
 # ..._batchwise_norm_factors.pkl. Use --no-exclude_heldout_batches for the whole corpus.
+# The token dictionary gives every vocabulary gene a tie_break_mean. For shifted_log
+# tokenization the PFlog1pPF targets are not needed; --skip_pf_targets saves one pass.
 # The logs directory must exist before submission:
 #   mkdir -p ../../logs/data_preparation/compute_cohort_norm_factors
 
@@ -23,4 +25,5 @@ source /nfs/team361/sb75/.venvs/terra/bin/activate
 python compute_cohort_norm_factors.py \
     --cohort_name 'hst_corpus_110m' \
     --cohort_dataset_names_file_path '/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
-    --exclude_heldout_batches
+    --exclude_heldout_batches \
+    --token_dictionary_file_path '/lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl'
