@@ -9,12 +9,18 @@
 #BSUB -R "select[mem>128G] rusage[mem=128G] span[hosts=1]"                                             # Resource requirements
 #BSUB -W 24:00                                                                                         # Walltime (hh:mm)
 
+# Statistics of the training batches only: the held-out batches of split_dataset.py
+# (heldout_batch_ids.py) are excluded, and the outputs are named
+# hst_corpus_110m_train_norm_factors.csv (+ .json), ..._pf_targets.csv and
+# ..._batchwise_norm_factors.pkl. Use --no-exclude_heldout_batches for the whole corpus.
+# The logs directory must exist before submission:
+#   mkdir -p ../../logs/data_preparation/compute_cohort_norm_factors
+
 # Load your environment
-source ~/.venvs/terra/bin/activate
+source /nfs/team361/sb75/.venvs/terra/bin/activate
 
 # Run the Python script
 python compute_cohort_norm_factors.py \
     --cohort_name 'hst_corpus_110m' \
     --cohort_dataset_names_file_path '/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt' \
-    --basis_target_read_depth \
-    --target_read_depth_per_gene \
+    --exclude_heldout_batches
