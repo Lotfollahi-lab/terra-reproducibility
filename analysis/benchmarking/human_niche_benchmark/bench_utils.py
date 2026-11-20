@@ -176,6 +176,11 @@ METHODS = {
                   note='zero-shot PharMolix/SToFM: Geneformer-style cell encoder + SE(2) '
                        'transformer over ~1000-cell sub-slices with whole-section virtual '
                        'cells; no benchmark dataset in its pretraining corpus'),
+    'aido_tissue': dict(label='AIDO.Tissue', color='#9b4fb0',
+                        note='zero-shot genbio-ai/GB.Tissue-60M (formerly AIDO.Tissue-60M): '
+                             'cell + 10 nearest cells, max-pool over the cell\'s tokens; '
+                             'CosMx NSCLC (chl59) and 10x Xenium Prime skin (xhs49) possibly '
+                             'in its pretraining data'),
 }
 
 # (method, dataset) pairs left out (n/a) although results exist on disk.
@@ -371,11 +376,16 @@ def save_results(adata: ad.AnnData, path: Path) -> None:
 
     ``None`` values in ``uns`` (e.g. ``uns['log1p']['base']``) are dropped so
     the file also opens with the older anndata in the terra environment.
+    '/' in obs/var column names (xhs1000: "Library type (CITE or 5'GEX/TCR)",
+    'Segmentation Y/N?') becomes '_': anndata >= 0.12 refuses to write it.
     """
     adata_out = adata[:, []].copy()
     for key in list(adata_out.layers):
         del adata_out.layers[key]
     adata_out.uns = _drop_none(dict(adata_out.uns))
+    for frame in (adata_out.obs, adata_out.var):
+        frame.columns = [c.replace('/', '_') if isinstance(c, str) else c
+                         for c in frame.columns]
     adata_out.write_h5ad(path)
 
 

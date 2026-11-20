@@ -53,6 +53,7 @@ so all methods are compared on identical cells with an identical protocol.
 | `run_cifm.py`, `checks/test_cifm.py` | CIFM zero-shot embeddings; check against the authors' code |
 | `run_heist.py`, `checks/test_heist.py` | HEIST zero-shot embeddings; check against the authors' code |
 | `run_stofm.py`, `checks/test_stofm.py` | SToFM zero-shot embeddings; check against the authors' code and demo |
+| `run_aido_tissue.py`, `checks/test_aido_tissue.py` | AIDO.Tissue zero-shot embeddings; check against the authors' code and demo |
 
 Results: `<repo>/artifacts/benchmarking/human/<method>/`, one folder per method:
 
@@ -178,6 +179,7 @@ python checks/test_resolution_scan.py   # banksy env: scan vs. brute force on to
 python checks/test_cifm.py              # cifm env, GPU: run_cifm.py vs. the authors' CIFM code
 python checks/test_heist.py             # heist env, GPU: run_heist.py vs. the authors' HEIST code
 python checks/test_stofm.py             # stofm env, GPU: run_stofm.py vs. the authors' SToFM code and demo
+python checks/test_aido_tissue.py       # aido_tissue env, GPU: run_aido_tissue.py vs. the authors' mgen predict
 ```
 
 ## Methods on this branch
@@ -188,6 +190,7 @@ python checks/test_stofm.py             # stofm env, GPU: run_stofm.py vs. the a
 | `cifm` | `run_cifm.py` | `PYTHON_CIFM` (GPU; peak 15 GB) | `ynyou/CIFM` rev. `19c507f`, zero-shot; 20 µm radius graph per section, tiled with a 45 µm halo (exact) |
 | `heist` | `run_heist.py` | `PYTHON_HEIST` (GPU) | `HirenMadhu/HEIST` `nonmarker_all` rev. `b3cfb2a`, code `3679a98`, zero-shot; authors' `embed_adata` per section |
 | `stofm` | `run_stofm.py` | `PYTHON_STOFM` (GPU) | `PharMolix/SToFM` code `2354d57`, checkpoint pinned by sha256, zero-shot; authors' `load_data` per section |
+| `aido_tissue` | `run_aido_tissue.py` | `PYTHON_AIDO_TISSUE` (GPU, flash-attn) | `genbio-ai/GB.Tissue-60M` rev. `e414516`, ModelGenerator `bda6f2d`, zero-shot; cell + 10 nearest cells per section, max-pool |
 
 ### CIFM
 
@@ -479,4 +482,159 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_stofm.py PYTHON_ENV=PYTHON_STOFM DATASET=
     -gpu "num=1:mode=exclusive_process" -W 12:00 \
     -o $LOGS/method_%J.out -e $LOGS/method_%J.err < run_method.lsf
 # vhb3003-3b_1p: -M 128GB
+```
+
+### AIDO.Tissue
+
+- Environment, code, checkpoint and gene map: `envs/aido_tissue.sh` (login node).
+  - GenBio AI renamed AIDO.* to GB.* in July 2026. The code is a clone of
+    `genbio-ai/ModelGenerator` at `bda6f2d` (`modelgenerator.backbones.gb_tissue_60m`).
+    It is installed without its dependencies, plus the packages its backbone, data,
+    task and CLI modules import (not openfold, dllogger or tiledbsoma).
+  - The weights are `genbio-ai/GB.Tissue-60M` at `e414516`, formerly
+    `AIDO.Tissue-60M`: 12 layers, width 512, encoder only.
+  - flash-attn 2 is required (no other attention), so the GPU needs compute
+    capability ≥ 8.0.
+  - `run_info.json` records the code commit, the weights' sha256 and the gene
+    map's sha256.
+- Checkpoint: 60M, the larger of the two released models. The authors'
+  embedding config (`emb.xenium.yaml`) uses the 3M model; `checks/test_aido_tissue.py`
+  runs both.
+- Model: a transformer over the expressed genes of a cell and its k nearest cells.
+  - Each gene token is a gene-identity embedding plus an expression-value MLP.
+  - 2D rotary ids encode the gene index and the cell's rank (0 = the cell itself).
+  - Coordinates and distances are not inputs; they only choose the neighbours.
+  - The output is the tokens of the cell itself: its expressed genes plus 2 depth
+    tokens. There is no CLS token.
+- Recipe: the authors' `experiments/GB.Tissue/emb.xenium.yaml` and the embedding
+  section of its README:
+  - input as built by `CellWithNeighborDataModule`: the raw counts of the cell and
+    of its 10 nearest cells (cKDTree on x, y; nearest first), each aligned to the
+    model's 19,264 genes, then concatenated;
+  - the authors' backbone forward, unchanged. Per cell it computes
+    `log1p(counts / total × 10⁴)` over the matched genes and appends 2 depth tokens
+    (`max(log10 total, 5)`, so 5 for every benchmark cell);
+  - batch size 1, bf16 autocast (Lightning `bf16`), seed 42;
+  - the embedding is the maximum over the cell's output tokens (512-d).
+- Batch size 1 is part of the recipe, not a speed setting. The backbone
+  normalizes by the sum over the whole batch (`X.sum()`). Its flash-attention call
+  also attends to padding tokens ("assuming NO PADDING"). In batches larger than 1,
+  a cell's embedding would therefore depend on its batch-mates.
+- The authors' DataModule and prediction writer are replaced by a loop that builds
+  the same input rows and pools on the GPU. `checks/test_aido_tissue.py` shows the
+  rows are byte-identical. The loop is needed because:
+  - `SpatialDataGenerator` builds one kNN over all rows of its file, so neighbours
+    would cross sections. Here the kNN is per section;
+  - the writer keeps every prediction in memory and writes one file per cell (1.5M
+    files on Visium HD), merged in glob order.
+- Guards, each of which stops the run:
+  - the checkout, the installed `modelgenerator` and the weights are the pinned ones;
+  - every encoder tensor equals the checkpoint, because `from_pretrained`
+    initializes missing weights at random without stopping. Only the MLM head
+    (`cls.*`) is unused;
+  - attention and hidden dropout are 0. The flash-attention call passes its dropout
+    probability even in eval mode;
+  - every cell's output has exactly its expressed genes + 2 tokens.
+- Genes: by exact symbol, as `align_adata` and the tissue README do. A panel gene
+  whose symbol is not in the list falls back to its silver Ensembl ID. That ID is
+  mapped to the list with the authors' bionty map (`build_map`, as their GB.Cell data
+  modules align the same gene list), unless another panel gene already has that gene.
+  - The model's list uses current HGNC symbols, while the Visium HD panel has
+    10x 2020-A names.
+  - The fallback recovers 244 Visium HD genes (e.g. `H3F3A` → `H3-3A`, `MARCH7` →
+    `MARCHF7`, `AC118549.1` → `ZZZ3`). It recovers one Xenium gene
+    (`UGT1A1` → `UGT1A`) and nothing on ISS or CosMx.
+  - Coverage:
+    - `xhs1000` 4,941/4,948 and `xhs49` 4,947/4,954 (clustered protocadherins,
+      `UGT1A4`, `UGT1A9` missing);
+    - `chr78` and `chl59` complete;
+    - `vhb3003` 17,901/18,085.
+
+    The missing Visium HD genes include the immunoglobulin and TCR constant genes
+    (`IGKC`, `IGHG1`, `TRAC`, …), which the model does not have. Like every unmatched
+    gene, they are not counted in the total (`frac_counts_unmatched` in
+    `run_info.json`).
+  - No MT-gene removal (the authors do none).
+- In the result h5ad, for interpretation (not scored): `obsm['X_aido_tissue_cell']`,
+  the same model and pooling on the cell alone, without spatial context.
+- Caveats:
+  - Pretraining data: 76 slides from the Vizgen, NanoString and 10x Genomics
+    public pages, with no list of datasets.
+    - `chl59` (NanoString's public NSCLC CosMx set) is likely in it: the paper's
+      NanoString share, 12 slides with 1.7M cells, fits NSCLC plus liver.
+    - `xhs49` (10x Xenium Prime skin) possibly.
+    - `vhb3003` is unknown.
+    - `chr78` (ISS) is not.
+  - The paper evaluates only fine-tuned tasks; it has no zero-shot clustering
+    result. Every released config uses 10 neighbours, while the paper says 60M was
+    pretrained with 16 or 32.
+  - Visium HD bins are not cells. On the 8 µm grid the 10th neighbour is one of 4 bins
+    at 16 µm. The silver coordinates are registered to the image, so the grid is
+    slightly rotated and scaled, and those bins differ in distance by a few nm: in 87%
+    of the bins of a ~3,400-bin window the 10th and 11th neighbours are within 0.1%,
+    but none are exactly tied. The neighbour set and order (the rotary cell index) are
+    thus fixed by the grid geometry, the same for every run and independent of the
+    obs order (check (d)). `run_info.json` records the exact-tie fractions per section.
+  - chr78 (ISS, 169 genes) has a median of ~12 expressed genes per cell, so each
+    cell is only ~14 tokens. AIDO.Tissue scores lowest there of all its datasets.
+- Speed: the authors' `gather_data` rebuilds a tensor from a Python list of one entry
+  per input position (211,926 for 11 cells) on every call, three times per forward
+  pass. That was ~70 ms per cell on the CPU, whatever the number of tokens.
+  `run_aido_tissue.py` swaps in a copy that builds the tensor once
+  (`cached_gather_data`, inside `embed` only). Values, dtype and operations are the
+  same, and check (c) shows identical embeddings. A pass then takes ~19 ms per cell
+  instead of ~92 (L40S, up to ~9k tokens).
+
+Results: headline NMI/ARI, and the other baselines' NMI for comparison:
+
+| Dataset | NMI | ARI | CIFM | SToFM | HEIST |
+|---|---|---|---|---|---|
+| `xhs1000` | .320 | .183 | .477 | .341 | .108 |
+| `xhs49` | .273 | .140 | .444 | .271 | .047 |
+| `chr78` | .070 | .021 | .382 | .246 | .088 |
+| `chl59` | .504 | .369 | .494 | .346 | .006 |
+| `vhb3003` | .206 | .124 | .357 | .225 | .004 |
+
+The headline reaches the target cluster count exactly on every dataset. AIDO.Tissue is
+level with SToFM on Xenium and slightly below it on Visium HD. It has the highest NMI
+on `chl59`, where pretraining exposure is likely (above), and is near the bottom on
+`chr78`.
+
+Runs (L40S):
+- Each cell is embedded twice: with its neighbours (scored) and alone
+  (`X_aido_tissue_cell`), at ~19 ms per cell each with the cached `gather_data`.
+  - `xhs1000` took 45 min.
+  - `vhb3003` took 18 h to embed and 19 h in all, within the queue's 48 h limit, with
+    80 GB peak host memory.
+  - `chr78`, `chl59` and `xhs49` ran before the speed fix (~92 ms per cell, up to
+    17 h); their output is identical.
+- Peak GPU memory is 0.7–2.1 GB.
+- No cell has zero matched counts. There are no duplicate embeddings.
+  `avg_cosine_similarity` is 0.91–0.95.
+
+`checks/test_aido_tissue.py` (all passed: job 952663, plus (d) in job 923491; L40S):
+- (a) On the authors' demo (586 cells), `run_aido_tissue`'s loop equals `mgen predict`
+  with `emb.xenium.yaml` plus the README max-pool, for 3M and 60M (max |diff| 0).
+- (b) On the smallest `chr78`, `chl59` and `xhs1000` sections:
+  - the exact-symbol columns equal `align_adata`. The fallback column
+    (`UGT1A1` → `UGT1A`) holds the panel gene's counts, and `align_adata` leaves it
+    empty;
+  - the neighbour lists equal `SpatialDataGenerator`'s;
+  - the input rows are byte-identical (1,776–2,000 cells per section);
+  - on `chr78`, the embedding of the whole section equals `mgen predict` (max |diff| 0).
+- (c) Two runs are bitwise identical, with and without neighbours. The cached
+  `gather_data` equals the authors' bitwise (300 `xhs1000` cells, both paths).
+- (d) Shuffled obs order on the `xhs1000` section (17,384 cells) and on the Visium HD
+  window (3,381 bins): no exact ties, no neighbour list changes, cosine 1.00000.
+
+```bash
+source config.sh
+OUT=/nfs/team361/jr43/terra/benchmarking/human; LOGS=$OUT/logs; mkdir -p $LOGS
+BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_aido_tissue.py PYTHON_ENV=PYTHON_AIDO_TISSUE DATASET=xhs49-1b_1p \
+    bsub -G s10396 -q tiger22-inference -n 8 -M 64GB -R "select[mem>64GB] rusage[mem=64GB] span[hosts=1]" \
+    -gpu "num=1:mode=exclusive_process" -W 12:00 \
+    -o $LOGS/method_%J.out -e $LOGS/method_%J.err < run_method.lsf
+# chl59-8b_1p: -M 96GB -W 24:00; vhb3003-3b_1p: -M 128GB -W 48:00
+# Checks: bsub (same queue and GPU request, -W 6:00) \
+#   "$PYTHON_AIDO_TISSUE checks/test_aido_tissue.py [--skip-sensitivity]"
 ```
