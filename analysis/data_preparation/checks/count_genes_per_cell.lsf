@@ -1,0 +1,35 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J "gpc[1-158]%40"
+#BSUB -o logs/gpc_%J_%I.out
+#BSUB -e logs/gpc_%J_%I.err
+#BSUB -q long
+#BSUB -n 1
+#BSUB -M 4G
+#BSUB -R "select[mem>4G] rusage[mem=4G]"
+#BSUB -W 12:00
+
+# Detected vocabulary genes per cell, one hst_corpus_110m dataset per array
+# element (158 datasets). Read-only on silver. Submit from the folder that holds
+# this file and count_genes_per_cell.py:
+#   mkdir -p logs out && bsub < count_genes_per_cell.lsf
+# Then, when every element is done:
+#   python count_genes_per_cell.py --merge out/gpc_*_hist.npz --out genes_per_cell
+#   cat out/gpc_*_per_file.tsv | grep -v '^dataset' | grep -v -P '\tOK\t'    # empty = every file read
+#   column -t -s $'\t' genes_per_cell_per_dataset.tsv | less -S              # last row: ALL
+#   python tokenization_memory.py --names "$NAMES" --silver "$D/silver" \
+#       --gpc_per_file out/gpc_*_per_file.tsv                              # job memory per dataset
+# An element exits 1 if a file failed or its silver folder has no .h5ad (read the
+# _per_file.tsv); the shard of a missing dataset still writes its (empty) outputs.
+# Resources: ~0.2 GB RAM per element (blockwise h5py reads); 4G is a margin.
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE
+D=/lustre/scratch126/cellgen/lotfollahi/DATASETS
+NAMES=/nfs/team361/sb75/terra-reproducibility/analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt
+
+python count_genes_per_cell.py \
+    --token_dict "$D/tokenizer/token_dictionary_homo_sapiens.pkl" \
+    --names "$NAMES" --silver "$D/silver" \
+    --shard $((LSB_JOBINDEX - 1)) --n_shards 158 \
+    --out "out/gpc_${LSB_JOBINDEX}"
