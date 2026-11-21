@@ -32,6 +32,7 @@ on the same file system, so it is instant and can be undone with
 is deleted: once you are sure, delete that folder yourself.
 
 Example:
+    python prune_nfs_datasets.py --list                # names only, fast
     python prune_nfs_datasets.py                       # dry run
     python prune_nfs_datasets.py --remove xhs1000-3b_1p --keep yeh_hgsc
     python prune_nfs_datasets.py --move
@@ -185,6 +186,10 @@ def main():
                         'identical copy on Lustre.')
     p.add_argument('--restore', default=None,
                    help='Move everything in this .to_delete_* folder back.')
+    p.add_argument('--list', action='store_true',
+                   help='Only print the folders that would be removed (and '
+                        'those kept by the naming rule), without sizes, the '
+                        'Lustre check or the repository search; fast.')
     p.add_argument('--n_workers', type=int, default=8)
     args = p.parse_args()
 
@@ -221,6 +226,21 @@ def main():
     print(f'{len(rows)} dataset folders in {args.root}: '
           f'{len(rows) - len(cands)} kept, {len(cands)} candidates for '
           'removal', flush=True)
+
+    if args.list:
+        print('\nWould be removed (if Lustre holds an identical copy):')
+        for r in sorted(cands, key=lambda r: r['path']):
+            print(f'  {os.path.join(args.root, r["path"])}')
+        print('\nKept only because of TERRA naming (add to --remove to '
+              'remove):')
+        for r in rows:
+            if r['keep'] == 'naming':
+                print(f'  {os.path.join(args.root, r["path"])}')
+        if unknown:
+            print('\nOther folders (listed only, never moved):')
+            for u in unknown:
+                print(f'  {os.path.join(args.root, u)}')
+        return 0
 
     def measure(r):
         r['nfs'] = stats(os.path.join(args.root, r['path']))
