@@ -16,11 +16,19 @@ This script tokenizes the gene expression data from the harmonized AnnData
 Tokenizer. It logs tokenization time and CPU statistics to wandb. It also
 optionally creates a wandb artifact containing the tokenized dataset and the
 token dictionary.
+
+The tokenizer options of the config's 'tokenization' section that the
+script forwards are listed in `optional_tokenizer_kwargs` (including
+`storage_format: compact`, which stores each cell's row without padding).
+After tokenizing, the script checks that the saved dataset has the configured
+storage format (columns and terra_tokenizer_params.json) and that every
+recorded tokenizer setting equals the configured one, and fails otherwise.
 """
 
 
 import argparse
 import cProfile
+import json
 import os
 import pickle
 import pstats
@@ -92,6 +100,97 @@ def obtain_cumulative_times(profiler_stats_fname: str,
     return cumulative_times
 
 
+def _leaf_dtype(feature) -> Optional[str]:
+    """
+    Value dtype of a feature of dataset_info.json, e.g. 'int16' for a list of
+    int16 values ({'feature': {'dtype': 'int16', ...}, '_type': 'List'}).
+    """
+    while isinstance(feature, dict):
+        if 'dtype' in feature:
+            return feature['dtype']
+        feature = feature.get('feature')
+    return None
+
+
+def check_written_dataset(dataset_path: Path,
+                          expected_settings: dict,
+                          storage_format: str,
+                          norm_factor_file_path: str):
+    """
+    Check the saved tokenized dataset against the config it was made from:
+    its columns and its tokenizer settings record
+    (terra_tokenizer_params.json) must show the configured storage format,
+    and every recorded setting must equal the configured one. Raises a
+    RuntimeError otherwise (the job then fails instead of leaving a part
+    that concatenate_datasets.py or train() would refuse later).
+
+    Parameters:
+    ----------
+    dataset_path:
+        The saved `.dataset` folder.
+    expected_settings:
+        Tokenizer settings as configured, by record key. Keys the record
+        does not hold (e.g. chunk_size) are not compared.
+    storage_format:
+        The configured storage format ('padded' or 'compact').
+    norm_factor_file_path:
+        The configured norm-factor file.
+    """
+    dataset_path = Path(dataset_path)
+    with open(dataset_path / 'dataset_info.json') as f:
+        features = json.load(f)['features']
+    record_path = dataset_path / 'terra_tokenizer_params.json'
+    if not record_path.exists():
+        raise RuntimeError(
+            f"'{record_path}' was not written: the installed TERRA does not "
+            "record the tokenizer settings.")
+    record = json.loads(record_path.read_text())
+
+    problems = []
+    # The format is detected from the columns, as TERRA does
+    # (terra.datasets.compact.is_compact): compact rows have segment lengths
+    columns_format = 'compact' if 'segment_lengths' in features else 'padded'
+    record_format = record.get('storage_format', 'padded')
+    if columns_format != storage_format:
+        problems.append(f"the columns are {columns_format}, but the config "
+                        f"says storage_format: {storage_format}")
+    if record_format != storage_format:
+        problems.append(f"the record says storage_format "
+                        f"{record_format!r}, the config {storage_format!r}")
+    for key, value in expected_settings.items():
+        if key == 'storage_format' or key not in record:
+            continue
+        if record[key] != value:
+            problems.append(f"recorded {key} = {record[key]!r}, configured "
+                            f"{value!r}")
+    if 'add_neigh_cell_ids' in expected_settings and (
+            ('cell_ids' in features)
+            != bool(expected_settings['add_neigh_cell_ids'])):
+        problems.append("the 'cell_ids' column does not match "
+                        "add_neigh_cell_ids")
+    if record.get('uses_norm_factors'):
+        recorded_path = record.get('norm_factor_file_path')
+        if (recorded_path is None
+                or str(Path(recorded_path)) != str(Path(norm_factor_file_path))):
+            problems.append(f"recorded norm_factor_file_path {recorded_path!r}"
+                            f", configured {norm_factor_file_path!r}")
+        if record.get('norm_factor_sha256') is None:
+            problems.append('the norm-factor file was not found (no sha256 '
+                            'recorded)')
+    if problems:
+        raise RuntimeError(
+            f"The tokenized dataset '{dataset_path}' does not match its "
+            "config:\n  " + "\n  ".join(problems))
+
+    print(f"Written dataset: {dataset_path}")
+    print(f"  storage format: {columns_format} (columns and record)")
+    print(f"  columns: {list(features)}")
+    print(f"  gene_tokens dtype: {_leaf_dtype(features['gene_tokens'])}, "
+          f"gene_expr dtype: {_leaf_dtype(features['gene_expr'])}")
+    print(f"  recorded settings: "
+          f"{json.dumps(record, sort_keys=True)}")
+
+
 def parse_arguments() -> argparse.Namespace:
     """
     Parse command line arguments.
@@ -144,18 +243,29 @@ def main(config: dict):
     # Optional: per-file streaming assembly (lower peak memory). Default off
     # -> legacy single-dict assembly. Verify output equivalence before use.
     stream_per_file = config["tokenization"].get("stream_per_file", False)
-    # Optional tokenizer settings (TERRA opt-in fixes). They are recorded with
-    # the dataset (terra_tokenizer_params.json), and train() checks the model
-    # config against them, so set them here, not only in the model config
+    # Optional tokenizer settings, forwarded only when they are keys of the
+    # 'tokenization' section (absent keys keep the tokenizer defaults):
+    # - TERRA opt-in fixes. They are recorded with the dataset
+    #   (terra_tokenizer_params.json), and train() checks the model config
+    #   against them, so set them here, not only in the model config;
+    # - storage_format: 'padded' (default: one row of model_input_size tokens
+    #   per cell) or 'compact' (no padding stored; needs a TERRA with
+    #   terra.datasets.compact to tokenize and to read the data). A TERRA
+    #   without it rejects the key instead of writing padded rows;
+    # - the special-token and neighbour-cell-id columns written per row.
     optional_tokenizer_kwargs = {
         key: config["tokenization"][key] for key in (
             "stable_rank_ties", "rank_tie_break_norm_factor",
             "zero_expr_from_raw_counts", "gcrd_basis_target_read_depth",
             "gcrd_target_read_depth_per_gene", "seurat_loess_span",
             "eliminate_stored_zeros", "pad_empty_neighbors",
-            "aggregate_own_neighbors")
+            "aggregate_own_neighbors", "storage_format",
+            "include_special_tokens", "special_tokens",
+            "add_neigh_cell_ids", "chunk_size")
         if key in config["tokenization"]}
     print(f"Optional tokenizer settings: {optional_tokenizer_kwargs}")
+    storage_format = optional_tokenizer_kwargs.get("storage_format", "padded")
+    print(f"Storage format: {storage_format}.")
 
     nproc = int(os.environ.get("LSB_DJOB_NUMPROC", 1))
 
@@ -269,6 +379,24 @@ def main(config: dict):
         # Extract cumulative times from profiler stats
         cumulative_times = obtain_cumulative_times(profiler_stats_fname)
 
+    # Check what was written against this config (format and record)
+    check_written_dataset(
+        dataset_path=output_directory / f"{output_file_prefix}.dataset",
+        expected_settings={
+            "tokenizer": Tokenizer.__name__,
+            "model_input_size": model_input_size,
+            "n_neighs": n_neighs,
+            "include_zero_expr_genes": include_zero_expr_genes,
+            "rank_cell_norm_method": rank_cell_norm_method,
+            "rank_gene_norm_method": rank_gene_norm_method,
+            "rank_count_norm_method": rank_count_norm_method,
+            "count_cell_norm_method": count_cell_norm_method,
+            "count_gene_norm_method": count_gene_norm_method,
+            "count_count_norm_method": count_count_norm_method,
+            **optional_tokenizer_kwargs},
+        storage_format=storage_format,
+        norm_factor_file_path=norm_factor_file_path)
+
     # Log tokenization and profiling times to wandb
     wandb.log({"nproc": nproc})
     wandb.log({"tokenization_time": end - start})
@@ -283,7 +411,7 @@ def main(config: dict):
             metadata=config)
         # Add files to artifact
         artifact.add_file(
-            local_path=token_dictionary_file,
+            local_path=token_dictionary_file_path,
             name="TERRA Neighborhood Token Dictionary")
         artifact.add_file(
             local_path=profiler_stats_fname,
