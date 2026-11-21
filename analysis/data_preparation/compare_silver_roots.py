@@ -21,9 +21,11 @@ another anndata version differ in bytes but can hold the same data):
 
 Levels:
 - listing: folders, file names, sizes and modification times only (seconds);
-- meta: plus cells, genes, obs/var columns and the structure of the other
-  groups, without reading X (minutes);
-- full: plus X and the values of the other groups (reads every common file
+- meta: plus cells, genes, obs/var columns, the values of uns and obsm
+  (e.g. the batch/assay/tissue values the tokenizer turns into special
+  tokens, and the coordinates) and the structure of the other groups,
+  without reading X or layers (minutes);
+- full: plus X and the values of all other groups (reads every common file
   of both copies once).
 
 Outputs <out_prefix>_files.tsv (one row per file), <out_prefix>_datasets.tsv
@@ -201,7 +203,7 @@ def compare_other(fa, fb, level, cell_align, gene_align):
             pos_a, pos_b, _ = axis
             if len(sa) == 0 or sa[1:] != sb[1:]:
                 differ.append(f'{p}(shape {sa} vs {sb})')
-            elif level == 'full' and not _values_equal(
+            elif (level == 'full' or top == 'obsm') and not _values_equal(
                     fa[p][:][pos_a], fb[p][:][pos_b]):
                 differ.append(f'{p}(values on common rows)')
             continue
@@ -213,7 +215,8 @@ def compare_other(fa, fb, level, cell_align, gene_align):
         if ka == 'dataset':
             if sa != sb:
                 differ.append(f'{p}(shape {sa} vs {sb})')
-            elif level == 'full' and not datasets_equal(fa[p], fb[p]):
+            elif (level == 'full' or top in ('uns', 'obsm')) and \
+                    not datasets_equal(fa[p], fb[p]):
                 differ.append(f'{p}(values)')
             elif ta != tb:
                 info.append(f'{p}: dtype {ta} vs {tb}')
