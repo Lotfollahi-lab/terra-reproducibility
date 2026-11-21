@@ -14,7 +14,7 @@ It is kept (TERRA-relevant) if any of these holds:
 - naming: <name> follows TERRA's dataset naming (<letters><id>-..., e.g.
   xhs1000-3b_1p, mmb0-1b_smb1-20b_1p);
 - extra: <name> is in --keep (default: the SpatialFusion and CAMEO downloads
-  of the rebuttal, which exist only on NFS).
+  of the rebuttal, which exist only on NFS, and kidney_perturbation).
 Everything else is a candidate for removal. --remove marks further folders
 as candidates even if a rule keeps them. Top-level folders other than
 bronze, silver, gold, tokenizer, protein_embeddings and genes, and gold
@@ -52,7 +52,9 @@ REPOS = ['/nfs/team361/sb75/terra-reproducibility', '/nfs/team361/sb75/terra']
 TERRA_TOP = {'bronze', 'silver', 'gold', 'tokenizer', 'protein_embeddings',
              'genes'}
 TERRA_GOLD_TOOLS = {'cell-graph-tokenizer', 'cell-neighborhood-tokenizer'}
-DEFAULT_KEEP = {'spatialfusion', 'cameo'}
+# SpatialFusion and CAMEO downloads (rebuttal, NFS only); kidney perturbation
+# data (gold/cell-graph-tokenizer/kidney_perturbation)
+DEFAULT_KEEP = {'spatialfusion', 'cameo', 'kidney_perturbation'}
 TERRA_NAME = re.compile(r'^[a-z]+[0-9]+-')
 CORPUS_NAME = re.compile(r'^(hst|mst)_corpus_')
 # Files that only mention dataset names as examples
