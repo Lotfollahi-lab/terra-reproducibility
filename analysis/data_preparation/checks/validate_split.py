@@ -53,11 +53,22 @@ itself crashed):
                        == len(gene_tokens) == len(gene_expr)
   stale     no other split / n_nonzero pickle with the NAME_ prefix that is a
             legacy bare list or does not fit this dataset
-  tokenizer (optional, --norm_factor_csv) the dataset was tokenized with that
-            norm-factor file (sha256 in terra_tokenizer_params.json) and with
-            stable_rank_ties + rank_tie_break_norm_factor
+  tokenizer (optional, --norm_factor_csv) the dataset has a settings record
+            (terra_tokenizer_params.json) and was tokenized with that
+            norm-factor file (its sha256) and with stable_rank_ties +
+            rank_tie_break_norm_factor
   json      (optional, --norm_factor_json) its excluded batches are the
-            held-out batches; train rows vs its n_cells
+            held-out batches; the corpus rows outside / inside the held-out
+            batches equal its n_cells / n_cells_excluded. Fewer rows mean a
+            dataset missing from the corpus (e.g. left out of the names file at
+            concatenation), another silver copy than the norm factors were
+            computed from, or cells the tokenizer dropped (obs filter_pass != 1,
+            which compute_cohort_norm_factors.py counts): FAIL, or WARN with
+            --allow_fewer_rows_than_json (then use --batch_table)
+  batches   (optional, --batch_table) the rows per batch equal the cell counts
+            of silver_layout_check.py --table (cells with filter_pass == 1, as
+            the tokenizer keeps them) of the silver the parts were tokenized
+            from; batches without rows are reported by dataset folder
   config    (optional, --training_config) a model config's data paths are the
             validated dataset / split / n_nonzero list, and train()'s held-out
             check (terra.datasets.utils._check_split_excludes_heldout with the
@@ -661,7 +672,15 @@ def main(args):
 
     # ---------------- tokenizer settings (optional)
     if params is None:
-        report.warn('tokenizer: terra_tokenizer_params.json', 'absent; settings not checked')
+        if args.norm_factor_csv:
+            # concatenate_datasets.py writes the record only if every part has
+            # one; without it the norm-factor file cannot be checked and
+            # train() accepts the corpus with only a warning
+            report.fail('tokenizer: terra_tokenizer_params.json',
+                        'absent: the norm-factor csv and the settings cannot be checked '
+                        '(a part without a record was concatenated?)')
+        else:
+            report.warn('tokenizer: terra_tokenizer_params.json', 'absent; settings not checked')
     else:
         report.info('tokenizer: settings', f"stable_rank_ties={params.get('stable_rank_ties')}, "
                     f"rank_tie_break_norm_factor={params.get('rank_tie_break_norm_factor')}, "
@@ -697,17 +716,73 @@ def main(args):
                      'json: norm factors exclude exactly the held-out batches', f'{len(heldout)} ids',
                      f"json excludes {len(nf.get('excluded_batch_ids') or [])} ids; "
                      f"lists {len(heldout)}")
-        if 'train' in split_idx:
-            if nf.get('n_cells') == len(split_idx['train']) and \
-                    nf.get('n_cells_excluded') == int((val_mask | test_mask).sum()):
-                report.add('PASS', 'json: train / held-out rows == norm-factor n_cells / n_cells_excluded',
-                           f"{nf.get('n_cells')} / {nf.get('n_cells_excluded')}")
+        # Rows outside / inside the held-out batches (the train split, when it
+        # is valid, which is checked above) against the cells the norm factors
+        # were computed from / excluded
+        n_heldout_rows = int((val_mask | test_mask).sum())
+        rows = (n - n_heldout_rows, n_heldout_rows)
+        cells = (nf.get('n_cells'), nf.get('n_cells_excluded'))
+        name_json = 'json: train / held-out rows == norm-factor n_cells / n_cells_excluded'
+        detail = f'rows {rows[0]} / {rows[1]}, json {cells[0]} / {cells[1]}'
+        if rows == cells:
+            report.add('PASS', name_json, f'{rows[0]} / {rows[1]}')
+        else:
+            fewer = all(isinstance(c, int) and r <= c for r, c in zip(rows, cells))
+            why = ('fewer rows: a dataset missing from the corpus (left out of the '
+                   'names file at concatenation?), another silver copy than the norm '
+                   'factors were computed from, or cells the tokenizer dropped (obs '
+                   'filter_pass != 1, which compute_cohort_norm_factors.py counts)'
+                   if fewer else
+                   'more rows than the norm factors counted: another silver copy or '
+                   'other datasets than the norm factors were computed from')
+            if fewer and args.allow_fewer_rows_than_json:
+                report.warn(name_json, f'{detail}; {why} (--allow_fewer_rows_than_json)')
             else:
-                report.warn('json: train / held-out rows vs norm-factor n_cells / n_cells_excluded',
-                            f"rows {len(split_idx['train'])} / {int((val_mask | test_mask).sum())}, "
-                            f"json {nf.get('n_cells')} / {nf.get('n_cells_excluded')} (differs if "
-                            'the tokenized corpus holds other cells than the silver cohort)')
+                report.fail(name_json, f'{detail}; {why}. Compare per batch with '
+                            '--batch_table (silver_layout_check.py --table)'
+                            + ('; --allow_fewer_rows_than_json accepts fewer rows '
+                               'once they are explained' if fewer else ''))
+
+    # ---------------- rows per batch vs the silver table (optional)
+    if args.batch_table:
+        check_batch_table(report, args.batch_table, batch_counts)
     return finish(report, args, t_start)
+
+
+def check_batch_table(report, path, batch_counts):
+    """
+    Rows per batch == the cells per batch of silver_layout_check.py --table
+    ('<batch id>\\t<cells>\\t<first file>', cells with filter_pass == 1, as
+    the tokenizer keeps them). Batches without rows are grouped by the folder
+    of their file (silver/<dataset>/<file>.h5ad), i.e. by dataset.
+    """
+    expected, owner = {}, {}
+    with open(path) as f:
+        for line in f:
+            fields = line.rstrip('\n').split('\t')
+            if not fields[0].strip() or fields[0].startswith('#'):
+                continue
+            expected[fields[0]] = int(fields[1])
+            owner[fields[0]] = fields[2] if len(fields) > 2 else '-'
+    n_cells = sum(expected.values())
+    report.info('batches: silver table', f'{path}: {len(expected)} batches, {n_cells} cells')
+    missing = sorted(b for b in expected if not batch_counts.get(b))
+    by_dataset = Counter(Path(owner[b]).parent.name for b in missing)
+    report.check(not missing, 'batches: every batch of the silver table has rows',
+                 f'{len(expected)} batches',
+                 f'{len(missing)} batches ({sum(expected[b] for b in missing)} cells) have no '
+                 f'rows, by dataset folder: {short(sorted(by_dataset.items()), 20)}; batches '
+                 f'{short(missing)}')
+    differ = sorted(b for b in expected
+                    if batch_counts.get(b) and batch_counts[b] != expected[b])
+    report.check(not differ, 'batches: rows per batch == silver cells per batch',
+                 f'{n_cells} cells',
+                 f'{len(differ)} batches differ (batch: rows / silver cells): '
+                 f'{short([(b, batch_counts[b], expected[b]) for b in differ])}')
+    extra = sorted(b for b in batch_counts if b not in expected)
+    report.check(not extra, 'batches: no rows of a batch outside the silver table', '',
+                 f'{len(extra)} batches ({sum(batch_counts[b] for b in extra)} rows) not in '
+                 f'the table: {short(extra)}')
 
 
 def batch_ids_arrow(cell_ids):
@@ -865,7 +940,16 @@ if __name__ == '__main__':
                    help='For the <pad> token id (default 0) and the sha256 check.')
     p.add_argument('--norm_factor_csv', default=None,
                    help='Check that the dataset was tokenized with this csv.')
-    p.add_argument('--norm_factor_json', default=None)
+    p.add_argument('--norm_factor_json', default=None,
+                   help='compute_cohort_norm_factors.py json: its excluded batches and cell '
+                        'counts must match the corpus.')
+    p.add_argument('--allow_fewer_rows_than_json', action='store_true',
+                   help='WARN instead of FAIL when the corpus has fewer rows than the '
+                        'norm-factor json counted (e.g. cells with filter_pass != 1, which '
+                        'the tokenizer drops); check the rows per batch with --batch_table.')
+    p.add_argument('--batch_table', default=None, metavar='TSV',
+                   help='silver_layout_check.py --table output of the silver the parts '
+                        'were tokenized from: the rows of every batch must equal its cells.')
     p.add_argument('--expect_tie_break', default='tie_break_mean')
     p.add_argument('--expect_param', action='append', default=[], metavar='KEY=VALUE',
                    help='Tokenizer setting the dataset must record (VALUE as JSON, e.g. '
