@@ -21,6 +21,8 @@ def main(args):
         print("Saved full dataset split.")
 
     else:       
+        # Only the cell_id column is read, so padded and compact rows
+        # (TERRA storage_format 'compact') are split alike
         cell_ids = list(dataset['cell_id'])
 
         validation_indices = []
@@ -29,19 +31,27 @@ def main(args):
         print('done0')
         print(len(cell_ids))
 
-        # Single loop to determine validation and test indices
+        # Single loop to determine validation and test indices. A cell's
+        # batch id is '<dataset_id>_<batch>', the first two fields of its
+        # cell id; validation takes precedence over test, as before. (Set
+        # lookups instead of comparing every cell with every listed id: the
+        # same indices, minutes instead of hours for 110M cells.)
+        val_batch_ids = set(args.val_batch_ids)
+        test_batch_ids = set(args.test_batch_ids)
+        batch_ids = set()
         for index, cell_id in enumerate(cell_ids):
-            if any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.val_batch_ids):
+            fields = cell_id.split('_')
+            batch_id = f"{fields[0]}_{fields[1]}"
+            batch_ids.add(batch_id)
+            if batch_id in val_batch_ids:
                 validation_indices.append(index)
-            elif any(batch_id == f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}" for batch_id in args.test_batch_ids):
+            elif batch_id in test_batch_ids:
                 test_indices.append(index)
         print('done1')
 
         # Every listed held-out batch must match cells (a listed id that
         # matches nothing, e.g. a batch number that does not exist, leaves
         # the batch meant to be held out in training)
-        batch_ids = {f"{cell_id.split('_')[0]}_{cell_id.split('_')[1]}"
-                     for cell_id in cell_ids}
         unmatched = sorted(
             (set(args.val_batch_ids) | set(args.test_batch_ids)) - batch_ids)
         if unmatched:

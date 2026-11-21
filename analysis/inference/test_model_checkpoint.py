@@ -90,19 +90,21 @@ def main(args):
     if args.load_timestamp:
         params['state']['load_checkpoint'] = True
     if args.aws_run:
-        if 'precomputed_epoch_n_nonzero_tokens' in params['data'].keys():
+        # The n_nonzero lists may be absent or null (training on compact
+        # tokenized data derives the lengths instead)
+        if params['data'].get('precomputed_epoch_n_nonzero_tokens'):
             params['data']['precomputed_epoch_n_nonzero_tokens'] = params['data']['precomputed_epoch_n_nonzero_tokens'].replace(
                 f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
-        elif 'precomputed_n_nonzero_tokens' in params['data'].keys():
+        elif params['data'].get('precomputed_n_nonzero_tokens'):
             params['data']['precomputed_n_nonzero_tokens'] = params['data']['precomputed_n_nonzero_tokens'].replace(
                 f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
-        if 'precomputed_epoch_splits' in params['data'].keys():
+        if params['data'].get('precomputed_epoch_splits'):
             params['data']['precomputed_epoch_splits'] = params['data']['precomputed_epoch_splits'].replace(
                 f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )
-        elif 'precomputed_split' in params['data'].keys():
+        elif params['data'].get('precomputed_split'):
             params['data']['precomputed_split'] = params['data']['precomputed_split'].replace(
                 f'/fsx-shared/s3/{args.cohort_name}', f'{args.datasets_path}/tokenizer'
             )

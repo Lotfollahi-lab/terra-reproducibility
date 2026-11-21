@@ -18,6 +18,15 @@ def save_n_nonzero_tokens(dataset, indices, output_path):
 def main(args):
     # Load dataset
     dataset = load_from_disk(args.tokenized_data_folder_path)
+    if 'segment_lengths' in dataset.features:
+        # Compact rows (TERRA storage_format 'compact'): the lists hold the
+        # stored layout's lengths (the n_nonzero_tokens column). TERRA derives
+        # the lengths of any layout from the segment lengths when a config
+        # gives no precomputed_n_nonzero_tokens, and refuses these lists for a
+        # model that reads fewer neighbours or genes than stored
+        print('Compact dataset: the lists are only valid for models that '
+              'read the stored layout; training on compact data does not '
+              'need them (leave precomputed_n_nonzero_tokens out).')
 
     if args.full_dataset:
         # Save n_nonzero_tokens for full dataset
