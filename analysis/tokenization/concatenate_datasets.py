@@ -10,11 +10,16 @@ model_input_size). The corpus is written to
 together with the parts' tokenizer settings record
 (terra_tokenizer_params.json).
 
-Before the save, the script refuses parts with different tokenizer settings
-records, parts of different storage formats (padded rows, or compact rows
-without padding, detected from the 'segment_lengths' column), a part whose
-record contradicts its columns, a format other than --expect_storage_format,
-and missing or duplicated cell ids.
+Before the save, the script refuses parts without a tokenizer settings record
+(a tokenization job that died between writing the rows and the record, a
+part copied by hand, or a part tokenized before records were written; pass
+--allow_parts_without_record to concatenate such parts into a corpus without
+a record), parts with different records, parts of different storage formats
+(padded rows, or compact rows without padding, detected from the
+'segment_lengths' column), a part whose record contradicts its columns, a
+format other than --expect_storage_format, and missing or duplicated cell
+ids. A record left in the output folder by an earlier run is deleted before
+the save, so the corpus never keeps a record of other parts.
 
 Example (hst_corpus_110m, 16 neighbours x 512 genes, compact rows):
     python concatenate_datasets.py --cohort_name hst_corpus_110m \
@@ -115,6 +120,26 @@ def main(args):
 
         ds_list.append(ds)
 
+    # Every part must carry its settings record (TERRA writes it right after
+    # the rows, cell_tokenizers.py: save_to_disk, then write_tokenizer_params):
+    # a part without one may be incomplete, and the corpus could not get a
+    # record that train() checks the model config against
+    missing_record = [str(name) for name, p in zip(datasets_df.index,
+                                                    tokenizer_params)
+                      if p is None]
+    if missing_record:
+        message = (
+            f'{len(missing_record)} of {len(tokenizer_params)} parts have no '
+            f'terra_tokenizer_params.json: {missing_record}')
+        if not args.allow_parts_without_record:
+            raise ValueError(
+                message + '. Their tokenization may be incomplete (the job '
+                'died after writing the rows) or old: rm -rf these parts and '
+                're-tokenize them (or pass --allow_parts_without_record to '
+                'build a corpus without a record).')
+        print(f'WARNING: {message}; the corpus gets no record '
+              '(--allow_parts_without_record).')
+
     # One storage format for all parts (and the expected one), checked
     # before concatenating: rows of both formats in one corpus would be read
     # with the wrong layout
@@ -147,16 +172,14 @@ def main(args):
     # Checks before the (long) save. The concatenated dataset keeps the
     # tokenizer settings record (which train() checks the model config
     # against) only if all parts were tokenized alike; file paths and the
-    # TERRA version may differ (the files' sha256 are compared instead)
+    # TERRA version may differ (the files' sha256 are compared instead).
+    # Parts without a record were refused above unless
+    # --allow_parts_without_record; the records present must still agree
     not_compared = ('terra_version', 'pf_targets_file_path',
                     'norm_factor_file_path')
-    settings = [None if p is None else
-                {k: v for k, v in p.items() if k not in not_compared}
-                for p in tokenizer_params]
-    if any(p is None for p in settings):
-        print('WARNING: some datasets have no terra_tokenizer_params.json; '
-              'the concatenated dataset gets none.')
-    elif any(p != settings[0] for p in settings[1:]):
+    settings = [{k: v for k, v in p.items() if k not in not_compared}
+                for p in tokenizer_params if p is not None]
+    if any(p != settings[0] for p in settings[1:]):
         raise ValueError(
             'The datasets were tokenized with different settings '
             '(terra_tokenizer_params.json differs); re-tokenize them '
@@ -171,15 +194,24 @@ def main(args):
     if n_duplicates:
         raise ValueError(f'{n_duplicates} duplicated cell ids.')
 
+    # A record of an earlier corpus in the output folder (save_to_disk keeps
+    # files it does not write) would describe other parts: delete it first,
+    # so that a failed save or a corpus without a record leaves none
+    record_path = Path(output_path) / 'terra_tokenizer_params.json'
+    if record_path.exists():
+        print(f'Deleting the record of an earlier corpus: {record_path}')
+        record_path.unlink()
+
     # Shards keep the row order; num_proc only writes them in parallel
     concatenated_dataset.save_to_disk(
         output_path,
         num_proc=args.num_proc
         #num_shards=args.num_shards
         )
-    if all(p is not None for p in tokenizer_params):
-        with open(Path(output_path) / 'terra_tokenizer_params.json', 'w') as f:
+    if not missing_record:
+        with open(record_path, 'w') as f:
             json.dump(tokenizer_params[0], f, indent=2, sort_keys=True)
+        print(f'Tokenizer settings record written: {record_path}')
     current, peak = tracemalloc.get_traced_memory()
     print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.')
 
@@ -247,6 +279,13 @@ if __name__ == '__main__':
                         help="Refuse parts of another storage format "
                              "('compact': no padding stored; 'padded'). "
                              'Default: any, as long as all parts agree.')
+    parser.add_argument('--allow_parts_without_record',
+                        action='store_true',
+                        help='Concatenate parts without '
+                             'terra_tokenizer_params.json (tokenized before '
+                             'records were written) into a corpus without a '
+                             'record. Default: refuse them, as such a part '
+                             'may be an incomplete tokenization.')
     parser.add_argument('--num_proc',
                         type=int,
                         default=None,
