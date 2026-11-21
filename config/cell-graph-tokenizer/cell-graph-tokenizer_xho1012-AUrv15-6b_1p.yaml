@@ -1,28 +1,34 @@
 experiment:
   experiment_description: xenium human ovary (dataset-id = 1012) | 6-batch | 1-panel
   experiment_name: xho1012-AUrv15-6b_1p
-  model_input_size: 4352
+  model_input_size: 8704
   tokenizer: cell-graph-tokenizer
 paths:
   data_directory_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/
-  norm_factor_file_path: /nfs/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_110m_norm_factors.csv
-  pf_targets_file_path: /nfs/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_110m_pf_targets.csv
+  norm_factor_file_path: /nfs/team361/sb75/terra-reproducibility/artifacts/data/hst_corpus_110m/hst_corpus_110m_train_norm_factors.csv
+  pf_targets_file_path: null
   token_dictionary_file_path: /lustre/scratch126/cellgen/lotfollahi/DATASETS/tokenizer/token_dictionary_homo_sapiens.pkl
 tokenization:
   count_cell_norm_method: null
-  count_count_norm_method: pflog1ppf
+  count_count_norm_method: shifted_log
   count_gene_norm_method: null
   delaunay: false
+  eliminate_stored_zeros: true
   include_zero_expr_genes: false
   keep_in_memory: false
   n_neighs: 16
   num_shards: 32
+  pad_empty_neighbors: true
   processing_mode: parallel
   radius: null
   rank_cell_norm_method: null
   rank_count_norm_method: null
   rank_gene_norm_method: null
+  rank_tie_break_norm_factor: tie_break_mean
   species: homo_sapiens
+  stable_rank_ties: true
+  storage_format: compact
+  stream_per_file: true
   use_generator: true
 wandb:
   job_type: create-tokenized-dataset
