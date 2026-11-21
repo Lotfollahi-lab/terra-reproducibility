@@ -24,6 +24,10 @@ Example:
     python copy_missing_silver_folders.py --run --streams 8
     python copy_missing_silver_folders.py --run --direction a_to_b \\
         --exclude hest1k,spatch
+    # any other tier, e.g. NFS-only tokenized folders to Lustre:
+    python copy_missing_silver_folders.py --direction a_to_b \\
+        --root_a /nfs/team361/sb75/DATASETS/gold/cell-graph-tokenizer \\
+        --root_b /lustre/scratch126/cellgen/lotfollahi/DATASETS/gold/cell-graph-tokenizer
 """
 import argparse
 import os
@@ -48,8 +52,16 @@ BATCH_FILES = 5000
 def dataset_folders(root):
     """Dataset folders of a root (hidden folders, incl. copies in progress,
     are left out)."""
+    if not os.path.isdir(root):
+        return set()
     return {d for d in os.listdir(root)
             if not d.startswith('.') and os.path.isdir(os.path.join(root, d))}
+
+
+def existing_parent(path):
+    while not os.path.exists(path):
+        path = os.path.dirname(path)
+    return path
 
 
 def scan(path):
@@ -179,7 +191,7 @@ def main():
               flush=True)
     print()
     for dst_root, n in totals.items():
-        free = shutil.disk_usage(dst_root).free
+        free = shutil.disk_usage(existing_parent(dst_root)).free
         print(f'to {dst_root}: {human(n)} to copy, {human(free)} free on '
               f'that file system (quotas are not checked)')
     if excluded:
@@ -189,6 +201,8 @@ def main():
         return 0
     print()
 
+    for root in {d for _, _, d in todo}:
+        os.makedirs(root, exist_ok=True)
     ok = True
     for name, src_root, dst_root in links:
         src, dst = os.path.join(src_root, name), os.path.join(dst_root, name)
