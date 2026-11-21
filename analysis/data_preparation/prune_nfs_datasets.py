@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """
-Find dataset folders in the NFS DATASETS root that TERRA does not use, and
-move them out of the way (reversibly) once an identical copy exists on
-Lustre.
+Find silver dataset folders in the NFS DATASETS root that TERRA does not
+use, and move them out of the way (reversibly) once an identical copy exists
+on Lustre. Only silver/<name> folders are considered; nothing outside
+silver (bronze, gold, tokenizer, ...) is ever listed, moved or deleted.
 
-A dataset folder is silver/<name>, bronze/<name> or gold/<tokenizer>/<name>.
-It is kept (TERRA-relevant) if any of these holds:
+A silver folder is kept (TERRA-relevant) if any of these holds:
 - corpus: <name> is in a corpus list of this repository
   (analysis/data_preparation/*/*_dataset_names*.txt), or is a corpus folder
   (hst_corpus_*, mst_corpus_*);
@@ -13,12 +13,10 @@ It is kept (TERRA-relevant) if any of these holds:
   cell-neighborhood tokenizer config for <name> exists;
 - naming: <name> follows TERRA's dataset naming (<letters><id>-..., e.g.
   xhs1000-3b_1p, mmb0-1b_smb1-20b_1p);
-- extra: <name> is in --keep (default: the SpatialFusion and CAMEO downloads
-  of the rebuttal, which exist only on NFS, and kidney_perturbation).
+- extra: <name> is in --keep (default: spatialfusion, cameo,
+  kidney_perturbation).
 Everything else is a candidate for removal. --remove marks further folders
-as candidates even if a rule keeps them. Top-level folders other than
-bronze, silver, gold, tokenizer, protein_embeddings and genes, and gold
-folders of other tools, are only listed, never moved.
+as candidates even if a rule keeps them.
 
 For each candidate the dry run shows its size, whether Lustre holds an
 identical copy at the same path (same files, folders, links and total size)
@@ -49,11 +47,10 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = '/nfs/team361/sb75/DATASETS'
 LUSTRE_ROOT = '/lustre/scratch126/cellgen/lotfollahi/DATASETS'
 REPOS = ['/nfs/team361/sb75/terra-reproducibility', '/nfs/team361/sb75/terra']
-TERRA_TOP = {'bronze', 'silver', 'gold', 'tokenizer', 'protein_embeddings',
-             'genes'}
-TERRA_GOLD_TOOLS = {'cell-graph-tokenizer', 'cell-neighborhood-tokenizer'}
-# SpatialFusion and CAMEO downloads (rebuttal, NFS only); kidney perturbation
-# data (gold/cell-graph-tokenizer/kidney_perturbation)
+# Only folders of this tier are considered
+TIER = 'silver'
+# Names of TERRA data kept elsewhere (SpatialFusion and CAMEO downloads in
+# bronze, kidney perturbation in gold), in case silver has them too
 DEFAULT_KEEP = {'spatialfusion', 'cameo', 'kidney_perturbation'}
 TERRA_NAME = re.compile(r'^[a-z]+[0-9]+-')
 CORPUS_NAME = re.compile(r'^(hst|mst)_corpus_')
@@ -206,26 +203,15 @@ def main():
     keep = DEFAULT_KEEP | {x for x in args.keep.split(',') if x}
     remove = {x for x in args.remove.split(',') if x}
 
-    folders, unknown = [], []
-    for top in subdirs(args.root):
-        if top not in TERRA_TOP:
-            unknown.append(top)
-    for tier in ('silver', 'bronze'):
-        for name in subdirs(os.path.join(args.root, tier)):
-            folders.append((f'{tier}/{name}', name))
-    for tool in subdirs(os.path.join(args.root, 'gold')):
-        if tool not in TERRA_GOLD_TOOLS:
-            unknown.append(f'gold/{tool}')
-            continue
-        for name in subdirs(os.path.join(args.root, 'gold', tool)):
-            folders.append((f'gold/{tool}/{name}', name))
+    folders = [(f'{TIER}/{name}', name)
+               for name in subdirs(os.path.join(args.root, TIER))]
 
     rows = []
     for rel, name in folders:
         reason = classify(name, corpus, config, keep, remove)
         rows.append(dict(path=rel, name=name, keep=reason))
     cands = [r for r in rows if r['keep'] is None]
-    print(f'{len(rows)} dataset folders in {args.root}: '
+    print(f'{len(rows)} dataset folders in {args.root}/{TIER}: '
           f'{len(rows) - len(cands)} kept, {len(cands)} candidates for '
           'removal', flush=True)
 
@@ -238,10 +224,6 @@ def main():
         for r in rows:
             if r['keep'] == 'naming':
                 print(f'  {os.path.join(args.root, r["path"])}')
-        if unknown:
-            print('\nOther folders (listed only, never moved):')
-            for u in unknown:
-                print(f'  {os.path.join(args.root, u)}')
         return 0
 
     def measure(r):
@@ -283,12 +265,6 @@ def main():
         what = (f'link to {nfs["link_to"]}' if nfs and 'link_to' in nfs
                 else f'{human(size):>10s} {nfs["files"] if nfs else 0:7d} files')
         print(f'  {r["path"]:62s} {what}  {copy}{ref}')
-    if unknown:
-        print('\nOther folders (not TERRA tiers or tools; listed only, never '
-              'moved):')
-        for u in unknown:
-            s = stats(os.path.join(args.root, u))
-            print(f'  {u:62s} {human(s.get("bytes", 0)):>10s}')
     print(f'\n{len(movable)} of {len(cands)} candidates can be moved '
           f'({human(total)})' + ('' if args.allow_without_lustre_copy else
                                  '; the others have no identical Lustre copy'))
