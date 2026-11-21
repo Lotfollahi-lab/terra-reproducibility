@@ -30,12 +30,109 @@ from sklearn.model_selection import train_test_split
 
 from terra.inference import get_average_gene_embed, get_gene_embed, infer
 from terra.datasets import prepare_dataset
+from terra.tokenizers.params import read_tokenizer_params
 from terra.utils.config import create_params_from_YAML_wandb_config
 from terra.utils.distributed import init_distributed
 from terra.utils.embedding import collect_adata_from_folder
 from terra.utils.evaluation import clustering_metrics, classification_metrics
 
 from analysis_utils import *
+
+
+def layout_mismatches(data_config, recorded):
+    """
+    Settings of a model config's `data` section with which inference does not
+    read the rows of the cell-graph dataset with tokenizer record `recorded`.
+
+    The rows hold n_neighs + 1 segments of int(model_input_size /
+    (n_neighs + 1)) entries (the stride). Inference reads the first
+    seq_len_cell entries of each segment with the stride TERRA's
+    `_truncation_settings` (inference/embed.py) gives: tokenized_seq_len_cell,
+    else seq_len_cell, but the config's model_input_size // (n_neighs + 1)
+    when tokenized_seq_len_cell is set and the config's model_input_size is
+    the row length. It reads fewer segments than stored only with
+    truncate_neighbors. Several mismatches misread the rows without an error,
+    e.g. a model reading 256 genes per cell (the released models) of the
+    16 x 512 corpus without tokenized_seq_len_cell. The rules are those of
+    TERRA's `_layout_mismatches` (tokenizers/params.py, branch
+    feat/compact-tokenized-data), which train() applies but inference does
+    not. Records of other tokenizers, or without n_neighs, give no mismatch.
+    """
+    if (recorded.get('tokenizer') != 'CellGraphTokenizer'
+            or data_config.get('tokenizer_type') != 'cell_graph'
+            or recorded.get('n_neighs') is None
+            or not recorded.get('model_input_size')):
+        return []
+    n_seg = int(recorded['n_neighs']) + 1
+    row_length = int(recorded['model_input_size'])
+    stride = int(row_length / n_seg)
+    seq_len_cell = data_config.get('seq_len_cell')
+    tokenized_seq_len_cell = data_config.get('tokenized_seq_len_cell')
+    model_input_size = data_config.get('model_input_size')
+    n_neighs = data_config.get('n_neighs')
+    n_segments = data_config.get('n_segments')
+    seq_len_neighborhood = data_config.get('seq_len_neighborhood')
+    if (tokenized_seq_len_cell is not None and model_input_size and n_neighs
+            and int(model_input_size) == row_length):
+        read_stride = int(model_input_size) // (int(n_neighs) + 1)
+    else:
+        read_stride = tokenized_seq_len_cell or seq_len_cell
+    mismatches = []
+    if read_stride is not None and int(read_stride) != stride:
+        mismatches.append(
+            f'stride: inference reads segments of {read_stride} entries '
+            f'(tokenized_seq_len_cell {tokenized_seq_len_cell!r}, seq_len_cell '
+            f'{seq_len_cell!r}, model_input_size {model_input_size!r}, '
+            f'n_neighs {n_neighs!r}), the dataset holds segments of {stride}; '
+            f'data.tokenized_seq_len_cell: {stride} reads them')
+    if seq_len_cell is not None and int(seq_len_cell) > stride:
+        mismatches.append(
+            f'seq_len_cell: config {seq_len_cell!r}, more than the {stride} '
+            'entries per segment of the dataset')
+    if n_segments is not None:
+        if int(n_segments) > n_seg:
+            mismatches.append(
+                f"n_segments: config {n_segments!r}, more than the dataset's "
+                f'{n_seg} segments')
+        elif (int(n_segments) < n_seg
+              and not data_config.get('truncate_neighbors', False)):
+            mismatches.append(
+                f"n_segments: config {n_segments!r}, fewer than the dataset's "
+                f'{n_seg} segments without data.truncate_neighbors: true')
+    if (None not in (n_segments, seq_len_cell, seq_len_neighborhood)
+            and int(seq_len_neighborhood)
+            != (int(n_segments) - 1) * int(seq_len_cell)):
+        mismatches.append(
+            f'seq_len_neighborhood: config {seq_len_neighborhood!r}, expected '
+            '(n_segments - 1) * seq_len_cell = '
+            f'{(int(n_segments) - 1) * int(seq_len_cell)}')
+    return mismatches
+
+
+def check_layout(data_config, logger):
+    """
+    Refuse to evaluate when the model reads the evaluation dataset with
+    another layout than it holds (see `layout_mismatches`), e.g. a model
+    trained on the 10 x 256 corpus pointed at the 16 x 512 one with
+    --overwrite_tokenized_data_folder_path. Datasets without a tokenizer
+    record cannot be checked (warning).
+    """
+    dataset_path = data_config.get('tokenized_data_folder_path')
+    recorded = read_tokenizer_params(dataset_path) if dataset_path else None
+    if recorded is None:
+        logger.warning(
+            f"The evaluation dataset '{dataset_path}' has no tokenizer record, "
+            'so the layout the model reads (seq_len_cell, n_segments, '
+            'tokenized_seq_len_cell, truncate_neighbors) is not checked '
+            'against its rows.')
+        return
+    mismatches = layout_mismatches(data_config, recorded)
+    if mismatches:
+        raise ValueError(
+            f"The model does not read the evaluation dataset '{dataset_path}' "
+            f"({recorded['n_neighs']} neighbours per cell, rows of "
+            f"{recorded['model_input_size']} entries) with its layout, so "
+            'inference would misread its rows:\n  ' + '\n  '.join(mismatches))
 
 
 def main(args):
@@ -142,6 +239,8 @@ def main(args):
             'only meaningful if both use the same tokenization and number of '
             'neighbours. Pass an empty --overwrite_tokenized_data_folder_path to '
             'evaluate on the training dataset unless intended.')
+    # A layout that does not fit the rows is misread without an error
+    check_layout(params['data'], logger)
 
     global layer
     layer = params['meta']['enc_depth']
