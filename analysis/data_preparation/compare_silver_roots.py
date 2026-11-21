@@ -114,7 +114,11 @@ def _values_equal(a, b):
     if a.dtype.kind in 'SUO' or b.dtype.kind in 'SUO':
         return bool(np.array_equal(_as_str(a), _as_str(b)))
     if a.dtype.names or b.dtype.names:
-        return a.tobytes() == b.tobytes() and a.dtype == b.dtype
+        # Field by field: the bytes of variable-length string fields are
+        # pointers (e.g. rank_genes_groups 'names' in uns)
+        if a.dtype.names != b.dtype.names:
+            return False
+        return all(_values_equal(a[n], b[n]) for n in a.dtype.names)
     if a.dtype.kind in 'fc' or b.dtype.kind in 'fc':
         return bool(np.array_equal(a.astype(np.complex128 if 'c' in (
             a.dtype.kind + b.dtype.kind) else np.float64),
@@ -125,6 +129,8 @@ def _values_equal(a, b):
 
 def datasets_equal(da, db):
     """Value equality of two h5py datasets, read in chunks."""
+    if da.shape is None or db.shape is None:  # empty (null) datasets
+        return da.shape == db.shape
     if da.shape != db.shape:
         return False
     if da.shape == ():
