@@ -4,7 +4,9 @@
 #
 # Usage, from the terra-reproducibility root (the job runs there):
 #   bash analysis/tokenization/wrapper_create_cell_graph_tokenized_dataset.sh <dataset> [cores] [queue] [ram] [walltime]
-# Arguments 2-5 override the row of the resource table below (e.g. 4 hugemem 1536G 48:00).
+# Arguments 2-5 override the row of the resource table below (e.g. 4 hugemem 1536G 48:00);
+# an empty argument ("") keeps the table's value. On cpu-interactive the walltime is
+# capped at that queue's 12-hour limit (see below).
 # All 158 hst_corpus_110m datasets:
 #   grep . analysis/data_preparation/hst_corpus_110m/hst_corpus_110m_dataset_names.txt | \
 #       while read -r ds; do bash analysis/tokenization/wrapper_create_cell_graph_tokenized_dataset.sh "$ds"; done
@@ -322,6 +324,27 @@ TIME="${5:-$TIME}"
 if [[ "$QUEUE" == *gpu* || "$QUEUE" == inference ]]; then
     echo "Queue '${QUEUE}' is a GPU queue; tokenization runs on CPU queues (long, hugemem, teramem)." >&2
     exit 1
+fi
+
+# cpu-interactive (for when long and normal are busy) has a 12-hour run limit,
+# while most rows of the table ask for 24:00: cap the walltime there. Empty
+# arguments keep the table's value, e.g. to change only the queue:
+#   bash analysis/tokenization/wrapper_create_cell_graph_tokenized_dataset.sh <dataset> "" cpu-interactive
+# A job that needs longer ends with TERM_RUNLIMIT and leaves no part or an
+# incomplete one (partial shards, no terra_tokenizer_params.json, which
+# concatenate_datasets.py refuses): rm -rf the part folder and resubmit on long /
+# hugemem / teramem.
+if [[ "$QUEUE" == cpu-interactive ]]; then
+    MAX_MINUTES=$((12 * 60))
+    if [[ "$TIME" == *:* ]]; then
+        MINUTES=$((10#${TIME%%:*} * 60 + 10#${TIME#*:}))
+    else
+        MINUTES=$((10#${TIME}))
+    fi
+    if (( MINUTES > MAX_MINUTES )); then
+        echo "Queue cpu-interactive allows at most 12:00; walltime ${TIME} -> 12:00." >&2
+        TIME="12:00"
+    fi
 fi
 
 # The job runs in CWD (default: the current directory, which must be the
