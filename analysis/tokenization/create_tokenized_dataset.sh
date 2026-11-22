@@ -2,7 +2,8 @@
 
 CONFIG_FILE=$1  # path to the config file
 
-# Modify to match your python environment activation command(s)
+# Modify to match your python environment activation command(s); keep in
+# step with the block in run_tokenization_locked.sh
 if [ "$USER" == "am84" ]; then
     source /etc/profile.d/modules.sh
     module load cellgen/conda

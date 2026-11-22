@@ -29,7 +29,11 @@ EXPERIMENT_NAME="${1:?usage: wrapper_create_cell_graph_tokenized_dataset.sh <dat
 TOKENIZER_NAME="cell-graph-tokenizer"
 LOG_DIR="logs/${EXPERIMENT_NAME}/farm-job-outputs/${TOKENIZER_NAME}"
 
-SCRIPT="analysis/tokenization/create_tokenized_dataset.sh"
+# The job runs create_tokenized_dataset.sh under the per-dataset lock of
+# run_tokenization_locked.sh, so it never tokenizes a dataset that another
+# job is tokenizing, and exits at once if the dataset is already tokenized
+# (delete the part folder first to re-tokenize it).
+SCRIPT="analysis/tokenization/run_tokenization_locked.sh"
 
 case $EXPERIMENT_NAME in
     mmb0-1b_smb1-1b_1p)
@@ -332,8 +336,8 @@ fi
 #   bash analysis/tokenization/wrapper_create_cell_graph_tokenized_dataset.sh <dataset> "" cpu-interactive
 # A job that needs longer ends with TERM_RUNLIMIT and leaves no part or an
 # incomplete one (partial shards, no terra_tokenizer_params.json, which
-# concatenate_datasets.py refuses): rm -rf the part folder and resubmit on long /
-# hugemem / teramem.
+# concatenate_datasets.py refuses); resubmit on long / hugemem / teramem (the
+# new job rewrites the part), or let add_tokenization_jobs.py do it.
 if [[ "$QUEUE" == cpu-interactive ]]; then
     MAX_MINUTES=$((12 * 60))
     if [[ "$TIME" == *:* ]]; then
