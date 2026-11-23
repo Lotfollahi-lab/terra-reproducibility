@@ -1,0 +1,19 @@
+#!/bin/bash
+# Gene panel subsampling, prepare step (CPU): panels, evaluation cells and panel statistics of the run in
+# OUTPUT_FOLDER_PATH. Submitted by submit_gene_panel_subsampling.sh, which also sets the job name and log files.
+#BSUB -G team361
+#BSUB -q normal
+#BSUB -n 4
+#BSUB -M 32G
+#BSUB -R "select[mem>32G] rusage[mem=32G] span[hosts=1]"
+#BSUB -W 2:00
+
+set -euo pipefail
+: "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_gene_panel_subsampling.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-4} MKL_NUM_THREADS=${LSB_DJOB_NUMPROC:-4} \
+    OPENBLAS_NUM_THREADS=${LSB_DJOB_NUMPROC:-4}
+
+python gene_panel_subsampling.py prepare --output_folder_path "${OUTPUT_FOLDER_PATH}"

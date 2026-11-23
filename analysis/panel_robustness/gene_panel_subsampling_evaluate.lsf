@@ -1,0 +1,22 @@
+#!/bin/bash
+# Gene panel subsampling, evaluate step (CPU job array): element LSB_JOBINDEX computes the PCA baselines, kNN graphs,
+# Leiden clusters and label transfer of condition LSB_JOBINDEX of run_config.json in OUTPUT_FOLDER_PATH. Submitted by
+# submit_gene_panel_subsampling.sh after the embed array. An element whose evaluation is complete stops at once
+# (FORCE=1 evaluates again).
+#BSUB -G team361
+#BSUB -q normal
+#BSUB -n 8
+#BSUB -M 32G
+#BSUB -R "select[mem>32G] rusage[mem=32G] span[hosts=1]"
+#BSUB -W 8:00
+
+set -euo pipefail
+: "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_gene_panel_subsampling.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+# numba (UMAP connectivities of the kNN graph) compiles for a generic CPU, so the graph does not depend on the node
+export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8} MKL_NUM_THREADS=${LSB_DJOB_NUMPROC:-8} \
+    OPENBLAS_NUM_THREADS=${LSB_DJOB_NUMPROC:-8} NUMBA_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
+
+python gene_panel_subsampling.py evaluate --output_folder_path "${OUTPUT_FOLDER_PATH}" ${FORCE:+--force}

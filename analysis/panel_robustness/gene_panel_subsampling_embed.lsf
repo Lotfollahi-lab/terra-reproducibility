@@ -1,0 +1,20 @@
+#!/bin/bash
+# Gene panel subsampling, embed step (GPU job array): element LSB_JOBINDEX harmonizes, tokenizes and embeds condition
+# LSB_JOBINDEX of run_config.json in OUTPUT_FOLDER_PATH with TERRA. Submitted by submit_gene_panel_subsampling.sh,
+# which sets the array size, the dependency on the prepare step and the log files. An element whose embeddings exist
+# stops at once (FORCE=1 embeds again).
+#BSUB -G s10396
+#BSUB -q inference
+#BSUB -n 12
+#BSUB -M 64G
+#BSUB -R "select[mem>64G] rusage[mem=64G] span[hosts=1]"
+#BSUB -W 6:00
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+set -euo pipefail
+: "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_gene_panel_subsampling.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE
+
+python gene_panel_subsampling.py embed --output_folder_path "${OUTPUT_FOLDER_PATH}" ${FORCE:+--force}
