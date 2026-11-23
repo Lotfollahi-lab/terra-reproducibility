@@ -1,0 +1,20 @@
+#!/bin/bash
+# Gene panel subsampling, summarize step (CPU): comparisons with the full panel and between disjoint panels, tables and
+# figures of the run in OUTPUT_FOLDER_PATH (results/). Submitted by submit_gene_panel_subsampling.sh after the
+# evaluate array; conditions that did not finish are listed in the log and left out.
+#BSUB -G team361
+#BSUB -q normal
+#BSUB -n 8
+#BSUB -M 64G
+#BSUB -R "select[mem>64G] rusage[mem=64G] span[hosts=1]"
+#BSUB -W 4:00
+
+set -euo pipefail
+: "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_gene_panel_subsampling.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-8} MKL_NUM_THREADS=${LSB_DJOB_NUMPROC:-8} \
+    OPENBLAS_NUM_THREADS=${LSB_DJOB_NUMPROC:-8}
+
+python gene_panel_subsampling.py summarize --output_folder_path "${OUTPUT_FOLDER_PATH}"
