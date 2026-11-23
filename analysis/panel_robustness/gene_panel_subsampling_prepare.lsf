@@ -1,7 +1,8 @@
 #!/bin/bash
 # Gene panel subsampling, prepare step (CPU): panels, evaluation cells and panel statistics of the run in
-# OUTPUT_FOLDER_PATH. Submitted by submit_gene_panel_subsampling.sh, which also sets the job name and log files.
-#BSUB -G team361
+# OUTPUT_FOLDER_PATH. Submitted by submit_gene_panel_subsampling.sh, which also sets the group, queue, job name and
+# log files (the #BSUB lines are defaults for a manual bsub).
+#BSUB -G s10396
 #BSUB -q normal
 #BSUB -n 4
 #BSUB -M 32G

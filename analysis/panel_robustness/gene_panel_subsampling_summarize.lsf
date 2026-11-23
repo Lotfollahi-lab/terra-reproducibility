@@ -2,7 +2,7 @@
 # Gene panel subsampling, summarize step (CPU): comparisons with the full panel and between disjoint panels, tables and
 # figures of the run in OUTPUT_FOLDER_PATH (results/). Submitted by submit_gene_panel_subsampling.sh after the
 # evaluate array; conditions that did not finish are listed in the log and left out.
-#BSUB -G team361
+#BSUB -G s10396
 #BSUB -q normal
 #BSUB -n 8
 #BSUB -M 64G
