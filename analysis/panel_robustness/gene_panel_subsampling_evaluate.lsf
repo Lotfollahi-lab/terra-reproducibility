@@ -3,7 +3,7 @@
 # Leiden clusters and label transfer of condition LSB_JOBINDEX of run_config.json in OUTPUT_FOLDER_PATH. Submitted by
 # submit_gene_panel_subsampling.sh after the embed array. An element whose evaluation is complete stops at once
 # (FORCE=1 evaluates again).
-#BSUB -G team361
+#BSUB -G s10396
 #BSUB -q normal
 #BSUB -n 8
 #BSUB -M 32G

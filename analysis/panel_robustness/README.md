@@ -53,9 +53,15 @@ cd /nfs/team361/sb75/terra-reproducibility && git pull && cd analysis/panel_robu
 ```
 
 Options after the run name go to `gene_panel_subsampling.py configure` (see `--help`), e.g. `--model_folder_path`,
-`--batches`, `--panel_sizes`, `--n_replicates`. Steps: `prepare` (CPU, minutes), `embed` (GPU array, `inference` queue,
-about 10-30 min per element), `evaluate` (CPU array, about 15 min per element), `summarize` (CPU). Resubmitting the
-same run name skips finished conditions; `FORCE=1` recomputes them.
+`--batches`, `--panel_sizes`, `--n_replicates`. Steps: `prepare` (CPU, minutes), `embed` (GPU array, about 10-30 min
+per element), `evaluate` (CPU array, about 15 min per element), `summarize` (CPU). Resubmitting the same run name skips
+finished conditions; `FORCE=1` recomputes them.
+
+Every job uses LSF group `s10396` (`LSF_GROUP`; `team361` does not exist on the GPU cluster). The embed array runs on
+`inference` (`GPU_QUEUE`); prepare, evaluate and summarize run on the first of `normal`, `long` and `cpu-interactive`
+that the cluster has, otherwise on the GPU queue with one GPU each (`CPU_QUEUE` sets it, e.g.
+`CPU_QUEUE=long bash submit_gene_panel_subsampling.sh <run>`). If a submission fails, the jobs of the run that were
+already submitted are removed.
 
 ## Outputs (`artifacts/panel_robustness/<run>/`)
 
