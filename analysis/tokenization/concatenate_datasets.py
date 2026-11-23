@@ -18,8 +18,19 @@ a record), parts with different records, parts of different storage formats
 (padded rows, or compact rows without padding, detected from the
 'segment_lengths' column), a part whose record contradicts its columns, a
 format other than --expect_storage_format, and missing or duplicated cell
-ids. A record left in the output folder by an earlier run is deleted before
-the save, so the corpus never keeps a record of other parts.
+ids.
+
+The corpus is written to a sibling folder <corpus>.partial-<id> (<id>: the
+LSF job id, or the process id outside LSF), checked (it loads with every
+row), given the record, and only then renamed to <corpus>. A killed run
+therefore never leaves a corpus folder that mixes two builds; it leaves its
+.partial-<id> folder, which nothing reads (delete it when no concatenation
+job is running). An existing corpus is refused unless --overwrite: the new
+corpus is then written next to it (disk space for both is needed until the
+swap), renamed into place, and the old one deleted. Processes that already
+have the old corpus open keep reading it (Lustre keeps deleted files that
+are open); a process that opens the corpus by path after the swap reads the
+new one.
 
 Example (hst_corpus_110m, 16 neighbours x 512 genes, compact rows):
     python concatenate_datasets.py --cohort_name hst_corpus_110m \
@@ -29,10 +40,12 @@ Example (hst_corpus_110m, 16 neighbours x 512 genes, compact rows):
 import argparse
 import json
 import os
+import shutil
 import tracemalloc
 from pathlib import Path
 
 import datasets
+import pyarrow as pa
 import pyarrow.compute as pc
 import pandas as pd
 
@@ -69,6 +82,14 @@ def find_part(gold_data_path: Path, dataset_name: str, dir_substring: str,
     return matches[0]
 
 
+def corpus_exists(path) -> bool:
+    """True if `path` exists (or is a link) and is not an empty folder."""
+    p = Path(path)
+    if not (p.exists() or p.is_symlink()):
+        return False
+    return not (p.is_dir() and not p.is_symlink() and not any(p.iterdir()))
+
+
 def main(args):
     gold_data_path = Path(args.data_directory_path) / 'gold' / args.tokenizer
 
@@ -84,6 +105,31 @@ def main(args):
         args.n_neighs,
         args.seq_len]])
     print(hparam_prefix)
+
+    cohort_dir = gold_data_path / args.cohort_name
+    output_path = str(
+        (Path(cohort_dir) / f"{args.cohort_name}_{hparam_prefix}").with_suffix(
+            '.dataset'))
+    # Refuse an existing corpus before the (long) loading and checks
+    if corpus_exists(output_path) and not args.overwrite:
+        raise FileExistsError(
+            f"'{output_path}' already holds a corpus. Pass --overwrite to "
+            "replace it (the new corpus is written next to it and swapped in "
+            "when complete; disk space for both is needed until then), or "
+            "delete it first (rm -rf) when no job reads it.")
+    # The corpus is saved here first and renamed into place when complete. A
+    # requeued job keeps its job id and restarts its own partial folder.
+    job_id = os.environ.get('LSB_JOBID') or str(os.getpid())
+    partial_path = f'{output_path}.partial-{job_id}'
+    leftovers = sorted(str(p) for kind in ('partial', 'replaced')
+                       for p in Path(cohort_dir).glob(
+                           f'{Path(output_path).name}.{kind}-*')
+                       if str(p) != partial_path)
+    if leftovers:
+        print('WARNING: folders of other or earlier concatenation runs (a '
+              'killed run leaves its .partial-<id>; nothing reads them): '
+              + ', '.join(leftovers) + '. Delete them when no concatenation '
+              'job is running, to free the disk space.')
 
     ds_list = []
     tokenizer_params = []
@@ -156,12 +202,6 @@ def main(args):
             f"The parts are {found_formats[0]}, not "
             f"{args.expect_storage_format} (--expect_storage_format).")
 
-    cohort_dir = gold_data_path / args.cohort_name
-    cohort_dataset_dir = cohort_dir / f"{args.cohort_name}_{hparam_prefix}"
-    output_path = str(
-        (Path(cohort_dir) / f"{args.cohort_name}_{hparam_prefix}").with_suffix(
-            '.dataset'))
-
     os.makedirs(cohort_dir, exist_ok=True)
 
     # Save dataset
@@ -185,33 +225,92 @@ def main(args):
             '(terra_tokenizer_params.json differs); re-tokenize them '
             'with one configuration before concatenating.')
     # Cell ids must be present and unique: duplicated rows were once removed
-    # by a hard-coded row range (fix_dataset_duplicates.py)
+    # by a hard-coded row range (fix_dataset_duplicates.py). Counted as
+    # large_string: Arrow's distinct count copies the distinct values into one
+    # buffer, which holds at most 2 GiB with the 32-bit offsets of 'string'
+    # (the 112.6M ids of hst_corpus_110m, about 17 characters each, come
+    # within 10% of that). The cast keeps the data buffers and only adds
+    # 64-bit offsets.
     cell_id_column = concatenated_dataset.data.column('cell_id')
     if cell_id_column.null_count:
         raise ValueError(f'{cell_id_column.null_count} cells have no cell id.')
-    n_duplicates = (len(concatenated_dataset)
-                    - pc.count_distinct(cell_id_column).as_py())
+    n_distinct = pc.count_distinct(
+        cell_id_column.cast(pa.large_string())).as_py()
+    n_duplicates = len(concatenated_dataset) - n_distinct
     if n_duplicates:
         raise ValueError(f'{n_duplicates} duplicated cell ids.')
 
-    # A record of an earlier corpus in the output folder (save_to_disk keeps
-    # files it does not write) would describe other parts: delete it first,
-    # so that a failed save or a corpus without a record leaves none
-    record_path = Path(output_path) / 'terra_tokenizer_params.json'
-    if record_path.exists():
-        print(f'Deleting the record of an earlier corpus: {record_path}')
-        record_path.unlink()
+    # Written to a sibling folder and renamed into place once complete, so a
+    # killed save never leaves a corpus folder that mixes two builds (the
+    # shard names depend only on the number of shards) and never rewrites
+    # files that running jobs have memory-mapped
+    if os.path.lexists(partial_path):
+        shutil.rmtree(partial_path)
 
     # Shards keep the row order; num_proc only writes them in parallel
     concatenated_dataset.save_to_disk(
-        output_path,
+        partial_path,
         num_proc=args.num_proc
         #num_shards=args.num_shards
         )
+    n_saved = len(datasets.load_from_disk(partial_path))
+    if n_saved != len(concatenated_dataset):
+        raise RuntimeError(
+            f"'{partial_path}' holds {n_saved} rows instead of "
+            f'{len(concatenated_dataset)}; the corpus was not replaced.')
     if not missing_record:
-        with open(record_path, 'w') as f:
+        with open(Path(partial_path) / 'terra_tokenizer_params.json',
+                  'w') as f:
             json.dump(tokenizer_params[0], f, indent=2, sort_keys=True)
-        print(f'Tokenizer settings record written: {record_path}')
+
+    # Swap the complete corpus into place
+    replaced_path = None
+    if corpus_exists(output_path):
+        if not args.overwrite:
+            raise FileExistsError(
+                f"'{output_path}' was created while this job ran; the new "
+                f"corpus stays in '{partial_path}'.")
+        # Unique per attempt (a requeued job keeps its job id)
+        target = f'{output_path}.replaced-{job_id}-{os.getpid()}'
+        try:
+            os.rename(output_path, target)
+        except OSError:
+            print(f"ERROR: the new corpus is complete in '{partial_path}', "
+                  f"but the previous corpus '{output_path}' could not be "
+                  'moved aside (it is unchanged).')
+            raise
+        replaced_path = target
+    elif os.path.isdir(output_path):
+        os.rmdir(output_path)  # an empty folder
+    try:
+        os.rename(partial_path, output_path)
+    except OSError:
+        if replaced_path is not None:
+            os.rename(replaced_path, output_path)  # the old corpus back
+        print(f"ERROR: the new corpus is complete in '{partial_path}' but "
+              f"could not be renamed to '{output_path}'"
+              + (' (the previous corpus is back in place)'
+                 if replaced_path is not None else '') + '.')
+        raise
+    print(f"Corpus written: '{output_path}' ({n_saved} rows)")
+    if not missing_record:
+        print('Tokenizer settings record written: '
+              f"{Path(output_path) / 'terra_tokenizer_params.json'}")
+    if replaced_path is not None:
+        # Processes that already have the old corpus open keep reading it
+        try:
+            if os.path.islink(replaced_path):
+                link_target = os.readlink(replaced_path)
+                os.unlink(replaced_path)
+                print('The previous corpus was a link: the link was removed, '
+                      f"its target '{link_target}' was kept (delete it by "
+                      'hand when no job reads it).')
+            else:
+                shutil.rmtree(replaced_path)
+                print('The previous corpus was replaced and deleted.')
+        except OSError as e:
+            print(f"WARNING: the previous corpus is in '{replaced_path}' and "
+                  f'could not be deleted ({e}); delete it by hand.')
     current, peak = tracemalloc.get_traced_memory()
     print(f'Current memory usage is {current / 10**6}MB; Peak was {peak / 10**6}MB.')
 
@@ -291,6 +390,13 @@ if __name__ == '__main__':
                         default=None,
                         help='Processes writing the corpus shards '
                              '(default: one).')
+    parser.add_argument('--overwrite',
+                        action='store_true',
+                        help='Replace an existing corpus: the new one is '
+                             'written next to it, swapped in when complete, '
+                             'and the old one deleted (disk space for both '
+                             'is needed until the swap). Default: refuse an '
+                             'existing corpus.')
     args = parser.parse_args()
     
     main(args)

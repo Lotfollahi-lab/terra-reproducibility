@@ -53,12 +53,26 @@ def human(n):
         n /= 1000.0
 
 
+def list_lengths(table, name):
+    """Per-row lengths of a list column of an Arrow table, read chunk by chunk
+    from the list offsets (the values are not read). Combining the chunks
+    first would overflow the 32-bit list offsets of a part with more than
+    2^31 - 1 stored entries."""
+    lengths = [c.value_lengths().to_numpy(zero_copy_only=False)
+               for c in table.column(name).chunks]
+    return (np.concatenate(lengths) if lengths
+            else np.zeros(0, dtype=np.int32))
+
+
 def list_column(table, name):
-    """(flat values, per-row lengths) of a list column of an Arrow table."""
-    col = table.column(name).combine_chunks()
-    lengths = col.value_lengths().to_numpy(zero_copy_only=False)
-    values = col.flatten().to_numpy(zero_copy_only=False)
-    return values, lengths
+    """(flat values, per-row lengths) of a list column of an Arrow table,
+    chunk by chunk (see list_lengths)."""
+    chunks = table.column(name).chunks
+    if not chunks:
+        return np.zeros(0), np.zeros(0, dtype=np.int32)
+    values = np.concatenate([c.flatten().to_numpy(zero_copy_only=False)
+                             for c in chunks])
+    return values, list_lengths(table, name)
 
 
 def silver_cells(silver_dir):
@@ -140,7 +154,7 @@ def main():
     ends = np.cumsum(seg_rows)
     row_sums = cs[ends] - cs[ends - seg_rows]
     nnz = table.column('n_nonzero_tokens').to_numpy()
-    tok_vals, tok_rows = list_column(table, 'gene_tokens')
+    tok_rows = list_lengths(table, 'gene_tokens')
     if not np.array_equal(tok_rows, row_sums):
         fails.append(f'{int((tok_rows != row_sums).sum())} rows store another '
                      'number of tokens than their segment lengths add up to')

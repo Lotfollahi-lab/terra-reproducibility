@@ -17,9 +17,12 @@
 # parts without a settings record (e.g. a tokenization job killed after writing the
 # rows: rm -rf the part and re-tokenize it), parts with different settings records,
 # parts that are not compact (or whose record contradicts their columns), and
-# missing or duplicated cell ids. A record left in the output folder by an earlier
-# run is deleted before the save.
-# The parts are memory-mapped; the cell-id check holds one string column in memory.
+# missing or duplicated cell ids. The corpus is written to <corpus>.partial-<job id>
+# and renamed into place once complete; a killed run leaves only that folder
+# (nothing reads it: delete it). An existing corpus is refused: add --overwrite
+# to replace it (disk space for both corpora is needed until the swap).
+# The parts are memory-mapped; the cell-id check holds a copy of the cell ids and
+# a hash table in memory (about 12-15 GB for 112.6M ids).
 # --num_proc writes the corpus shards in parallel (same rows, same order).
 # Submit from this folder; the logs directory must exist first:
 #   mkdir -p ../../logs/tokenization/concatenate_datasets && bsub < concatenate_datasets.lsf
