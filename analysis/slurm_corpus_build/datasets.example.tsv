@@ -1,0 +1,9 @@
+# One dataset per line, columns separated by tabs or spaces (paths without spaces):
+# name<TAB>dataset_id<TAB>h5ad<TAB>expected_n_samples<TAB>exclude_samples<TAB>sample_key[<TAB>prepare_silver.py args]
+# - name: silver/gold folder name (letters, digits, . _ -); dataset_id: unique integer (cell ids <id>_batch<k>_<i>)
+# - expected_n_samples: number of samples in the file before exclusion (checked; needed by sample_key auto), or -
+# - exclude_samples: comma-separated sample names to leave out, or -
+# - sample_key: obs column naming the sample of each cell, or auto
+# - optional prepare_silver.py arguments, e.g. --counts layers/counts --coord_scale 0.2125
+study_a	2001	/path/to/study_a.h5ad	86	-	auto
+study_b_5k	2002	/path/to/study_b.h5ad	49	S4	auto	--counts layers/counts
