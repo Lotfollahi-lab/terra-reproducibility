@@ -1,0 +1,14 @@
+#!/bin/bash
+# select_proxy.py as an LSF job (submitted by submit_data_step.sh ENV_FILE select, which passes E0_ENV_FILE and RUN):
+# a dry run, or with RUN=1 the proxy's silver folder and its manifests.
+set -euo pipefail
+source "${E0_ENV_FILE:?E0_ENV_FILE is not set: submit with submit_data_step.sh}"
+set +u; source "${ENV_PATH}/bin/activate"; set -u
+export HDF5_USE_FILE_LOCKING=FALSE
+ARGS=(--data_directory_path "${DATA_DIRECTORY_PATH}" --names "${CORPUS_NAMES_FILE}"
+      --out_dir "${ARTIFACT_FOLDER_PATH}/proxy" --proxy_name "${PROXY_NAME}" --n_batches "${N_BATCHES}"
+      --max_cells "${MAX_CELLS}" --min_cells "${MIN_CELLS}" --seed "${SELECTION_SEED}")
+if [ "${RUN:-0}" = 1 ]; then
+    ARGS+=(--run)
+fi
+python analysis/selection_e0/select_proxy.py "${ARGS[@]}"

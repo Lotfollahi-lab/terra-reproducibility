@@ -252,7 +252,10 @@ def main(config: dict):
     #   per cell) or 'compact' (no padding stored; needs a TERRA with
     #   terra.datasets.compact to tokenize and to read the data). A TERRA
     #   without it rejects the key instead of writing padded rows;
-    # - the special-token and neighbour-cell-id columns written per row.
+    # - the special-token and neighbour-cell-id columns written per row;
+    # - add_spatial_index: each cell's position in its file, its coordinates
+    #   and its neighbours' offsets (TERRA exp/effective-exposures; the E0
+    #   selection proxy, analysis/selection_e0).
     optional_tokenizer_kwargs = {
         key: config["tokenization"][key] for key in (
             "stable_rank_ties", "rank_tie_break_norm_factor",
@@ -261,7 +264,7 @@ def main(config: dict):
             "eliminate_stored_zeros", "pad_empty_neighbors",
             "aggregate_own_neighbors", "storage_format",
             "include_special_tokens", "special_tokens",
-            "add_neigh_cell_ids", "chunk_size")
+            "add_neigh_cell_ids", "chunk_size", "add_spatial_index")
         if key in config["tokenization"]}
     print(f"Optional tokenizer settings: {optional_tokenizer_kwargs}")
     storage_format = optional_tokenizer_kwargs.get("storage_format", "padded")
@@ -281,8 +284,12 @@ def main(config: dict):
     st_data_silver_folder_path = data_directory_path / "silver"
     st_data_gold_folder_path = data_directory_path / "gold"
         
-    # Set cache path
-    cache_directory_path = data_directory_path / "cache"
+    # Set cache path (paths.cache_directory_path, if given, gives a job its
+    # own cache folder, which it can delete after the save; the shared
+    # default keeps a copy of every part it builds)
+    cache_directory_path = Path(
+        config["paths"].get("cache_directory_path")
+        or data_directory_path / "cache")
     os.makedirs(cache_directory_path, exist_ok=True)
 
     # Set input and output directories

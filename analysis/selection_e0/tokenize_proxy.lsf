@@ -1,0 +1,31 @@
+#!/bin/bash
+# The proxy's tokenization as an LSF job (submitted by submit_data_step.sh ENV_FILE tokenize): the corpus tokenization
+# (run_tokenization_locked.sh -> create_tokenized_dataset.sh -> create_tokenized_dataset.py) with the proxy's config and
+# the pinned TERRA code first on PYTHONPATH (create_tokenized_dataset.sh prints which TERRA it imports). The config's
+# own cache folder (paths.cache_directory_path) is removed before the run, so a failed earlier run cannot leave a
+# cached build that is reused, and after a run that wrote the settings record, as the saved dataset holds the rows.
+set -uo pipefail
+source "${E0_ENV_FILE:?E0_ENV_FILE is not set: submit with submit_data_step.sh}"
+CONFIG="config/cell-graph-tokenizer/cell-graph-tokenizer_${PROXY_NAME}.yaml"
+set +u; source "${ENV_PATH}/bin/activate"; set -u
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
+export HDF5_USE_FILE_LOCKING=FALSE
+python -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__" || exit 1
+CACHE=$(python -c "import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))['paths']['cache_directory_path'])" \
+        "${CONFIG}") || exit 1
+case "${CACHE}" in
+    */cache/${PROXY_NAME}) ;;
+    *) echo "ERROR: unexpected cache folder ${CACHE} in ${CONFIG}; not removing it." >&2; exit 1 ;;
+esac
+if [ -f "${PROXY_DATASET_PATH}/terra_tokenizer_params.json" ]; then
+    echo "${PROXY_DATASET_PATH} is already tokenized; nothing to do."
+    exit 0
+fi
+rm -rf "${CACHE}"
+analysis/tokenization/run_tokenization_locked.sh "${CONFIG}"
+RC=$?
+if [ ${RC} -eq 0 ] && [ -f "${PROXY_DATASET_PATH}/terra_tokenizer_params.json" ]; then
+    rm -rf "${CACHE}"
+    echo "Tokenized ${PROXY_DATASET_PATH}; removed the cache folder ${CACHE}."
+fi
+exit ${RC}

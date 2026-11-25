@@ -1,0 +1,11 @@
+#!/bin/bash
+# build_index_lists.py as an LSF job (submitted by submit_data_step.sh ENV_FILE lists): the index lists of the E0 arms
+# for the tokenized proxy, with the pinned TERRA code (for check_neighbor_rows) first on PYTHONPATH.
+set -euo pipefail
+source "${E0_ENV_FILE:?E0_ENV_FILE is not set: submit with submit_data_step.sh}"
+set +u; source "${ENV_PATH}/bin/activate"; set -u
+export PYTHONPATH="${CODE_PATH}/src${PYTHONPATH:+:${PYTHONPATH}}"
+python -c "import terra; assert terra.__file__.startswith('${CODE_PATH}/'), terra.__file__"
+python analysis/selection_e0/build_index_lists.py --dataset "${PROXY_DATASET_PATH}" \
+    --files_tsv "${ARTIFACT_FOLDER_PATH}/proxy/proxy_files.tsv" \
+    --out_dir "${ARTIFACT_FOLDER_PATH}/index_lists" --n_epochs "${N_EPOCHS}"
