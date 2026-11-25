@@ -220,10 +220,27 @@ def load_sections(cfg: dict):
     notebook, which removes the others before embedding), with obs['section'] = batch name.
     """
     import anndata as ad
+    import pandas as pd
 
     adatas = []
     for batch, path in zip(cfg['batches'], section_files(cfg)):
         adata = ad.read_h5ad(path)
+        # Cells are matched across panels by name, so names must be unique. The names in silver files can repeat
+        # (xhs1000: Xenium cell id + sample, e.g. in adata_batch32); the silver cell_id (<dataset>_<batch>_<row>) is
+        # unique by construction, else the row in the file is used. The silver name is kept in obs['silver_name'].
+        adata.obs['silver_name'] = adata.obs_names.astype(str)
+        n_repeated = int(adata.obs_names.duplicated().sum())
+        if 'cell_id' in adata.obs and adata.obs['cell_id'].astype(str).is_unique:
+            names, source = adata.obs['cell_id'].astype(str).to_numpy(), 'cell_id'
+        else:
+            names, source = np.array([f'row{i}' for i in range(adata.n_obs)]), 'row'
+        adata.obs_names = pd.Index([f'{batch}:{name}' for name in names])
+        if n_repeated:
+            xy = pd.DataFrame(np.asarray(adata.obsm['spatial']), columns=['x', 'y'])
+            xy['name'] = adata.obs['silver_name'].to_numpy()
+            n_identical = int(xy.duplicated().sum())
+            log(f'{path}: {n_repeated} repeated cell names ({n_identical} of them also with identical coordinates); '
+                f'cells are named <batch>:<{source}> instead.')
         labelled = ~adata.obs[cfg['niche_key']].isna().to_numpy()
         adata = adata[labelled].copy()
         adata.obs['section'] = batch

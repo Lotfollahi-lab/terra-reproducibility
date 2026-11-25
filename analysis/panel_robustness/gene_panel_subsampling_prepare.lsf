@@ -2,6 +2,10 @@
 # Gene panel subsampling, prepare step (CPU): panels, evaluation cells and panel statistics of the run in
 # OUTPUT_FOLDER_PATH. Submitted by submit_gene_panel_subsampling.sh, which also sets the group, queue, job name and
 # log files (the #BSUB lines are defaults for a manual bsub).
+#
+# The other steps wait for this job to finish successfully. If it fails, LSF would keep them pending forever
+# ("Dependency condition invalid or never satisfied"), so this job then kills them: their ids are in
+# OUTPUT_FOLDER_PATH/.waiting_jobs_<this job id>, written by the submit script.
 #BSUB -G s10396
 #BSUB -q normal
 #BSUB -n 4
@@ -11,6 +15,24 @@
 
 set -euo pipefail
 : "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_gene_panel_subsampling.sh}"
+
+kill_waiting_jobs() {
+    local status=$? waiting_jobs_file="${OUTPUT_FOLDER_PATH}/.waiting_jobs_${LSB_JOBID:-none}"
+    if [ "${status}" -ne 0 ]; then
+        # The submit script writes the file right after submitting; wait briefly in case this job failed first
+        for _ in $(seq 1 30); do
+            [ -s "${waiting_jobs_file}" ] && break
+            sleep 2
+        done
+        if [ -s "${waiting_jobs_file}" ]; then
+            echo "prepare failed (exit code ${status}); killing the jobs that wait for it: $(cat "${waiting_jobs_file}")" >&2
+            bkill $(cat "${waiting_jobs_file}") >&2 || true
+        fi
+    fi
+    rm -f "${waiting_jobs_file}"
+    exit "${status}"
+}
+trap kill_waiting_jobs EXIT
 
 source /nfs/team361/sb75/.venvs/terra/bin/activate
 export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
