@@ -9,7 +9,9 @@ panel contains, so a smaller or different panel changes what is averaged.
 - **Tissue:** the held-out Xenium Prime 5K skin benchmark sections, `xhs1000-39b_1p` batches 11, 19 and 32 (eczema;
   held out from TERRA-96M, see `analysis/data_preparation/heldout_batch_ids.py`). The panel has 5,000 genes; 4,948 map
   to Ensembl IDs, and the panel genes are those the TERRA pipeline keeps and has in its vocabulary. Cells without a niche
-  label are removed before embedding, as in `terra_benchmarking.ipynb`.
+  label are removed before embedding, as in `terra_benchmarking.ipynb`. Cells are named `<batch>:<silver cell_id>`
+  (or `<batch>:row<i>`), because the cell names in the silver files can repeat (e.g. `adata_batch32.h5ad`); the silver
+  name is kept in `obs['silver_name']`.
 - **Panels:** the full panel; random panels of 1,000, 2,000, 3,000 and 4,000 genes (5 random draws per size, nested
   within a draw); for 1,000 and 2,000 genes, a second random panel per draw that shares no gene with the first
   ("disjoint"); and the full panel embedded a second time (run-to-run variation). 32 conditions by default.
@@ -61,7 +63,9 @@ Every job uses LSF group `s10396` (`LSF_GROUP`; `team361` does not exist on the 
 `inference` (`GPU_QUEUE`); prepare, evaluate and summarize run on the first of `normal`, `long` and `cpu-interactive`
 that the cluster has, otherwise on the GPU queue with one GPU each (`CPU_QUEUE` sets it, e.g.
 `CPU_QUEUE=long bash submit_gene_panel_subsampling.sh <run>`). If a submission fails, the jobs of the run that were
-already submitted are removed.
+already submitted are removed. If the prepare job fails, it kills the jobs that wait for it (otherwise LSF keeps them
+pending with "Dependency condition invalid or never satisfied"); its error is in
+`logs/panel_robustness/<run>/prepare_<job id>.err`.
 
 ## Outputs (`artifacts/panel_robustness/<run>/`)
 

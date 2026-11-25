@@ -99,6 +99,8 @@ SUBMITTED+=("${EVALUATE_ID}")
 SUMMARIZE_ID=$(submit "${CPU_OPTIONS[@]}" -J "gps_summarize_${RUN_NAME}" -w "ended(${EVALUATE_ID})" \
     -o "${LOG_FOLDER}/summarize_%J.out" -e "${LOG_FOLDER}/summarize_%J.err" < gene_panel_subsampling_summarize.lsf)
 SUBMITTED+=("${SUMMARIZE_ID}")
+# The prepare job kills the jobs that wait for it if it fails (they would stay pending forever)
+echo "${EMBED_ID} ${EVALUATE_ID} ${SUMMARIZE_ID}" > "${OUTPUT_FOLDER_PATH}/.waiting_jobs_${PREPARE_ID}"
 COMPLETE=1
 
 cat <<EOF
@@ -109,5 +111,5 @@ Run ${RUN_NAME}: ${N_CONDITIONS} conditions.
   summarize ${SUMMARIZE_ID} (${CPU_QUEUE})
 Output: ${OUTPUT_FOLDER_PATH}
 Logs:   ${LOG_FOLDER}
-If prepare fails, the other jobs never start: bkill ${EMBED_ID} ${EVALUATE_ID} ${SUMMARIZE_ID}, fix, resubmit.
+If prepare fails, it kills the other jobs (see ${LOG_FOLDER}/prepare_${PREPARE_ID}.err).
 EOF
