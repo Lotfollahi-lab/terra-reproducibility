@@ -2,7 +2,8 @@
 
 E0 is the first experiment of the effective-exposure allocation project (data selection for TERRA's pretraining). It
 asks whether a small TERRA trained on a corpus-like proxy still improves with compute (headroom), whether unique views
-or diversity matter at matched compute, and how two cheap samplers compare, before any allocation method is built.
+or diversity matter at matched compute, and whether re-drawing spatially spread centres each epoch matters at matched
+coverage, before any allocation method is built.
 This folder makes the proxy and the index lists of its runs; the run configs, the launch and the evaluation come next.
 
 It needs TERRA `exp/effective-exposures` (`Lotfollahi-lab/terra`, commit `49b4840`): `add_spatial_index` in the
@@ -18,20 +19,30 @@ are the corpus rows of the same cells (except at crop borders) and carry each ce
 coordinates and its neighbours' rows. A model can read fewer neighbours and genes from them (`truncate_neighbors`,
 `tokenized_seq_len_cell: 512`), e.g. the ablation size of 10 neighbours x 64 genes.
 
-## The arms (24 runs)
+## The run matrix (30 runs from 24 lists)
 
 N is the number of proxy rows; the full budget C is 6 passes (6 epochs of N presentations). Every list has 6 epochs of
 equal length, so each run's schedules end at its own budget (`optimization.ipe_scale: 1.0`).
 
-| Axis | Arm | Budget | Lists (seeds) |
-|---|---|---|---|
-| Compute | `uniform_c1`, `uniform_c2`, `uniform_c4`, `uniform_c8`: all rows in passes | C, C/2, C/4, C/8 | 3, 2, 3, 2 |
-| Unique views at matched compute | `fixed_2`, `fixed_8`, `fixed_32`: a fixed random 1/k of the centres; all cells stay as context | C | 2 each |
-| Diversity at matched size | `sections_8`: the 1/8 from a few whole sections per assay | C | 2 |
-| Sampler | `rs2_c4`: a fresh random N/4 each epoch; `poisson_c4`: N/4 Poisson-disk centres re-drawn each epoch | C/4 | 3 each |
+| Axis | Arm | Budget | Seeds | Runs |
+|---|---|---|---|---|
+| Learning rate, run first | `uniform_c1` and `uniform_c4`, seed 0, at 0.5x and 2x the recipe's rate | C, C/4 | 1 | 4 |
+| Compute | `uniform_c1`, `uniform_c2`, `uniform_c4`, `uniform_c8`: all rows in passes | C, C/2, C/4, C/8 | 3, 2, 3, 2 | 10 |
+| Unique views at matched compute | `fixed_2`, `fixed_8`, `fixed_32`: a fixed random 1/k of the centres; all cells stay as context | C | 2, 3, 2 | 7 |
+| Diversity at matched size | `sections_8`: the 1/8 from a few whole sections per assay | C | 2 | 2 |
+| Coverage at matched budget | `poisson_c4`: N/4 Poisson-disk centres re-drawn each epoch; `poisson_fixed_c4`: its first epoch's centres, kept (the same per-epoch coverage) | C/4 | 3, 2 | 5 |
+| Batch composition | `uniform_c4`, seeds 0 and 1, with length grouping off (`data.mega_batch_mult_max: 1`) | C/4 | 2 | 2 |
 
-`build_index_lists.py` describes each arm. `uniform_c1` lists every row in order, which trains exactly as without lists.
-A list's seed is also its run's training seed.
+The learning-rate checks and the length-grouping runs reuse lists, so 24 lists serve the 30 runs. `build_index_lists.py`
+describes each arm; `uniform_c1` lists every row each epoch, which trains exactly as without lists. A list's seed is
+also its run's training seed, and within a family (uniform, fixed, Poisson-disk) the arms of a seed share their random
+draws, so they are nested: `uniform_c8` presents the first half of `uniform_c4`'s entries, `fixed_32`'s subset lies in
+`fixed_8`'s, and `poisson_fixed_c4` keeps `poisson_c4`'s first epoch. Paired comparisons then differ by the arm, not by
+the rows drawn.
+
+`rs2_c4` (a fresh random N/4 each epoch) left E0: at about 1.5 passes it is close to `uniform_c4`. `--arms rs2_c4` still
+builds it, as a possible E3 null. An arm that places a niche's copies in the same step needs a sampler option and is not
+built.
 
 ## Files
 
@@ -113,9 +124,12 @@ cd /nfs/team361/sb75/terra-reproducibility-e0 && git pull && bash analysis/selec
 ```
 
 - It first checks every neighbour pair of the proxy (`Neighbour rows checked: ... pairs`), then writes the 24 lists
-  and `artifacts/e0/index_lists/lists_summary.tsv`: per list the rows per epoch, budget, unique rows, copies of a row
-  per epoch, sections and assay shares, and for `poisson_c4` the j it chose (the sizes of the independent sets for
-  j = 1..10 are in the `.out` file; j = 10 is about 13% of the cells).
+  and `artifacts/e0/index_lists/lists_summary.tsv`: per list the rows per epoch, budget, unique rows, distinct centres
+  per epoch, copies of a row per epoch, sections, assay shares, the share of cells covered (as a centre or one of its
+  first 10 neighbours) per epoch and over the run, and for the Poisson-disk arms the j they use (the sizes of the
+  independent sets for j = 1..10 are in the `.out` file; j = 10 is about 13% of the cells).
+- `poisson_fixed_c4` must cover about as many cells per epoch as `poisson_c4` (`cells_covered_per_epoch`, within about
+  0.01); both should cover more than `uniform_c4`.
 
 ## Caveats
 
@@ -128,4 +142,6 @@ cd /nfs/team361/sb75/terra-reproducibility-e0 && git pull && bash analysis/selec
   stratum follow the batches drawn (`proxy_strata.tsv`).
 - Tested locally on a synthetic corpus (held-out batches, a batch over two files, a file with two batches, crops):
   selection, tokenization through `create_tokenized_dataset.py` with the proxy config, the 24 lists, and CPU training on
-  `uniform_c8` and `fixed_8` with exposure logging and counters. Nothing has run on the farm.
+  `uniform_c8` and `fixed_8` with exposure logging and counters. The revised lists were rebuilt there: the arms nest as
+  described, TERRA's `EpochIndexLists` accepts all 24, and the per-epoch coverage is 0.94 for `uniform_c4` and 0.98 for
+  both Poisson-disk arms. Nothing has run on the farm.

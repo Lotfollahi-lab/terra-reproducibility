@@ -6,13 +6,15 @@ exp/effective-exposures) for the tokenized selection proxy
 N is the number of rows of the proxy (its training split is every row), and
 the full budget C is n_epochs x N niche presentations. Every list has
 n_epochs rows of equal length, so a run's learning-rate, weight-decay and EMA
-schedules end at its own budget (with optimization.ipe_scale: 1.0).
+schedules end at its own budget (with optimization.ipe_scale: 1.0). The
+sampler shuffles each epoch's entries itself (seeded by the training seed), so
+a list sets which rows an epoch presents and how often, not their order.
 
 Arms
   uniform_c1, uniform_c2, uniform_c4, uniform_c8
       Every row, budget C/k: consecutive passes over all rows, each in a fresh
       random order, cut into n_epochs epochs of N // k rows. uniform_c1 lists
-      every row in order each epoch, which trains exactly as without lists.
+      every row each epoch, which trains exactly as without lists.
   fixed_2, fixed_8, fixed_32
       Unique views at matched compute: a random 1/k of the rows (N // k),
       fixed for the run, budget C. Every epoch is N rows of passes over the
@@ -21,25 +23,43 @@ Arms
       Diversity at matched size: as fixed_8, but the subset is whole sections
       (batches), a few per assay. Each assay gets its share of N // 8 rows,
       and its last section only part of its rows.
-  rs2_c4
-      Budget C/4: each epoch an independent random N // 4 rows (repeated
-      sampling of random subsets; rows can repeat across epochs).
   poisson_c4
-      Budget C/4: each epoch N // 4 centres of a fresh random maximal
-      independent set of the symmetric j-nearest-neighbour graph, i.e. a
-      Poisson-disk sample whose radius is each cell's distance to its j-th
+      Coverage, budget C/4: each epoch N // 4 centres of a fresh random
+      maximal independent set of the symmetric j-nearest-neighbour graph, i.e.
+      a Poisson-disk sample whose radius is each cell's distance to its j-th
       neighbour. j is the largest of 1..--max_j whose independent sets hold
       N // 4 rows; an epoch whose set is smaller is topped up at random (the
       summary counts those rows).
+  poisson_fixed_c4
+      The matched-coverage control of poisson_c4, budget C/4: poisson_c4's
+      first-epoch centres (same seed), kept for every epoch. Each epoch covers
+      the same cells as a poisson_c4 epoch would; only the re-drawing differs.
+  rs2_c4 (not in the E0 matrix; --arms rs2_c4)
+      Budget C/4: each epoch an independent random N // 4 rows (repeated
+      sampling of random subsets). At about 1.5 passes it is close to
+      uniform_c4, so E0 leaves it out; it stays available as an E3 null.
 
-Seeds (the E0 matrix): three for uniform_c1, uniform_c4, rs2_c4 and
+Shared random numbers: a seed draws the same random stream in every arm of a
+family, so the arms of one seed are nested. uniform_c8's entries are the first
+half of uniform_c4's, which are the first half of uniform_c2's; fixed_32's
+subset lies in fixed_8's, which lies in fixed_2's; poisson_fixed_c4 keeps
+poisson_c4's first epoch. Paired comparisons within a seed then differ by the
+arm, not by which rows were drawn.
+
+Seeds (the E0 matrix): three for uniform_c1, uniform_c4, fixed_8 and
 poisson_c4, two for the others, 24 lists in all (--seeds overrides). A list's
-seed is also its run's training seed.
+seed is also its run's training seed. E0's six other runs reuse these lists:
+the learning-rate checks (uniform_c1 and uniform_c4, seed 0, at 0.5x and 2x
+the rate) and length grouping off (uniform_c4, seeds 0 and 1, with
+data.mega_batch_mult_max: 1, so each mega-batch is one batch).
 
 Output, in --out_dir:
     <arm>_seed<s>.npy    int32 [n_epochs, length]
     lists_summary.tsv    per list: rows per epoch, budget, unique rows,
-                         copies, sections, assay shares, j, top-up rows
+                         distinct centres per epoch, copies, sections, assay
+                         shares, cells covered (as a centre or one of its
+                         first --n_context neighbours) per epoch and over the
+                         run, j, top-up rows
 
 Usage (farm, terra venv with the pinned TERRA code first on PYTHONPATH; see
 README.md):
@@ -56,10 +76,14 @@ import numpy as np
 import pyarrow.compute as pc
 
 ARMS = ('uniform_c1', 'uniform_c2', 'uniform_c4', 'uniform_c8', 'fixed_2',
-        'fixed_8', 'fixed_32', 'sections_8', 'rs2_c4', 'poisson_c4')
+        'fixed_8', 'fixed_32', 'sections_8', 'rs2_c4', 'poisson_c4',
+        'poisson_fixed_c4')
+E0_ARMS = tuple(arm for arm in ARMS if arm != 'rs2_c4')
 DEFAULT_SEEDS = {arm: (0, 1, 2) if arm in ('uniform_c1', 'uniform_c4',
-                                           'rs2_c4', 'poisson_c4')
+                                           'fixed_8', 'poisson_c4')
                  else (0, 1) for arm in ARMS}
+# The random stream of each arm family (shared random numbers, see above)
+STREAMS = {'uniform': 1, 'fixed': 2, 'sections': 3, 'rs2': 4, 'poisson': 5}
 
 
 def read_proxy(dataset_path: str, chunk_rows: int = 1_000_000):
@@ -93,18 +117,35 @@ def assay_of_sections(files_tsv: str) -> dict:
     return assay
 
 
+def neighbour_pairs(offsets, indptr, j: int):
+    """(row, neighbour row, rank) of each row's first j neighbours."""
+    n = len(indptr) - 1
+    degree = np.diff(indptr)
+    # Rank of every offset within its row (nearest neighbour first)
+    rank = np.arange(len(offsets)) - np.repeat(indptr[:-1], degree)
+    take = rank < j
+    src = np.repeat(np.arange(n), degree)[take]
+    dst = src + offsets[take]
+    rank = rank[take]
+    # Rows outside the dataset and the row itself are no neighbours
+    keep = (dst >= 0) & (dst < n) & (dst != src)
+    return src[keep], dst[keep], rank[keep]
+
+
+def neighbour_rows(offsets, indptr, j: int) -> np.ndarray:
+    """[N, j] rows of each row's first j neighbours (-1: none)."""
+    n = len(indptr) - 1
+    src, dst, rank = neighbour_pairs(offsets, indptr, j)
+    rows = np.full((n, j), -1,
+                   dtype=np.int32 if n < 2**31 else np.int64)
+    rows[src, rank] = dst
+    return rows
+
+
 def knn_graph(offsets, indptr, j: int):
     """Symmetric graph of each row and its j nearest neighbours (CSR)."""
     n = len(indptr) - 1
-    degree = np.diff(indptr)
-    # Position of every offset within its row (nearest neighbour first)
-    position = np.arange(len(offsets)) - np.repeat(indptr[:-1], degree)
-    take = position < j
-    src = np.repeat(np.arange(n), degree)[take]
-    dst = src + offsets[take]
-    # Rows outside the dataset and the row itself are no neighbours
-    keep = (dst >= 0) & (dst < n) & (dst != src)
-    src, dst = src[keep], dst[keep]
+    src, dst, _ = neighbour_pairs(offsets, indptr, j)
     src, dst = np.concatenate([src, dst]), np.concatenate([dst, src])
     order = np.argsort(src, kind='stable')
     graph_indptr = np.zeros(n + 1, dtype=np.int64)
@@ -166,13 +207,43 @@ def few_sections(codes: dict, size: int, rng) -> np.ndarray:
     return np.sort(np.concatenate(chosen))
 
 
+def poisson_graph(offsets, indptr, max_j: int, length: int,
+                  calibration: dict):
+    """The j-nearest-neighbour graph of the Poisson-disk arms (j set once)."""
+    if 'graph' not in calibration:
+        sizes = {}
+        for j in range(1, max_j + 1):
+            graph = knn_graph(offsets, indptr, j)
+            sizes[j] = int(random_mis(*graph, np.random.default_rng(
+                [12345, j])).sum())
+        fitting = [j for j, size in sizes.items() if size >= 1.02 * length]
+        calibration['j'] = max(fitting) if fitting else 1
+        calibration['sizes'] = sizes
+        calibration['graph'] = knn_graph(offsets, indptr, calibration['j'])
+    return calibration['graph']
+
+
+def poisson_epoch(graph, n: int, length: int, rng):
+    """
+    `length` centres of a fresh random maximal independent set, topped up at
+    random if the set is smaller; and the number of top-up rows.
+    """
+    selected = np.flatnonzero(random_mis(*graph, rng))
+    if len(selected) >= length:
+        return rng.choice(selected, length, replace=False), 0
+    rest = np.setdiff1d(np.arange(n), selected)
+    extra = rng.choice(rest, length - len(selected), replace=False)
+    return np.concatenate([selected, extra]), len(extra)
+
+
 def build(arm: str, seed: int, n: int, n_epochs: int, codes: dict,
           offsets, indptr, max_j: int, calibration: dict):
     """The [n_epochs, length] list of an arm and seed, and its notes."""
-    rng = np.random.default_rng([seed, ARMS.index(arm)])
+    family, _, k = arm.partition('_')
+    # One stream per family and seed: the arms of a seed are nested
+    rng = np.random.default_rng([seed, STREAMS[family]])
     notes = {}
-    kind, _, k = arm.rpartition('_')
-    if kind == 'uniform':
+    if family == 'uniform':
         k = int(k[1:])
         length = n // k
         if k == 1:
@@ -181,50 +252,64 @@ def build(arm: str, seed: int, n: int, n_epochs: int, codes: dict,
         lists = np.concatenate([rng.permutation(n)
                                 for _ in range(-(-total // n))])[:total]
         return lists.reshape(n_epochs, length), notes
-    if kind in ('fixed', 'sections'):
+    if family in ('fixed', 'sections'):
         k = int(k)
-        if kind == 'fixed':
-            subset = np.sort(rng.choice(n, n // k, replace=False))
+        if family == 'fixed':
+            # The first N // k rows of one permutation
+            subset = np.sort(rng.permutation(n)[:n // k])
         else:
             subset = few_sections(codes, n // k, rng)
         notes['subset_rows'] = len(subset)
-        return np.stack([passes(subset, n, rng)
+        order_rng = np.random.default_rng([seed, STREAMS[family], k])
+        return np.stack([passes(subset, n, order_rng)
                          for _ in range(n_epochs)]), notes
     if arm == 'rs2_c4':
         return np.stack([rng.choice(n, n // 4, replace=False)
                          for _ in range(n_epochs)]), notes
-    if arm == 'poisson_c4':
+    if arm in ('poisson_c4', 'poisson_fixed_c4'):
         length = n // 4
-        if 'j' not in calibration:
-            sizes = {}
-            for j in range(1, max_j + 1):
-                graph = knn_graph(offsets, indptr, j)
-                sizes[j] = int(random_mis(*graph, np.random.default_rng(
-                    [12345, j])).sum())
-            fitting = [j for j, size in sizes.items()
-                       if size >= 1.02 * length]
-            calibration['j'] = max(fitting) if fitting else 1
-            calibration['sizes'] = sizes
-            calibration['graph'] = knn_graph(offsets, indptr,
-                                             calibration['j'])
-        epochs, topped_up = [], 0
+        graph = poisson_graph(offsets, indptr, max_j, length, calibration)
+        epochs, extras = [], []
         for _ in range(n_epochs):
-            selected = np.flatnonzero(random_mis(*calibration['graph'], rng))
-            if len(selected) >= length:
-                epochs.append(rng.choice(selected, length, replace=False))
+            if arm == 'poisson_fixed_c4' and epochs:
+                # poisson_c4's first epoch (same seed), kept
+                epochs.append(epochs[0])
+                extras.append(extras[0])
             else:
-                rest = np.setdiff1d(np.arange(n), selected)
-                extra = rng.choice(rest, length - len(selected),
-                                   replace=False)
-                topped_up += len(extra)
-                epochs.append(np.concatenate([selected, extra]))
-        notes.update(j=calibration['j'], topped_up_rows=topped_up)
+                rows, extra = poisson_epoch(graph, n, length, rng)
+                epochs.append(rows)
+                extras.append(extra)
+        notes.update(j=calibration['j'], topped_up_rows=sum(extras))
         return np.stack(epochs), notes
     raise ValueError(f'Unknown arm {arm!r}.')
 
 
-def summary(arm, seed, lists, n, n_epochs, codes, notes) -> dict:
+def coverage(lists, context) -> tuple:
+    """
+    Mean distinct centres per epoch, and the fraction of rows covered as a
+    centre or one of its `context` neighbours: mean per epoch, and over the
+    run.
+    """
+    n = len(context)
+    run = np.zeros(n, dtype=bool)
+    centres, per_epoch = [], []
+    for epoch in lists:
+        covered = np.zeros(n, dtype=bool)
+        covered[epoch] = True
+        rows = np.flatnonzero(covered)
+        centres.append(len(rows))
+        for chunk in np.array_split(rows, max(1, len(rows) // 1_000_000)):
+            neighbours = context[chunk].reshape(-1)
+            covered[neighbours[neighbours >= 0]] = True
+        per_epoch.append(covered.mean())
+        run |= covered
+    return float(np.mean(centres)), float(np.mean(per_epoch)), \
+        float(run.mean())
+
+
+def summary(arm, seed, lists, n, n_epochs, codes, context, notes) -> dict:
     flat = lists.reshape(-1)
+    centres, covered_epoch, covered_run = coverage(lists, context)
     copies = max(int(np.bincount(epoch, minlength=n).max())
                  for epoch in lists)
     presented = np.bincount(codes['assay'][flat],
@@ -236,10 +321,13 @@ def summary(arm, seed, lists, n, n_epochs, codes, notes) -> dict:
         epochs=n_epochs, rows_per_epoch=lists.shape[1],
         budget_fraction=round(flat.size / (n_epochs * n), 4),
         unique_rows=int(np.count_nonzero(np.bincount(flat, minlength=n))),
+        centres_per_epoch=round(centres, 1),
         max_copies_per_epoch=copies,
         sections=int(np.count_nonzero(sections)),
         assay_shares=';'.join(f'{a}={c / flat.size:.3f}' for a, c in zip(
             codes['assay_names'], presented) if c),
+        cells_covered_per_epoch=round(covered_epoch, 4),
+        cells_covered_run=round(covered_run, 4),
         subset_rows=notes.get('subset_rows', ''), j=notes.get('j', ''),
         topped_up_rows=notes.get('topped_up_rows', ''))
 
@@ -254,11 +342,15 @@ def main():
                         help="select_proxy.py's proxy_files.tsv")
     parser.add_argument('--out_dir', required=True)
     parser.add_argument('--n_epochs', type=int, default=6)
-    parser.add_argument('--arms', nargs='+', default=list(ARMS),
-                        choices=ARMS)
+    parser.add_argument('--arms', nargs='+', default=list(E0_ARMS),
+                        choices=ARMS,
+                        help='arms to build (default: the E0 matrix)')
     parser.add_argument('--seeds', nargs='+', type=int, default=None,
                         help='seeds of every arm (default: the E0 matrix)')
     parser.add_argument('--max_j', type=int, default=10)
+    parser.add_argument('--n_context', type=int, default=10,
+                        help='neighbours a niche reads (for the coverage '
+                             'columns of the summary)')
     parser.add_argument('--skip_neighbor_check', action='store_true')
     args = parser.parse_args()
 
@@ -281,6 +373,7 @@ def main():
     codes = dict(section=section_code, section_names=section_names,
                  assay=assay_of_section[section_code],
                  assay_names=assay_names)
+    context = neighbour_rows(offsets, indptr, args.n_context)
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     calibration, rows = {}, []
@@ -291,10 +384,10 @@ def main():
                                  offsets, indptr, args.max_j, calibration)
             np.save(out_dir / f'{arm}_seed{seed}.npy', lists.astype(np.int32))
             rows.append(summary(arm, seed, lists, n, args.n_epochs, codes,
-                                notes))
+                                context, notes))
             print('\t'.join(str(v) for v in rows[-1].values()))
     if 'sizes' in calibration:
-        print('poisson_c4: independent-set sizes by j: '
+        print('Poisson-disk arms: independent-set sizes by j: '
               + ', '.join(f'{j}: {s} ({s / n:.3f})'
                           for j, s in calibration['sizes'].items())
               + f'; j = {calibration["j"]}.')
