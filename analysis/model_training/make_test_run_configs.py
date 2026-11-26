@@ -6,28 +6,32 @@ the TERRA-96M recipe on one GPU.
 
 Reads a job config (the format of the TERRA checkout's
 scripts/bsub_submit_tiger.sh) and the model config it names (the recipe:
-model, masking, optimization, batch size), and writes to --out_dir:
+model, masking, optimization, batch size), and writes both test configs into
+the TERRA checkout (--terra_dir, default $TERRA_REPO_DIR), under one name
+(--config_name, default <job config name>_test<gpus>gpu), as the committed
+configs are kept:
 
-  <run_name>_model.yaml  the recipe, with the data keys that describe the
-                         corpus and how the model reads it taken from
-                         --layout_config, a committed config that reads the
-                         new corpus in the recipe's layout: corpus, train
-                         split, norm factors, token dictionary, silver folder,
-                         layout keys (n_neighs / model_input_size of the
-                         corpus, n_segments, tokenized_seq_len_cell,
-                         truncate_neighbors), tokenizer settings and the 219
-                         held-out batch ids. precomputed_n_nonzero_tokens,
-                         precomputed_epoch_* and pf_targets_file_path are
-                         dropped: compact rows give the lengths of each
-                         layout, and shifted_log reads no pf targets. A new
-                         run folder is used (state.folder_path null, no
-                         resume) and, by default, no mid-epoch checkpoint is
-                         written (--checkpoint_freq_iter).
-  <run_name>_job.yaml    the job config with one node of --gpus GPUs,
-                         --cores cores and --mem_gb GB, RUN_NAME <run_name>
-                         (also the wandb run id with EXPERIMENT_NAME) and
-                         CONFIG_FILE the test model config. Only these six
-                         values change; the rest of the file is kept as it is.
+  configs/model/<dataset_name>/<config_name>.yaml
+      the recipe, with the data keys that describe the corpus and how the
+      model reads it taken from --layout_config, a committed config that reads
+      the new corpus in the recipe's layout: corpus, train split, norm
+      factors, token dictionary, silver folder, layout keys (n_neighs /
+      model_input_size of the corpus, n_segments, tokenized_seq_len_cell,
+      truncate_neighbors), tokenizer settings and the 219 held-out batch ids.
+      precomputed_n_nonzero_tokens, precomputed_epoch_* and
+      pf_targets_file_path are dropped: compact rows give the lengths of each
+      layout, and shifted_log reads no pf targets. A new run folder is used
+      (state.folder_path null, no resume) and, by default, no mid-epoch
+      checkpoint is written (--checkpoint_freq_iter).
+  configs/job/<dataset_name>/<config_name>.yaml
+      the job config with one node of --gpus GPUs, --cores cores and --mem_gb
+      GB, RUN_NAME <run_name> (also the wandb run id with EXPERIMENT_NAME) and
+      CONFIG_FILE the test model config (as ${TERRA_REPO_DIR}/configs/...,
+      which the launcher resolves). Only these six values change; the rest of
+      the file is kept as it is.
+
+Existing files are not replaced (--overwrite replaces them), and the source
+configs are never written to.
 
 The recipe must read the layout of the layout config (same seq_len_cell and
 seq_len_neighborhood): the default, hst_corpus_110m_knn10_seq256.yaml, reads
@@ -45,9 +49,9 @@ Example (farm):
   source /nfs/team361/sb75/.venvs/terra/bin/activate
   python analysis/model_training/make_test_run_configs.py \\
       --job_config /nfs/team361/sb75/terra/configs/job/hst_corpus_110m/hst_corpus_110m_terra96m.yaml \\
-      --out_dir /nfs/team361/sb75/retok_checks/test1gpu --run_name terra96m_corpus16x512_test1gpu_1
+      --run_name terra96m_corpus16x512_test1gpu_1
   cd /nfs/team361/sb75/terra && bash scripts/bsub_submit_tiger.sh \\
-      /nfs/team361/sb75/retok_checks/test1gpu/terra96m_corpus16x512_test1gpu_1_job.yaml
+      configs/job/hst_corpus_110m/hst_corpus_110m_terra96m_test1gpu.yaml
 """
 
 import argparse
@@ -220,17 +224,41 @@ def main(args):
               'padding crashes or hangs DDP. Use a TERRA checkout with the '
               'MD-1 fix, or count_encoding mlp.')
 
-    # ---- the test job config
-    os.makedirs(args.out_dir, exist_ok=True)
-    out_dir = os.path.abspath(args.out_dir)
-    model_out = os.path.join(out_dir, f'{args.run_name}_model.yaml')
-    job_out = os.path.join(out_dir, f'{args.run_name}_job.yaml')
+    # ---- where the test configs go: the TERRA checkout's configs folders,
+    # one name for the model and the job config
+    terra_dir = os.path.abspath(resolved_path(args.terra_dir, '--terra_dir'))
+    if not os.path.isdir(os.path.join(terra_dir, 'configs')):
+        fail(f"'{terra_dir}' has no configs folder (--terra_dir is the TERRA "
+             'checkout).')
+    config_name = args.config_name or (
+        os.path.splitext(os.path.basename(args.job_config))[0]
+        + f'_test{args.gpus}gpu')
+    if not re.fullmatch(r'[A-Za-z0-9_.-]+', config_name):
+        fail(f'--config_name {config_name!r}: use letters, digits, _ . - only.')
+    rel_model = f"configs/model/{data['dataset_name']}/{config_name}.yaml"
+    rel_job = f"configs/job/{data['dataset_name']}/{config_name}.yaml"
+    model_out = os.path.join(terra_dir, rel_model)
+    job_out = os.path.join(terra_dir, rel_job)
+    sources = {os.path.realpath(p)
+               for p in (args.job_config, recipe_path, layout_path)}
     for path in (model_out, job_out):
+        if os.path.realpath(path) in sources:
+            fail(f"'{path}' is one of the source configs: choose another "
+                 '--config_name.')
         if os.path.exists(path) and not args.overwrite:
             fail(f"'{path}' exists (--overwrite replaces it).")
+    # CONFIG_FILE as the committed job configs give it (the launcher resolves
+    # ${TERRA_REPO_DIR} at submission)
+    env_repo = os.environ.get('TERRA_REPO_DIR')
+    if env_repo and os.path.realpath(env_repo) == os.path.realpath(terra_dir):
+        config_file = '${TERRA_REPO_DIR}/' + rel_model
+    else:
+        config_file = model_out
+
+    # ---- the test job config
     new_values = {'NUM_NODES': 1, 'NUM_GPUS_NODE': args.gpus,
                   'NUM_PROCESSES_NODE': args.cores, 'MEM_NODE': args.mem_gb,
-                  'RUN_NAME': args.run_name, 'CONFIG_FILE': model_out}
+                  'RUN_NAME': args.run_name, 'CONFIG_FILE': config_file}
     job_test_text = set_job_values(job_text, new_values)
     job_test = yaml.safe_load(job_test_text)
     for key, value in new_values.items():
@@ -238,14 +266,18 @@ def main(args):
             fail(f'could not set {key} in the job config '
                  f'(got {find_key(job_test, key)}).')
 
+    os.makedirs(os.path.dirname(model_out), exist_ok=True)
+    os.makedirs(os.path.dirname(job_out), exist_ok=True)
+    written_by = ('(written by terra-reproducibility analysis/model_training/'
+                  'make_test_run_configs.py)')
     with open(model_out, 'w') as f:
         f.write(f'# Test copy of {recipe_path}\n'
-                f'# with the data keys of {layout_path}\n'
-                f'# (written by terra-reproducibility analysis/model_training/'
-                f'make_test_run_configs.py)\n')
+                f'# with the data keys of {layout_path}\n# {written_by}\n')
         yaml.safe_dump(test, f, sort_keys=False, width=1000)
     with open(job_out, 'w') as f:
-        f.write(job_test_text)
+        f.write(f'# Test copy of {args.job_config}: 1 node x {args.gpus} '
+                f'GPU(s), RUN_NAME {args.run_name}\n# {written_by}\n'
+                + job_test_text)
 
     # ---- what changed
     print(f'Recipe: {recipe_path}')
@@ -265,8 +297,8 @@ def main(args):
     print('Check against the corpus record (as train() runs it): passed')
     print(f'Wrote {model_out}')
     print(f'Wrote {job_out}')
-    repo = os.environ.get('TERRA_REPO_DIR', '/nfs/team361/sb75/terra')
-    print(f'Submit: cd {repo} && bash scripts/bsub_submit_tiger.sh {job_out}')
+    print(f'Submit: cd {terra_dir} && bash scripts/bsub_submit_tiger.sh '
+          f'{rel_job}')
 
 
 if __name__ == '__main__':
@@ -280,7 +312,13 @@ if __name__ == '__main__':
                    help='Committed model config that reads the new corpus in '
                         "the recipe's layout (default: 10 neighbours x 256 "
                         'genes).')
-    p.add_argument('--out_dir', required=True)
+    p.add_argument('--terra_dir', default='${TERRA_REPO_DIR}',
+                   help='TERRA checkout whose configs/model and configs/job '
+                        'folders get the test configs (default: '
+                        '$TERRA_REPO_DIR).')
+    p.add_argument('--config_name', default=None,
+                   help='File name (without .yaml) of both test configs '
+                        '(default: <job config name>_test<gpus>gpu).')
     p.add_argument('--run_name', required=True,
                    help='New RUN_NAME (the wandb run id with EXPERIMENT_NAME).')
     p.add_argument('--gpus', type=int, default=1)
