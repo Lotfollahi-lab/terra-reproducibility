@@ -1,0 +1,36 @@
+#!/bin/bash
+#BSUB -G team361
+#BSUB -J save_layout_n_nonzero_tokens                                                                     # Job name
+#BSUB -o ../../logs/data_preparation/save_layout_n_nonzero_tokens/save_layout_n_nonzero_tokens_%J.out    # Standard output (%J = job ID)
+#BSUB -e ../../logs/data_preparation/save_layout_n_nonzero_tokens/save_layout_n_nonzero_tokens_%J.err    # Standard error (the progress log)
+#BSUB -q normal                                                                                           # Queue name (CPU only)
+#BSUB -n 32                                                                                               # One core per worker process
+#BSUB -M 64G                                                                                              # Memory
+#BSUB -R "select[mem>64G] rusage[mem=64G] span[hosts=1]"                                                  # Resource requirements: one host
+#BSUB -W 6:00                                                                                             # Walltime (hh:mm)
+
+# Per-cell lengths of the layouts the hst_corpus_110m model configs read
+# (neighbours x genes of the 16 x 512 compact corpus), for the train split, written
+# to $TOK as <corpus name>_n_nonzero_tokens_train_<layout>.pkl (+ .json). Give one to
+# training with data.precomputed_n_nonzero_tokens: start-up then does not read every
+# corpus row for them (about 2 h 50 min on Lustre without a list, in every rank).
+# Reads the corpus with 32 processes; expected well under an hour (not yet measured
+# on the farm).
+# Submit from this folder; the logs directory must exist first:
+#   mkdir -p ../../logs/data_preparation/save_layout_n_nonzero_tokens && bsub < save_layout_n_nonzero_tokens.lsf
+
+D=/lustre/scratch126/cellgen/lotfollahi/DATASETS
+TOK="$D/tokenizer"
+C="$D/gold/cell-graph-tokenizer/hst_corpus_110m/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_16_8704.dataset"
+
+# Load your environment
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+set -eo pipefail
+
+# Run the Python script
+python save_layout_n_nonzero_tokens.py \
+    --tokenized_data_folder_path "$C" \
+    --tokenizer_folder_path "$TOK" \
+    --split train \
+    --layouts 16x512 16x256 10x512 10x256 6x256 \
+    --workers 32

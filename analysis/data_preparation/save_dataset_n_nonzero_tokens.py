@@ -25,8 +25,9 @@ def main(args):
         # gives no precomputed_n_nonzero_tokens, and refuses these lists for a
         # model that reads fewer neighbours or genes than stored
         print('Compact dataset: the lists are only valid for models that '
-              'read the stored layout; training on compact data does not '
-              'need them (leave precomputed_n_nonzero_tokens out).')
+              'read the stored layout. For the layout a model reads, use '
+              'save_layout_n_nonzero_tokens.py (without a list, TERRA '
+              'derives the lengths at start-up from every corpus row).')
 
     if args.full_dataset:
         # Save n_nonzero_tokens for full dataset

@@ -18,9 +18,14 @@ configs are kept:
       factors, token dictionary, silver folder, layout keys (n_neighs /
       model_input_size of the corpus, n_segments, tokenized_seq_len_cell,
       truncate_neighbors), tokenizer settings and the 219 held-out batch ids.
-      precomputed_n_nonzero_tokens, precomputed_epoch_* and
-      pf_targets_file_path are dropped: compact rows give the lengths of each
-      layout, and shifted_log reads no pf targets. A new run folder is used
+      The recipe's precomputed_n_nonzero_tokens, precomputed_epoch_* and
+      pf_targets_file_path are dropped (they belong to the old corpus;
+      shifted_log reads no pf targets). --precomputed_n_nonzero_tokens gives
+      the list of the new corpus for the recipe's layout, written by
+      analysis/data_preparation/save_layout_n_nonzero_tokens.py; it is checked
+      against its .json record (corpus, split, layout). Without a list, every
+      rank computes the lengths at start-up from every corpus row (about
+      2 h 50 min on Lustre at TERRA 7abf568). A new run folder is used
       (state.folder_path null, no resume) and, by default, no mid-epoch
       checkpoint is written (--checkpoint_freq_iter).
   configs/job/<dataset_name>/<config_name>.yaml
@@ -49,13 +54,15 @@ Example (farm):
   source /nfs/team361/sb75/.venvs/terra/bin/activate
   python analysis/model_training/make_test_run_configs.py \\
       --job_config /nfs/team361/sb75/terra/configs/job/hst_corpus_110m/hst_corpus_110m_terra96m.yaml \\
-      --run_name terra96m_corpus16x512_test1gpu_1
+      --run_name terra96m_corpus16x512_test1gpu_2 \\
+      --precomputed_n_nonzero_tokens '${TERRA_DATA_DIR}/tokenizer/hst_corpus_110m_32_None_None_None_None_None_shifted_log_knn_16_8704_n_nonzero_tokens_train_10x256.pkl'
   cd /nfs/team361/sb75/terra && bash scripts/bsub_submit_tiger.sh \\
       configs/job/hst_corpus_110m/hst_corpus_110m_terra96m_test1gpu.yaml
 """
 
 import argparse
 import copy
+import json
 import os
 import re
 import sys
@@ -81,6 +88,8 @@ DROP_KEYS = ('precomputed_n_nonzero_tokens', 'pf_targets_file_path')
 # Job config values this script sets
 JOB_KEYS = ('NUM_NODES', 'NUM_GPUS_NODE', 'NUM_PROCESSES_NODE', 'MEM_NODE',
             'RUN_NAME', 'CONFIG_FILE')
+# Record format of analysis/data_preparation/save_layout_n_nonzero_tokens.py
+LENGTHS_FORMAT = 'terra_layout_n_nonzero_tokens_v1'
 
 
 def fail(message):
@@ -127,6 +136,55 @@ def short(value):
     if isinstance(value, list) and len(value) > 4:
         return f'[{len(value)} items: {value[0]!r}, {value[1]!r}, ...]'
     return repr(value)
+
+
+def check_lengths_list(path, data):
+    """
+    The record (<list>.json) of a per-cell lengths list written by
+    save_layout_n_nonzero_tokens.py, if the list was made for the corpus,
+    split and layout of `data` (an expanded data section); fails otherwise.
+    """
+    if not os.path.isfile(path):
+        fail(f"--precomputed_n_nonzero_tokens '{path}' does not exist.")
+    record_path = path + '.json'
+    if not os.path.isfile(record_path):
+        fail(f"'{record_path}' does not exist: give a list written by "
+             'analysis/data_preparation/save_layout_n_nonzero_tokens.py.')
+    with open(record_path) as f:
+        record = json.load(f)
+    if record.get('format') != LENGTHS_FORMAT:
+        fail(f"'{record_path}' is not a {LENGTHS_FORMAT} record.")
+
+    def same(a, b):
+        return os.path.realpath(str(a)) == os.path.realpath(str(b))
+
+    problems = []
+    if not same(record['tokenized_data_folder_path'],
+                data['tokenized_data_folder_path']):
+        problems.append(f"corpus: list {record['tokenized_data_folder_path']}"
+                        f", config {data['tokenized_data_folder_path']}")
+    if not same(record['precomputed_split'], data['precomputed_split']):
+        problems.append(f"split: list {record['precomputed_split']}, config "
+                        f"{data['precomputed_split']}")
+    elif record.get('split_size_bytes') != os.path.getsize(
+            data['precomputed_split']):
+        problems.append(f"split: '{data['precomputed_split']}' has changed "
+                        'since the list was made (other size)')
+    # the layout CellBaseDataset reads (n_segments as it computes it)
+    seq_len_cell = int(data['seq_len_cell'])
+    n_segments = int((seq_len_cell + int(data['seq_len_neighborhood']))
+                     / seq_len_cell)
+    stride = int(data.get('tokenized_seq_len_cell') or seq_len_cell)
+    layout = record['layout']
+    for key, value in (('seq_len_cell', seq_len_cell),
+                       ('n_segments', n_segments),
+                       ('tokenized_seq_len_cell', stride)):
+        if int(layout[key]) != value:
+            problems.append(f'{key}: list {layout[key]}, config {value}')
+    if problems:
+        fail(f"'{path}' was made for another corpus, split or layout:\n  "
+             + '\n  '.join(problems))
+    return record
 
 
 def set_job_values(text, values):
@@ -195,6 +253,14 @@ def main(args):
             data[k] = copy.deepcopy(l_data[k])
     if args.precomputed_split:
         data['precomputed_split'] = args.precomputed_split
+    lengths_record = None
+    if args.precomputed_n_nonzero_tokens:
+        lengths_record = check_lengths_list(
+            resolved_path(args.precomputed_n_nonzero_tokens,
+                          '--precomputed_n_nonzero_tokens'),
+            expand(copy.deepcopy(data)))
+        data['precomputed_n_nonzero_tokens'] = (
+            args.precomputed_n_nonzero_tokens)
     state = test.setdefault('state', {})
     state.update({'folder_path': None, 'load_checkpoint': False,
                   'read_checkpoint': None,
@@ -294,6 +360,16 @@ def main(args):
     print(f"Epochs: {test['optimization']['epochs']}, batch size per GPU: "
           f"{data.get('batch_size')}")
     print('Job: ' + ', '.join(f'{k} {v}' for k, v in new_values.items()))
+    if lengths_record is not None:
+        print(f"Per-cell lengths: {lengths_record['n_cells']:,} cells of "
+              f"layout {lengths_record['layout'].get('name')} (made "
+              f"{lengths_record.get('created')}); start-up does not read "
+              'every corpus row for them.')
+    else:
+        print('NOTE: no --precomputed_n_nonzero_tokens: at start-up every '
+              'rank reads every corpus row for the per-cell lengths (about '
+              '2 h 50 min on Lustre at TERRA 7abf568). Make the lists with '
+              'analysis/data_preparation/save_layout_n_nonzero_tokens.lsf.')
     print('Check against the corpus record (as train() runs it): passed')
     print(f'Wrote {model_out}')
     print(f'Wrote {job_out}')
@@ -334,5 +410,11 @@ if __name__ == '__main__':
     p.add_argument('--precomputed_split', default=None,
                    help="Another split pickle of the corpus (default: the "
                         "layout config's train split).")
+    p.add_argument('--precomputed_n_nonzero_tokens', default=None,
+                   help='Per-cell lengths list of the new corpus for the '
+                        "recipe's layout, written by analysis/data_preparation/"
+                        'save_layout_n_nonzero_tokens.py (may use '
+                        "${TERRA_DATA_DIR}; quote it). Checked against its "
+                        '.json record.')
     p.add_argument('--overwrite', action='store_true')
     main(p.parse_args())
