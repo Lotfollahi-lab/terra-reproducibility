@@ -148,6 +148,12 @@ python plot_results.py --dataset vhb3003-3b_1p --maps   # + spatial maps (high m
 ```
 
 Figures include every method in `METHODS` with results, in `METHODS` order.
+
+`embedding_minutes` in `headline.csv` is the method's own `embedding_seconds` and is
+not comparable across the zero-shot methods: AIDO.Tissue's includes its unscored
+cell-only pass, and its `chr78`, `chl59` and `xhs49` runs predate its speed fix
+(~4× slower); HEIST's `vhb3003` time covers only the section recomputed after the
+resume (the full embedding took ~28 h).
 They run in the terra or banksy environment. The bars take seconds; the
 spatial maps read every method's clustered result (up to ~200 GB for Visium HD),
 e.g.:
@@ -201,18 +207,23 @@ python checks/test_aido_tissue.py       # aido_tissue env, GPU: run_aido_tissue.
   mitochondrial genes, CP10k + log1p, genes matched to CIFM's 18,289 input
   channels by Ensembl ID (`var['ensembl_id']` of the silver files; at least
   97.7% of every panel). `checks/test_cifm.py` shows that the tiled embedding with
-  this gene matching equals the authors' `channel_matching` + `embed()`.
+  this gene matching equals the authors' `channel_matching` + `embed()`. A few
+  genes that CIFM has under an older Ensembl ID are lost because the silver ID is
+  newer: `CD99`, `CSF2RA`, `IL3RA`, `IL9R` and `SHOX` (pseudo-autosomal; `xhs1000`,
+  `xhs49`) and `CSF2RA`, `IL3RA` and `SOD2` (`chl59`); each holds at most 0.13% of a
+  dataset's counts. They are still counted in the CP10k total.
 - Caveats: CIFM was pretrained on ~100 human slides from the 10x Genomics
   public database (Visium, Visium HD, Xenium V1 and Prime). `xhs49-1b_1p` is
   the 10x Xenium Prime Human Skin FFPE dataset, so it is probably in CIFM's
   pretraining data (no labels were used). CosMx (`chl59`) and ISS (`chr78`)
   were never seen in pretraining. ISS has a sparse 20 µm graph: 6% of its
   cells have no neighbour within 20 µm (`frac_isolated_cells` in
-  `run_info.json`; 0.1–3.5% on the other datasets).
+  `run_info.json`; 0.06–3.5% on the other datasets).
 
 Runs (on L40S GPUs): embedding takes 7 s to 3.5 min per dataset and peaks at
 15 GB of GPU memory; Leiden scoring takes most of the job time (up to 1.5 h on
-Visium HD). Peak host memory was 3–26 GB, and 68 GB on `vhb3003-3b_1p`.
+Visium HD). Peak host memory of the whole job (embedding and scoring) was 3–26 GB,
+and 68 GB on `vhb3003-3b_1p`.
 
 ```bash
 source config.sh
@@ -309,15 +320,46 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_cifm.py PYTHON_ENV=PYTHON_CIFM DATASET=xh
   - Unlike CIFM's halo tiling, the embedding depends on the tiles and METIS
     blocks: there is no attention across a block. Each tile's standardized
     coordinates are the model's cell-level input.
-  - Results: on every dataset, the embedding's 15-NN graph is one giant
-    component plus small islands. The target cluster count is never reached
-    exactly (`below_grid`), and HEIST scores lowest of all methods (headline NMI
-    0.006–0.108 on the main datasets, 0.004 on `vhb3003`). Even the best run
-    anywhere in the scan reaches only NMI 0.24–0.27 (0.07 on `vhb3003`). HEIST's
-    own internal Leiden clusters (`obs['heist_cluster']`) agree better with the
-    ground truth (NMI 0.23–0.49) than its embedding does.
+  - Results: headline NMI 0.004–0.108, the lowest of the four zero-shot models on
+    every dataset except `chr78`, where AIDO.Tissue (0.070) is below HEIST's 0.088.
+    Of the other baselines only the TERRA SSL ablations (`terra_ssl`,
+    `terra_ssl_context`) score lower, on `xhs49` and `chr78`. The embedding's 15-NN graph is so
+    coarse that even resolution 0.01 gives more clusters than the target, so every
+    headline comes from the `below_grid` resolutions (1e-3 to 1e-6):
+    - `xhs1000`: the target (11) is reached exactly at 1e-3. The graph's second
+      component holds 18% of the cells.
+    - `xhs49` and `vhb3003`: the target is unreachable. The graph has 15 and 38
+      connected components, against targets of 7 and 8.
+    - `chr78` and `chl59`: the target lies between two of the decade steps (13 and
+      20 clusters for 19 on `chr78`; 8 and 22 for 12 on `chl59`), which the scan
+      does not refine. Re-running Leiden on the stored graph reaches 19 clusters on
+      `chr78` at 4e-4 (NMI 0.043, against the headline 0.088 at 20 clusters) and 13
+      clusters on `chl59` at 3e-4 (NMI 0.018, against 0.006 at 8). The ranking does
+      not change.
+    - The resolution sweep (the bars of the main figure) is placed at the bottom of
+      the grid (0.01–0.05) when the headline is below it. HEIST's sweep therefore has
+      23–180 clusters and a mean NMI of 0.06–0.21, well above its headline.
+  - What the embedding encodes: HEIST's internal Leiden clusters
+    (`obs['heist_cluster']`) explain 67–80% of the embedding's variance (about 9%
+    with the labels permuted within each tile), and only 2–8% of 15-NN edges cross a
+    tile boundary. The embedding mostly says which tile-specific cluster, and so
+    which gene network, a cell belongs to; clusters are not aligned across tiles,
+    because each tile picks its own 200 HVGs and `nonmarker_all` has no gene
+    identity. The internal clusters reach NMI 0.23–0.49 against the ground truth,
+    but at 23–174 clusters; the tile labels alone reach 0.38 (`xhs49`), 0.61
+    (`chr78`) and 0.37 (`chl59`), so this is no evidence of better niche signal.
+    The best NMI in the upward scan (0.24–0.27) is its last step, cut off by the
+    patience rule while NMI was still rising with the cluster count.
   - On `vhb3003`, up to 38% of a tile's bins share their gene input with another
-    bin (`max_frac_duplicate_gene_inputs`), against up to 8% on Xenium.
+    bin (`max_frac_duplicate_gene_inputs`), against up to 8% on Xenium. In a sampled
+    tile (`3003_batch1`, tile 41; 24,359 bins) 28.6% of the bins have no counts in
+    the tile's HVGs, and 84 of its 96 Leiden clusters consist only of such bins. The
+    authors' Leiden, which aims at 7 clusters, gave 5–96 per tile (median 13, 2,296
+    over 93 tiles), each with its own gene network; this is likely why a section
+    takes ~9 h.
+  - "No benchmark cell has fewer than 10 transcripts" counts all panel genes. In
+    HEIST's vocabulary 0.43% of `chr78` cells have fewer than 10
+    (`frac_cells_below_pretraining_min_counts` counts all panel genes too).
 
 Runs (on L40S GPUs): embedding takes 25 min (`xhs1000`), 34 min (`chr78`),
 60 min (`xhs49`) and 2.7 h (`chl59`), and ~9 h per section of `vhb3003`. Most
@@ -361,13 +403,19 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
     value (at most 2,048 tokens, `<cls>` first);
   - coordinates centred and divided by the section's bounding-box diagonal (units cancel);
   - sub-slices: a square grid with one square per ~1,000 cells. A square with ≥ 2,000
-    cells is cut into ~1,000-cell chunks **in obs order** (as released, see Caveats);
+    cells is cut into ~1,000-cell chunks **in obs order** (as released, see Caveats).
+    Every non-empty square is kept, so a few sub-slices have only 1–50 cells (0.02–0.29%
+    of the cells);
   - virtual cells: Leiden (resolution 1.0) on `0.2·xy + 0.8·PCA₂(cell embedding)` of the
     whole section. Their means are added to every sub-slice;
   - attention bias from the 50-NN distances within a sub-slice and the distances to the
     virtual cells;
   - batch sizes 32 (cell encoder) and 4 (sub-slices; padding is masked), seed 1
-    (`get_embeddings.sh`) before each section, deterministic torch algorithms.
+    (`get_embeddings.sh`) before each section, deterministic torch algorithms. The
+    virtual cells are still not exactly reproducible across machines: for sections of
+    500–2,560 cells, sklearn's PCA uses its randomized solver, and the BLAS thread count
+    changes the Leiden result (e.g. 28 vs. 30 virtual cells on `78_batch0`; ~1% of
+    `chr78`'s cells). The embedding moves little (min cosine 0.998 on `78_batch3`).
 - Fixes to the released code, each compared with the authors' code in
   `checks/test_stofm.py`:
   - `encode_cell` crashes with `KeyError: 'label'`: it removes every column except
@@ -392,7 +440,10 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
   - Coverage of the panels in Geneformer's dictionary:
     - `xhs1000` 4,938/4,948 and `xhs49` 4,944/4,954 (`ABO`, `ZAN`, … missing);
     - `chr78` 172/173 (`TUBA4B`);
-    - `chl59` 944/946 (`SOD2`, `TPSB2`);
+    - `chl59` 944/946 (`SOD2`, `TPSB2`). `TPSB2` is not in the dictionary. `SOD2` is,
+      under its old ID `ENSG00000112096`, but the silver file and the symbol fallback
+      both give its new ID `ENSG00000291237`, so it is lost (104th of 946 genes by mean
+      count, detected in 24% of cells);
     - `vhb3003` 17,914/18,085.
 
     There are no control probes in the panels. Cells have a median of 11 (ISS),
@@ -416,8 +467,9 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_heist.py PYTHON_ENV=PYTHON_HEIST DATASET=
     order in the file, not by position. Measured on the benchmark sections, this affects:
     - 37–80% of the Xenium cells and 0–84% per ISS section;
     - no CosMx or Visium HD cell.
-    The silver obs order is spatial for ISS: the chunks are as compact as their square,
-    with the same 10-NN distance. For Xenium it is partly so: the median distance is 1.0–1.24×
+    The silver obs order is spatial for ISS: the chunks are mostly as compact as their
+    square (median 10-NN distance 1.0× the square's; p90 1.0–1.03×, except 1.15× on
+    `78_batch7` and 1.37× on `78_batch2`). For Xenium it is partly so: the median distance is 1.0–1.24×
     the square's and the p90 1.4–1.9×, against 1.4–1.7× for a random order. Per section,
     `run_info.json` records `frac_cells_obs_order_split` and
     `obs_order_chunk_knn_ratio_{median,p90}`. `checks/test_stofm.py` (e) measures how
@@ -459,7 +511,8 @@ Runs (on L40S GPUs):
       (0.99994), so the demo cannot tell which path made the shipped file. The residual
       is presumably from package versions in the virtual-cell PCA and Leiden.
   - (b) Tokens are identical to the authors' tokenizer on Xenium (17,384 cells), CosMx
-    (20,000) and Visium HD (5,000 bins) sections. ISS passed on CPU.
+    (20,000) and Visium HD (5,000 bins) sections. ISS (all 325,816 `chr78` cells) was
+    compared by hand on CPU, not by `test_stofm.py`, and was identical too.
   - (c) `embed_section` equals the authors' loop exactly, on the demo and on an `xhs1000`
     section (17,384 cells, 21 sub-slices, 69 virtual cells). Batch size 1 vs 4 differs by
     at most 2.9e-6. On that section the approximate kNN gives the same embedding as the
@@ -556,7 +609,9 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_stofm.py PYTHON_ENV=PYTHON_STOFM DATASET=
     `run_info.json`).
   - No MT-gene removal (the authors do none).
 - In the result h5ad, for interpretation (not scored): `obsm['X_aido_tissue_cell']`,
-  the same model and pooling on the cell alone, without spatial context.
+  the same model and pooling on the cell alone, without spatial context. For a single
+  cell the backbone also returns padding outputs; they are cut off before pooling
+  (the authors' max-pool drops only NaN rows and would keep them).
 - Caveats:
   - Pretraining data: 76 slides from the Vizgen, NanoString and 10x Genomics
     public pages, with no list of datasets.
@@ -566,8 +621,9 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_stofm.py PYTHON_ENV=PYTHON_STOFM DATASET=
     - `vhb3003` is unknown.
     - `chr78` (ISS) is not.
   - The paper evaluates only fine-tuned tasks; it has no zero-shot clustering
-    result. Every released config uses 10 neighbours, while the paper says 60M was
-    pretrained with 16 or 32.
+    result. The run uses 10 neighbours, as every released config does
+    (`emb.xenium.yaml` and the 60M fine-tuning configs); the paper says 60M was
+    pretrained with 16 or 32, and the 60M model card says K=8.
   - Visium HD bins are not cells. On the 8 µm grid the 10th neighbour is one of 4 bins
     at 16 µm. The silver coordinates are registered to the image, so the grid is
     slightly rotated and scaled, and those bins differ in distance by a few nm: in 87%
@@ -575,15 +631,15 @@ BENCH_FINAL_OUTPUT_DIR=$OUT SCRIPT=run_stofm.py PYTHON_ENV=PYTHON_STOFM DATASET=
     but none are exactly tied. The neighbour set and order (the rotary cell index) are
     thus fixed by the grid geometry, the same for every run and independent of the
     obs order (check (d)). `run_info.json` records the exact-tie fractions per section.
-  - chr78 (ISS, 169 genes) has a median of ~12 expressed genes per cell, so each
-    cell is only ~14 tokens. AIDO.Tissue scores lowest there of all its datasets.
+  - chr78 (ISS, 173 genes over all sections, 169 in some) has a median of 11
+    expressed genes per cell, so each cell is only ~13 tokens. AIDO.Tissue scores lowest there of all its datasets.
 - Speed: the authors' `gather_data` rebuilds a tensor from a Python list of one entry
   per input position (211,926 for 11 cells) on every call, three times per forward
   pass. That was ~70 ms per cell on the CPU, whatever the number of tokens.
   `run_aido_tissue.py` swaps in a copy that builds the tensor once
   (`cached_gather_data`, inside `embed` only). Values, dtype and operations are the
-  same, and check (c) shows identical embeddings. A pass then takes ~19 ms per cell
-  instead of ~92 (L40S, up to ~9k tokens).
+  same, and check (c) shows identical embeddings. A pass then takes ~23 ms per cell
+  with neighbours and ~19 ms alone, instead of ~92 (L40S, up to ~9k tokens).
 
 Results: headline NMI/ARI, and the other baselines' NMI for comparison:
 
@@ -597,13 +653,16 @@ Results: headline NMI/ARI, and the other baselines' NMI for comparison:
 
 The headline reaches the target cluster count exactly on every dataset. AIDO.Tissue is
 level with SToFM on Xenium and slightly below it on Visium HD. It has the highest NMI
-on `chl59`, where pretraining exposure is likely (above), and is near the bottom on
-`chr78`.
+of the four zero-shot models on `chl59`, where pretraining exposure is likely (above);
+CellCharter, neighbourhood-expression PCA and TERRA score higher there. On `chr78` it is
+among the lowest of all methods, level with scGPT-spatial (.071); HEIST's .088 there is
+at 20 clusters instead of 19 (see HEIST).
 
 Runs (L40S):
 - Each cell is embedded twice: with its neighbours (scored) and alone
-  (`X_aido_tissue_cell`), at ~19 ms per cell each with the cached `gather_data`.
-  - `xhs1000` took 45 min.
+  (`X_aido_tissue_cell`), at ~23 and ~19 ms per cell with the cached `gather_data`.
+  `embedding_seconds` covers both passes.
+  - `xhs1000` took 40 min.
   - `vhb3003` took 18 h to embed and 19 h in all, within the queue's 48 h limit, with
     80 GB peak host memory.
   - `chr78`, `chl59` and `xhs49` ran before the speed fix (~92 ms per cell, up to

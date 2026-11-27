@@ -272,6 +272,12 @@ def nearest_cells(xy, k=NEIGHBOR_NUM):
     if len(xy) < k + 1:
         raise ValueError(f'Section with {len(xy)} cells: fewer than {k + 1}.')
     _, indices = cKDTree(xy).query(xy, k=k + 1)
+    # embed() takes column 0 as the centre cell; with duplicate coordinates cKDTree can
+    # put another cell first, which would embed the wrong cell under this cell's row.
+    n_not_self = int((indices[:, 0] != np.arange(len(xy))).sum())
+    if n_not_self:
+        raise ValueError(f'{n_not_self} cells are not their own nearest neighbour '
+                         '(duplicate coordinates).')
     return indices
 
 
@@ -359,8 +365,10 @@ def embed(backbone, X, rows, device, num_workers=NUM_WORKERS, log_every=50000):
     """Max over each centre cell's output tokens, one cell per forward pass.
 
     rows: (n, c) row indices into X, centre cell first (c = 1: the cell alone).
-    Returns the embedding and each cell's number of output tokens; checks that it is
-    the cell's expressed genes + the 2 depth tokens."""
+    Returns the embedding and each cell's number of output tokens; with neighbours
+    (c > 1) checks that it is the cell's expressed genes + the 2 depth tokens. The
+    cell-only path (c = 1) returns padding too and is cut to that count, so the check
+    cannot fail there."""
     n = len(rows)
     expected = np.diff(X.indptr)[rows[:, 0]] + N_DEPTH_TOKENS
     out = torch.empty((n, backbone.encoder.config.hidden_size), dtype=torch.float32,
