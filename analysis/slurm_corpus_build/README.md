@@ -1,8 +1,10 @@
 # Slurm corpus build from multi-sample .h5ad files
 
 Builds a tokenized TERRA corpus from your own multi-sample AnnData files on a
-Slurm cluster. The norm factors come from these datasets only, so they form a
-corpus of their own.
+Slurm cluster, up to the training splits. The norm factors come from these
+datasets only, so they form a corpus of their own. Several models can be
+trained on the one corpus, e.g. one on every dataset and one per gene panel:
+each gets its own split files.
 
 The tokenizer settings are those of the re-tokenized hst_corpus_110m:
 - 16 neighbours x 512 genes, `model_input_size` 8704;
@@ -25,9 +27,19 @@ cancels the jobs that depend on it.
 | `prep` | one per dataset | `prepare_silver.py` | `silver/<dataset>/adata_batch<k>.h5ad`, one file per sample, plus `silver_manifest.tsv` and `silver_prep.json` |
 | `norm` | one, after every `prep` job | `../data_preparation/compute_cohort_norm_factors.py` | `tokenizer/<corpus>/<corpus>_norm_factors.csv` (+ `.json`) |
 | `tokenize` | one per dataset, after `norm` | `../tokenization/create_tokenized_dataset.py`, then `../data_preparation/checks/check_tokenized_part.py` | `gold/cell-graph-tokenizer/<dataset>/<dataset>_32_None_None_None_None_None_shifted_log_knn_16_8704.dataset` |
+| `concat` | one, after every `tokenize` job | `../tokenization/concatenate_datasets.py` | `gold/cell-graph-tokenizer/<corpus>/<corpus>_32_None_None_None_None_None_shifted_log_knn_16_8704.dataset` |
+| `split` | one, after `concat` | `make_splits.py` | `tokenizer/<corpus>/splits/<variant>/`: `<corpus>_..._precomputed_split_{train,validation,test}.pkl` and `split_summary.json` |
+
+By default all stages run; `split` only when `SPLIT_SAMPLES` is set (see
+[Splits](#splits-one-or-several-models)).
 
 `--stages inspect` runs `prepare_silver.py --inspect` instead. It prints the
 file structure and what would be detected, and writes nothing.
+
+`--after <job ids>` makes the first stage of a submission wait for jobs that
+are still running or pending, e.g. `--stages concat,split` after the
+tokenize jobs of an earlier submission. Give only ids that `squeue` lists:
+Slurm refuses dependencies on jobs it has forgotten.
 
 ### What `prepare_silver.py` does
 
@@ -133,13 +145,18 @@ Each tokenize log ends with the `check_tokenized_part.py` report and `PASS`.
 **Without `--overwrite`, finished steps are kept:**
 - a silver folder made from the same input and settings;
 - norm factors that count the current silver files;
-- parts tokenized with the current norm factors and token dictionary.
+- parts tokenized with the current norm factors and token dictionary;
+- a corpus newer than its parts, with their norm factors and row count;
+- split variants made for the same corpus, datasets and held-out samples.
 
 A rerun of the whole chain only redoes what is missing. To run only some of
 it, use `--stages tokenize` or `--only <dataset>`.
 
 **`--overwrite` redoes the chosen stages.** Parts made with other norm
-factors are always redone.
+factors are always redone. A corpus or split variant that does not fit its
+inputs any more is refused until you pass `--overwrite`. To redo only the
+splits (e.g. after editing the held-out samples), use
+`--stages split --overwrite`: the corpus is not touched.
 
 ## Resources
 
@@ -161,7 +178,13 @@ The job log prints the estimate. `TOKENIZE_NPROC` overrides it.
 |---|---|
 | Compact rows | about 10 KB for 480-gene panels, about 30 KB for 5K panels (~100 / ~300 genes per cell) |
 | `$TERRA_DATA_DIR/cache` (Hugging Face datasets) | about the same again; delete it once every tokenize job has finished |
+| The concatenated corpus | a full copy of the parts; the parts can go once the splits are written (training reads the corpus) |
+| Split files | about 8 bytes per row and variant |
 | Silver files | 1-3 KB, plus the obs columns |
+
+`concat` writes the corpus with `CONCAT_CPUS` processes (memory: the cell
+ids and a hash table, about 1.5 GB per 10M cells; 64G by default). `split`
+reads only the `cell_id` column (32G by default is ample for 10M cells).
 
 ## Held-out samples
 
@@ -173,24 +196,69 @@ file with one `<dataset name> <sample>` pair per line and set
 - Decide this before tokenizing: other norm factors mean re-tokenizing every
   part.
 
-## Next steps (not run by these scripts)
+## Splits: one or several models
 
-**Corpus.** Concatenate the parts:
+The `split` stage writes training / validation / test splits of the corpus
+for each **variant**, a set of datasets one model is trained on:
 
 ```bash
-python analysis/tokenization/concatenate_datasets.py --data_directory_path $TERRA_DATA_DIR \
-    --cohort_name $CORPUS_NAME \
-    --cohort_dataset_names_file_path $TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/${CORPUS_NAME}_dataset_names.txt \
-    --n_neighs 16 --seq_len 8704 --expect_storage_format compact
+# in the site config
+export SPLIT_SAMPLES=/full/path/split_samples.tsv
+export SPLITS="all=ds_a,ds_b,ds_c panel_x=ds_c panel_y=ds_a,ds_b"
 ```
 
-**Split.** `split_dataset.py` defaults to the held-out batches of
-hst_corpus_110m, so pass this corpus' own.
+`SPLITS` defaults to one variant `all` with every dataset of the table.
 
-**Training.** Use a TERRA model config such as
-`configs/model/hst_corpus_110m/hst_corpus_110m_knn16_seq512.yaml`, with this
-corpus' paths and its `norm_factor_file_path`. `train()` checks the file's
-sha256 against the record of the corpus.
+**Held-out samples.** `SPLIT_SAMPLES` lists the validation and test samples,
+one `<dataset name> <sample> <val|test>` per line. A sample is held out from
+every variant that holds its dataset, so models trained on different
+variants are evaluated on the same samples. To start from a random proposal
+(seeded, 5% validation and 10% test samples per dataset, at least one each),
+run on the login node after the prep stage, then review or edit the file:
+
+```bash
+python analysis/slurm_corpus_build/corpus_tools.py propose-split-samples \
+    --names_file $TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/${CORPUS_NAME}_dataset_names.txt \
+    --data_directory_path $TERRA_DATA_DIR --out split_samples.tsv
+```
+
+`--val_fraction`, `--test_fraction` and `--seed` change the proposal. These
+samples are not left out of the norm factors unless `HELDOUT_SAMPLES` names
+the same file (it reads the first two columns).
+
+**What a variant holds.** For a variant with datasets D:
+- validation: the rows of the validation samples of D;
+- test: the rows of the test samples of D;
+- train: every other row of D;
+- rows of other datasets: none of the three.
+
+The files are written with TERRA's `save_precomputed_split`, so training
+refuses them for another corpus. The training split records every held-out
+batch as excluded, so training trusts it without scanning the cell ids.
+
+**Checks before a variant is written:**
+- the files load through TERRA with the written indices;
+- TERRA's training-time check finds no held-out row in the training split;
+- the three splits are disjoint and cover exactly the rows of D;
+- every held-out sample has rows.
+
+**Using a variant for training.** In `split_summary.json`, `config_data`
+holds the `data:` entries of a TERRA training config:
+- `tokenized_data_folder_path`
+- `precomputed_split`
+- `norm_factor_file_path`
+- `token_dict_folder_path`
+- `val_batch_ids` and `test_batch_ids`
+
+Copy them into a model config such as
+`configs/model/hst_corpus_110m/hst_corpus_110m_knn16_seq512.yaml`. Its paths
+use `${TERRA_DATA_DIR}`. `train()` checks the norm-factor file's sha256
+against the corpus record.
+
+Every variant reads the same tokenized corpus. Its tie-break values come from
+the norm factors of all datasets, including for a model of one panel only. A
+model that must not see the other panel's data even through the norm factors
+needs a corpus of its own.
 
 ## Files
 
@@ -199,5 +267,6 @@ sha256 against the record of the corpus.
 | `submit_corpus_build.sh` | Reads the site config and the dataset table, and submits the jobs |
 | `corpus_job.sh` | One stage of one job: environment, version printout, stage |
 | `prepare_silver.py` | Multi-sample `.h5ad` to per-sample silver files |
-| `corpus_tools.py` | Tokenizer config, process count, held-out batch ids, part and norm-factor status |
+| `corpus_tools.py` | Tokenizer config, process count, held-out batch ids, part, norm-factor and corpus status, proposal of split samples |
+| `make_splits.py` | Training / validation / test splits of the corpus per variant |
 | `site_config.example.sh`, `datasets.example.tsv` | Templates |

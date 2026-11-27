@@ -5,6 +5,8 @@
 #   corpus_job.sh inspect|prep <name> <dataset_id> <h5ad> <expected_n_samples|-> <exclude_samples|-> <sample_key> [prepare_silver.py args...]
 #   corpus_job.sh norm
 #   corpus_job.sh tokenize <name> <dataset_id>
+#   corpus_job.sh concat
+#   corpus_job.sh split
 #
 # Stages:
 #   inspect   prepare_silver.py --inspect: file structure and detection only
@@ -14,6 +16,10 @@
 #             are left out), without PFlog1pPF targets (shifted_log)
 #   tokenize  create_tokenized_dataset.py with the hst_corpus_110m settings
 #             and the corpus' own norm factors, then check_tokenized_part.py
+#   concat    concatenate_datasets.py: the parts of every dataset into one
+#             corpus (kept when it fits the parts)
+#   split     make_splits.py: training / validation / test splits of the
+#             corpus per variant (SPLITS), held-out samples from SPLIT_SAMPLES
 set -euo pipefail
 
 STAGE="${1:?stage}"
@@ -60,7 +66,7 @@ try:
           f"{git('rev-parse', '--abbrev-ref', 'HEAD')}")
 except Exception as error:
     message = f'TERRA cannot be imported ({type(error).__name__}: {error})'
-    if stage == 'tokenize':
+    if stage in ('tokenize', 'concat', 'split'):
         problems.append(message)
     else:
         print(f'== WARNING: {message}; this stage does not need it')
@@ -75,12 +81,13 @@ for name in ('python', 'anndata', 'scanpy', 'squidpy', 'datasets', 'numpy',
     except Exception as error:
         versions.append(f"{name} MISSING ({type(error).__name__})")
 print('== ' + ', '.join(versions))
-if stage == 'tokenize' and not problems:
+if stage in ('tokenize', 'concat', 'split') and not problems:
     try:
         importlib.import_module('terra.datasets.compact')
     except ImportError:
         problems.append('this TERRA cannot write compact rows: install the '
                         'TERRA branch feat/compact-tokenized-data')
+if stage == 'tokenize' and not problems:
     try:
         importlib.import_module('wandb')
     except ImportError:
@@ -228,6 +235,60 @@ tokenize)
         --token_dictionary_file_path "$TOKEN_DICTIONARY" \
         --norm_factor_csv "$NF" \
         --silver_dir "$TERRA_DATA_DIR/silver/$NAME"
+    ;;
+
+concat | split)
+    [ -f "$NF" ] || { echo "ERROR: no norm factors $NF"; exit 1; }
+    # Fails unless every part is tokenized with the current norm factors
+    corpus_status() {
+        python "$TOOLS/corpus_tools.py" corpus-status \
+            --names_file "$NAMES_FILE" --data_directory_path "$TERRA_DATA_DIR" \
+            --corpus_name "$CORPUS_NAME" --norm_factor_csv "$NF" \
+            --token_dictionary_file_path "$TOKEN_DICTIONARY"
+    }
+    # (an assignment, so that set -e stops the job when the check fails)
+    STATUS_LINE=$(corpus_status)
+    read -r STATUS CORPUS <<<"$STATUS_LINE"
+    echo "== Corpus $CORPUS: $STATUS"
+    if [ "$STAGE" = concat ]; then
+        if [ "$STATUS" = current ] && [ "$OVERWRITE" != 1 ]; then
+            echo "== Keeping the corpus (it fits the parts; --overwrite rebuilds it)"
+        else
+            if [ "$STATUS" = outdated ] && [ "$OVERWRITE" != 1 ]; then
+                echo "ERROR: the corpus does not fit the parts. Resubmit with --overwrite (the splits are then redone too)."
+                exit 1
+            fi
+            ARGS=(--data_directory_path "$TERRA_DATA_DIR"
+                --cohort_name "$CORPUS_NAME"
+                --cohort_dataset_names_file_path "$NAMES_FILE"
+                --tokenizer cell-graph-tokenizer --num_shards 32
+                --count_count_norm_method shifted_log
+                --n_neighs 16 --seq_len 8704 --expect_storage_format compact
+                --num_proc "${SLURM_CPUS_PER_TASK:-1}")
+            if [ "$STATUS" != absent ]; then
+                ARGS+=(--overwrite)
+            fi
+            # Names a leftover <corpus>.partial-<id> folder by the Slurm job
+            export LSB_JOBID="${SLURM_JOB_ID:-$$}"
+            python "$REPO_DIR/analysis/tokenization/concatenate_datasets.py" "${ARGS[@]}"
+            STATUS_LINE=$(corpus_status)
+            read -r STATUS CORPUS <<<"$STATUS_LINE"
+            echo "== Corpus $CORPUS: $STATUS"
+            [ "$STATUS" = current ] || { echo "ERROR: the new corpus does not fit the parts"; exit 1; }
+        fi
+    else
+        [ -n "${SPLIT_SAMPLES:-}" ] || { echo "ERROR: SPLIT_SAMPLES is not set in $SITE_CONFIG"; exit 1; }
+        [ "$STATUS" = current ] || { echo "ERROR: the corpus is $STATUS: run the concat stage first"; exit 1; }
+        ARGS=(--corpus_path "$CORPUS" --data_directory_path "$TERRA_DATA_DIR"
+            --names_file "$NAMES_FILE" --split_samples "$SPLIT_SAMPLES"
+            --splits "${SPLITS:-}"
+            --out_dir "$TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/splits"
+            --norm_factor_csv "$NF" --token_dictionary_file_path "$TOKEN_DICTIONARY")
+        if [ "$OVERWRITE" = 1 ]; then
+            ARGS+=(--overwrite)
+        fi
+        python "$TOOLS/make_splits.py" "${ARGS[@]}"
+    fi
     ;;
 
 *)

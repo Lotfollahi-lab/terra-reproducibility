@@ -26,8 +26,17 @@ export TOKEN_DICTIONARY=$TERRA_DATA_DIR/tokenizer/token_dictionary_homo_sapiens.
 export GENE_NAME_MAP=$TERRA_DATA_DIR/genes/homo_sapiens_gene_name_to_ensembl_id_dict.pkl
 
 # Optional: samples left out of the norm factors, e.g. validation / test
-# samples (one '<dataset name> <sample>' pair per line). Empty: all cells.
+# samples (one '<dataset name> <sample>' pair per line; a third column is
+# ignored, so the SPLIT_SAMPLES file can be given). Empty: all cells.
 export HELDOUT_SAMPLES=
+
+# Splits (stage split): validation and test samples, one
+# '<dataset name> <sample> <val|test>' per line; corpus_tools.py
+# propose-split-samples writes a random proposal to edit. Empty: no split stage.
+export SPLIT_SAMPLES=
+# Split variants, one model each: 'name=dataset,dataset name=dataset ...'.
+# Empty: one variant 'all' with every dataset of the table.
+export SPLITS=""
 
 # Slurm
 export SLURM_PARTITION=cpu
@@ -38,6 +47,8 @@ export INSPECT_CPUS=2 INSPECT_MEM=64G INSPECT_TIME=02:00:00
 export PREP_CPUS=4 PREP_MEM=256G PREP_TIME=12:00:00
 export NORM_CPUS=2 NORM_MEM=128G NORM_TIME=24:00:00
 export TOKENIZE_CPUS=16 TOKENIZE_MEM=256G TOKENIZE_TIME=48:00:00
+export CONCAT_CPUS=8 CONCAT_MEM=64G CONCAT_TIME=24:00:00
+export SPLIT_CPUS=2 SPLIT_MEM=32G SPLIT_TIME=06:00:00
 # Tokenization processes: by default as many of TOKENIZE_CPUS as the memory
 # estimate fits into TOKENIZE_MEM (corpus_tools.py nproc); set to override
 #export TOKENIZE_NPROC=8

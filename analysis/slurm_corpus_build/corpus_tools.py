@@ -22,9 +22,10 @@ nproc
     Reads the silver manifests; prints the chosen nproc.
 
 heldout-ids
-    Batch ids (<dataset_id>_batch<k>) of the samples listed in a TSV file
-    (<dataset name> <TAB> <sample> per line), from the silver manifests.
-    Prints them space-separated (for compute_cohort_norm_factors.py
+    Batch ids (<dataset_id>_batch<k>) of the samples listed in a file
+    (<dataset name> <sample> per line, tab- or space-separated; a third
+    column, the role in a split-samples file, is ignored), from the silver
+    manifests. Prints them space-separated (for compute_cohort_norm_factors.py
     --exclude_batch_ids).
 
 part-status
@@ -37,6 +38,20 @@ norm-status
     'current' (their record counts the files and cells of the silver
     manifests, the same excluded batches and token dictionary, and they are
     newer than every silver folder), or 'outdated: <reason>'.
+
+corpus-status
+    Whether the concatenated corpus fits the tokenized parts. Fails (exit 1)
+    unless every part of the corpus is 'done'. Prints '<status> <corpus
+    path>': 'absent'; 'current' (its settings record has the current norm
+    factors, is newer than every part's record, and the corpus has as many
+    rows as the parts); 'outdated' (the reason goes to stderr).
+
+propose-split-samples
+    A random validation and test set of samples per dataset (seeded; at
+    least one sample each when the fraction is above 0), written as a
+    split-samples file for make_splits.py: '<dataset> <sample> <val|test>'
+    per line. Refuses to replace an existing file (edits are kept) unless
+    --overwrite.
 """
 from __future__ import annotations
 
@@ -44,9 +59,12 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
+import zlib
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 
@@ -197,9 +215,10 @@ def heldout_ids(args) -> int:
             if not line or line.startswith('#'):
                 continue
             fields = line.split()
-            if len(fields) != 2:
+            if len(fields) not in (2, 3):
                 raise SystemExit(f'ERROR: expected <dataset> <sample> '
-                                 f'(tab- or space-separated): {line!r}')
+                                 f'(tab- or space-separated; a third column '
+                                 f'is ignored): {line!r}')
             pairs.append((fields[0].strip(), fields[1].strip()))
     batch_ids, missing = [], []
     manifests = {}
@@ -232,21 +251,140 @@ def file_sha256(path) -> str:
     return digest.hexdigest()
 
 
-def part_status(args) -> int:
-    part = Path(args.part)
+def part_state(part: Path, norm_factor_sha256: str,
+               token_dictionary_sha256: str) -> str:
+    """'absent', 'incomplete', 'stale' or 'done' (see part-status)."""
     record = part / 'terra_tokenizer_params.json'
     if not part.exists():
+        return 'absent'
+    if not record.exists():
+        return 'incomplete'
+    recorded = json.loads(record.read_text())
+    same = (recorded.get('norm_factor_sha256') == norm_factor_sha256
+            and recorded.get('token_dictionary_sha256')
+            == token_dictionary_sha256)
+    return 'done' if same else 'stale'
+
+
+def part_status(args) -> int:
+    print(part_state(Path(args.part), file_sha256(args.norm_factor_csv),
+                     file_sha256(args.token_dictionary_file_path)))
+    return 0
+
+
+def read_names(names_file) -> list[str]:
+    """Dataset names of the corpus, one per line."""
+    return [line.strip() for line in Path(names_file).read_text().splitlines()
+            if line.strip()]
+
+
+def corpus_dataset_path(data_directory_path, name: str) -> Path:
+    """Path of the tokenized part of dataset `name`, or of the corpus when
+    `name` is the corpus name (concatenate_datasets.py names it alike)."""
+    tokenization = dict(CORPUS_TOKENIZATION)
+    model_input_size = (tokenization['n_neighs'] + 1) * SEQ_LEN_CELL
+    return (Path(data_directory_path) / 'gold' / TOKENIZER / name
+            / part_name(name, tokenization, model_input_size))
+
+
+def dataset_rows(path: Path) -> int:
+    from datasets import load_from_disk
+    return len(load_from_disk(str(path)))
+
+
+def corpus_status(args) -> int:
+    names = read_names(args.names_file)
+    norm_sha = file_sha256(args.norm_factor_csv)
+    dictionary_sha = file_sha256(args.token_dictionary_file_path)
+    not_done, newest_part, n_part_rows = [], 0.0, 0
+    for name in names:
+        part = corpus_dataset_path(args.data_directory_path, name)
+        state = part_state(part, norm_sha, dictionary_sha)
+        if state != 'done':
+            not_done.append(f'{name}: {state}')
+            continue
+        newest_part = max(newest_part, (part / 'terra_tokenizer_params.json')
+                          .stat().st_mtime)
+        n_part_rows += dataset_rows(part)
+    if not_done:
+        print(f'ERROR: parts not tokenized with the current norm factors and '
+              f'token dictionary: {not_done}', file=sys.stderr)
+        return 1
+    corpus = corpus_dataset_path(args.data_directory_path, args.corpus_name)
+    record = corpus / 'terra_tokenizer_params.json'
+    reasons = []
+    if not corpus.exists():
         status = 'absent'
     elif not record.exists():
-        status = 'incomplete'
+        status = 'outdated'
+        reasons.append('no settings record')
     else:
         recorded = json.loads(record.read_text())
-        same = (recorded.get('norm_factor_sha256')
-                == file_sha256(args.norm_factor_csv)
-                and recorded.get('token_dictionary_sha256')
-                == file_sha256(args.token_dictionary_file_path))
-        status = 'done' if same else 'stale'
-    print(status)
+        if recorded.get('norm_factor_sha256') != norm_sha:
+            reasons.append('other norm factors')
+        if record.stat().st_mtime < newest_part:
+            reasons.append('a part is newer')
+        n_rows = dataset_rows(corpus)
+        if n_rows != n_part_rows:
+            reasons.append(f'{n_rows:,} rows, the parts have {n_part_rows:,}')
+        status = 'outdated' if reasons else 'current'
+    print(f'{len(names)} parts done ({n_part_rows:,} rows); corpus {status}'
+          + (f': {"; ".join(reasons)}' if reasons else ''), file=sys.stderr)
+    print(f'{status} {corpus}')
+    return 0
+
+
+def natural_key(text: str):
+    return [int(part) if part.isdigit() else part.lower()
+            for part in re.split(r'(\d+)', str(text))]
+
+
+def propose_split_samples(args) -> int:
+    out = Path(args.out)
+    if out.exists() and not args.overwrite:
+        print(f'ERROR: {out} exists (it may hold edits); pass --overwrite to '
+              'replace it.', file=sys.stderr)
+        return 1
+
+    def count(fraction: float, n: int) -> int:
+        return 0 if fraction <= 0 else max(1, int(fraction * n + 0.5))
+
+    lines = [
+        '# Validation and test samples of the corpus splits (make_splits.py):',
+        '# <dataset> <sample> <val|test>; samples not listed are trained on.',
+        f'# Proposed by corpus_tools.py propose-split-samples (seed '
+        f'{args.seed}, validation fraction {args.val_fraction}, test fraction '
+        f'{args.test_fraction}, at least one sample each). Edit freely.',
+    ]
+    summary = []
+    for name in read_names(args.names_file):
+        manifest = (Path(args.data_directory_path) / 'silver' / name
+                    / 'silver_manifest.tsv')
+        if not manifest.exists():
+            print(f'ERROR: no manifest {manifest}', file=sys.stderr)
+            return 1
+        samples = sorted(pd.read_csv(manifest, sep='\t',
+                                     dtype={'sample': str})['sample'],
+                         key=natural_key)
+        n = len(samples)
+        n_val, n_test = count(args.val_fraction, n), count(args.test_fraction, n)
+        if n_val + n_test >= n:
+            print(f'ERROR: {name} has {n} samples, too few for {n_val} '
+                  f'validation and {n_test} test samples.', file=sys.stderr)
+            return 1
+        # One stream per dataset: adding a dataset keeps the others' choice
+        rng = np.random.default_rng([args.seed, zlib.crc32(name.encode())])
+        order = rng.permutation(n)
+        val = sorted((samples[i] for i in order[:n_val]), key=natural_key)
+        test = sorted((samples[i] for i in order[n_val:n_val + n_test]),
+                      key=natural_key)
+        lines += [f'{name}\t{s}\tval' for s in val]
+        lines += [f'{name}\t{s}\ttest' for s in test]
+        summary.append(f'{name}: {n} samples, validation {val}, test {test}')
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text('\n'.join(lines) + '\n')
+    print('\n'.join(summary), file=sys.stderr)
+    print(f'Wrote {out}', file=sys.stderr)
     return 0
 
 
@@ -337,6 +475,26 @@ def main(argv=None) -> int:
     p.add_argument('--token_dictionary_file_path', required=True)
     p.add_argument('--excluded_batch_ids', nargs='*', default=[])
     p.set_defaults(func=norm_status)
+
+    p = sub.add_parser('corpus-status')
+    p.add_argument('--names_file', required=True)
+    p.add_argument('--data_directory_path', required=True)
+    p.add_argument('--corpus_name', required=True)
+    p.add_argument('--norm_factor_csv', required=True)
+    p.add_argument('--token_dictionary_file_path', required=True)
+    p.set_defaults(func=corpus_status)
+
+    p = sub.add_parser('propose-split-samples')
+    p.add_argument('--names_file', required=True,
+                   help='Dataset names of the corpus (tokenizer/<corpus>/'
+                        '<corpus>_dataset_names.txt).')
+    p.add_argument('--data_directory_path', required=True)
+    p.add_argument('--out', required=True)
+    p.add_argument('--val_fraction', type=float, default=0.05)
+    p.add_argument('--test_fraction', type=float, default=0.10)
+    p.add_argument('--seed', type=int, default=0)
+    p.add_argument('--overwrite', action='store_true')
+    p.set_defaults(func=propose_split_samples)
 
     args = ap.parse_args(argv)
     return args.func(args)
