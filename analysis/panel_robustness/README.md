@@ -177,6 +177,10 @@ bash submit_panel_model_runs.sh xhs1000_skin_panels
 bash submit_panel_comparison.sh xhs1000_skin_panels
 ```
 
+The data and comparison jobs only need CPUs: on the main farm (farm22) they run on the normal queue with group team361;
+on the GPU cluster (tiger, no CPU queue) on inference with group s10396 and one GPU each (the esubs accept only team
+groups on the CPU queues and only cost-code groups on the AI acceleration queues; `LSF_GROUP` and `CPU_QUEUE`
+override the choice). Training and `submit_panel_model_runs.sh` (embedding) need tiger's GPUs.
 `python panel_training.py status --training_folder_path <training folder>` shows what is done. Results:
 `<training folder>/comparison`. To resume a training run that stopped, set `state.load_checkpoint: true` and
 `state.read_checkpoint: terra-ep<last finished epoch>.pth.tar` in its model config (state.folder_path is the run

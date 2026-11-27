@@ -1,7 +1,7 @@
 #!/bin/bash
 # Comparison of gene panel runs (compare_panel_runs.py, CPU). Submitted by submit_panel_comparison.sh, which sets
 # OUTPUT_FOLDER_PATH, RUNS (space-separated LABEL=RUN_FOLDER items) and optionally COMPARE_OPTIONS.
-#BSUB -G s10396
+#BSUB -G team361
 #BSUB -q normal
 #BSUB -n 16
 #BSUB -M 96G
