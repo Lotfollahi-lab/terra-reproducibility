@@ -4,7 +4,8 @@
 # Usage: bash submit_panel_comparison.sh NAME [options of compare_panel_runs.py, e.g. --representations terra_cell]
 #   or:  RUNS="terra96m=/path/run1 other=/path/run2" bash submit_panel_comparison.sh NAME   (any runs)
 # Output: ${TRAINING_ROOT}/NAME/comparison (results and figures); logs: logs/panel_training/NAME/.
-# Environment: LSF_GROUP (default s10396), CPU_QUEUE / GPU_QUEUE as in submit_panel_training_data.sh.
+# Environment: CPU_QUEUE, GPU_QUEUE and LSF_GROUP as in submit_panel_training_data.sh (team361 on a CPU queue of the
+# main farm, s10396 on the GPU cluster).
 
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -15,7 +16,6 @@ TRAINING_ROOT=${TRAINING_ROOT:-/nfs/team361/sb75/terra-reproducibility/artifacts
 TRAINING_FOLDER_PATH=${TRAINING_ROOT}/${NAME}
 OUTPUT_FOLDER_PATH=${OUTPUT_FOLDER_PATH:-${TRAINING_FOLDER_PATH}/comparison}
 LOG_FOLDER=$(cd ../.. && pwd)/logs/panel_training/${NAME}
-LSF_GROUP=${LSF_GROUP:-s10396}
 GPU_QUEUE=${GPU_QUEUE:-inference}
 
 if [ -z "${CPU_QUEUE:-}" ]; then
@@ -27,9 +27,12 @@ if [ -z "${CPU_QUEUE:-}" ]; then
     done
 fi
 CPU_QUEUE=${CPU_QUEUE:-${GPU_QUEUE}}
-QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}")
 if [ "${CPU_QUEUE}" = "${GPU_QUEUE}" ]; then
-    QUEUE_OPTIONS+=(-gpu "num=1:mode=exclusive_process")
+    LSF_GROUP=${LSF_GROUP:-s10396}
+    QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}" -gpu "num=1:mode=exclusive_process")
+else
+    LSF_GROUP=${LSF_GROUP:-team361}
+    QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}")
 fi
 
 source /nfs/team361/sb75/.venvs/terra/bin/activate
@@ -49,4 +52,4 @@ if [ -z "${JOB_ID}" ]; then
     echo "ERROR: bsub failed: ${OUTPUT}" >&2
     exit 1
 fi
-echo "Comparison job ${JOB_ID} (${CPU_QUEUE}); results in ${OUTPUT_FOLDER_PATH}."
+echo "Comparison job ${JOB_ID} (queue ${CPU_QUEUE}, group ${LSF_GROUP}); results in ${OUTPUT_FOLDER_PATH}."

@@ -11,8 +11,13 @@
 # panel_training); data: <data root>/NAME/<panel> (panel_training.py configure --data_root). Logs:
 # logs/panel_training/NAME/. Next step: `panel_training.py make_configs` (see README.md).
 #
-# Environment: LSF_GROUP (default s10396), CPU_QUEUE (default: the first of normal, long, cpu-interactive that this
-# cluster has, else GPU_QUEUE with one GPU), GPU_QUEUE (default inference), FORCE=1 (tokenize again).
+# The jobs only need CPUs: on the main farm (farm22) they run on its normal queue with the team group, on the GPU
+# cluster (tiger, no CPU queue) on the inference queue with the cost-code group and one GPU each.
+#
+# Environment: CPU_QUEUE (default: the first of normal, long, cpu-interactive that this cluster has, else GPU_QUEUE
+# with one GPU), GPU_QUEUE (default inference), LSF_GROUP (default: team361 on a CPU queue, s10396 on the GPU queue;
+# the esubs accept only team groups on the CPU queues and only cost-code groups on the AI acceleration queues),
+# FORCE=1 (tokenize again).
 
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -22,7 +27,6 @@ shift
 TRAINING_ROOT=${TRAINING_ROOT:-/nfs/team361/sb75/terra-reproducibility/artifacts/panel_training}
 TRAINING_FOLDER_PATH=${TRAINING_ROOT}/${NAME}
 LOG_FOLDER=$(cd ../.. && pwd)/logs/panel_training/${NAME}
-LSF_GROUP=${LSF_GROUP:-s10396}
 GPU_QUEUE=${GPU_QUEUE:-inference}
 
 if [ -z "${CPU_QUEUE:-}" ]; then
@@ -34,10 +38,13 @@ if [ -z "${CPU_QUEUE:-}" ]; then
     done
 fi
 CPU_QUEUE=${CPU_QUEUE:-${GPU_QUEUE}}
-QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}")
 if [ "${CPU_QUEUE}" = "${GPU_QUEUE}" ]; then
-    QUEUE_OPTIONS+=(-gpu "num=1:mode=exclusive_process")
+    LSF_GROUP=${LSF_GROUP:-s10396}
+    QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}" -gpu "num=1:mode=exclusive_process")
     echo "No normal, long or cpu-interactive queue: the CPU jobs run on ${GPU_QUEUE} with one GPU each." >&2
+else
+    LSF_GROUP=${LSF_GROUP:-team361}
+    QUEUE_OPTIONS=(-G "${LSF_GROUP}" -q "${CPU_QUEUE}")
 fi
 
 mkdir -p "${TRAINING_FOLDER_PATH}" "${LOG_FOLDER}"
@@ -60,7 +67,7 @@ if [ -z "${JOB_ID}" ]; then
     exit 1
 fi
 cat <<EOF
-Training data of ${NAME}: ${N_PANELS} panels, job array ${JOB_ID} (${CPU_QUEUE}).
+Training data of ${NAME}: ${N_PANELS} panels, job array ${JOB_ID} (queue ${CPU_QUEUE}, group ${LSF_GROUP}).
 Training folder: ${TRAINING_FOLDER_PATH}
 Logs:            ${LOG_FOLDER}
 When it has finished, write the training configs (see README.md):
