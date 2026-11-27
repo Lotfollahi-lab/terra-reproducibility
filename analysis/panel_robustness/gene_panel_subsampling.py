@@ -179,6 +179,27 @@ def cmd_configure(args):
         'conditions': make_conditions(sorted(args.panel_sizes), args.n_replicates, sorted(args.disjoint_sizes),
                                       args.full_repeat),
     }
+    # Keys only written when used, so that the configuration of existing runs stays the same
+    if args.panels_from:
+        source = Path(args.panels_from).resolve()
+        source_cfg = read_json(config_path(source))
+        if not (source / 'prepare_done.json').is_file():
+            raise FileNotFoundError(f'{source} has not finished its prepare step; its panels.json is needed.')
+        for key in ('silver_folder_path', 'dataset_name', 'batches', 'sample_key', 'niche_key', 'cell_type_key'):
+            if source_cfg[key] != cfg[key]:
+                raise ValueError(f'--panels_from {source} has {key} {source_cfg[key]!r}, this run {cfg[key]!r}: the '
+                                 'panels of a run can only be reused on the same cells.')
+        for key in ('panel_sizes', 'n_replicates', 'disjoint_sizes', 'seed', 'full_repeat'):
+            cfg[key] = source_cfg[key]
+        cfg['conditions'] = source_cfg['conditions']
+        cfg['panels_from'] = str(source)
+    if args.conditions:
+        known = [c['condition_id'] for c in cfg['conditions']]
+        unknown = [c for c in args.conditions if c not in known]
+        if unknown:
+            raise ValueError(f'Unknown conditions {unknown}; the conditions are {known}.')
+        cfg['conditions'] = [c for c in cfg['conditions'] if c['condition_id'] in set(args.conditions)]
+        cfg['condition_filter'] = list(args.conditions)
     path = config_path(cfg['output_folder_path'])
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.is_file():
@@ -408,20 +429,35 @@ def cmd_prepare(args):
             raise ValueError(f'Disjoint panels of {condition["size"]} genes need {2 * condition["size"]} panel genes; '
                              f'there are {n_panel}.')
 
-    # Panels: permutation r of the sorted panel genes (seed sequence [seed, r])
-    permutations = {r: np.random.default_rng([cfg['seed'], r]).permutation(n_panel)
-                    for r in range(cfg['n_replicates'])}
     panels = {}
-    for condition in cfg['conditions']:
-        kind, size, replicate = condition['kind'], condition['size'], condition['replicate']
-        if kind in ('full', 'full_repeat'):
-            genes = panel_genes
-        elif kind == 'random':
-            genes = panel_genes[np.sort(permutations[replicate][:size])]
-        else:
-            genes = panel_genes[np.sort(permutations[replicate][size:2 * size])]
-        panels[condition['condition_id']] = {'genes': genes.tolist(),
-                                             'ensembl_ids': [ensembl_ids[g] for g in genes]}
+    if cfg.get('panels_from'):
+        # The panels of another run (e.g. the same panels embedded with another model); every gene must be a panel
+        # gene of this run as well
+        source_panels = read_json(Path(cfg['panels_from']) / 'panels.json')['panels']
+        available = set(panel_genes)
+        for condition in cfg['conditions']:
+            genes = source_panels[condition['condition_id']]['genes']
+            missing = sorted(set(genes) - available)
+            if missing:
+                raise ValueError(f'{len(missing)} genes of {condition["condition_id"]} in {cfg["panels_from"]} are '
+                                 f'not panel genes here (not kept by harmonization or not in this model\'s '
+                                 f'vocabulary), e.g. {missing[:5]}.')
+            panels[condition['condition_id']] = {'genes': list(genes), 'ensembl_ids': [ensembl_ids[g] for g in genes]}
+        log(f'Panels of {len(panels)} conditions taken from {cfg["panels_from"]}.')
+    else:
+        # Panels: permutation r of the sorted panel genes (seed sequence [seed, r])
+        permutations = {r: np.random.default_rng([cfg['seed'], r]).permutation(n_panel)
+                        for r in range(cfg['n_replicates'])}
+        for condition in cfg['conditions']:
+            kind, size, replicate = condition['kind'], condition['size'], condition['replicate']
+            if kind in ('full', 'full_repeat'):
+                genes = panel_genes
+            elif kind == 'random':
+                genes = panel_genes[np.sort(permutations[replicate][:size])]
+            else:
+                genes = panel_genes[np.sort(permutations[replicate][size:2 * size])]
+            panels[condition['condition_id']] = {'genes': genes.tolist(),
+                                                 'ensembl_ids': [ensembl_ids[g] for g in genes]}
     for condition in cfg['conditions']:
         if condition['kind'] == 'disjoint':
             shared = set(panels[condition['condition_id']]['genes']) & set(panels[condition['partner']]['genes'])
@@ -447,8 +483,15 @@ def cmd_prepare(args):
         n_genes_detected[condition['condition_id']] = np.asarray(detected[:, columns].sum(axis=1)).ravel()
     detected_everywhere = np.all(np.stack([n > 0 for n in n_genes_detected.values()]), axis=0)
     passes_qc = (obs['filter_pass'].to_numpy() == 1) if 'filter_pass' in obs else np.ones(harmonized.n_obs, bool)
-    cells['n_genes_full'] = n_genes_detected['full']
+    # Detected genes of all panel genes (the full panel), also in runs without the 'full' condition
+    cells['n_genes_full'] = np.asarray(detected.sum(axis=1)).ravel()
     cells['eval'] = detected_everywhere & passes_qc
+    if cfg.get('panels_from'):
+        # The evaluation cells of the source run, so that every run with these panels is scored on the same cells
+        source_cells = pd.read_csv(Path(cfg['panels_from']) / 'cells.tsv.gz', sep='\t', usecols=['cell', 'eval'],
+                                   dtype={'cell': str})
+        source_eval = dict(zip(source_cells['cell'], source_cells['eval'].astype(bool)))
+        cells['eval'] = cells['eval'].to_numpy() & cells['cell'].map(source_eval).fillna(False).to_numpy(bool)
     log(f'Evaluation cells (at least one detected gene in every panel): {int(cells["eval"].sum())} of {len(cells)}.')
 
     # Panel statistics per condition and section
@@ -846,8 +889,14 @@ def cmd_summarize(args):
             complete.append(condition_id)
         else:
             missing.append(condition_id)
-    if 'full' not in complete:
-        raise FileNotFoundError('The full panel has not been embedded and evaluated; nothing to compare with.')
+    has_full = 'full' in complete
+    if not has_full:
+        if 'full' in conditions:
+            raise FileNotFoundError('The full panel has not been embedded and evaluated; nothing to compare with.')
+        log('This run has no full panel (--conditions): only the annotation metrics are tabulated; compare it with '
+            'other runs with compare_panel_runs.py.')
+    if not complete:
+        raise FileNotFoundError('No condition has been embedded and evaluated.')
     if missing:
         log(f'WARNING: {len(missing)} conditions are not complete and are left out: {", ".join(missing)}.')
 
@@ -868,7 +917,7 @@ def cmd_summarize(args):
                       **{('pca', key): X for key, X in pca.items()}}
         return {'partitions': partitions, 'knn': knn, 'embeddings': embeddings}
 
-    reference = load_evaluation('full')
+    reference = load_evaluation('full') if has_full else None
 
     def compare(condition_id, evaluation, reference_id, other):
         """Consistency metrics of evaluation (condition_id) against other (reference_id), same cells."""
@@ -920,7 +969,7 @@ def cmd_summarize(args):
         return rows
 
     # Seed-to-seed noise ceiling of the K-matched clusters of the full panel
-    for name, spec in reps.items():
+    for name, spec in (reps.items() if has_full else []):
         ceiling = mean_pairwise_agreement(reference['partitions'][f'kmatched__{name}'],
                                           reference['partitions'][f'kmatched__{name}'], exclude_same_index=True)
         for metric in ('ari', 'nmi'):
@@ -928,7 +977,7 @@ def cmd_summarize(args):
                             'representation': name, 'label': spec['label'],
                             'metric': f'cluster_{metric}_kmatched', 'section': 'all', 'value': ceiling[metric]})
 
-    for condition_id in complete:
+    for condition_id in (complete if has_full else []):
         if condition_id == 'full':
             continue
         log(f'Comparing {condition_id} with the full panel.')
@@ -1062,6 +1111,13 @@ def parse_arguments(argv=None):
     configure.add_argument('--pca_n_comps', type=int, default=50)
     configure.add_argument('--evaluate_spatial_cell_emb', action='store_true',
                            help='Also evaluate the spatially contextualized cell embedding.')
+    configure.add_argument('--panels_from', default=None, metavar='RUN_FOLDER',
+                           help='Reuse the panels (panels.json), conditions and evaluation cells of another run on the '
+                                'same cells, e.g. to embed the same panels with another model. The panel options of '
+                                'this run are then taken from that run.')
+    configure.add_argument('--conditions', nargs='+', default=None, metavar='CONDITION',
+                           help='Embed and evaluate only these conditions (e.g. random_1000_r0 for a model trained on '
+                                'that panel). Without full, the summarize step only tabulates the annotation metrics.')
     configure.add_argument('--overwrite', action='store_true')
 
     for name, help_text in (('prepare', 'Panels, evaluation cells and panel statistics.'),

@@ -1,0 +1,20 @@
+#!/bin/bash
+# Panel training: tokenized training data of one panel (CPU; array element i = panel i of training_config.json).
+# Submitted by submit_panel_training_data.sh, which also sets the group, queue, job name and log files (the #BSUB lines
+# are defaults for a manual bsub). An interrupted job resumes at the first section without a finished part.
+#BSUB -G s10396
+#BSUB -q normal
+#BSUB -n 8
+#BSUB -M 64G
+#BSUB -R "select[mem>64G] rusage[mem=64G] span[hosts=1]"
+#BSUB -W 24:00
+
+set -euo pipefail
+: "${TRAINING_FOLDER_PATH:?Set TRAINING_FOLDER_PATH; submit with submit_panel_training_data.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
+# Tokenization runs several processes; one thread each (torch threads in forked dataset workers can stall)
+export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
+
+python panel_training.py prepare_data --training_folder_path "${TRAINING_FOLDER_PATH}" ${FORCE:+--force}

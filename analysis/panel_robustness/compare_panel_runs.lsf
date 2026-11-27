@@ -1,0 +1,23 @@
+#!/bin/bash
+# Comparison of gene panel runs (compare_panel_runs.py, CPU). Submitted by submit_panel_comparison.sh, which sets
+# OUTPUT_FOLDER_PATH, RUNS (space-separated LABEL=RUN_FOLDER items) and optionally COMPARE_OPTIONS.
+#BSUB -G s10396
+#BSUB -q normal
+#BSUB -n 16
+#BSUB -M 96G
+#BSUB -R "select[mem>96G] rusage[mem=96G] span[hosts=1]"
+#BSUB -W 12:00
+
+set -euo pipefail
+: "${OUTPUT_FOLDER_PATH:?Set OUTPUT_FOLDER_PATH; submit with submit_panel_comparison.sh}"
+: "${RUNS:?Set RUNS (LABEL=RUN_FOLDER items); submit with submit_panel_comparison.sh}"
+
+source /nfs/team361/sb75/.venvs/terra/bin/activate
+export HDF5_USE_FILE_LOCKING=FALSE NUMBA_CPU_NAME=generic
+export OMP_NUM_THREADS=${LSB_DJOB_NUMPROC:-16} MKL_NUM_THREADS=${LSB_DJOB_NUMPROC:-16} \
+    OPENBLAS_NUM_THREADS=${LSB_DJOB_NUMPROC:-16}
+
+read -ra RUN_ITEMS <<< "${RUNS}"
+read -ra EXTRA_OPTIONS <<< "${COMPARE_OPTIONS:-}"
+python compare_panel_runs.py --output_folder_path "${OUTPUT_FOLDER_PATH}" --runs "${RUN_ITEMS[@]}" \
+    ${EXTRA_OPTIONS[@]+"${EXTRA_OPTIONS[@]}"}
