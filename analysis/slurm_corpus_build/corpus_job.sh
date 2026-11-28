@@ -20,6 +20,7 @@
 #             corpus (kept when it fits the parts)
 #   split     make_splits.py: training / validation / test splits of the
 #             corpus per variant (SPLITS), held-out samples from SPLIT_SAMPLES
+#             (none if unset)
 set -euo pipefail
 
 STAGE="${1:?stage}"
@@ -277,13 +278,15 @@ concat | split)
             [ "$STATUS" = current ] || { echo "ERROR: the new corpus does not fit the parts"; exit 1; }
         fi
     else
-        [ -n "${SPLIT_SAMPLES:-}" ] || { echo "ERROR: SPLIT_SAMPLES is not set in $SITE_CONFIG"; exit 1; }
         [ "$STATUS" = current ] || { echo "ERROR: the corpus is $STATUS: run the concat stage first"; exit 1; }
         ARGS=(--corpus_path "$CORPUS" --data_directory_path "$TERRA_DATA_DIR"
-            --names_file "$NAMES_FILE" --split_samples "$SPLIT_SAMPLES"
+            --names_file "$NAMES_FILE"
             --splits "${SPLITS:-}"
             --out_dir "$TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/splits"
             --norm_factor_csv "$NF" --token_dictionary_file_path "$TOKEN_DICTIONARY")
+        if [ -n "${SPLIT_SAMPLES:-}" ]; then
+            ARGS+=(--split_samples "$SPLIT_SAMPLES")
+        fi
         if [ "$OVERWRITE" = 1 ]; then
             ARGS+=(--overwrite)
         fi

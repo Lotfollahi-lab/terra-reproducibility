@@ -6,11 +6,13 @@ corpus, e.g. one on every dataset and one per gene panel.
 
 Inputs
 - --corpus_path: the corpus (concatenate_datasets.py);
-- --split_samples: '<dataset name> <sample> <val|test>' per line, tab- or
-  space-separated, '#' comments (corpus_tools.py propose-split-samples writes
-  a random proposal); the samples' batch ids (<dataset_id>_batch<k>) come from
-  the silver manifests (<data_directory_path>/silver/<dataset>/
-  silver_manifest.tsv);
+- --split_samples (optional): '<dataset name> <sample> <val|test>' per line,
+  tab- or space-separated, '#' comments (corpus_tools.py
+  propose-split-samples writes a random proposal); the samples' batch ids
+  (<dataset_id>_batch<k>) come from the silver manifests
+  (<data_directory_path>/silver/<dataset>/silver_manifest.tsv). Without it
+  nothing is held out: each training split holds every row of its datasets,
+  and the validation and test files are empty;
 - --splits: the variants, 'name=dataset,dataset name=dataset ...' (default
   'all=' every dataset of --names_file).
 
@@ -244,13 +246,17 @@ def main(args) -> int:
     names = read_names(args.names_file)
     variants = parse_variants(args.splits or '', names)
     manifests = read_manifests(data_dir, names)
-    entries = read_split_samples(args.split_samples, manifests)
+    entries = (read_split_samples(args.split_samples, manifests)
+               if args.split_samples else [])
     val_ids = {e['batch_id'] for e in entries if e['role'] == 'validation'}
     test_ids = {e['batch_id'] for e in entries if e['role'] == 'test'}
     heldout_ids = sorted(val_ids | test_ids, key=natural_key)
     log(f'Corpus: {corpus}')
-    log(f'Split samples: {args.split_samples} ({len(val_ids)} validation, '
-        f'{len(test_ids)} test)')
+    if args.split_samples:
+        log(f'Split samples: {args.split_samples} ({len(val_ids)} '
+            f'validation, {len(test_ids)} test)')
+    else:
+        log('No split samples: nothing is held out')
     log(f'Variants: {json.dumps(variants)}')
 
     ds = load_from_disk(str(corpus))
@@ -325,7 +331,7 @@ def main(args) -> int:
                    'test': np.flatnonzero(is_test)}
         if not len(indices['train']):
             raise SplitError(f'{variant}: no training rows')
-        if not val_batches and not test_batches:
+        if args.split_samples and not val_batches and not test_batches:
             log(f'WARNING: {variant} has no validation or test samples')
 
         partial = out_dir / f'{variant}.partial-{job_id}'
@@ -367,7 +373,8 @@ def main(args) -> int:
                 'val_batch_ids': val_batches,
                 'test_batch_ids': test_batches,
             },
-            'split_samples_file': str(Path(args.split_samples).resolve()),
+            'split_samples_file': (str(Path(args.split_samples).resolve())
+                                   if args.split_samples else None),
             'signature': signature,
         }
         (partial / 'split_summary.json').write_text(
@@ -395,7 +402,8 @@ def parse_arguments(argv=None):
     ap.add_argument('--data_directory_path', required=True)
     ap.add_argument('--names_file', required=True,
                     help='Dataset names of the corpus, one per line.')
-    ap.add_argument('--split_samples', required=True)
+    ap.add_argument('--split_samples', default=None,
+                    help='Held-out samples (default: none).')
     ap.add_argument('--splits', default='',
                     help="Variants, 'name=dataset,dataset ...' (default: "
                          "'all=' every dataset).")

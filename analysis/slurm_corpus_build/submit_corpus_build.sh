@@ -11,7 +11,7 @@
 #             (concatenate_datasets.py)
 #   split     one job after concat: training / validation / test splits per
 #             variant (SPLITS, e.g. all datasets, one panel) with the held-out
-#             samples of SPLIT_SAMPLES (make_splits.py)
+#             samples of SPLIT_SAMPLES, if any (make_splits.py)
 #
 # Jobs are chained with afterok dependencies; a failed job cancels the jobs
 # that depend on it (--kill-on-invalid-dep=yes).
@@ -28,7 +28,8 @@
 #               '#' comments (see datasets.example.tsv):
 #               name  dataset_id  h5ad  expected_n_samples|-  exclude_samples|-  sample_key|auto  [prepare_silver.py args]
 #   --stages    comma-separated subset of prep,norm,tokenize,concat,split
-#               (default: all; split only when SPLIT_SAMPLES is set), or
+#               (default: all; split only when SPLITS or SPLIT_SAMPLES is
+#               set), or
 #               inspect (structure and detection only, nothing written)
 #   --only      prep / tokenize / inspect only these datasets (norm, concat
 #               and split always use every dataset of the table)
@@ -80,7 +81,7 @@ LOG_DIR="${LOG_DIR:-$TERRA_DATA_DIR/logs/$CORPUS_NAME}"
 
 if [ -z "$STAGES" ]; then
     STAGES="prep,norm,tokenize,concat"
-    if [ -n "${SPLIT_SAMPLES:-}" ]; then
+    if [ -n "${SPLITS:-}" ] || [ -n "${SPLIT_SAMPLES:-}" ]; then
         STAGES="$STAGES,split"
     fi
 fi
@@ -124,13 +125,14 @@ if [ -n "$ONLY" ]; then
 fi
 in_table() { local N; for N in "${NAMES[@]}"; do [ "$N" = "$1" ] && return 0; done; return 1; }
 if has_stage split; then
-    [ -n "${SPLIT_SAMPLES:-}" ] || fail "the split stage needs SPLIT_SAMPLES in $CONFIG"
-    [ -f "$SPLIT_SAMPLES" ] || fail "SPLIT_SAMPLES $SPLIT_SAMPLES does not exist"
-    # Datasets of the held-out samples and of the variants (the samples
-    # themselves are checked by the split job against the silver manifests)
-    for NAME in $(awk '!/^[[:space:]]*(#|$)/ { print $1 }' "$SPLIT_SAMPLES" | sort -u); do
-        in_table "$NAME" || fail "SPLIT_SAMPLES lists dataset $NAME, which is not in $DATASETS"
-    done
+    # Datasets of the held-out samples, if any, and of the variants (the
+    # samples themselves are checked by the split job against the manifests)
+    if [ -n "${SPLIT_SAMPLES:-}" ]; then
+        [ -f "$SPLIT_SAMPLES" ] || fail "SPLIT_SAMPLES $SPLIT_SAMPLES does not exist"
+        for NAME in $(awk '!/^[[:space:]]*(#|$)/ { print $1 }' "$SPLIT_SAMPLES" | sort -u); do
+            in_table "$NAME" || fail "SPLIT_SAMPLES lists dataset $NAME, which is not in $DATASETS"
+        done
+    fi
     for ENTRY in ${SPLITS:-}; do
         VARIANT=${ENTRY%%=*}
         [ "$VARIANT" != "$ENTRY" ] || fail "SPLITS entry '$ENTRY': expected name=dataset,dataset"

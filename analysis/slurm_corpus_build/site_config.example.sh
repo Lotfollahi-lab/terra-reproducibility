@@ -30,13 +30,24 @@ export GENE_NAME_MAP=$TERRA_DATA_DIR/genes/homo_sapiens_gene_name_to_ensembl_id_
 # ignored, so the SPLIT_SAMPLES file can be given). Empty: all cells.
 export HELDOUT_SAMPLES=
 
-# Splits (stage split): validation and test samples, one
-# '<dataset name> <sample> <val|test>' per line; corpus_tools.py
-# propose-split-samples writes a random proposal to edit. Empty: no split stage.
+# Splits (stage split, run by default when SPLITS or SPLIT_SAMPLES is set):
+# - SPLIT_SAMPLES: validation and test samples, one
+#   '<dataset name> <sample> <val|test>' per line (corpus_tools.py
+#   propose-split-samples writes a random proposal to edit); empty: nothing
+#   is held out;
+# - SPLITS: the variants, one model each, 'name=dataset,dataset name=dataset
+#   ...'; empty: one variant 'all' with every dataset of the table.
 export SPLIT_SAMPLES=
-# Split variants, one model each: 'name=dataset,dataset name=dataset ...'.
-# Empty: one variant 'all' with every dataset of the table.
 export SPLITS=""
+
+# Training (make_training_configs.py, submit_training.sh)
+export TERRA_REPO_DIR=/path/to/terra   # TERRA checkout (feat/compact-tokenized-data)
+export TRAIN_PARTITION=                # GPU partition (required for submit_training.sh)
+export TRAIN_NODES=1 TRAIN_GPUS=4      # make the configs for TRAIN_NODES x TRAIN_GPUS GPUs
+#export TRAIN_GPU_REQUEST="--gres=gpu:4"   # default: --gpus-per-node=$TRAIN_GPUS
+export TRAIN_CPUS=64 TRAIN_MEM=256G TRAIN_TIME=72:00:00   # per node
+#export TRAIN_RUNS_DIR=/path/to/runs   # default: <parent of TERRA_DATA_DIR>/runs
+export WANDB_MODE=offline              # wandb files stay in the run folder
 
 # Slurm
 export SLURM_PARTITION=cpu

@@ -30,8 +30,9 @@ cancels the jobs that depend on it.
 | `concat` | one, after every `tokenize` job | `../tokenization/concatenate_datasets.py` | `gold/cell-graph-tokenizer/<corpus>/<corpus>_32_None_None_None_None_None_shifted_log_knn_16_8704.dataset` |
 | `split` | one, after `concat` | `make_splits.py` | `tokenizer/<corpus>/splits/<variant>/`: `<corpus>_..._precomputed_split_{train,validation,test}.pkl` and `split_summary.json` |
 
-By default all stages run; `split` only when `SPLIT_SAMPLES` is set (see
-[Splits](#splits-one-or-several-models)).
+By default all stages run; `split` only when `SPLITS` or `SPLIT_SAMPLES` is
+set (see [Splits](#splits-one-or-several-models)). Training is submitted
+separately (see [Training](#training)).
 
 `--stages inspect` runs `prepare_silver.py --inspect` instead. It prints the
 file structure and what would be detected, and writes nothing.
@@ -214,10 +215,12 @@ export SPLITS="all=ds_a,ds_b,ds_c panel_x=ds_c panel_y=ds_a,ds_b"
 
 `SPLITS` defaults to one variant `all` with every dataset of the table.
 
-**Held-out samples.** `SPLIT_SAMPLES` lists the validation and test samples,
-one `<dataset name> <sample> <val|test>` per line. A sample is held out from
-every variant that holds its dataset, so models trained on different
-variants are evaluated on the same samples. To start from a random proposal
+**Held-out samples** (optional). `SPLIT_SAMPLES` lists the validation and
+test samples, one `<dataset name> <sample> <val|test>` per line. A sample is
+held out from every variant that holds its dataset, so models trained on
+different variants are evaluated on the same samples. Without
+`SPLIT_SAMPLES` nothing is held out: each training split holds every row of
+its datasets. To start from a random proposal
 (seeded, 5% validation and 10% test samples per dataset, at least one each),
 run on the login node after the prep stage, then review or edit the file:
 
@@ -265,6 +268,82 @@ the norm factors of all datasets, including for a model of one panel only. A
 model that must not see the other panel's data even through the norm factors
 needs a corpus of its own.
 
+## Training
+
+**Configs.** `make_training_configs.py` writes one TERRA training config per
+split variant, for the GPUs of one run:
+
+```bash
+python analysis/slurm_corpus_build/make_training_configs.py \
+    --splits_dir $TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/splits \
+    --name $CORPUS_NAME --out_dir <folder for the configs> --gpus 8
+```
+
+Each config is built from:
+- **the layout config:** a committed TERRA config that reads the 16 x 512
+  corpus in the model's layout. The default is
+  `configs/model/hst_corpus_110m/hst_corpus_110m_knn10_seq256.yaml` of
+  `$TERRA_REPO_DIR`: 10 neighbours x 256 genes per cell, as TERRA-96M reads
+  cells.
+- **the recipe:** `--recipe terra96m` (default) sets the model, masking and
+  optimization of the released TERRA-96M (TERRA cc87839): `mlp` count
+  encoding, mask ratio 0.8, warmup 1 epoch, 5 epochs, 144 per GPU.
+  `--recipe layout` keeps the layout config's own recipe. That recipe uses
+  `value_bins` with `nz_spc: false`, so it is exposed to MD-1 (see below).
+- **the variant's data:** `config_data` of its `split_summary.json`.
+- **the batch:** `--batch_size` per GPU on `--gpus` GPUs (default 144, sized
+  for 80 GB GPUs). The learning rate, EMA, weight decay and mid-epoch
+  checkpoint spacing are scaled from TERRA-96M's global batch of 4,608, by the
+  rule of the hst_corpus_110m configs (r = global / 4608: lr x sqrt(r),
+  1 - ema x r, weight decay x sqrt(r), checkpoint spacing / r).
+  `--no_scaling` keeps the recipe's values.
+
+`--epochs` and `--num_workers` override the recipe. Each config's header
+records its sources, the GPU count and the steps per epoch.
+
+**Checks before a config is written:**
+- train()'s start-up check against the corpus record passes;
+- the training split loads through TERRA;
+- the model builds on the CPU.
+
+Run the script in the TERRA environment, with `TERRA_DATA_DIR` and
+`TERRA_REPO_DIR` exported.
+
+**Runs.** `submit_training.sh` submits one run with the site config's
+`TRAIN_*` settings:
+
+```bash
+bash analysis/slurm_corpus_build/submit_training.sh --config my_site.sh --training_config <config.yaml>
+bash analysis/slurm_corpus_build/submit_training.sh --config my_site.sh --resume <run folder>
+```
+
+**Run folders.** A run gets the folder
+`$TRAIN_RUNS_DIR/<config name>/<run name>`. The default run name is
+`<config name>_<date>_<time>`, or set it with `--run_name`. The job reads a
+copy of the config there, with `state.folder_path` set to the folder, and
+writes its checkpoints, logs and (with `WANDB_MODE=offline`, the default)
+wandb files into it.
+
+**Launch.** One node runs `torchrun --standalone`. Several nodes
+(`TRAIN_NODES`) run one `torchrun` per node through `srun`, meeting at the
+first node.
+
+**The GPU count must match.** A config is refused unless it was made for
+`TRAIN_NODES` x `TRAIN_GPUS` GPUs.
+
+**Resume.** `--resume` continues a run in its folder from its last
+end-of-epoch checkpoint (`terra-ep<N>.pth.tar`), with its run name and
+config. It names the epoch file because a mid-epoch save can overwrite
+`terra-latest.pth.tar`.
+
+**Notes:**
+- On a compact corpus every rank reads each row's lengths at start-up. That
+  takes minutes for about 10M rows. It took hours for the 112M-row corpus,
+  which uses precomputed lists for that reason.
+- MD-1: with `count_encoding: value_bins` and `nz_spc: false`, a batch
+  without padding stops DDP, unless TERRA has the fix. The `terra96m` recipe
+  (`mlp`) is not affected.
+
 ## Files
 
 | File | Purpose |
@@ -274,4 +353,6 @@ needs a corpus of its own.
 | `prepare_silver.py` | Multi-sample `.h5ad` to per-sample silver files |
 | `corpus_tools.py` | Tokenizer config, process count, held-out batch ids, part, norm-factor and corpus status, proposal of split samples |
 | `make_splits.py` | Training / validation / test splits of the corpus per variant |
+| `make_training_configs.py` | One TERRA training config per variant, for a GPU count |
+| `submit_training.sh`, `train_job.sh` | Submit one training run, or resume one, on Slurm GPUs |
 | `site_config.example.sh`, `datasets.example.tsv` | Templates |
