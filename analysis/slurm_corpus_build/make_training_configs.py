@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 """
-TERRA training configs, one per split variant of a corpus built by the Slurm
-corpus build (make_splits.py), for a given number of GPUs.
+TERRA training configs for a given number of GPUs: one per split variant of
+a corpus built by the Slurm corpus build (make_splits.py, --variants), and
+one per model trained on every cell of a single dataset (--parts), which
+reads that dataset's tokenized part directly and needs no corpus or split.
 
 Each config is the layout config, a committed TERRA model config that reads
 the 16 x 512 compact corpus in the model's layout (default
@@ -11,8 +13,12 @@ neighbours x 256 genes per cell, as TERRA-96M reads cells), with:
   optimization of the released TERRA-96M (TERRA commit cc87839,
   configs/model/hst_corpus_110m/hst_corpus_110m_gtsmall_aws.yaml) on the keys
   current TERRA reads; --recipe layout keeps the layout config's own recipe;
-- the variant's data: corpus, training split, norm factors, token dictionary
-  and held-out batch ids from <splits_dir>/<variant>/split_summary.json;
+- the data: for a variant, the corpus, training split, norm factors, token
+  dictionary and held-out batch ids from <splits_dir>/<variant>/
+  split_summary.json; for a part model, the dataset's tokenized part
+  (<data_directory_path>/gold/cell-graph-tokenizer/<dataset>/...), the norm
+  factors and token dictionary it was tokenized with, no split and no
+  held-out batches;
 - the batch: --batch_size per GPU on --gpus GPUs. Learning rate, EMA, weight
   decay and the mid-epoch checkpoint spacing are scaled from TERRA-96M's
   global batch of 4,608 by the rule of the hst_corpus_110m configs
@@ -126,6 +132,48 @@ def silver_root(corpus_path: str) -> str:
     return f'{head}/silver' if sep else str(Path(corpus_path).parent)
 
 
+def with_data_dir(path, data_directory_path: Path) -> str:
+    """`path` as ${TERRA_DATA_DIR}/... when below the data directory."""
+    path = Path(path).resolve()
+    try:
+        return '${TERRA_DATA_DIR}/' + str(path.relative_to(
+            Path(data_directory_path).resolve()))
+    except ValueError:
+        return str(path)
+
+
+def part_summary(model: str, dataset: str, args) -> dict:
+    """The summary of a model trained on every row of one dataset's
+    tokenized part, in the form of make_splits.py's split summaries."""
+    from datasets import load_from_disk
+    from corpus_tools import corpus_dataset_path
+    for option in ('data_directory_path', 'norm_factor_csv',
+                   'token_dictionary_file_path'):
+        if not getattr(args, option):
+            raise ConfigError(f'--parts needs --{option}')
+    part = corpus_dataset_path(args.data_directory_path, dataset)
+    if not (part / 'terra_tokenizer_params.json').exists():
+        raise ConfigError(f'the tokenized part of {dataset} is missing or '
+                          f'incomplete: {part} (run the tokenize stage)')
+    data_dir = Path(args.data_directory_path)
+    return {
+        'variant': model,
+        'datasets': [dataset],
+        'n_rows': {'train': len(load_from_disk(str(part))),
+                   'validation': 0, 'test': 0},
+        'samples': {'validation': [], 'test': []},
+        'config_data': {
+            'tokenized_data_folder_path': with_data_dir(part, data_dir),
+            'norm_factor_file_path': with_data_dir(args.norm_factor_csv,
+                                                   data_dir),
+            'token_dict_folder_path': with_data_dir(
+                args.token_dictionary_file_path, data_dir),
+            'val_batch_ids': [],
+            'test_batch_ids': [],
+        },
+    }
+
+
 def build_config(layout: dict, recipe: str, summary: dict, name: str,
                  args) -> tuple[dict, dict]:
     config = copy.deepcopy(layout)
@@ -137,13 +185,18 @@ def build_config(layout: dict, recipe: str, summary: dict, name: str,
         if key in DROP_DATA_KEYS or key.startswith('precomputed_epoch'):
             del data[key]
     config_data = summary['config_data']
-    missing = [k for k in VARIANT_DATA_KEYS[:4] if k not in config_data]
+    missing = [k for k in ('tokenized_data_folder_path',
+                           'norm_factor_file_path', 'token_dict_folder_path')
+               if k not in config_data]
     if missing:
         raise ConfigError(f"split summary of {summary['variant']} lacks "
                           f'config_data {missing}')
     for key in VARIANT_DATA_KEYS:
         if key in config_data:
             data[key] = copy.deepcopy(config_data[key])
+    if 'precomputed_split' not in config_data:
+        # every row of the dataset (a part model); not the layout config's split
+        data.pop('precomputed_split', None)
     data['dataset_name'] = name
     data['raw_data_folder_path'] = silver_root(
         config_data['tokenized_data_folder_path'])
@@ -178,6 +231,8 @@ def check_config(config: dict, n_train: int, token_dict_cache: dict):
     data = expand(copy.deepcopy(config['data']))
     for key in ('tokenized_data_folder_path', 'precomputed_split',
                 'token_dict_folder_path', 'norm_factor_file_path'):
+        if key == 'precomputed_split' and key not in data:
+            continue
         if '$' in str(data[key]) or not os.path.exists(data[key]):
             raise ConfigError(f"data.{key} '{data[key]}' does not exist (is "
                               'TERRA_DATA_DIR set?)')
@@ -204,16 +259,30 @@ def check_config(config: dict, n_train: int, token_dict_cache: dict):
 
 
 def main(args) -> int:
-    splits_dir = Path(args.splits_dir)
+    parts = {}
+    for entry in (e for e in args.parts.split(',') if e):
+        model, sep, dataset = entry.partition('=')
+        if not sep or not model or not dataset:
+            raise ConfigError(f'--parts entry {entry!r}: expected '
+                              'model=dataset')
+        parts[model] = dataset
+    splits_dir = Path(args.splits_dir) if args.splits_dir else None
     if args.variants:
         variants = [v for v in args.variants.split(',') if v]
+    elif parts:
+        variants = []
     else:
         variants = sorted(p.name for p in splits_dir.iterdir()
                           if (p / 'split_summary.json').exists()) \
-            if splits_dir.is_dir() else []
-    if not variants:
+            if splits_dir and splits_dir.is_dir() else []
+    if variants and splits_dir is None:
+        raise ConfigError('--variants needs --splits_dir')
+    if not variants and not parts:
         raise ConfigError(f'no split variant in {splits_dir} (run the split '
-                          'stage first)')
+                          'stage first) and no --parts')
+    both = sorted(set(variants) & set(parts))
+    if both:
+        raise ConfigError(f'{both} given as a variant and as a part model')
     layout_path = Path(os.path.expandvars(args.layout_config))
     if '$' in str(layout_path) or not layout_path.exists():
         raise ConfigError(f"layout config '{args.layout_config}' does not "
@@ -229,11 +298,15 @@ def main(args) -> int:
             'TERRA has the MD-1 fix; the terra96m recipe (mlp) does not.')
 
     planned, token_dicts = [], {}
-    for variant in variants:
-        summary_path = splits_dir / variant / 'split_summary.json'
-        if not summary_path.exists():
-            raise ConfigError(f'no split summary {summary_path}')
-        summary = json.loads(summary_path.read_text())
+    for variant in variants + list(parts):
+        if variant in parts:
+            summary = part_summary(variant, parts[variant], args)
+        else:
+            summary_path = splits_dir / variant / 'split_summary.json'
+            if not summary_path.exists():
+                raise ConfigError(f'no split summary {summary_path} (run the '
+                                  'split stage first)')
+            summary = json.loads(summary_path.read_text())
         name = f'{args.name}_{variant}'
         if not re.fullmatch(r'[A-Za-z0-9_.-]+', name):
             raise ConfigError(f'config name {name!r}: use letters, digits, '
@@ -264,10 +337,14 @@ def main(args) -> int:
                'hst_corpus_110m_gtsmall_aws.yaml)' if args.recipe == 'terra96m'
                else '')
             + f' on the keys of {layout_path} (TERRA {git_commit(layout_path)})',
-            f"variant {variant}: datasets {', '.join(summary['datasets'])}; "
-            f'{n_train:,} training rows; held out: '
-            f"{len(samples.get('validation') or [])} validation, "
-            f"{len(samples.get('test') or [])} test samples",
+            (f"variant {variant}: datasets {', '.join(summary['datasets'])}; "
+             f'{n_train:,} training rows; held out: '
+             f"{len(samples.get('validation') or [])} validation, "
+             f"{len(samples.get('test') or [])} test samples")
+            if 'precomputed_split' in summary['config_data'] else
+            (f"model {variant}: every row of the tokenized part of "
+             f"{summary['datasets'][0]} ({n_train:,} rows; no split, nothing "
+             'held out)'),
             f"layout: {args.gpus} GPU(s) x {data['batch_size']} per GPU = global "
             f"{values['global_batch']}; about {steps:,} steps per epoch, "
             f"{opt['epochs']} epochs ({steps * opt['epochs']:,} steps)",
@@ -297,11 +374,21 @@ def main(args) -> int:
 def parse_arguments(argv=None):
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--splits_dir', required=True,
+    ap.add_argument('--splits_dir', default=None,
                     help='<TERRA_DATA_DIR>/tokenizer/<corpus>/splits')
     ap.add_argument('--variants', default='',
-                    help='Comma-separated variants (default: every variant in '
-                         '--splits_dir).')
+                    help='Comma-separated variants (default without --parts: '
+                         'every variant in --splits_dir).')
+    ap.add_argument('--parts', default='',
+                    help="Models trained on every row of one dataset's "
+                         "tokenized part, 'model=dataset,model=dataset'.")
+    ap.add_argument('--data_directory_path', default=None,
+                    help='For --parts: the data root (TERRA_DATA_DIR).')
+    ap.add_argument('--norm_factor_csv', default=None,
+                    help='For --parts: the norm factors the parts were '
+                         'tokenized with.')
+    ap.add_argument('--token_dictionary_file_path', default=None,
+                    help='For --parts.')
     ap.add_argument('--name', required=True,
                     help='Config name prefix: <name>_<variant>.yaml.')
     ap.add_argument('--out_dir', required=True)

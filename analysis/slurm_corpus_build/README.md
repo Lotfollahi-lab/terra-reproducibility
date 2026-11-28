@@ -301,6 +301,22 @@ Each config is built from:
 `--epochs` and `--num_workers` override the recipe. Each config's header
 records its sources, the GPU count and the steps per epoch.
 
+**Models of one dataset, without a split.** A model trained on every cell
+of a single dataset can read that dataset's tokenized part directly. It then
+needs neither the corpus nor a split, and can start as soon as its part is
+tokenized:
+
+```bash
+python analysis/slurm_corpus_build/make_training_configs.py \
+    --parts model_a=dataset_a,model_b=dataset_b \
+    --data_directory_path $TERRA_DATA_DIR \
+    --norm_factor_csv $TERRA_DATA_DIR/tokenizer/$CORPUS_NAME/${CORPUS_NAME}_norm_factors.csv \
+    --token_dictionary_file_path $TOKEN_DICTIONARY \
+    --name $CORPUS_NAME --out_dir <folder for the configs> --gpus 8
+```
+
+`--parts` and `--variants` (with `--splits_dir`) can be combined.
+
 **Checks before a config is written:**
 - train()'s start-up check against the corpus record passes;
 - the training split loads through TERRA;
