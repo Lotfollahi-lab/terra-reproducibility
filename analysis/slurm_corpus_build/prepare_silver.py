@@ -28,8 +28,8 @@ Each silver file holds
 - obsm['spatial']: float32 x/y, times --coord_scale;
 - uns: dataset_id, batch, assay, species, tissue, sample, sample_key,
   source_h5ad, counts_source.
-Batches are numbered by the natural order of the sample names (NO2 before
-NO10). Cells without a sample or finite coordinates, and cells with fewer than
+Batches are numbered by the natural order of the sample names (S2 before
+S10). Cells without a sample or finite coordinates, and cells with fewer than
 --min_vocab_genes vocabulary genes (the corpus floor, 10) are dropped; samples
 with at most --n_neighs cells are skipped (the k-NN graph needs n_neighs + 1
 cells). Every drop is reported.
@@ -52,11 +52,11 @@ Detection (each can be set explicitly; ambiguity is an error, never a guess):
 
 Usage (from the terra-reproducibility root, TERRA environment):
     python analysis/slurm_corpus_build/prepare_silver.py \\
-        --h5ad /path/to/data.h5ad --dataset_name my_dataset --dataset_id 2001 \\
+        --h5ad /path/to/data.h5ad --dataset_name my_dataset --dataset_id 101 \\
         --data_directory_path $TERRA_DATA_DIR \\
         --token_dictionary_file_path $TOKEN_DICTIONARY \\
         --gene_name_map $GENE_NAME_MAP \\
-        --expected_n_samples 49 --exclude_samples NO4
+        --expected_n_samples 12 --exclude_samples S4
 Add --inspect to print the file structure and the detection results without
 writing anything. Exit code 1 on any error.
 """
@@ -120,7 +120,7 @@ def log(message: str = ''):
 
 
 def natural_key(value) -> list:
-    """Sort key that orders 'NO2' before 'NO10'."""
+    """Sort key that orders 'S2' before 'S10'."""
     return [int(part) if part.isdigit() else part
             for part in re.split(r'(\d+)', str(value))]
 
@@ -629,7 +629,9 @@ def parse_arguments(argv=None) -> argparse.Namespace:
                          'micrometres.')
     ap.add_argument('--assay', default='xenium')
     ap.add_argument('--species', default='homo_sapiens')
-    ap.add_argument('--tissue', default='liver')
+    ap.add_argument('--tissue', default='unknown',
+                    help='Tissue recorded in the silver files (uns); set it '
+                         'per dataset in the table (7th column).')
     ap.add_argument('--min_vocab_genes', type=int, default=10,
                     help='Drop cells with fewer vocabulary genes (corpus: 10).')
     ap.add_argument('--n_neighs', type=int, default=16,

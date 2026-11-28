@@ -5,5 +5,5 @@
 # - exclude_samples: comma-separated sample names to leave out, or -
 # - sample_key: obs column naming the sample of each cell, or auto
 # - optional prepare_silver.py arguments, e.g. --counts layers/counts --coord_scale 0.2125
-study_a	2001	/path/to/study_a.h5ad	86	-	auto
-study_b_5k	2002	/path/to/study_b.h5ad	49	S4	auto	--counts layers/counts
+study_a	101	/path/to/study_a.h5ad	24	-	auto	--tissue lung
+study_b	102	/path/to/study_b.h5ad	12	S4	auto	--tissue lung --counts layers/counts

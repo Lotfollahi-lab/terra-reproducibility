@@ -85,12 +85,17 @@ coordinates; cells with fewer than 10 vocabulary genes (the corpus floor).
 Samples with 16 cells or fewer are skipped: the 16-NN graph needs 17.
 
 **Cell ids and batches.** Cell ids are `<dataset_id>_batch<k>_<i>`. Batches
-are numbered in natural order of the sample names (NO2 before NO10), and
+are numbered in natural order of the sample names (S2 before S10), and
 `silver_manifest.tsv` maps sample to batch.
 
 **Obs columns.** The input's obs columns are kept. `filter_pass` and
 `cell_id` are renamed to `original_*`, because the tokenizer drops cells with
 `filter_pass != 1`.
+
+**Metadata.** `uns` records the assay (`--assay`, default `xenium`), species
+(`--species`, default `homo_sapiens`) and tissue (`--tissue`, default
+`unknown`). Set them per dataset in the table's 7th column, e.g.
+`--tissue lung`. The tokenizer reads none of them with `special_tokens: []`.
 
 ## Setup on the cluster
 
@@ -176,7 +181,7 @@ The job log prints the estimate. `TOKENIZE_NPROC` overrides it.
 
 | What | Size per cell |
 |---|---|
-| Compact rows | about 10 KB for 480-gene panels, about 30 KB for 5K panels (~100 / ~300 genes per cell) |
+| Compact rows | about 10 KB for panels of a few hundred genes, about 30 KB for 5K panels (~100 / ~300 genes per cell) |
 | `$TERRA_DATA_DIR/cache` (Hugging Face datasets) | about the same again; delete it once every tokenize job has finished |
 | The concatenated corpus | a full copy of the parts; the parts can go once the splits are written (training reads the corpus) |
 | Split files | about 8 bytes per row and variant |
